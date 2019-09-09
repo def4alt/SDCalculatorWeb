@@ -2,7 +2,7 @@
     <div id="app">
         <div class="container">
             <div class="row col-md-12 d-flex justify-content-center">
-                <create-todo></create-todo>
+                <select-file></select-file>
                 <div class="row col-md-12 d-flex justify-content-center">
                     <list-todo></list-todo>
                 </div>
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-    import CreateTodo from './CreateTodo.vue';
+    import SelectFile from './SelectFile.vue';
     import ListTodo from './ListTodo.vue';
 
     export default {
         name: 'app',
-        components: {CreateTodo, ListTodo},
+        components: { ListTodo, SelectFile},
     }
 </script>
 

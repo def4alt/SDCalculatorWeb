@@ -4,7 +4,8 @@
   "description": "Web version of SDCalculator.",
   "main": "server.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack ",
+    "start": "webpack && node server.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
     "mongoose": "^4.13.19",
     "morgan": "^1.9.0",
     "vue": "^2.5.11",
-    "vue-axios": "^2.1.4"
+    "vue-axios": "^2.1.4",
+    "xlsx": "^0.15.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -33,7 +35,7 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.11",
+    "css-loader": "^3.2.0",
     "file-loader": "^1.1.11",
     "prettier": "^1.9.2",
     "vue-loader": "^13.7.3",
