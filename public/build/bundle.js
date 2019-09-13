@@ -15402,41 +15402,43 @@ module.exports = function spread(callback) {
 
 function CalculateSD(files) {
     var models = [];
-    for (var file in Array.from(files)) {
-        var parsedRows = Object(__WEBPACK_IMPORTED_MODULE_0__reader__["a" /* default */])(file);
-        console.log(parsedRows);
-        models = models.concat(parsedRows);
-    }
-
-    console.log(models);
+    Array.from(files).forEach(file => {
+        models.concat.apply(models, Object(__WEBPACK_IMPORTED_MODULE_0__reader__["a" /* default */])(file));
+    });
     var ignoreList = [];
-    var statisticsModels = GetStatistics(models, ignoreList);
+    console.log(models);
+
+    var statisticsModels = GetStatistics(flatten(Object.values(models)), ignoreList);
 
     return statisticsModels;
 }
 
-function* GetStatistics(models, ignoreList) {
+function GetStatistics(models, ignoreList) {
+    console.log(models);
     var lvlOneRows = models.filter(t => t.sampleType == __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl1);
-    var lvlOneRows = models.filter(t => t.sampleType == __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl2);
+    var lvlTwoRows = models.filter(t => t.sampleType == __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl2);
 
     var row = lvlOneRows[0];
 
-    if (row == null) yield null;
+    if (row == null) return;
 
     var count = row.testResults.length;
 
+    statisticsModels = [];
     for (let i = 0; i < count; i++) {
         var testName = lvlOneRows[0].testResults.keys()[i];
 
         if (testName == null) continue;
 
         var model = GetModel(lvlOneRows, testName, __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl1, ignoreList);
-        if (model != null) yield model;
+        if (model != null) statisticsModels.push(model);
 
         console.log(model);
         model = GetModel(lvlTwoRows, testName, __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl2, ignoreList);
-        if (model != null) yield model;
+        if (model != null) statisticsModels.push(model);
     }
+
+    this.statisticsModels = statisticsModels;
 }
 
 function GetModel(lvlRows, testName, sampleType, ignoreList) {
@@ -15444,14 +15446,10 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
 
     if (ignoreList.includes(fullName)) return null;
 
-    var model = new __WEBPACK_IMPORTED_MODULE_2__models_StatisticsModel__["a" /* default */]();
-
-    model.average = GetAverageFor(lvlRows, testName);
-    model.standardDeviation = GetStandardDeviation(lvlRows, testName);
-    model.testName = testName.trim();
-    model.SampleType = sampleType;
-
-    return model;
+    this.average = GetAverageFor(lvlRows, testName);
+    this.standardDeviation = GetStandardDeviation(lvlRows, testName);
+    this.testName = testName.trim();
+    this.sampleType = sampleType;
 }
 
 function GetAverageFor(models, testName) {
@@ -15490,7 +15488,7 @@ function GetNonFailedResults(models, testName) {
 
 
 function Read(file) {
-    var models = [];
+    var models = new Array();
 
     var reader = new FileReader();
     reader.readAsBinaryString(file);
@@ -15521,7 +15519,7 @@ function Read(file) {
             model.sampleType = sampleType.v.trim() == 'QC Lv I' ? __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl1 : __WEBPACK_IMPORTED_MODULE_1__models_SampleType__["a" /* default */].Lvl2;
             model.failedTests = String(failedTests.v).split(',');
 
-            for (let col = range.s.c; col <= range.e.c; col++) {
+            for (let col = range.s.c + 6; col <= range.e.c; col++) {
                 var testValue = sheet[__WEBPACK_IMPORTED_MODULE_2_xlsx___default.a.utils.encode_cell({
                     r: rowNum,
                     c: col
@@ -15537,7 +15535,7 @@ function Read(file) {
 
                 if (testName == null) continue;
 
-                testName = String(testName.v);
+                testName = String(testName.v).trim();
 
                 if (testName.includes(':')) testName = testName.replace(':', '_');
                 if (!testName.includes('/')) model.testResults[testName] = Math.round(testValue);
@@ -45949,7 +45947,7 @@ module.exports = __webpack_amd_options__;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = StatisticsModel;
+/* unused harmony export default */
 
 function StatisticsModel() {
     this.SampleType = null;

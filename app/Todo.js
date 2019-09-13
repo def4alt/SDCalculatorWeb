@@ -5,9 +5,21 @@ var todo = new mongoose.Schema({
         name: {
             type: String
         },
-        done: {
-            type: Boolean
+        chartModels: {
+            type: Array
+        },
+        lot: {
+            type: Number
+        },
+        ignoreList: {
+            type: Array
+        },
+        parsedRows: {
+            type: Array
         }
+
+
+
     },
     {
         collection: 'todos'

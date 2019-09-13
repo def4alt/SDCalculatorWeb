@@ -4,7 +4,7 @@ import xlsx from 'xlsx'
 
 
 function Read(file) {
-    var models = []
+    var models = new Array
 
     var reader = new FileReader;
     reader.readAsBinaryString(file);
@@ -36,7 +36,7 @@ function Read(file) {
             model.sampleType = sampleType.v.trim() == 'QC Lv I' ? SampleType.Lvl1 : SampleType.Lvl2
             model.failedTests = String(failedTests.v).split(',')
 
-            for (let col = range.s.c; col <= range.e.c; col++) {
+            for (let col = range.s.c + 6; col <= range.e.c; col++) {
                 var testValue = sheet[xlsx.utils.encode_cell({
                     r: rowNum,
                     c: col
@@ -52,7 +52,7 @@ function Read(file) {
 
                 if (testName == null) continue
 
-                testName = String(testName.v)
+                testName = String(testName.v).trim()
 
                 if (testName.includes(':')) testName = testName.replace(':', '_')
                 if (!testName.includes('/')) model.testResults[testName] = Math.round(testValue)

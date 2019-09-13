@@ -6,28 +6,28 @@ import StatisticsModel from '../models/StatisticsModel';
 function CalculateSD(files) {
     var models = []
     Array.from(files).forEach(file => {
-        var parsedRows = Read(file)
-        console.log(parsedRows)
-        
+        models.concat.apply(models, Read(file))
     })
-        
-    console.log(models)
     var ignoreList = []
-    var statisticsModels = GetStatistics(models, ignoreList)
+    console.log(models)
+
+    var statisticsModels = GetStatistics(flatten(Object.values(models)), ignoreList)
 
     return statisticsModels
 }
 
-function* GetStatistics(models, ignoreList) {
+function GetStatistics(models, ignoreList) {
+    console.log(models)
     var lvlOneRows = models.filter(t => t.sampleType == SampleType.Lvl1)
-    var lvlOneRows = models.filter(t => t.sampleType == SampleType.Lvl2)
+    var lvlTwoRows = models.filter(t => t.sampleType == SampleType.Lvl2)
 
     var row = lvlOneRows[0]
 
-    if (row == null) yield null
+    if (row == null) return
 
     var count = row.testResults.length
 
+    statisticsModels = []
     for (let i = 0; i < count; i++) {
         var testName = lvlOneRows[0].testResults.keys()[i]
 
@@ -35,13 +35,15 @@ function* GetStatistics(models, ignoreList) {
 
         var model = GetModel(lvlOneRows, testName, SampleType.Lvl1, ignoreList)
         if (model != null)
-            yield model
+            statisticsModels.push(model) 
 
         console.log(model)
         model = GetModel(lvlTwoRows, testName, SampleType.Lvl2, ignoreList)
         if (model != null)
-            yield model
+            statisticsModels.push(model)
     }
+
+    this.statisticsModels = statisticsModels
 }
 
 function GetModel(lvlRows, testName, sampleType, ignoreList) {
@@ -49,14 +51,10 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
 
     if (ignoreList.includes(fullName)) return null
 
-    var model = new StatisticsModel;
-
-    model.average = GetAverageFor(lvlRows, testName)
-    model.standardDeviation = GetStandardDeviation(lvlRows, testName)
-    model.testName = testName.trim()
-    model.SampleType = sampleType
-
-    return model
+    this.average = GetAverageFor(lvlRows, testName)
+    this.standardDeviation = GetStandardDeviation(lvlRows, testName)
+    this.testName = testName.trim()
+    this.sampleType = sampleType
 }
 
 function GetAverageFor(models, testName) {
