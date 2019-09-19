@@ -1,13 +1,8 @@
-FROM python:slim
+FROM golang:alpine
 
-WORKDIR /app
+ADD ./src /go/src/app
+WORKDIR /go/src/app
 
-COPY . /app
+ENV PORT=5000
 
-RUN pip install -r requirements.txt
-
-EXPOSE 5000
-
-ENV NAME World
-
-CMD [ "python", "server.py" ]
+CMD ["go", "run", "server.go"]
