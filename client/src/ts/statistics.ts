@@ -3,8 +3,6 @@ import TestModel from '../models/TestModel';
 import SampleType from '../models/SampleType';
 import StatisticsModel from '../models/StatisticsModel';
 
-
-
 function GetStatistics(models: TestModel[], ignoreList: string[]) {
     console.log(models);
     console.log(models.filter(t => true));
