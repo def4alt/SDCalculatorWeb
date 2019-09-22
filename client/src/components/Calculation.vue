@@ -17,19 +17,14 @@
     <div id="cards"></div>
   </div>
 </template>
-<script lang="ts">
-import TestModel from "../models/TestModel";
-import Read from "../ts/reader";
-import GetStatistics from "../ts/statistics";
-import StatisticsModel from "../models/StatisticsModel";
-import axios from "axios";
-
+<script>
+import Read from "../js/reader";
+import GetStatistics from "../js/statistics";
 export default {
   data() {
     return {
       filesSelectedLabel: "Choose a file…",
-      files: Array<File>(),
-      statisticsmodels: Array<StatisticsModel>()
+      files: []
     };
   },
   methods: {
@@ -38,20 +33,18 @@ export default {
       this.filesSelectedLabel = this.files.length + " files selected";
     },
     calculate() {
-      let models: TestModel[] = new Array<TestModel>();
-      const ignoreList: string[] = new Array<string>();
-      const files: File[] = this.files;
-      for (const file of files) {
-        const parsedRows: TestModel[] = Read(file);
+      const ignoreList = new Array();
+      const files = this.files;
+      let models = Array.from(files).map(file => {
+        const parsedRows = Read(file);
+		return parsedRows;
+	  });
 
-        parsedRows.forEach(model => {
-          axios({
-            method: "post",
-            url: "/api/models",
-            data: JSON.stringify(parsedRows)
-          });
-        });
-      }
+	  models = [...models[0], ...models[1]];
+
+	  console.log(hello);
+
+      GetStatistics(models, ignoreList);
     }
   }
 };
@@ -65,7 +58,6 @@ export default {
   position: absolute;
   z-index: -1;
 }
-
 .inputfile + label {
   font-size: 1.25em;
   font-weight: 700;
@@ -73,7 +65,6 @@ export default {
   background-color: black;
   display: inline-block;
 }
-
 .inputfile:focus + label,
 .inputfile + label:hover {
   background-color: red;

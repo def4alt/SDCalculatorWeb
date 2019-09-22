@@ -1,4 +1,4 @@
-# sdcalculatorweb
+# client
 
 ## Project setup
 ```
