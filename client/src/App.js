@@ -1,6 +1,7 @@
 // /client/App.js
 import React, { Component } from 'react';
 import axios from 'axios';
+import Calculation from './Pages/Calculation';
 
 class App extends Component {
   // initialize our state
@@ -104,6 +105,8 @@ class App extends Component {
     const { data } = this.state;
     return (
       <div>
+        <Calculation/>
+
         <ul>
           {data.length <= 0
             ? 'NO DB ENTRIES YET'
