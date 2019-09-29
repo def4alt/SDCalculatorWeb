@@ -1,13 +1,14 @@
 // /client/App.js
 import React, { Component } from 'react';
 import Calculation from './Pages/Calculation';
+import Cards from './Pages/Cards';
 
 class App extends Component {
 
 	constructor(props) {
         super(props);
         this.state = {
-            statisticsModels: null
+            statisticsModels: []
         };    
 	}    
 	myCallback = (dataFromChild) => {
@@ -20,7 +21,9 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				<Calculation callback={this.myCallback}/>
+				{this.state.statisticsModels.length == 0 && <Calculation callback={this.myCallback}/>}
+				{this.state.statisticsModels.length > 0 && <Cards statisticsModels={this.state.statisticsModels}/>}
+				
 			</div>
 		);
 	}

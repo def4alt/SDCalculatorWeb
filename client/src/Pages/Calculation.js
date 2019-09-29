@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import Read from '../js/reader';
 import GetStatistics from '../js/statistics';
 
