@@ -54,11 +54,11 @@ function Read(file) {
                     testResults[testName] = Math.round(testValue);
                 }
             }
-            const model = Object.freeze({
+            const model = {
                 SampleType: sampleType,
                 FailedTests: failedTests,
                 TestResults: testResults
-            });
+            };
 
             models.push(model);
         }

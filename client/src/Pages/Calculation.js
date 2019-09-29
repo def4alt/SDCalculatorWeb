@@ -1,22 +1,34 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Read from '../js/reader';
+import GetStatistics from '../js/statistics';
 
 
 function calculate(files)
 {
+    var millisecondsToWait = 100;
+    var parsedRows = [];
+
     console.log(files);
     Array.from(files).forEach(file => {
         var parsed = Read(file);
 
-        var millisecondsToWait = 100;
         setTimeout(function() {
-            parsed.push('hello');
-            parsed.forEach(object => {
-                console.log(object);
+            parsed.forEach(testModel => {
+                parsedRows.push(testModel);
             })
         }, millisecondsToWait);
     });
+
+    setTimeout(() => {
+        var statisticsModels = GetStatistics(parsedRows, []);
+
+        console.log(statisticsModels);
+
+        setTimeout(() => {
+            
+        }, millisecondsToWait);
+    }, millisecondsToWait);
 }
 
 class Calculation extends Component 
