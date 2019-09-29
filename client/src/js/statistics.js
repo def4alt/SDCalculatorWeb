@@ -40,12 +40,12 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
     const average = GetAverageFor(lvlRows, testName);
     const standardDeviation = GetStandardDeviation(lvlRows, testName);
 
-    return Object.freeze({
+    return {
         Average: average,
         StandardDeviation: standardDeviation,
         TestName: testName.trim(),
         SampleType: sampleType
-    });
+    };
 }
 
 function GetAverageFor(models, testName) {

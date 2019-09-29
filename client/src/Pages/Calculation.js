@@ -4,33 +4,6 @@ import Read from '../js/reader';
 import GetStatistics from '../js/statistics';
 
 
-function calculate(files)
-{
-    var millisecondsToWait = 100;
-    var parsedRows = [];
-
-    console.log(files);
-    Array.from(files).forEach(file => {
-        var parsed = Read(file);
-
-        setTimeout(function() {
-            parsed.forEach(testModel => {
-                parsedRows.push(testModel);
-            })
-        }, millisecondsToWait);
-    });
-
-    setTimeout(() => {
-        var statisticsModels = GetStatistics(parsedRows, []);
-
-        console.log(statisticsModels);
-
-        setTimeout(() => {
-            
-        }, millisecondsToWait);
-    }, millisecondsToWait);
-}
-
 class Calculation extends Component 
 {
     constructor(props)
@@ -42,6 +15,29 @@ class Calculation extends Component
         this.handleChange = this.handleChange.bind(this);
     }
 
+    calculate(files)
+    {
+        var millisecondsToWait = 100;
+        var statisticsModels = [];
+        var parsedRows = [];
+    
+        Array.from(files).forEach(file => {
+            var parsed = Read(file);
+    
+            setTimeout(function() {
+                parsed.forEach(testModel => {
+                    parsedRows.push(testModel);
+                })
+            }, millisecondsToWait);
+        });
+    
+        setTimeout(() => {
+            statisticsModels = GetStatistics(parsedRows, []);
+    
+            console.log(statisticsModels);
+            this.props.callback(statisticsModels);
+        }, millisecondsToWait);
+    }
 
     handleChange(event)
     {
@@ -50,7 +46,8 @@ class Calculation extends Component
 
     handleSubmit(event)
     {
-        calculate(this.state.files);
+        this.calculate(this.state.files);
+        
         event.preventDefault();
     }
 
