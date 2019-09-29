@@ -13,9 +13,6 @@ class App extends Component {
 	}    
 	myCallback = (dataFromChild) => {
 		this.setState({ statisticsModels: dataFromChild });
-		setTimeout(() => {
-			console.log(dataFromChild);
-		}, 100)
     }
 
 	render() {
