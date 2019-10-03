@@ -41,7 +41,7 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
     const standardDeviation = GetStandardDeviation(lvlRows, testName);
 
     return {
-        Average: average,
+        Average: [average],
         StandardDeviation: standardDeviation,
         TestName: testName.trim(),
         SampleType: sampleType
