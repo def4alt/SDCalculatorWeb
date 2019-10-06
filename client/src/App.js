@@ -9,8 +9,8 @@ class App extends Component {
         super(props);
         this.state = {
             statisticsModels: []
-        };    
-	}    
+        };
+	}
 	myCallback = (dataFromChild) => {
 		this.setState({ statisticsModels: dataFromChild });
     }
@@ -18,9 +18,10 @@ class App extends Component {
 	render() {
 		return (
 			<div>
-				{this.state.statisticsModels.length == 0 && <Calculation callback={this.myCallback}/>}
+				<Calculation callback={this.myCallback} statisticsModels={this.state.statisticsModels}/>
 				{this.state.statisticsModels.length > 0 && <Cards statisticsModels={this.state.statisticsModels}/>}
-				
+
+
 			</div>
 		);
 	}

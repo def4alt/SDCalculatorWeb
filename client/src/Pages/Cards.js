@@ -3,13 +3,11 @@ import React from 'react';
 import '../../node_modules/react-vis/dist/style.css';
 import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
 
-var Line = (value, color) => {
+var Line = (value, color, repeat) => {
 	return (
 		<LineSeries
-			data={[
-				{ x: 1, y: value },
-				{ x: 2, y: value },
-				{ x: 3, y: value }]}
+			data={[...Array(repeat == 1 ? 2 : repeat)]
+				.map((_, i) => new Object({ x: i, y: value }))}
 			style={{
 				strokeLinejoin: 'round',
 				strokeWidth: 2
@@ -29,18 +27,19 @@ class Cards extends React.Component {
 		};
 	}
 
+	componentDidUpdate(prevProps) {
+        if (this.props.statisticsModels !== prevProps.statisticsModels) {
+            this.setState({statisticsModels: this.props.statisticsModels});
+        }
+    }
+
 	render() {
 
 		return (
 			<div>
 				<ul>
 					{Array.from(this.state.statisticsModels).map(model => {
-						var data = []
-						for (let index = 0; index < Array.from(model.Average).length; index++) {
-							data.push({ x: index + 1, y: Array.from(model.Average)[index] })
-
-						}
-
+						var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
 
 						return (
 							<li key={model.TestName + model.SampleType}>
@@ -65,13 +64,13 @@ class Cards extends React.Component {
 										}}
 										color="#f44336"
 									/>
-									{Line(model.Average[0] + 3 * model.StandardDeviation, "#ffac33")}
-									{Line(model.Average[0] + 2 * model.StandardDeviation, "#00bcd4")}
-									{Line(model.Average[0] + model.StandardDeviation, "#8bc34a")}
-									{Line(model.Average[0], "#8561c5")}
-									{Line(model.Average[0] - model.StandardDeviation, "#8bc34a")}
-									{Line(model.Average[0] - 2 * model.StandardDeviation, "#00bcd4")}
-									{Line(model.Average[0] - 3 * model.StandardDeviation, "#ffac33")}
+									{Line(model.Average[0] + 3 * model.StandardDeviation, "#ffac33", model.Average.length)}
+									{Line(model.Average[0] + 2 * model.StandardDeviation, "#00bcd4", model.Average.length)}
+									{Line(model.Average[0] + model.StandardDeviation, "#8bc34a", model.Average.length)}
+									{Line(model.Average[0], "#8561c5", model.Average.length)}
+									{Line(model.Average[0] - model.StandardDeviation, "#8bc34a", model.Average.length)}
+									{Line(model.Average[0] - 2 * model.StandardDeviation, "#00bcd4", model.Average.length)}
+									{Line(model.Average[0] - 3 * model.StandardDeviation, "#ffac33", model.Average.length)}
 
 								</XYPlot>
 							</li>
