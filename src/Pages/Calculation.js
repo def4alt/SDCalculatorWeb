@@ -17,42 +17,32 @@ class Calculation extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.statisticsModels !== prevProps.statisticsModels) {
-            this.setState({globalStatisticsModels: this.props.statisticsModels});
+            this.setState({ globalStatisticsModels: this.props.statisticsModels });
         }
     }
 
-    calculate(files) {
-        var millisecondsToWait = 100;
-        var statisticsModels = [];
+    async calculate(files) {
+
         var parsedRows = [];
-
-        Array.from(files).forEach(file => {
-            var parsed = Read(file);
-
-            setTimeout(function () {
-                parsed.forEach(testModel => {
-                    parsedRows.push(testModel);
-                })
-            }, millisecondsToWait);
-        });
-
-        setTimeout(() => {
-            statisticsModels = GetStatistics(parsedRows, []);
-            setTimeout(() => {
-                let globalStatisticsModels = Array.from(this.state.globalStatisticsModels);
-                if (!this.state.sdMode) {
-                    for (let i = 0; i < statisticsModels.length; i++) {
-                        const model = statisticsModels[i];
-                        globalStatisticsModels[i].Average.push(model.Average[0]);
-                    }
+        for (const file of files) {
+            await Read(file).then(parsed => {
+                for (const model of parsed) {
+                    parsedRows.push(model);
                 }
-                else
-                {
-                    globalStatisticsModels = statisticsModels;
-                }
-                this.props.callback(globalStatisticsModels);
-            }, millisecondsToWait);
-        }, 1000);
+            });
+        }
+        var statisticsModels = GetStatistics(parsedRows, []);
+        let globalStatisticsModels = Array.from(this.state.globalStatisticsModels);
+        if (!this.state.sdMode) {
+            for (let i = 0; i < statisticsModels.length; i++) {
+                const model = statisticsModels[i];
+                globalStatisticsModels[i].Average.push(model.Average[0]);
+            }
+        }
+        else {
+            globalStatisticsModels = statisticsModels;
+        }
+        this.props.callback(globalStatisticsModels);
     }
 
     handleChange(event) {
