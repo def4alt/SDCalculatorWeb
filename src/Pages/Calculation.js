@@ -22,7 +22,7 @@ class Calculation extends Component {
     }
 
     calculate(files) {
-        var millisecondsToWait = 10;
+        var millisecondsToWait = 100;
         var statisticsModels = [];
         var parsedRows = [];
 
@@ -52,7 +52,7 @@ class Calculation extends Component {
                 }
                 this.props.callback(globalStatisticsModels);
             }, millisecondsToWait);
-        }, 100);
+        }, 1000);
     }
 
     handleChange(event) {

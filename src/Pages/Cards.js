@@ -37,12 +37,12 @@ class Cards extends React.Component {
 	render() {
 
 		return (
-			<div class="cardsHolder">
+			<div className="cardsHolder">
 				{Array.from(this.state.statisticsModels).map(model => {
 					var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
 
 					return (
-						<div class="card">
+						<div className="card" key={model.TestName+model.SampleType}>
 
 							<XYPlot height={300} width={300}>
 								<HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
