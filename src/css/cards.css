@@ -1,0 +1,9 @@
+.cardsHolder{
+    margin: 20px 0px 0px 0px;
+    flex-wrap: wrap;
+    display: flex;
+
+}
+.card{
+    margin: 10px 15px;
+}
