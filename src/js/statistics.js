@@ -51,11 +51,12 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
 function GetAverageFor(models, testName) {
     const nonFailedResults = GetNonFailedResults(models, testName).map(t => t.TestResults[testName]);
 
-    return nonFailedResults.reduce((s1, s2) => s1 + s2, 0.0);
+    return nonFailedResults.reduce((s1, s2) => s1 + s2, 0.0) / nonFailedResults.length;
 }
 
 function GetStandardDeviation(models, testName) {
     const nonFailedResults = GetNonFailedResults(models, testName).map(t => t.TestResults[testName]);
+    
     const average = GetAverageFor(models, testName);
 
     const count = nonFailedResults.length;
