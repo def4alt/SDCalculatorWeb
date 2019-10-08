@@ -7,7 +7,7 @@ import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxi
 var Line = (value, color, repeat) => {
 	return (
 		<LineSeries
-			data={[...Array(repeat == 1 ? 2 : repeat)]
+			data={[...Array(repeat === 1 ? 2 : repeat)]
 				.map((_, i) => new Object({ x: i, y: value }))}
 			style={{
 				strokeLinejoin: 'round',
@@ -19,7 +19,7 @@ var Line = (value, color, repeat) => {
 	)
 }
 
-class Cards extends React.Component {
+class Charts extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -82,4 +82,4 @@ class Cards extends React.Component {
 	}
 }
 
-export default Cards;
+export default Charts;

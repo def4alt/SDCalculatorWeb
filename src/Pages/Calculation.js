@@ -33,10 +33,16 @@ class Calculation extends Component {
         }
         var statisticsModels = GetStatistics(parsedRows, []);
         let globalStatisticsModels = Array.from(this.state.globalStatisticsModels);
+
+        if (statisticsModels === undefined)
+            return;
+
         if (!this.state.sdMode) {
             for (let i = 0; i < statisticsModels.length; i++) {
                 const model = statisticsModels[i];
-                globalStatisticsModels[i].Average.push(model.Average[0]);
+                if (i < globalStatisticsModels.length && 
+                    model.TestName === globalStatisticsModels[i].TestName)
+                    globalStatisticsModels[i].Average.push(model.Average[0]);
             }
         }
         else {

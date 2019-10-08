@@ -7,6 +7,9 @@ function GetStatistics(models, ignoreList) {
 
     const row = lvlOneRows[0];
 
+    if (row === undefined)
+        return undefined;
+
     const count = Object.keys(row.TestResults).length;
 
     const statisticsModels = [];
