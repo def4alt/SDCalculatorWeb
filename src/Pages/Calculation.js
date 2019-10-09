@@ -38,11 +38,15 @@ class Calculation extends Component {
             return;
 
         if (!this.state.sdMode) {
+
             for (let i = 0; i < statisticsModels.length; i++) {
                 const model = statisticsModels[i];
-                if (i < globalStatisticsModels.length && 
-                    model.TestName === globalStatisticsModels[i].TestName)
-                    globalStatisticsModels[i].Average.push(model.Average[0]);
+
+                var globalModel = globalStatisticsModels.filter(t => t.TestName == model.TestName 
+                    && t.SampleType == model.SampleType)[0];
+                
+                if (globalModel != undefined)
+                    globalModel.Average.push(model.Average);
             }
         }
         else {

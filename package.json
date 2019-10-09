@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ci": "^1.0.0",
     "eslint": "^6.5.1",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
