@@ -1,7 +1,7 @@
 // /client/App.js
 import React, { Component } from 'react';
 import Calculation from './Pages/Calculation';
-import Charts from './Pages/Charts';
+import Cards from './Pages/Cards';
 
 class App extends Component {
 
@@ -20,7 +20,7 @@ class App extends Component {
 			<div>
 				<Calculation callback={this.myCallback} statisticsModels={this.state.statisticsModels}/>
 				{this.state.statisticsModels.length > 0 &&
-					 <Charts statisticsModels={this.state.statisticsModels}/>}
+					 <Cards statisticsModels={this.state.statisticsModels}/>}
 
 
 			</div>
