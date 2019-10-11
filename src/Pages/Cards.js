@@ -114,7 +114,7 @@ class Cards extends React.Component {
 								</Card.Header>
 								<Card.Body >
 
-									<Button style={{width: this.state.width / 4, height:this.state.height / 4}} variant="outline-light" onClick={() => {
+									<Button variant="outline-light" onClick={() => {
 										this.setState({ showChart: true, chart: chart });
 									}}>
 											{chart}
