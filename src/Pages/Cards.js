@@ -7,6 +7,7 @@ import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxi
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { FlexibleXYPlot, makeVisFlexible } from 'react-vis/dist/make-vis-flexible';
 
 var Line = (value, color, repeat) => {
 	return (
@@ -30,9 +31,32 @@ class Cards extends React.Component {
 		this.state = {
 			statisticsModels: props.statisticsModels,
 			showChart: false,
-			chartWidth: 300,
-			chartHeight: 300
+			width: 0,
+			height: 0
 		};
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+	}
+
+	renderChart(model, data) {
+		return (
+			<>
+
+
+			</>
+		);
+	}
+
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+		this.setState({ width: window.innerWidth, height: window.innerHeight });
 	}
 
 	componentDidUpdate(prevProps) {
@@ -43,13 +67,13 @@ class Cards extends React.Component {
 
 	render() {
 
-		const handleClose = () => this.setState({ showChart: false, chartHeight: 300, chartWidth: 300 });
+		const handleClose = () => this.setState({ showChart: false });
 
 		return (
 			<div className="cardsHolder">
 				{Array.from(this.state.statisticsModels).map(model => {
 					var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
-					var chart = <XYPlot height={this.state.chartHeight} width={this.state.chartWidth}>
+					var chart = <XYPlot width={this.state.width / 5} height={this.state.height / 4}>
 						<HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
 						<VerticalGridLines style={{ stroke: '#B7E9ED' }} />
 						<XAxis
@@ -79,18 +103,19 @@ class Cards extends React.Component {
 
 					</XYPlot>;
 
+
 					return (
 						<div>
-							<Card className="text-center" key={model.TestName + model.SampleType}>
+							<Card  className="text-center" key={model.TestName + model.SampleType}>
 								<Card.Header>
 									{model.TestName + " Lvl" + model.SampleType}
 								</Card.Header>
-								<Card.Body>
+								<Card.Body >
 
-									<Button variant="outline-light" onClick={() => {
-										this.setState({showChart: true, chart: chart});
-										}}>
-										{chart}
+									<Button style={{width: this.state.width / 4, height:this.state.height / 4}} variant="outline-light" onClick={() => {
+										this.setState({ showChart: true, chart: chart });
+									}}>
+											{chart}
 									</Button>
 								</Card.Body>
 							</Card>
@@ -99,12 +124,17 @@ class Cards extends React.Component {
 				})}
 
 
+{/*
 				<Modal show={this.state.showChart} animation="false" centered="true" onHide={handleClose}>
 					<Modal.Header closeButton>
 						<Modal.Title>Big Picture</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>{this.state.chart}</Modal.Body>
+					<Modal.Body style={{width: this.state.width - 200, height:this.state.height - 200}}>
+							{this.state.chart}
+					</Modal.Body>
+
 				</Modal>
+*/}
 			</div>
 		)
 	}
