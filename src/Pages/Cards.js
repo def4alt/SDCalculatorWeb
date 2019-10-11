@@ -73,7 +73,9 @@ class Cards extends React.Component {
 			<div className="cardsHolder">
 				{Array.from(this.state.statisticsModels).map(model => {
 					var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
-					var chart = <XYPlot width={this.state.width / 5} height={this.state.height / 4}>
+					var chart = <XYPlot 
+						width={this.state.width < 800 ? 300: this.state.width / 5} 
+						height={this.state.width < 600 ? 300: this.state.height / 4}>
 						<HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
 						<VerticalGridLines style={{ stroke: '#B7E9ED' }} />
 						<XAxis
