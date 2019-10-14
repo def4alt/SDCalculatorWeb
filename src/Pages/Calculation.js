@@ -87,8 +87,8 @@ class Calculation extends Component {
                         <Form.Check type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange} label="SDMode" />
                     </Form.Group>
                     <Form.Group controlId="formBasicFileInput">
-                        <Form.Label>Select files:</Form.Label>
-                        <Form.Control className="form-control-file" type="file" multiple onChange={this.handleChange} />
+                        <Form.Label htmlFor="file">Select files:</Form.Label>
+                        <Form.Control name="file" className="inputfile inputfile-3" type="file" multiple onChange={this.handleChange} />
                     </Form.Group>
                     <Button
                         variant="primary"

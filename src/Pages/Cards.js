@@ -6,8 +6,6 @@ import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxi
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import { FlexibleXYPlot, makeVisFlexible } from 'react-vis/dist/make-vis-flexible';
 
 var Line = (value, color, repeat) => {
 	return (
@@ -37,15 +35,6 @@ class Cards extends React.Component {
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
-	renderChart(model, data) {
-		return (
-			<>
-
-
-			</>
-		);
-	}
-
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener('resize', this.updateWindowDimensions);
@@ -67,15 +56,13 @@ class Cards extends React.Component {
 
 	render() {
 
-		const handleClose = () => this.setState({ showChart: false });
-
 		return (
 			<div className="cardsHolder">
 				{Array.from(this.state.statisticsModels).map(model => {
 					var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
 					var chart = <XYPlot 
-						width={this.state.width < 800 ? 300: this.state.width / 5} 
-						height={this.state.width < 600 ? 300: this.state.height / 4}>
+						width={this.state.width < 800 ? 200: this.state.width / 6} 
+						height={this.state.width < 600 ? 200: this.state.height / 4}>
 						<HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
 						<VerticalGridLines style={{ stroke: '#B7E9ED' }} />
 						<XAxis
@@ -124,19 +111,6 @@ class Cards extends React.Component {
 						</div>
 					);
 				})}
-
-
-{/*
-				<Modal show={this.state.showChart} animation="false" centered="true" onHide={handleClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>Big Picture</Modal.Title>
-					</Modal.Header>
-					<Modal.Body style={{width: this.state.width - 200, height:this.state.height - 200}}>
-							{this.state.chart}
-					</Modal.Body>
-
-				</Modal>
-*/}
 			</div>
 		)
 	}
