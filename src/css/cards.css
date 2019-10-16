@@ -7,3 +7,6 @@
 .card{
     margin: 10px 15px;
 }
+.checkBox{
+    align-self: right;
+}

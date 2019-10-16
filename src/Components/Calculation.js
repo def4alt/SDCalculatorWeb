@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+
 import Read from '../js/reader';
 import GetStatistics from '../js/statistics';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -9,7 +11,10 @@ class Calculation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            files: [], sdMode: true, globalStatisticsModels: [], isLoading: false
+            files: [], 
+            sdMode: true, 
+            globalStatisticsModels: [], 
+            isLoading: false
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
