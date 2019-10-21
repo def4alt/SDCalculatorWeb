@@ -26,14 +26,16 @@
     transform: scaleX(0);
     transition: transform 0.25s ease-in-out;
 }
-  
+@media(hover: hover) and (pointer: fine) {
 .calcButton:hover {
     cursor: pointer;
 }
-  
+}
+@media(hover: hover) and (pointer: fine) {
 .calcButton:hover::before {
     transform-origin: center left;
     transform: scaleX(1);
+}
 }
 
 
