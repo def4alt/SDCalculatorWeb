@@ -2,10 +2,10 @@ import React from 'react';
 
 import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
 import '../../node_modules/react-vis/dist/style.css';
+import './CardTemplate.css'
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 
 var Line = (value, color, repeat) => {
     return (
@@ -19,8 +19,10 @@ var Line = (value, color, repeat) => {
             strokeDasharray="6, 10"
             color={color}
         />
-    )
-}
+    );
+};
+
+
 
 class CardTemplate extends React.Component 
 {
@@ -32,8 +34,16 @@ class CardTemplate extends React.Component
             model: props.model,
             width: props.width,
             height: props.height,
-            editMode: false,
-            starred: false
+            editMode: props.editMode,
+            starred: false,
+            showChart: true
+        }
+    }
+    componentDidUpdate(prevProps)
+    {
+        if (this.props.editMode !== prevProps.editMode)
+        {
+           this.setState({ editMode: this.props.editMode });
         }
     }
 
@@ -41,7 +51,7 @@ class CardTemplate extends React.Component
     {
         let model = this.state.model;
         var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
-        var chart = <XYPlot 
+        var chart = <XYPlot
             width={this.state.width < 800 ? 200: this.state.width / 6} 
             height={this.state.height < 600 ? 200: this.state.height / 4}>
             <HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
@@ -61,35 +71,42 @@ class CardTemplate extends React.Component
                     strokeLinejoin: 'round',
                     strokeWidth: 4
                 }}
-                color="#f44336"
+                color="#d63031"
             />
-            {Line(model.Average[0] + 3 * model.StandardDeviation, "#ffac33", model.Average.length)}
-            {Line(model.Average[0] + 2 * model.StandardDeviation, "#00bcd4", model.Average.length)}
-            {Line(model.Average[0] + model.StandardDeviation, "#8bc34a", model.Average.length)}
-            {Line(model.Average[0], "#8561c5", model.Average.length)}
-            {Line(model.Average[0] - model.StandardDeviation, "#8bc34a", model.Average.length)}
-            {Line(model.Average[0] - 2 * model.StandardDeviation, "#00bcd4", model.Average.length)}
-            {Line(model.Average[0] - 3 * model.StandardDeviation, "#ffac33", model.Average.length)}
+            {Line(model.Average[0] + 3 * model.StandardDeviation, "#e84393", model.Average.length)}
+            {Line(model.Average[0] + 2 * model.StandardDeviation, "#00cec9", model.Average.length)}
+            {Line(model.Average[0] + model.StandardDeviation, "#ff7675", model.Average.length)}
+            {Line(model.Average[0], "#6c5ce7", model.Average.length)}
+            {Line(model.Average[0] - model.StandardDeviation, "#ff7675", model.Average.length)}
+            {Line(model.Average[0] - 2 * model.StandardDeviation, "#00cec9", model.Average.length)}
+            {Line(model.Average[0] - 3 * model.StandardDeviation, "#e84393", model.Average.length)}
 
         </XYPlot>;
 
 
     return (
         <div>
-            <Card className="text-center" style={{
+            <Card className="text-center card" style={{
+                borderColor: this.state.starred ? "#fdcb6e" : 'transparent',
                 width: this.state.width < 800 ? 300: this.state.width / 6 + 100,
-                display: "flex"}} key={model.TestName + model.SampleType}>
+                display: this.state.showChart ? "block" : "none"
+                }} key={model.TestName + model.SampleType}>
                 <Card.Header>
                     {model.TestName + " Lvl" + model.SampleType}
                 </Card.Header>
                 <Card.Body>
 
-                    <Button variant={this.state.starred ? "outline-warning" : "outline-light"} onClick={() => {
-                        this.setState({ showChart: true, chart: chart });
-                    }}>
+                    <div className="center" >
                             {chart}
-                    </Button>
-                    <Form.Check aria-label="option 1" class="checkBox"/>
+                    </div>
+                    {this.state.editMode && 
+                    <>
+                        <Button variant='outline-dark'
+                            style={{margin: 3}} onClick={() => {this.setState({showChart: false})}}>Delete</Button>
+                        <Button variant='outline-warning' 
+                            style={{margin: 3}} onClick={() => {this.setState({starred: !this.state.starred})}}>Star</Button>
+                    </>
+                    }
                 </Card.Body>
             </Card>
         </div>

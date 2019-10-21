@@ -1,12 +1,9 @@
 import React from 'react';
 
-import '../css/cards.css';
-
-import Card from './CardTemplate';
+import './CardsHolder.css';
 
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import CardTemplate from './CardTemplate';
 
 class CardsHolder extends React.Component {
 	constructor(props) {
@@ -40,41 +37,31 @@ class CardsHolder extends React.Component {
 		if (this.props.statisticsModels !== prevProps.statisticsModels) {
 			this.setState({ statisticsModels: this.props.statisticsModels });
 		}
-
-        if (this.props.editMode !== prevProps.editMode)
-        {
-            this.setState({ editMode: this.props.editMode })
-        }
 	}
 
 	render() {
 		var cards = Array.from(this.state.statisticsModels).map(model => {
-			return <Card model={model} width={this.state.width} height={this.state.height} editMode={this.state.editMode}/>
+			return <CardTemplate model={model} width={this.state.width} height={this.state.height} editMode={this.state.editMode}/>
 		})
 
 		return (
-
-			<div className="border-bottom">
-			<Row>
-				<Col sm={10}>
+			<>
+				<div className="border-bottom center">
 					<Button 
 						variant="link"
 						onClick={() => this.setState({showChart: !this.state.showChart})}>
 							Toggle charts
 					</Button>
-				</Col>
-				<Col sm="auto">
 					<Button 
-						style={{visibility: this.state.showChart ? "visible" : "hidden"}} 
+						style={{display: this.state.showChart ? "block" : "none"}} 
 						variant="link" onClick={() => this.setState({ editMode: !this.state.editMode })}>
 							Toggle Edit
 					</Button>
-				</Col>
-			</Row>
-			<div className="cardsHolder">
-				{this.state.showChart && cards}
-			</div>
-			</div>
+				</div>
+				<div className="cardsHolder center" style={{display: this.state.showChart ? 'flex' : 'none'}}>
+					{cards}
+				</div>
+			</>
 		)
 	}
 }

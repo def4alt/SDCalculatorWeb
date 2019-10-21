@@ -1,23 +1,25 @@
 // /client/App.js
 import React, { Component, Suspense } from 'react';
 import Calculation from './Components/Calculation';
-import CardsHolder from './Components/CardsHolder';
 
-const LazyCards = React.lazy(() => import('./Components/CardsHolder'));
+import './App.css'
+
+const LazyCards = React.lazy(() => import("./Components/CardsHolder"));
 
 class App extends Component {
 
 	constructor(props) {
         super(props);
         this.state = {
-			statisticsModels: []
+			statisticsModels: [],
+			showCharts: true
         };
 	}
 	myCallback = (dataFromChild) => {
 		this.setState({ statisticsModels: dataFromChild });
 
 		if (dataFromChild.length > 0) {
-			this.setState({ showCharts: true });
+			this.setState({ showCharts: false });
 		}
     }
 
@@ -25,21 +27,17 @@ class App extends Component {
 
 		return (
 			<div>
-				<br/>
-				<br/>
-				<br/>
-
-				<div className="d-flex justify-content-center text-center">
+				<div className="center" style={{margin: 100}}>
 					<Calculation callback={this.myCallback} statisticsModels={this.state.statisticsModels}/>
 				</div>
-
-				<br/>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
 				
-				{this.state.statisticsModels.length > 0 && <CardsHolder statisticsModels={this.state.statisticsModels}/>}
+				{this.state.statisticsModels.length > 0 && 
+				<Suspense fallback={
+					<div className="loadingCircle"></div>
+
+			  	}>
+					<LazyCards className="center" statisticsModels={this.state.statisticsModels}/>
+				</Suspense>}
 			</div>
 		);
 	}

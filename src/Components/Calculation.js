@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import Read from '../js/reader';
 import GetStatistics from '../js/statistics';
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import './Calculation.css';
 
 
 class Calculation extends Component {
@@ -14,7 +13,8 @@ class Calculation extends Component {
             files: [], 
             sdMode: true, 
             globalStatisticsModels: [], 
-            isLoading: false
+            isLoading: false,
+            fileNames: []
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,6 +70,7 @@ class Calculation extends Component {
 
     handleChange(event) {
         this.setState({ files: event.target.files });
+        this.setState({ fileNames: Array.from(event.target.files).map(file => file.name) })
     }
 
     handleCheckChange(event) {
@@ -87,22 +88,30 @@ class Calculation extends Component {
     render() {
         return (
             <div>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="formCheckBox">
-                        <Form.Check type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange} label="SDMode" />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicFileInput">
-                        <Form.Label htmlFor="file">Select files:</Form.Label>
-                        <Form.Control name="file" className="inputfile inputfile-3" type="file" multiple onChange={this.handleChange} />
-                    </Form.Group>
-                    <Button
-                        variant="primary"
+                <form onSubmit={this.handleSubmit}>
+                    <div>
+                        <label className="control checkbox" >
+                            <input type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange}/>
+                            <span className="control-indicator"></span>
+                            SDMode
+                        </label>
+                    </div>
+                    <div className="inputForm">
+                        <label className="file">
+                            <input type="file" id="file" aria-label="File browser example" multiple onChange={this.handleChange}/>
+                            <span className="file-custom">
+                                {this.state.fileNames.length > 1 ? 
+                                    this.state.fileNames.length + " files selected" : this.state.fileNames}
+                            </span>
+                        </label>
+                    </div>
+                    <button className="calcButton"
                         disabled={this.state.isLoading}
                         onClick={!this.state.isLoading ? this.handleSubmit : null}
                     >
                         {this.state.isLoading ? 'Calculating...' : 'Calculate'}
-                    </Button>
-                </Form>
+                    </button>
+                </form>
             </div>
         );
     }
