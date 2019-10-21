@@ -34,7 +34,6 @@ class App extends Component {
 				{this.state.statisticsModels.length > 0 && 
 				<Suspense fallback={
 					<div className="loadingCircle"></div>
-
 			  	}>
 					<LazyCards className="center" statisticsModels={this.state.statisticsModels}/>
 				</Suspense>}
