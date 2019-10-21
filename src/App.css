@@ -15,10 +15,25 @@
   }
 }
 
+
 .center {
   justify-content: center;
   display: flex;
   align-items: center;
+}
+
+.detailsBox {
+  display: inline-block;
+  margin-left: 50px;
+  margin-top: 80px;
+}
+
+.header {
+  font-size: 1.5em;
+  font-weight: bold;
+  border-bottom: #636e72;
+  border-width: 1px;
+  border-bottom-style: solid;
 }
 
 

@@ -14,10 +14,12 @@ class Calculation extends Component {
             sdMode: true, 
             globalStatisticsModels: [], 
             isLoading: false,
-            fileNames: []
+            fileNames: [],
+            lot: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleLotChange = this.handleLotChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleCheckChange = this.handleCheckChange.bind(this);
     }
@@ -63,7 +65,17 @@ class Calculation extends Component {
             else {
                 globalStatisticsModels = statisticsModels;
             }
-            this.props.callback(globalStatisticsModels);
+
+
+		    const date = String(this.state.files[0].name).replace('Summary Report', '')
+                .replace('-', '')
+                .replace('.wiff', '')
+                .replace('.xls', '')
+                .replace('_', '/')
+                .replace('_', '/')
+                .trim();
+        
+            this.props.callback({statisticsModels: globalStatisticsModels, date: date, lot: this.state.lot});
             res(globalStatisticsModels);
         });
     }
@@ -71,6 +83,14 @@ class Calculation extends Component {
     handleChange(event) {
         this.setState({ files: event.target.files });
         this.setState({ fileNames: Array.from(event.target.files).map(file => file.name) })
+    }
+
+    handleLotChange(event) {
+        
+        if (Number.parseInt(event.target.value) !== NaN) 
+        {
+            this.setState({ lot: event.target.value });
+        }
     }
 
     handleCheckChange(event) {
@@ -89,13 +109,18 @@ class Calculation extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <div>
+                    <div className="center">
                         <label className="control checkbox" >
                             <input type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange}/>
                             <span className="control-indicator"></span>
                             SDMode
                         </label>
                     </div>
+                    <div style={{position: 'relative'}}>
+                        <input type="text" value={this.state.lot} onChange={this.handleLotChange} className="lotInput" placeholder="Lot"/>
+                        <span className="lotSpan"></span>
+                    </div>
+
                     <div className="inputForm">
                         <label className="file">
                             <input type="file" id="file" aria-label="File browser example" multiple onChange={this.handleChange}/>

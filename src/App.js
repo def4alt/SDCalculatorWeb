@@ -12,31 +12,45 @@ class App extends Component {
         super(props);
         this.state = {
 			statisticsModels: [],
-			showCharts: true
+			showCharts: true,
+			date: '',
+			lot: ''
         };
 	}
 	myCallback = (dataFromChild) => {
-		this.setState({ statisticsModels: dataFromChild });
+		this.setState({ statisticsModels: dataFromChild.statisticsModels });
 
-		if (dataFromChild.length > 0) {
+		if (dataFromChild.statisticsModels.length > 0) {
 			this.setState({ showCharts: false });
 		}
+		this.setState({date: Date.parse(dataFromChild.date) ? dataFromChild.date : 
+			new Date().toLocaleString("en-GB", {day: 'numeric', year: 'numeric', month: 'numeric'})});
+
+		this.setState({lot: dataFromChild.lot });
     }
 
 	render() {
 
 		return (
 			<div>
-				<div className="center" style={{margin: 100}}>
+				<div className="center" style={{marginTop: 80}}>
 					<Calculation callback={this.myCallback} statisticsModels={this.state.statisticsModels}/>
 				</div>
+
 				
 				{this.state.statisticsModels.length > 0 && 
+				<>
+				<div className="detailsBox">
+					<p className="header">Details</p>
+					<p>Date: {this.state.date}</p>
+					<p>Lot: {this.state.lot}</p>
+				</div>
 				<Suspense fallback={
 					<div className="loadingCircle"></div>
 			  	}>
 					<LazyCards className="center" statisticsModels={this.state.statisticsModels}/>
-				</Suspense>}
+				</Suspense>
+				</>}
 			</div>
 		);
 	}
