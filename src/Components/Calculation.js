@@ -109,21 +109,24 @@ class Calculation extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit}>
-                    <div className="center">
-                        <label className="control checkbox" >
-                            <input type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange}/>
-                            <span className="control-indicator"></span>
-                            SDMode
-                        </label>
-                    </div>
-                    <div style={{position: 'relative'}}>
+                    
+                    <div style={{position: 'relative', marginBottom: 20}}>
                         <input type="text" value={this.state.lot} onChange={this.handleLotChange} className="lotInput" placeholder="Lot"/>
                         <span className="lotSpan"></span>
                     </div>
+                    <div className="center">
+                        <label style={{marginRight: 20}}>Add average</label>
+                        <label class="switch">
+                            <input type="checkbox" checked={this.state.sdMode} onChange={this.handleCheckChange}/>
+                            <span class="slider round"></span>
+                        </label>
+                        <label style={{marginLeft: 20}}>Build charts</label>
+                    </div>
 
                     <div className="inputForm">
+                        <p>{this.state.sdMode ? 'Select files:' : 'Select file:'}</p>
                         <label className="file">
-                            <input type="file" id="file" aria-label="File browser example" multiple onChange={this.handleChange}/>
+                            <input type="file" id="file" aria-label="File browser example" multiple={this.state.sdMode} onChange={this.handleChange}/>
                             <span className="file-custom">
                                 {this.state.fileNames.length > 1 ? 
                                     this.state.fileNames.length + " files selected" : this.state.fileNames}
@@ -134,7 +137,9 @@ class Calculation extends Component {
                         disabled={this.state.isLoading}
                         onClick={!this.state.isLoading ? this.handleSubmit : null}
                     >
-                        {this.state.isLoading ? 'Calculating...' : 'Calculate'}
+                        {this.state.sdMode ? 
+                            this.state.isLoading ? 'Building...' : 'Build charts' : 
+                            this.state.isLoading ? 'Adding...' : 'Add average'}
                     </button>
                 </form>
             </div>

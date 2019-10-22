@@ -7,6 +7,9 @@ import './CardTemplate.css'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
+import domtoimage from 'dom-to-image';
+import printJS from 'print-js';
+
 var Line = (value, color, repeat) => {
     return (
         <LineSeries
@@ -51,19 +54,9 @@ class CardTemplate extends React.Component
     {
         let model = this.state.model;
         var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
-        var chart = <XYPlot
+        var chart = <div id="canvas"><XYPlot 
             width={this.state.width < 800 ? 200: this.state.width / 6} 
             height={this.state.height < 600 ? 200: this.state.height / 4}>
-            <HorizontalGridLines style={{ stroke: '#B7E9ED' }} />
-            <VerticalGridLines style={{ stroke: '#B7E9ED' }} />
-            <XAxis
-                style={{
-                    line: { stroke: '#ADDDE1' },
-                    ticks: { stroke: '#ADDDE1' },
-                    text: { stroke: 'none', fill: '#6b6b76' },
-                    title: { fontSize: "15px" }
-                }}
-            />
             <YAxis />
             <LineSeries
                 data={data}
@@ -81,12 +74,12 @@ class CardTemplate extends React.Component
             {Line(model.Average[0] - 2 * model.StandardDeviation, "#00cec9", model.Average.length)}
             {Line(model.Average[0] - 3 * model.StandardDeviation, "#e84393", model.Average.length)}
 
-        </XYPlot>;
+        </XYPlot></div>;
 
 
     return (
         <div>
-            <Card className="text-center card" style={{
+            <Card className="text-center card" id="card" style={{
                 borderColor: this.state.starred ? "#fdcb6e" : 'transparent',
                 width: this.state.width < 800 ? 300: this.state.width / 6 + 100,
                 display: this.state.showChart ? "block" : "none"
@@ -105,6 +98,17 @@ class CardTemplate extends React.Component
                             style={{margin: 3}} onClick={() => {this.setState({showChart: false})}}>Delete</Button>
                         <Button variant='outline-warning' 
                             style={{margin: 3}} onClick={() => {this.setState({starred: !this.state.starred})}}>Star</Button>
+                        <Button variant='outline-success' 
+                            style={{margin: 3}} onClick={() =>
+                                {
+                                    this.setState({editMode: false});
+                                    new Promise(res => this.forceUpdate(res)).then(
+                                    domtoimage.toPng(document.getElementById('card')).then(pngUrl => 
+                                        printJS({printable: pngUrl, type:'image'})
+                                        ).then(() => this.setState({editMode: true}))
+                                    )
+                                } 
+                            }>Print</Button>
                     </>
                     }
                 </Card.Body>
