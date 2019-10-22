@@ -47,7 +47,8 @@ function GetModel(lvlRows, testName, sampleType, ignoreList) {
         Average: [average],
         StandardDeviation: standardDeviation,
         TestName: testName.trim(),
-        SampleType: sampleType
+        SampleType: sampleType,
+        Date: [lvlRows[0].Date]
     };
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { XYPlot, LineSeries, VerticalGridLines, HorizontalGridLines, XAxis, YAxis } from 'react-vis';
+import { XYPlot, LineSeries, XAxis, YAxis } from 'react-vis';
 import '../../node_modules/react-vis/dist/style.css';
 import './CardTemplate.css'
 
@@ -53,11 +53,21 @@ class CardTemplate extends React.Component
     render()
     {
         let model = this.state.model;
+        let yValues = [
+            model.Average[0] + 3 * model.StandardDeviation,
+            model.Average[0] + 2 * model.StandardDeviation,
+            model.Average[0] + model.StandardDeviation,
+            model.Average[0],
+            model.Average[0] - model.StandardDeviation,
+            model.Average[0] - 2 * model.StandardDeviation,
+            model.Average[0] - 3 * model.StandardDeviation];
         var data = [...Array(model.Average.length)].map((_, i) => new Object({ x: i, y: model.Average[i] }))
-        var chart = <div id="canvas"><XYPlot 
-            width={this.state.width < 800 ? 200: this.state.width / 6} 
-            height={this.state.height < 600 ? 200: this.state.height / 4}>
-            <YAxis />
+        var chart = <div id="canvas">
+            <XYPlot 
+            width={this.state.width < 800 ? 100 + 100 * model.Average.length:  this.state.width / 5 + 100 * model.Average.length} 
+            height={this.state.height < 600 ? 200 : this.state.height / 4}>
+            <YAxis tickValues={yValues}/>
+            <XAxis left={25} hideLine tickValues={[...Array(model.Average.length).keys()]} tickFormat={i => model.Date[i]}  />
             <LineSeries
                 data={data}
                 style={{
@@ -81,7 +91,7 @@ class CardTemplate extends React.Component
         <div>
             <Card className="text-center card" id="card" style={{
                 borderColor: this.state.starred ? "#fdcb6e" : 'transparent',
-                width: this.state.width < 800 ? 300: this.state.width / 6 + 100,
+                width: this.state.width < 800 ? 200 + 100 * model.Average.length : this.state.width / 6 + 100 * model.Average.length ,
                 display: this.state.showChart ? "block" : "none"
                 }} key={model.TestName + model.SampleType}>
                 <Card.Header>

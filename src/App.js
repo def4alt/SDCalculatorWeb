@@ -23,8 +23,7 @@ class App extends Component {
 		if (dataFromChild.statisticsModels.length > 0) {
 			this.setState({ showCharts: false });
 		}
-		this.setState({date: Date.parse(dataFromChild.date) ? dataFromChild.date : 
-			new Date().toLocaleString("en-GB", {day: 'numeric', year: 'numeric', month: 'numeric'})});
+		this.setState({date: dataFromChild.date});
 
 		this.setState({lot: dataFromChild.lot });
     }

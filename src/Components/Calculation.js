@@ -59,23 +59,17 @@ class Calculation extends Component {
                         && t.SampleType === model.SampleType)[0];
 
                     if (globalModel !== undefined)
+                    {
                         globalModel.Average.push(model.Average);
+                        globalModel.Date.push(model.Date);
+                    }
                 }
             }
             else {
                 globalStatisticsModels = statisticsModels;
             }
-
-
-		    const date = String(this.state.files[0].name).replace('Summary Report', '')
-                .replace('-', '')
-                .replace('.wiff', '')
-                .replace('.xls', '')
-                .replace('_', '/')
-                .replace('_', '/')
-                .trim();
         
-            this.props.callback({statisticsModels: globalStatisticsModels, date: date, lot: this.state.lot});
+            this.props.callback({statisticsModels: globalStatisticsModels, date: globalStatisticsModels[0].Date, lot: this.state.lot});
             res(globalStatisticsModels);
         });
     }

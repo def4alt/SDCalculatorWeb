@@ -1,5 +1,6 @@
 import xlsx from 'xlsx';
 import SampleType from './SampleType'
+import moment from 'moment';
 
 
 const getValueFromCell = (r, c, sheet) => {
@@ -16,6 +17,20 @@ function Read(file) {
         reader.readAsBinaryString(file);
         reader.onload = () => {
             const models = [];
+
+            var date = String(file.name).replace('Summary Report', '')
+            .replace('-', '')
+            .replace('.wiff', '')
+            .replace('.xls', '')
+            .replace('_', '/')
+            .replace('_', '/')
+            .trim();
+
+            date = moment(date, 'DD/MM/YY').toDate();
+
+            date = Date.parse(date) ? date.toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'}) : 
+			new Date().toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'});
+
 
             const workbook = xlsx.read(reader.result, {
                 type: 'binary',
@@ -58,7 +73,8 @@ function Read(file) {
                 const model = {
                     SampleType: sampleType,
                     FailedTests: failedTests,
-                    TestResults: testResults
+                    TestResults: testResults,
+                    Date: [date]
                 };
 
                 models.push(model);
