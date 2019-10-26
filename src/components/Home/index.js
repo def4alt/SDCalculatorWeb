@@ -1,5 +1,5 @@
-// /client/App.js
 import React, { Component, Suspense } from "react";
+import { withAuthorization } from "../Session";
 
 import Calculation from "../Calculation";
 
@@ -9,7 +9,7 @@ import "./index.css";
 
 const LazyCards = React.lazy(() => import("../CardsHolder"));
 
-class Home extends Component {
+class HomePage extends Component {
   constructor(props) {
     super(props);
 
@@ -100,4 +100,6 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const condition = authUser => !!authUser; // user is signed in
+
+export default withAuthorization(condition)(HomePage);
