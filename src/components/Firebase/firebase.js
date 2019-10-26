@@ -18,6 +18,7 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+
     this.db = app.database();
   }
 

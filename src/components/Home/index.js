@@ -54,7 +54,11 @@ class HomePage extends Component {
 
   handleScroll() {
     let scrollTop = window.scrollY;
-    if (scrollTop > window.outerHeight / 2 && this.state.displayCalc) {
+    if (
+      scrollTop > window.outerHeight / 2 &&
+      this.state.displayCalc &&
+      this.state.statisticsModels.length > 0
+    ) {
       window.scrollTo(0, 0);
       this.setState({ displayCalc: false });
     }

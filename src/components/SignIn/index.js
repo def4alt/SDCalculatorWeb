@@ -11,7 +11,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const SignInPage = () => (
-  <div>
+  <div style={{ paddingLeft: 10 }}>
     <h1>Sign In</h1>
     <SignInForm />
     <PasswordForgetLink />
@@ -48,34 +48,36 @@ class SignInFormBase extends Component {
     const { email, password, error } = this.state;
     const isInvalid = password === "" || email === "";
     return (
-      <Form onSubmit={this.onSubmit}>
-        <Form.Group>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            name="email"
-            onChange={this.onChange}
-            type="email"
-            placeholder="Enter email"
-          />
-        </Form.Group>
+      <div>
+        <Form onSubmit={this.onSubmit}>
+          <Form.Group>
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              name="email"
+              onChange={this.onChange}
+              type="email"
+              placeholder="Enter email"
+            />
+          </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            name="password"
-            onChange={this.onChange}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Group>
-        <Button disabled={isInvalid} type="submit">
-          Sign In
-        </Button>
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              name="password"
+              onChange={this.onChange}
+              type="password"
+              placeholder="Password"
+            />
+          </Form.Group>
+          <Button disabled={isInvalid} type="submit">
+            Sign In
+          </Button>
 
-        <Form.Text className="text-danger">
-          {error && <p>{error.message}</p>}
-        </Form.Text>
-      </Form>
+          <Form.Text className="text-danger">
+            {error && <p>{error.message}</p>}
+          </Form.Text>
+        </Form>
+      </div>
     );
   }
 }

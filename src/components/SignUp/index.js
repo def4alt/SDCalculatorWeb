@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const SignUpPage = () => (
-  <div>
+  <div style={{ paddingLeft: 10 }}>
     <h1>SignUp</h1>
     <SignUpForm />
   </div>
