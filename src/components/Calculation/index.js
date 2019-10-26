@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import Read from "../../js/reader";
 import GetStatistics from "../../js/statistics";
 
+import { withFirebase } from "../Firebase";
+
 import "./index.css";
 
 class CalculationPage extends Component {
@@ -72,15 +74,17 @@ class CalculationPage extends Component {
         date: globalStatisticsModels[0].Date,
         lot: this.state.lot
       });
+
+      this.props.firebase
+        .backup(this.props.firebase.auth.currentUser.uid)
+        .set({ backup: globalStatisticsModels, lot: this.state.lot });
+
       res(globalStatisticsModels);
     });
   }
 
   handleChange(event) {
     this.setState({ files: event.target.files });
-    this.setState({
-      fileNames: Array.from(event.target.files).map(file => file.name)
-    });
   }
 
   handleLotChange(event) {
@@ -107,7 +111,7 @@ class CalculationPage extends Component {
         <form onSubmit={this.handleSubmit}>
           <div className="lot">
             <input
-              type="text"
+              type="number"
               value={this.state.lot}
               onChange={this.handleLotChange}
               placeholder="Lot"
@@ -162,4 +166,4 @@ class CalculationPage extends Component {
   }
 }
 
-export default CalculationPage;
+export default withFirebase(CalculationPage);

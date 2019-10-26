@@ -36,10 +36,20 @@ class HomePage extends Component {
 
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
+    this.props.firebase
+      .backup(this.props.firebase.auth.currentUser.uid)
+      .on("value", snapshot => {
+        this.setState({
+          statisticsModels: snapshot.val().backup,
+          lot: snapshot.val().lot,
+          date: snapshot.val().backup[0].Date
+        });
+      });
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    this.props.firebase.backup().off();
   }
 
   handleScroll() {

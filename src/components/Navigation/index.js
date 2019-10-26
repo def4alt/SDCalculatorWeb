@@ -18,8 +18,8 @@ const Navigation = () => (
 );
 
 const NavigationAuth = () => (
-  <Navbar bg="light" expand="lg">
-    <Navbar.Brand href="#home">SDCalculatorWeb</Navbar.Brand>
+  <Navbar className="nav" bg="light" expand="lg">
+    <Navbar.Brand href={ROUTES.LANDING}>SDCalculatorWeb</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
@@ -34,7 +34,7 @@ const NavigationAuth = () => (
 );
 
 const NavigationNonAuth = () => (
-  <Navbar bg="light" expand="lg">
+  <Navbar className="nav" bg="light" expand="lg">
     <Navbar.Brand href="#home">SDCalculatorWeb</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
