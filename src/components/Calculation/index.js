@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import Read from "../js/reader";
-import GetStatistics from "../js/statistics";
+import Read from "../../js/reader";
+import GetStatistics from "../../js/statistics";
 
-import "./Calculation.css";
+import "./index.css";
 
-class Calculation extends Component {
+class CalculationPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -162,4 +162,4 @@ class Calculation extends Component {
   }
 }
 
-export default Calculation;
+export default CalculationPage;

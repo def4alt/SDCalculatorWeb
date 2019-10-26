@@ -1,13 +1,15 @@
 // /client/App.js
 import React, { Component, Suspense } from "react";
-import Calculation from "./Components/Calculation";
 
-import "./App.css";
+import Calculation from "../Calculation";
+
 import Button from "react-bootstrap/Button";
 
-const LazyCards = React.lazy(() => import("./Components/CardsHolder"));
+import "./index.css";
 
-class App extends Component {
+const LazyCards = React.lazy(() => import("../CardsHolder"));
+
+class Home extends Component {
   constructor(props) {
     super(props);
 
@@ -98,4 +100,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;
