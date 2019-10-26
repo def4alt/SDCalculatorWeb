@@ -1,58 +1,101 @@
 // /client/App.js
-import React, { Component, Suspense } from 'react';
-import Calculation from './Components/Calculation';
+import React, { Component, Suspense } from "react";
+import Calculation from "./Components/Calculation";
 
-import './App.css'
+import "./App.css";
+import Button from "react-bootstrap/Button";
 
 const LazyCards = React.lazy(() => import("./Components/CardsHolder"));
 
 class App extends Component {
+  constructor(props) {
+    super(props);
 
-	constructor(props) {
-        super(props);
-        this.state = {
-			statisticsModels: [],
-			showCharts: true,
-			date: '',
-			lot: ''
-        };
-	}
-	myCallback = (dataFromChild) => {
-		this.setState({ statisticsModels: dataFromChild.statisticsModels });
+    this.state = {
+      statisticsModels: [],
+      showCharts: true,
+      date: "",
+      lot: "",
+      displayCalc: true
+    };
 
-		if (dataFromChild.statisticsModels.length > 0) {
-			this.setState({ showCharts: false });
-		}
-		this.setState({date: dataFromChild.date});
+    this.handleScroll = this.handleScroll.bind(this);
+  }
+  myCallback = dataFromChild => {
+    this.setState({ statisticsModels: dataFromChild.statisticsModels });
 
-		this.setState({lot: dataFromChild.lot });
+    if (dataFromChild.statisticsModels.length > 0) {
+      this.setState({ showCharts: false });
     }
+    this.setState({ date: dataFromChild.date });
 
-	render() {
+    this.setState({ lot: dataFromChild.lot });
+  };
 
-		return (
-			<div>
-				<div className="center" style={{marginTop: 80}}>
-					<Calculation callback={this.myCallback} statisticsModels={this.state.statisticsModels}/>
-				</div>
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
 
-				
-				{this.state.statisticsModels.length > 0 && 
-				<>
-				<div className="detailsBox">
-					<p className="header">Details</p>
-					<p>Date: {this.state.date}</p>
-					<p>Lot: {this.state.lot}</p>
-				</div>
-				<Suspense fallback={
-					<div className="loadingCircle"></div>
-			  	}>
-					<LazyCards className="center" statisticsModels={this.state.statisticsModels}/>
-				</Suspense>
-				</>}
-			</div>
-		);
-	}
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll() {
+    let scrollTop = window.scrollY;
+    if (scrollTop > window.outerHeight / 2 && this.state.displayCalc) {
+      window.scrollTo(0, 0);
+      this.setState({ displayCalc: false });
+    }
+  }
+
+  render() {
+    return (
+      <>
+        <div>
+          <div
+            className="calculation"
+            style={{
+              display: this.state.displayCalc ? "block" : "none"
+            }}
+          >
+            <Calculation
+              callback={this.myCallback}
+              statisticsModels={this.state.statisticsModels}
+            />
+          </div>
+          <div
+            className="arrowBtn"
+            style={{
+              display: this.state.displayCalc ? "none" : "flex"
+            }}
+          >
+            <Button
+              variant="outline-light"
+              onClick={() => this.setState({ displayCalc: true })}
+            >
+              <i className="arrow up"></i>
+            </Button>
+          </div>
+        </div>
+
+        {this.state.statisticsModels.length > 0 && (
+          <>
+            <div className="detailsBox">
+              <p className="header">Details</p>
+              <p>Date: {this.state.date}</p>
+              <p>Lot: {this.state.lot}</p>
+            </div>
+            <Suspense fallback={<div className="loadingCircle"></div>}>
+              <LazyCards
+                className="center"
+                statisticsModels={this.state.statisticsModels}
+              />
+            </Suspense>
+          </>
+        )}
+      </>
+    );
+  }
 }
 
 export default App;
