@@ -70,9 +70,7 @@ class HomePage extends Component {
         <div>
           <div
             className="calculation"
-            style={{
-              display: this.state.displayCalc ? "block" : "none"
-            }}
+            hidden={!this.state.displayCalc}
           >
             <Calculation
               callback={this.myCallback}
@@ -81,9 +79,7 @@ class HomePage extends Component {
           </div>
           <div
             className="arrowBtn"
-            style={{
-              display: this.state.displayCalc ? "none" : "flex"
-            }}
+            hidden={this.state.displayCalc}
           >
             <Button
               variant="outline-light"

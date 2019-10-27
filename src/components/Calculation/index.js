@@ -120,13 +120,13 @@ class CalculationPage extends Component {
           </div>
           <div className="center">
             <label style={{ paddingRight: 20 }}>Add average</label>
-            <label class="switch">
+            <label className="switch">
               <input
                 type="checkbox"
                 checked={this.state.sdMode}
                 onChange={this.handleCheckChange}
               />
-              <span class="slider round"></span>
+              <span className="slider round"></span>
             </label>
             <label style={{ paddingLeft: 20 }}>Build charts</label>
           </div>

@@ -43,6 +43,7 @@ class CardsHolder extends React.Component {
     var cards = Array.from(this.state.statisticsModels).map(model => {
       return (
         <CardTemplate
+          key={model.TestName + model.SampleType}
           model={model}
           width={this.state.width}
           height={this.state.height}
