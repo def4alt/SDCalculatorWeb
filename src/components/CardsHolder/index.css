@@ -1,0 +1,8 @@
+.cardsHolder {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.card {
+  padding: 10px;
+}

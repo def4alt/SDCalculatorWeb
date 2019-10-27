@@ -1,0 +1,89 @@
+.loadingCircle {
+  border: 3px solid hsla(185, 100%, 62%, 0.2);
+  border-top-color: #0984e3;
+  padding-left: auto;
+  padding-right: auto;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.center {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.detailsBox {
+  display: inline-block;
+  padding-left: 50px;
+}
+
+.header {
+  font-size: 1.5em;
+  font-weight: bold;
+  border-bottom: #636e72;
+  border-width: 1px;
+  border-bottom-style: solid;
+}
+
+.calculation {
+  overflow: hidden;
+  transition: 0.4s;
+  padding-top: 20em;
+  width: 100%;
+  z-index: 99;
+}
+
+.calculation-right {
+  float: right;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.arrowBtn {
+  justify-content: center;
+  align-content: center;
+  display: flex;
+  height: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  transition: 0.5s;
+}
+
+.arrowBtn button {
+  border-color: transparent;
+}
+
+.arrowBtn button:hover {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.arrow {
+  border: solid #636e72;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
+/* Add responsiveness - on screens less than 580px wide, display the navbar vertically instead of horizontally */
+@media screen and (max-width: 580px) {
+  .calculation {
+    padding: 20px 10px !important; /* Use !important to make sure that JavaScript doesn't override the padding on small screens */
+  }
+  .calculation-right {
+    float: none;
+  }
+}
