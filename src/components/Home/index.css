@@ -1,8 +1,8 @@
 .loadingCircle {
   border: 3px solid hsla(185, 100%, 62%, 0.2);
   border-top-color: #0984e3;
-  padding-left: auto;
-  padding-right: auto;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 50%;
   width: 3em;
   height: 3em;
@@ -37,7 +37,7 @@
 .calculation {
   overflow: hidden;
   transition: 0.4s;
-  padding-top: 20em;
+  padding-top: 15em;
   width: 100%;
   z-index: 99;
 }

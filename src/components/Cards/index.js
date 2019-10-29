@@ -3,7 +3,7 @@ import React from "react";
 import "./index.css";
 
 import Button from "react-bootstrap/Button";
-import CardTemplate from "../CardsTemplate";
+import CardTemplate from "./CardsTemplate";
 
 class CardsHolder extends React.Component {
   constructor(props) {

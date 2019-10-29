@@ -11,79 +11,88 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 const SignInPage = () => (
-  <div style={{ paddingLeft: 10 }}>
-    <h1>Sign In</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-    <SignUpLink />
-  </div>
+	<div style={{ paddingLeft: 10 }}>
+		<h1>Sign In</h1>
+		<SignInForm />
+		<PasswordForgetLink />
+		<SignUpLink />
+	</div>
 );
 const INITIAL_STATE = {
-  email: "",
-  password: "",
-  error: null
+	email: "",
+	password: "",
+	error: null
 };
 class SignInFormBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...INITIAL_STATE };
-  }
-  onSubmit = event => {
-    const { email, password } = this.state;
-    this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-    event.preventDefault();
-  };
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-  render() {
-    const { email, password, error } = this.state;
-    const isInvalid = password === "" || email === "";
-    return (
-      <div>
-        <Form onSubmit={this.onSubmit}>
-          <Form.Group>
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              name="email"
-              onChange={this.onChange}
-              type="email"
-              placeholder="Enter email"
-            />
-          </Form.Group>
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE };
+	}
+	onSubmit = event => {
+		const { email, password } = this.state;
 
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              name="password"
-              onChange={this.onChange}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Group>
-          <Button disabled={isInvalid} type="submit">
-            Sign In
-          </Button>
+		this.props.firebase
+			.doSignInWithEmailAndPassword(email, password)
+			.then(() => {
+				this.setState({ ...INITIAL_STATE });
+				this.props.history.push(ROUTES.HOME);
+			})
+			.catch(error => {
+				this.setState({ error });
+			});
 
-          <Form.Text className="text-danger">
-            {error && <p>{error.message}</p>}
-          </Form.Text>
-        </Form>
-      </div>
-    );
-  }
+		event.preventDefault();
+	};
+	onChange = event => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
+	render() {
+		const { email, password, error } = this.state;
+		const isInvalid = password === "" || email === "";
+		return (
+			<div>
+				<Form onSubmit={this.onSubmit}>
+					<Form.Group>
+						<Form.Label>Email address</Form.Label>
+						<Form.Control
+							name="email"
+							onChange={this.onChange}
+							type="email"
+							placeholder="Enter email"
+						/>
+					</Form.Group>
+
+					<Form.Group>
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							name="password"
+							onChange={this.onChange}
+							type="password"
+							placeholder="Password"
+						/>
+					</Form.Group>
+					<Button disabled={isInvalid} type="submit">
+						Sign In
+					</Button>
+					<Button
+						style={{ marginLeft: 20 }}
+						onClick={() => this.props.history.push(ROUTES.HOME)}
+						variant="outline-dark"
+					>
+						Guest mode
+					</Button>
+
+					<Form.Text className="text-danger">
+						{error && <p>{error.message}</p>}
+					</Form.Text>
+				</Form>
+			</div>
+		);
+	}
 }
 const SignInForm = compose(
-  withRouter,
-  withFirebase
+	withRouter,
+	withFirebase
 )(SignInFormBase);
 
 export default SignInPage;
