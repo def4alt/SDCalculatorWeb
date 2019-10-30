@@ -29,7 +29,7 @@ class HomePage extends Component {
 		if (dataFromChild.statisticsModels.length > 0) {
 			this.setState({ showCharts: false });
 		}
-		this.setState({ date: dataFromChild.date });
+		this.setState({ date: dataFromChild.statisticsModels[0].Date });
 
 		this.setState({ lot: dataFromChild.lot });
 	};

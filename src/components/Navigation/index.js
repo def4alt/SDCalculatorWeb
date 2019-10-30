@@ -35,10 +35,11 @@ const NavigationAuth = () => (
 
 const NavigationNonAuth = () => (
   <Navbar className="nav" bg="light" expand="lg">
-    <Navbar.Brand href="#home">SDCalculatorWeb</Navbar.Brand>
+    <Navbar.Brand href={ROUTES.LANDING}>SDCalculatorWeb</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
+        <Nav.Link href={ROUTES.HOME}>Home</Nav.Link>
         <Nav.Link href={ROUTES.SIGN_IN}>Sign In</Nav.Link>
       </Nav>
     </Navbar.Collapse>

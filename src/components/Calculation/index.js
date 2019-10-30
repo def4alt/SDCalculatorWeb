@@ -100,7 +100,6 @@ class CalculationPage extends Component {
 
 			this.props.callback({
 				statisticsModels: globalStatisticsModels,
-				date: globalStatisticsModels[0].Date,
 				lot: this.state.lot
 			});
 
