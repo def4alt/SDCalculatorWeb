@@ -37,7 +37,7 @@
 .calculation {
   overflow: hidden;
   transition: 0.4s;
-  padding-top: 15em;
+  padding-top: 25vh; 
   width: 100%;
   z-index: 99;
 }
@@ -65,10 +65,6 @@
   border-color: transparent;
 }
 
-.arrowBtn button:hover {
-  background-color: transparent;
-  border-color: transparent;
-}
 
 .arrow {
   border: solid #636e72;

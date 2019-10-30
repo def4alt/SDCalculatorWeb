@@ -4,8 +4,10 @@ import { withAuthorization } from "../Session";
 import Calculation from "../Calculation";
 
 import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 import "./index.css";
+import { useTheme } from "../Theme";
 
 const LazyCards = React.lazy(() => import("../Cards"));
 
@@ -46,7 +48,6 @@ class HomePage extends Component {
 						date: snapshot.val().backup[0].Date
 					});
 				});
-				
 	}
 
 	componentWillUnmount() {
@@ -68,7 +69,7 @@ class HomePage extends Component {
 
 	render() {
 		return (
-			<>
+			<div>
 				<div>
 					<div
 						className="calculation"
@@ -81,7 +82,7 @@ class HomePage extends Component {
 					</div>
 					<div className="arrowBtn" hidden={this.state.displayCalc}>
 						<Button
-							variant="outline-light"
+							variant={this.props.theme.theme.variantOutline}
 							onClick={() => this.setState({ displayCalc: true })}
 						>
 							<i className="arrow up"></i>
@@ -91,11 +92,22 @@ class HomePage extends Component {
 
 				{this.state.statisticsModels.length > 0 && (
 					<>
-						<div className="detailsBox">
-							<p className="header">Details</p>
-							<p>Date: {this.state.date}</p>
-							<p>Lot: {this.state.lot}</p>
-						</div>
+						<Card
+							style={{
+								width: "18rem",
+								backgroundColor: this.props.theme.theme
+									.backgroundColor,
+								color: this.props.theme.theme.color,
+								borderColor: this.props.theme.theme.lightBack
+							}}
+						>
+							<Card.Header>Details</Card.Header>
+							<Card.Body>
+								<Card.Text>Date: {this.state.date}</Card.Text>
+								<hr />
+								<Card.Text>Lot: {this.state.lot}</Card.Text>
+							</Card.Body>
+						</Card>
 						<Suspense
 							fallback={<div className="loadingCircle"></div>}
 						>
@@ -106,11 +118,11 @@ class HomePage extends Component {
 						</Suspense>
 					</>
 				)}
-			</>
+			</div>
 		);
 	}
 }
 
 const condition = authUser => true; // user is signed in
 
-export default withAuthorization(condition)(HomePage);
+export default useTheme(withAuthorization(condition)(HomePage));

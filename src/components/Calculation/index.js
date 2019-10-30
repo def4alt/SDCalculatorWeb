@@ -6,8 +6,13 @@ import GetStatistics from "./statistics";
 import { withFirebase } from "../Firebase";
 
 import Alert from "react-bootstrap/Alert";
+import Form from "react-bootstrap/Form";
 
 import "./index.css";
+
+import { useTheme } from "../Theme";
+
+import { compose } from "recompose";
 
 class CalculationPage extends Component {
 	constructor(props) {
@@ -140,20 +145,25 @@ class CalculationPage extends Component {
 
 	render() {
 		return (
-			<div className="center">
-				<form onSubmit={this.handleSubmit}>
+			<div
+				className="center"
+				style={{ color: this.props.theme.theme.color }}
+			>
+				<Form onSubmit={this.handleSubmit}>
 					{this.state.error !== "" && (
-						<Alert variant="danger">{this.state.error}</Alert>
+						<Alert variant={this.props.theme.theme.variant}>
+							{this.state.error}
+						</Alert>
 					)}
-					<div className="lot">
-						<input
+					<Form.Group>
+						<Form.Label>Lot</Form.Label>
+						<Form.Control
 							type="number"
+							placeholder="e.g. 1214"
 							value={this.state.lot}
 							onChange={this.handleLotChange}
-							placeholder="Lot"
 						/>
-						<span></span>
-					</div>
+					</Form.Group>
 					<div className="center">
 						<label style={{ paddingRight: 20 }}>Add average</label>
 						<label className="switch">
@@ -204,10 +214,13 @@ class CalculationPage extends Component {
 							? "Adding..."
 							: "Add average"}
 					</button>
-				</form>
+				</Form>
 			</div>
 		);
 	}
 }
 
-export default withFirebase(CalculationPage);
+export default compose(
+	withFirebase,
+	useTheme
+)(CalculationPage);

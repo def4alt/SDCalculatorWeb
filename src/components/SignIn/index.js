@@ -9,9 +9,10 @@ import { PasswordForgetLink } from "../PasswordForget";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useTheme } from "../Theme";
 
-const SignInPage = () => (
-	<div style={{ paddingLeft: 10 }}>
+const SignInPage = (props) => (
+	<div style={{ paddingLeft: 10, color: props.theme.theme.color, marginRight: "60vw" }}>
 		<h1>Sign In</h1>
 		<SignInForm />
 		<PasswordForgetLink />
@@ -92,8 +93,9 @@ class SignInFormBase extends Component {
 }
 const SignInForm = compose(
 	withRouter,
+	
 	withFirebase
 )(SignInFormBase);
 
-export default SignInPage;
+export default useTheme(SignInPage);
 export { SignInForm };

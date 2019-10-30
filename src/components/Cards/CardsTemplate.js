@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 
 import domtoimage from "dom-to-image";
 import printJS from "print-js";
+import { useTheme } from "../Theme";
 
 var Line = (value, color, repeat) => {
 	return (
@@ -53,7 +54,7 @@ class CardTemplate extends React.Component {
 			this.setState({ height: this.props.height });
 		}
 	}
-ss
+	ss;
 	render() {
 		let model = this.state.model;
 		let yValues = [
@@ -74,7 +75,9 @@ ss
 					width={
 						this.state.width < 800
 							? 100 + 100 * model.Average.length - 100
-							: this.state.width / 5 + 100 * model.Average.length - 100
+							: this.state.width / 5 +
+							  100 * model.Average.length -
+							  100
 					}
 					height={
 						this.state.height < 600 ? 200 : this.state.height / 4
@@ -131,14 +134,16 @@ ss
 		);
 
 		return (
-			<div>
+			<div
+			>
 				<Card
 					className="text-center card"
 					id="card"
 					style={{
 						borderColor: this.state.starred
 							? "#fdcb6e"
-							: "transparent",
+							: this.props.theme.theme.lightBack,
+						backgroundColor: this.props.theme.theme.backgroundColor,
 						width:
 							this.state.width < 800
 								? 200 + 100 * model.Average.length
@@ -249,4 +254,4 @@ ss
 	}
 }
 
-export default CardTemplate;
+export default useTheme(CardTemplate);

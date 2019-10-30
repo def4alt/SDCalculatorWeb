@@ -2,6 +2,8 @@ import React from "react";
 
 import "./index.css";
 
+import { useTheme } from "../Theme";
+
 import Button from "react-bootstrap/Button";
 import CardTemplate from "./CardsTemplate";
 
@@ -52,7 +54,7 @@ class CardsHolder extends React.Component {
 			);
 		});
 		return (
-			<>
+			<div style={{color: this.props.theme.theme.color, backgroundColor: this.props.theme.theme.backgroundColor}}>
 				<div className="border-bottom center">
 					<Button
 						variant="link"
@@ -80,9 +82,9 @@ class CardsHolder extends React.Component {
 				>
 					{cards}
 				</div>
-			</>
+			</div>
 		);
 	}
 }
 
-export default CardsHolder;
+export default useTheme(CardsHolder);
