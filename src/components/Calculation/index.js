@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 
-import Read from "../../js/reader";
-import GetStatistics from "../../js/statistics";
+import Read from "./reader";
+import GetStatistics from "./statistics";
 
 import { withFirebase } from "../Firebase";
+
+import Alert from "react-bootstrap/Alert";
 
 import "./index.css";
 
@@ -16,7 +18,8 @@ class CalculationPage extends Component {
 			globalStatisticsModels: [],
 			isLoading: false,
 			fileNames: [],
-			lot: ""
+			lot: "",
+			error: ""
 		};
 
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,10 +36,27 @@ class CalculationPage extends Component {
 		}
 	}
 
+	getFileExtension(filename) {
+		return filename.split(".").pop();
+	}
+
 	calculate(files) {
 		return new Promise(async res => {
 			var parsedRows = [];
 			for (const file of files) {
+				if (this.getFileExtension(file.name) != "xlsx") {
+					if (this.getFileExtension(file.name) != "xls") {
+						console.log(this.getFileExtension(file.name));
+						this.setState({
+							error:
+								"Wrong file extension! Use only .xls, .xlsx files.",
+							isLoading: false
+						});
+						res(null);
+						return;
+					}
+				}
+
 				await Read(file).then(parsed => {
 					for (const model of parsed) {
 						parsedRows.push(model);
@@ -50,6 +70,10 @@ class CalculationPage extends Component {
 
 			if (statisticsModels === undefined) {
 				res(null);
+				this.setState({
+					error: "Wrong file format!",
+					isLoading: false
+				});
 				return;
 			}
 
@@ -72,16 +96,23 @@ class CalculationPage extends Component {
 				globalStatisticsModels = statisticsModels;
 			}
 
+			console.log(globalStatisticsModels);
+
 			this.props.callback({
 				statisticsModels: globalStatisticsModels,
 				date: globalStatisticsModels[0].Date,
 				lot: this.state.lot
 			});
 
-			this.props.firebase
-				.backup(this.props.firebase.auth.currentUser.uid)
-				.set({ backup: globalStatisticsModels, lot: this.state.lot });
+			if (this.props.firebase.auth.currentUser)
+				this.props.firebase
+					.backup(this.props.firebase.auth.currentUser.uid)
+					.set({
+						backup: globalStatisticsModels,
+						lot: this.state.lot
+					});
 
+			this.setState({ error: "" });
 			res(globalStatisticsModels);
 		});
 	}
@@ -112,6 +143,9 @@ class CalculationPage extends Component {
 		return (
 			<div className="center">
 				<form onSubmit={this.handleSubmit}>
+					{this.state.error !== "" && (
+						<Alert variant="danger">{this.state.error}</Alert>
+					)}
 					<div className="lot">
 						<input
 							type="number"

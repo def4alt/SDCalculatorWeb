@@ -43,8 +43,17 @@ class CardTemplate extends React.Component {
 		if (this.props.editMode !== prevProps.editMode) {
 			this.setState({ editMode: this.props.editMode });
 		}
+		if (this.props.model !== prevProps.model) {
+			this.setState({ model: this.props.model });
+		}
+		if (this.props.width !== prevProps.width) {
+			this.setState({ width: this.props.width });
+		}
+		if (this.props.height !== prevProps.height) {
+			this.setState({ height: this.props.height });
+		}
 	}
-
+ss
 	render() {
 		let model = this.state.model;
 		let yValues = [
@@ -64,8 +73,8 @@ class CardTemplate extends React.Component {
 				<XYPlot
 					width={
 						this.state.width < 800
-							? 100 + 100 * model.Average.length
-							: this.state.width / 5 + 100 * model.Average.length
+							? 100 + 100 * model.Average.length - 100
+							: this.state.width / 5 + 100 * model.Average.length - 100
 					}
 					height={
 						this.state.height < 600 ? 200 : this.state.height / 4
@@ -192,12 +201,12 @@ class CardTemplate extends React.Component {
 									style={{ margin: 3 }}
 									onClick={() => {
 										this.setState({ editMode: false });
-                    this.forceUpdate();
-                    
+										this.forceUpdate();
+
 										const card = document.getElementById(
 											"card"
-                    );
-                    
+										);
+
 										domtoimage
 											.toPng(card)
 											.then(dataUrl => {

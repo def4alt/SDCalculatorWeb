@@ -46,6 +46,7 @@ class HomePage extends Component {
 						date: snapshot.val().backup[0].Date
 					});
 				});
+				
 	}
 
 	componentWillUnmount() {
