@@ -1,9 +1,9 @@
 name: React build and Firebase deploy
 
 on:
-  pull_request:
+  push:
     branches: 
-      - master
+      - react
 
 jobs:
   build:
