@@ -26,10 +26,10 @@ function Read(file) {
             .replace('_', '/')
             .trim();
 
-            date = moment(date, 'DD/MM/YY').toDate();
+            date = moment(moment(date, 'DD/MM/YY').toDate().toUTCString()).toDate();
 
             date = Date.parse(date) ? date.toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'}) : 
-			new Date().toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'});
+			moment(new Date().toUTCString()).toDate().toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'});
 
 
             const workbook = xlsx.read(reader.result, {
