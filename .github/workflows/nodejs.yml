@@ -33,6 +33,6 @@ jobs:
         with:
           name: build
       - name: Deploy to Firebase
-      - uses: jakejarvis/firebase-deploy-action@master
+        uses: jakejarvis/firebase-deploy-action@master
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
