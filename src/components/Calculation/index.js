@@ -161,9 +161,7 @@ class CalculationPage extends Component {
 	}
 
 	handleLotChange(event) {
-		if (isNaN(Number.parseInt(event.target.value))) {
-			this.setState({ lot: event.target.value });
-		}
+		this.setState({ lot: event.target.value });
 	}
 
 	handleCheckChange(event) {
