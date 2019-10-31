@@ -34,6 +34,12 @@
   border-bottom-style: solid;
 }
 
+.bugButton {
+  justify-content: flex-end;
+  display: flex;
+  align-items: flex-end;
+}
+
 .calculation {
   overflow: hidden;
   transition: 0.4s;

@@ -1,9 +1,13 @@
 import React from "react";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
-import { withAuthentication } from "../Session";
+import { withAuthentication, withAuthorization } from "../Session";
 
 import Toast from "react-bootstrap/Toast";
+import { useTheme } from "../Theme";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
 class BugsPage extends React.Component {
 	constructor(props) {
@@ -11,7 +15,9 @@ class BugsPage extends React.Component {
 
 		this.state = {
 			bugs: [],
-			loading: false
+			loading: false,
+			title: "",
+			about: ""
 		};
 	}
 
@@ -20,35 +26,115 @@ class BugsPage extends React.Component {
 		this.props.firebase.bugs().on("value", snapshot => {
 			const bugsObject = snapshot.val();
 
-			const bugsList = Object.keys(bugsObject).map(key => ({
-				...bugsObject[key],
-				uid: key
-			}));
+			if (bugsObject) {
+				const bugsList = Object.keys(bugsObject).map(key => ({
+					...bugsObject[key],
+					uid: key
+				}));
 
-			this.setState({ bugs: bugsList, loading: false });
+				this.setState({ bugs: bugsList, loading: false });
+			}
 		});
-    }
-    
-    render() {
-        return(
-            <div>
-                {/*this.state.bugs.map(bug => {
-                    <Toast>
-                        <Toast.Header>
-                            <strong className="mr-auto">{bug.name}</strong>
-                            <small>{Math.round(((new Date() - bug.date) / 1000) / 60)} minutes ago</small>
-                        </Toast.Header>
-                        <Toast.Body>
-                            {bug.about}
-                        </Toast.Body>
-                    </Toast>
-                })*/}
-            </div>
-        )
-    }
+	}
+
+	onChange = event => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
+
+	render() {
+		const handleClose = () => {
+			this.setState({ showModal: false });
+
+			const { title, about, bugs } = this.state;
+
+			if (title !== "") {
+				const dateTime = new Date().getTime();
+				const id = this.state.bugs.length;
+				const newBug = {
+					title,
+					about,
+					dateTime,
+					id
+				};
+
+				this.setState({ bugs: [...bugs, newBug] });
+
+				this.props.firebase.bugs().set([...bugs, newBug]);
+			}
+		};
+		const handleShow = () => this.setState({ showModal: true });
+		return (
+			<div
+				style={{
+					color: this.props.theme.theme.color,
+					paddingLeft: 10
+				}}
+			>
+				<h1>
+					Bugs{" "}
+					<Button
+						variant={this.props.theme.theme.variantOutline}
+						onClick={() => handleShow()}
+					>
+						New bug
+					</Button>
+				</h1>
+				{this.state.bugs.map(bug => (
+					<Toast style={{backgroundColor: this.props.theme.theme.lightBack, borderColor: this.props.theme.theme.lightBack}}>
+						<Toast.Header closeButton={false} style={{backgroundColor: this.props.theme.theme.lightBack, color: this.props.theme.theme.color}}>
+							<strong className="mr-auto">
+								{bug.title} #{bug.id}
+							</strong>
+							<small>
+								{Math.round(
+									(new Date().getTime() -
+										bug.dateTime) /
+										1000 /
+										60
+								)}{" "}
+								minutes ago
+							</small>
+						</Toast.Header>
+						{bug.about !== "" && <Toast.Body style={{backgroundColor: this.props.theme.theme.backgroundColor}}>{bug.about}</Toast.Body>}
+					</Toast>
+				))}
+				<Modal show={this.state.showModal} onHide={handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>New bug</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Form>
+							<Form.Group>
+								<Form.Control
+									name="title"
+									onChange={this.onChange}
+									type="text"
+									placeholder="Title"
+								/>
+							</Form.Group>
+							<Form.Group>
+								<Form.Control
+									name="about"
+									onChange={this.onChange}
+									as="textarea"
+									placeholder="Leave a comment"
+								/>
+							</Form.Group>
+						</Form>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="primary" onClick={handleClose}>
+							Submit
+						</Button>
+					</Modal.Footer>
+				</Modal>
+			</div>
+		);
+	}
 }
 
 export default compose(
 	withFirebase,
-	withAuthentication
+	useTheme,
+	withAuthorization(authUser => !!authUser)
 )(BugsPage);

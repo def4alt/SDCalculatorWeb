@@ -17,8 +17,8 @@ const withTheme = Component => {
 		}
 
 		toggleTheme() {
-			this.setState(state => ({
-				theme: state.theme === themes.dark ? themes.light : themes.dark
+			this.setState(({
+				theme: this.state.theme === themes.dark ? themes.light : themes.dark
 			}));
 
 			if (this.props.firebase.auth.currentUser) {
@@ -36,7 +36,7 @@ const withTheme = Component => {
 
 			this.props.cookies.set(
 				"theme",
-				this.state.theme === themes.dark ? "dark" : "light",
+				this.state.theme === themes.dark ? "light" : "dark",
 				{ path: "/" }
 			);
 		}
@@ -47,7 +47,7 @@ const withTheme = Component => {
 
 			if (theme !== "" && theme !== undefined) {
 				this.setState({
-					theme: theme.theme === "light" ? themes.light : themes.dark
+					theme: theme === "light" ? themes.light : themes.dark
 				});
 			} else {
 				if (this.props.firebase.auth.currentUser)
@@ -56,7 +56,7 @@ const withTheme = Component => {
 						.on("value", snapshot => {
 							this.setState({
 								theme:
-									snapshot.val().theme === "light"
+									snapshot.val() === "light"
 										? themes.light
 										: themes.dark
 							});
