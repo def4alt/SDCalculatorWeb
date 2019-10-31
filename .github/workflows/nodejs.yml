@@ -1,9 +1,9 @@
 name: React build and Firebase deploy
 
 on:
-  push:
+  pull_request:
     branches: 
-      - react
+      - master
 
 jobs:
   build:
@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@react
+        uses: actions/checkout@master
       - name: Install Dependencies
         run: npm install
       - name: Build
         run: npm run build
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@react
+        uses: actions/upload-artifact@master
         with:
           name: build
           path: build
@@ -27,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@react
+        uses: actions/checkout@master
       - name: Download Artifact
-        uses: actions/download-artifact@react
+        uses: actions/download-artifact@master
         with:
           name: build
       - name: Deploy to Firebase
-        uses: jakejarvis/firebase-deploy-action@react
+        uses: jakejarvis/firebase-deploy-action@master
         with:
           args: deploy --token ${{ secrets.FIREBASE_TOKEN }}
         env:
