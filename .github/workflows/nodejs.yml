@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@react
       - name: Install Dependencies
         run: npm install
       - name: Build
         run: npm run build
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@react
         with:
           name: build
           path: build
@@ -27,13 +27,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@master
+        uses: actions/checkout@react
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@react
         with:
           name: build
       - name: Deploy to Firebase
-        uses: jakejarvis/firebase-deploy-action@master
+        uses: jakejarvis/firebase-deploy-action@react
         with:
           args: deploy --token ${{ secrets.FIREBASE_TOKEN }}
         env:
