@@ -14,9 +14,10 @@ import { useTheme } from "../Theme";
 var Line = (value, color, repeat) => {
 	return (
 		<LineSeries
-			data={[...Array(repeat === 1 ? 2 : repeat)].map(
-				(_, i) => ({ x: i, y: value }))
-			}
+			data={[...Array(repeat === 1 ? 2 : repeat)].map((_, i) => ({
+				x: i,
+				y: value
+			}))}
 			style={{
 				strokeLinejoin: "round",
 				strokeWidth: 2
@@ -66,12 +67,24 @@ class CardTemplate extends React.Component {
 			model.Average[0] - 2 * model.StandardDeviation,
 			model.Average[0] - 3 * model.StandardDeviation
 		];
-		var data = [...Array(model.Average.length)].map(
-			(_, i) => ({ x: i, y: model.Average[i] })
-		);
+		let yLabels = ["3SD", "2SD", "SD", "M", "SD", "2SD", "3SD"];
+		var data = [...Array(model.Average.length)].map((_, i) => ({
+			x: i,
+			y: model.Average[i]
+		}));
+
 		var chart = (
-			<div id="canvas">
+			<div
+				id="canvas"
+				style={{
+					width:
+						this.state.width < 800
+							? 100 + 100 * model.Average.length
+							: this.state.width / 5 + 100 * model.Average.length
+				}}
+			>
 				<XYPlot
+					margin={{ left: 70, right: 30 }}
 					width={
 						this.state.width < 800
 							? 100 + 100 * model.Average.length - 100
@@ -83,13 +96,17 @@ class CardTemplate extends React.Component {
 						this.state.height < 600 ? 200 : this.state.height / 4
 					}
 				>
-					<YAxis tickValues={yValues} />
+					<YAxis
+						tickValues={yValues}
+						style={{ display: "inline-flex" }}
+						tickFormat={(v, i) => Math.round(v) + `, ${yLabels[i]}`}
+					/>
 					<XAxis
-						left={25}
 						hideLine
 						tickValues={[...Array(model.Average.length).keys()]}
 						tickFormat={i => model.Date[i]}
 					/>
+
 					<LineMarkSeries
 						data={data}
 						style={{
@@ -134,8 +151,7 @@ class CardTemplate extends React.Component {
 		);
 
 		return (
-			<div
-			>
+			<div>
 				<Card
 					className="text-center card"
 					id="card"

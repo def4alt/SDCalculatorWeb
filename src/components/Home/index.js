@@ -34,9 +34,11 @@ class HomePage extends Component {
 		if (dataFromChild.statisticsModels.length > 0) {
 			this.setState({ showCharts: false });
 		}
-		this.setState({ date: dataFromChild.statisticsModels[0].Date });
+		this.setState({ date: dataFromChild.statisticsModels[0].Date[0] });
 
 		this.setState({ lot: dataFromChild.lot });
+
+		
 	};
 
 	componentDidMount() {
@@ -64,7 +66,12 @@ class HomePage extends Component {
 			<div>
 				<div>
 					<div className="bugButton">
-						<Button variant="link" onClick={() => this.props.history.push(ROUTES.BUGS)}>Found any bug?</Button>
+						<Button
+							variant="link"
+							onClick={() => this.props.history.push(ROUTES.BUGS)}
+						>
+							Found any bug?
+						</Button>
 					</div>
 					<div
 						className="calculation"
@@ -117,7 +124,6 @@ class HomePage extends Component {
 		);
 	}
 }
-
 
 export default compose(
 	useTheme,
