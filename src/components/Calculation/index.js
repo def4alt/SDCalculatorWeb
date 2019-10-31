@@ -25,7 +25,6 @@ class CalculationPage extends Component {
 			lotSelected: false,
 			globalStatisticsModels: [],
 			isLoading: false,
-			fileNames: [],
 			lot: "",
 			error: ""
 		};
@@ -161,9 +160,7 @@ class CalculationPage extends Component {
 	}
 
 	handleLotChange(event) {
-		if (isNaN(Number.parseInt(event.target.value))) {
-			this.setState({ lot: event.target.value });
-		}
+		this.setState({ lot: event.target.value });
 	}
 
 	handleCheckChange(event) {
@@ -252,12 +249,15 @@ class CalculationPage extends Component {
 								multiple={this.state.sdMode}
 								onChange={this.handleChange}
 							/>
-							<span className="file-custom">
-								{this.state.fileNames.length > 1
-									? this.state.fileNames.length +
-									  " files selected"
-									: this.state.fileNames}
+							<span
+								className="file-custom"
+							>
+								{this.state.files.length > 1 
+										? this.state.files.length +
+										  " files selected"
+										: this.state.files.length === 0 ? "" : this.state.files[0].name}
 							</span>
+							<div></div>
 						</label>
 					</div>
 					<button
