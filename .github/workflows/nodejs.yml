@@ -18,6 +18,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
+    - name: GitHub Action for Firebase
+      uses: w9jds/firebase-action@v1.0
+
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install build
@@ -25,5 +28,3 @@ jobs:
         npm install
         npm run build
         firebase deploy --token "1//0cahZEK0hWLYuCgYIARAAGAwSNwF-L9IrJLYdSErWGdHZ5ga2ZTCPhvObCu4Ob4Z08m8zC-qAi_79oroQfGXDWSXaFIuX2y_L_IM" --project "sdcalculatorweb"
-      env:
-        CI: true
