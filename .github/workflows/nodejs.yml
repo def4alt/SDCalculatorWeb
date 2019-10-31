@@ -35,6 +35,6 @@ jobs:
       - name: Deploy to Firebase
         uses: jakejarvis/firebase-deploy-action@master
         with:
-          args: deploy --token ${{ secrets.FIREBASE_TOKEN }}
+          token: ${{ secrets.FIREBASE_TOKEN }}
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
