@@ -5,6 +5,7 @@ const themes = {
     light: {
         name: "light",
         backgroundColor: "#ffffff",
+        lightBack: "lightgrey",
         color: "#343a40",
         variant: "dark",
         variantOutline: "outline-dark",
@@ -25,6 +26,6 @@ const themes = {
     }
 }
 
-const ThemeContext = React.createContext('light');
+const ThemeContext = React.createContext(themes.light);
 
 export { ThemeContext, themes };

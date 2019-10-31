@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from "react";
 import { withAuthorization } from "../Session";
+import * as ROUTES from "../../constants/routes";
 
 import Calculation from "../Calculation";
 
@@ -8,6 +9,8 @@ import Card from "react-bootstrap/Card";
 
 import "./index.css";
 import { useTheme } from "../Theme";
+import { compose } from "recompose";
+import { withRouter } from "react-router-dom";
 
 const LazyCards = React.lazy(() => import("../Cards"));
 
@@ -42,11 +45,12 @@ class HomePage extends Component {
 				? this.props.firebase
 						.backup(this.props.firebase.auth.currentUser.uid)
 						.on("value", snapshot => {
-							this.setState({
-								statisticsModels: snapshot.val().backup,
-								lot: snapshot.val().lot,
-								date: snapshot.val().backup[0].Date
-							});
+							if (snapshot.val().statisticsModels)
+								this.setState({
+									statisticsModels: snapshot.val().backup,
+									lot: snapshot.val().lot,
+									date: snapshot.val().backup[0].Date
+								});
 						})
 				: this.setState({
 						statisticsModels: []
@@ -77,6 +81,9 @@ class HomePage extends Component {
 		return (
 			<div>
 				<div>
+					<div className="bugButton">
+						<Button variant="link" onClick={() => this.props.history.push(ROUTES.BUGS)}>Found any bug?</Button>
+					</div>
 					<div
 						className="calculation"
 						hidden={!this.state.displayCalc}
@@ -129,6 +136,9 @@ class HomePage extends Component {
 	}
 }
 
-const condition = authUser => true; // user is signed in
 
-export default useTheme(withAuthorization(condition)(HomePage));
+export default compose(
+	useTheme,
+	withAuthorization(authUser => true),
+	withRouter
+)(HomePage);
