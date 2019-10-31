@@ -1,6 +1,6 @@
 import React from "react";
 
-import { XYPlot, LineSeries, XAxis, YAxis } from "react-vis";
+import { XYPlot, LineMarkSeries, LineSeries, XAxis, YAxis } from "react-vis";
 import "../../../node_modules/react-vis/dist/style.css";
 import "./CardsTemplate.css";
 
@@ -90,7 +90,7 @@ class CardTemplate extends React.Component {
 						tickValues={[...Array(model.Average.length).keys()]}
 						tickFormat={i => model.Date[i]}
 					/>
-					<LineSeries
+					<LineMarkSeries
 						data={data}
 						style={{
 							strokeLinejoin: "round",
