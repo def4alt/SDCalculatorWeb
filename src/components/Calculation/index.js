@@ -131,8 +131,6 @@ class CalculationPage extends Component {
 			this.setState({ lot: "0" });
 		}
 
-		console.log(globalStatisticsModels);
-
 		this.props.callback({
 			statisticsModels: globalStatisticsModels,
 			lot: this.state.lot
@@ -216,7 +214,8 @@ class CalculationPage extends Component {
 												lot: backup.lot
 											});
 											this.setState({
-												lotSelected: true
+												lotSelected: true,
+												lot: backup.lot
 											});
 										}}
 									>
