@@ -15,8 +15,8 @@ var Line = (value, color, repeat) => {
 	return (
 		<LineSeries
 			data={[...Array(repeat === 1 ? 2 : repeat)].map(
-				(_, i) => new Object({ x: i, y: value })
-			)}
+				(_, i) => ({ x: i, y: value }))
+			}
 			style={{
 				strokeLinejoin: "round",
 				strokeWidth: 2
@@ -67,7 +67,7 @@ class CardTemplate extends React.Component {
 			model.Average[0] - 3 * model.StandardDeviation
 		];
 		var data = [...Array(model.Average.length)].map(
-			(_, i) => new Object({ x: i, y: model.Average[i] })
+			(_, i) => ({ x: i, y: model.Average[i] })
 		);
 		var chart = (
 			<div id="canvas">

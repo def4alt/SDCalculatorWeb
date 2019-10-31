@@ -5,7 +5,7 @@ import Nav from "react-bootstrap/Nav";
 
 import SignOutButton from "../SignOut";
 
-import { ThemeContext, themes } from "../Theme";
+import { ThemeContext } from "../Theme";
 
 import * as ROUTES from "../../constants/routes";
 

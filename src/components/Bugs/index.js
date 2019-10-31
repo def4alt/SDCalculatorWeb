@@ -1,13 +1,14 @@
 import React from "react";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
-import { withAuthentication, withAuthorization } from "../Session";
+import { withAuthorization } from "../Session";
 
 import Toast from "react-bootstrap/Toast";
 import { useTheme } from "../Theme";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import moment from "moment";
 
 class BugsPage extends React.Component {
 	constructor(props) {
@@ -48,7 +49,7 @@ class BugsPage extends React.Component {
 			const { title, about, bugs } = this.state;
 
 			if (title !== "") {
-				const dateTime = new Date().getTime();
+				const dateTime = moment(new Date().toUTCString()).toDate().getTime();
 				const id = this.state.bugs.length;
 				const newBug = {
 					title,
@@ -87,7 +88,7 @@ class BugsPage extends React.Component {
 							</strong>
 							<small>
 								{Math.round(
-									(new Date().getTime() -
+									(moment(new Date().toUTCString()).toDate().getTime() -
 										bug.dateTime) /
 										1000 /
 										60
