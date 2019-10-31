@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
 import Navigation from "../Navigation";
-import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
 import BugsPage from "../Bugs";
 import SignInPage from "../SignIn";
@@ -13,7 +12,6 @@ import AccountPage from "../Account";
 import AdminPage from "../Admin";
 
 import * as ROUTES from "../../constants/routes";
-
 import "./index.css";
 
 import { withAuthentication } from "../Session";
