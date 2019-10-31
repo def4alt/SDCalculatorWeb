@@ -101,20 +101,26 @@ class CalculationPage extends Component {
 				globalStatisticsModels = statisticsModels;
 			}
 
-			console.log(globalStatisticsModels);
-
 			this.props.callback({
 				statisticsModels: globalStatisticsModels,
 				lot: this.state.lot
 			});
 
 			if (this.props.firebase.auth.currentUser)
-				this.props.firebase
-					.backup(this.props.firebase.auth.currentUser.uid)
-					.set({
-						backup: globalStatisticsModels,
-						lot: this.state.lot
-					});
+			{
+				const backups = this.props.firebase
+				.backup(this.props.firebase.auth.currentUser.uid);
+
+				var backupsObject;
+				backups.on("value", snapshot => backupsObject = snapshot.val());
+				
+				backups.set({
+					backup: globalStatisticsModels,
+					lot: this.state.lot,
+					...backupsObject
+				});
+			}
+				
 
 			this.setState({ error: "" });
 			res(globalStatisticsModels);

@@ -5,6 +5,7 @@ import { CookiesProvider } from "react-cookie";
 import Navigation from "../Navigation";
 import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
+import BugsPage from "../Bugs";
 import SignInPage from "../SignIn";
 import PasswordForgetPage from "../PasswordForget";
 import HomePage from "../Home";
@@ -36,6 +37,7 @@ const App = props => (
 					component={PasswordForgetPage}
 				/>
 				<Route path={ROUTES.HOME} component={HomePage} />
+				<Route path={ROUTES.BUGS} component={BugsPage} />
 				<Route path={ROUTES.ACCOUNT} component={AccountPage} />
 				<Route path={ROUTES.ADMIN} component={AdminPage} />
 			</div>

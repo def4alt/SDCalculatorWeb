@@ -11,8 +11,14 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useTheme } from "../Theme";
 
-const SignInPage = (props) => (
-	<div style={{ paddingLeft: 10, color: props.theme.theme.color, marginRight: "60vw" }}>
+const SignInPage = props => (
+	<div
+		style={{
+			paddingLeft: 10,
+			color: props.theme.theme.color,
+			marginRight: "60vw"
+		}}
+	>
 		<h1>Sign In</h1>
 		<SignInForm />
 		<PasswordForgetLink />
@@ -29,6 +35,17 @@ class SignInFormBase extends Component {
 		super(props);
 		this.state = { ...INITIAL_STATE };
 	}
+
+	componentDidMount() {
+		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => 
+			authUser ? this.props.history.push(ROUTES.HOME) : this.props.history.push(ROUTES.SIGN_IN)
+		  );
+	}
+
+	componentWillUnmount() {
+		this.listener();
+	}
+
 	onSubmit = event => {
 		const { email, password } = this.state;
 
@@ -44,9 +61,11 @@ class SignInFormBase extends Component {
 
 		event.preventDefault();
 	};
+
 	onChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
+
 	render() {
 		const { email, password, error } = this.state;
 		const isInvalid = password === "" || email === "";
@@ -93,7 +112,6 @@ class SignInFormBase extends Component {
 }
 const SignInForm = compose(
 	withRouter,
-	
 	withFirebase
 )(SignInFormBase);
 

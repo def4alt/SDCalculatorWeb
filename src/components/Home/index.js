@@ -37,21 +37,27 @@ class HomePage extends Component {
 	};
 
 	componentDidMount() {
+		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser =>
+			authUser
+				? this.props.firebase
+						.backup(this.props.firebase.auth.currentUser.uid)
+						.on("value", snapshot => {
+							this.setState({
+								statisticsModels: snapshot.val().backup,
+								lot: snapshot.val().lot,
+								date: snapshot.val().backup[0].Date
+							});
+						})
+				: this.setState({
+						statisticsModels: []
+				  })
+		);
 		window.addEventListener("scroll", this.handleScroll);
-		if (this.props.firebase.auth.currentUser)
-			this.props.firebase
-				.backup(this.props.firebase.auth.currentUser.uid)
-				.on("value", snapshot => {
-					this.setState({
-						statisticsModels: snapshot.val().backup,
-						lot: snapshot.val().lot,
-						date: snapshot.val().backup[0].Date
-					});
-				});
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener("scroll", this.handleScroll);
+		this.listener();
 		this.props.firebase.backup().off();
 	}
 

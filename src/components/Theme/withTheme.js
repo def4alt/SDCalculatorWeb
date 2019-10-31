@@ -21,13 +21,18 @@ const withTheme = Component => {
 				theme: state.theme === themes.dark ? themes.light : themes.dark
 			}));
 
-			if (this.props.firebase.auth.currentUser)
-				this.props.firebase
-					.backup(this.props.firebase.auth.currentUser.uid)
-					.set({
-						theme:
-							this.state.theme === themes.dark ? "dark" : "light"
-					});
+			if (this.props.firebase.auth.currentUser) {
+				const backups = this.props.firebase.backup(
+					this.props.firebase.auth.currentUser.uid
+				);
+
+				var backupsObject;
+				backups.on("value", snapshot => backupsObject = snapshot.val());
+				backups.set({
+					...backupsObject,
+					theme: this.state.theme === themes.dark ? "light" : "dark"
+				});
+			}
 
 			this.props.cookies.set(
 				"theme",
