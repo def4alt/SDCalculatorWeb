@@ -1,4 +1,5 @@
 import SampleType from "./SampleType";
+import moment from "moment";
 
 function GetStatistics(models) {
 	const lvlOneRows = models.filter(t => t.SampleType === SampleType.Lvl1);
@@ -18,14 +19,18 @@ function GetStatistics(models) {
 			continue;
 		}
 
-		const modelOne = GetModel(lvlOneRows, testName, SampleType.Lvl1);
-		if (modelOne != null) {
-			statisticsModels.push(modelOne);
+		if (lvlOneRows !== undefined) {
+			const modelOne = GetModel(lvlOneRows, testName, SampleType.Lvl1);
+			if (modelOne != null) {
+				statisticsModels.push(modelOne);
+			}
 		}
 
-		const modelTwo = GetModel(lvlTwoRows, testName, SampleType.Lvl2);
-		if (modelTwo != null) {
-			statisticsModels.push(modelTwo);
+		if (lvlTwoRows !== undefined) {
+			const modelTwo = GetModel(lvlTwoRows, testName, SampleType.Lvl2);
+			if (modelTwo != null) {
+				statisticsModels.push(modelTwo);
+			}
 		}
 	}
 
@@ -35,14 +40,19 @@ function GetStatistics(models) {
 function GetModel(lvlRows, testName, sampleType) {
 	let average = GetAverageFor(lvlRows, testName);
 	if (isNaN(average)) average = 0;
-	const standardDeviation = GetStandardDeviation(lvlRows, testName);
+	let standardDeviation = GetStandardDeviation(lvlRows, testName);
+	if (isNaN(standardDeviation)) standardDeviation = 0;
+
+	let date = moment(new Date().toUTCString()).toDate().toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'});
+	if (lvlRows[0] !== undefined)
+		date = lvlRows[0].Date;
 
 	return {
 		Average: [average],
 		StandardDeviation: standardDeviation,
 		TestName: testName.trim(),
 		SampleType: sampleType,
-		Date: [lvlRows[0].Date]
+		Date: [date]
 	};
 }
 
