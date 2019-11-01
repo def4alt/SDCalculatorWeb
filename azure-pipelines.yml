@@ -32,5 +32,5 @@ steps:
     SourceFolder: '$(build.sourcesdirectory)'
     Contents: |
       **\firebase.json
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    TargetFolder: '$(build.artifactstagingdirectory)/'
   condition: succeededOrFailed()
