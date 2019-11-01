@@ -38,7 +38,8 @@ class CardTemplate extends React.Component {
 			height: props.height,
 			editMode: props.editMode,
 			starred: false,
-			showChart: true
+			showChart: true,
+			showStarredCharts: props.showStarredCharts
 		};
 	}
 	componentDidUpdate(prevProps) {
@@ -54,8 +55,11 @@ class CardTemplate extends React.Component {
 		if (this.props.height !== prevProps.height) {
 			this.setState({ height: this.props.height });
 		}
+		if (this.props.showStarredCharts !== prevProps.showStarredCharts) {
+			this.setState({ showStarredCharts: this.props.showStarredCharts });
+		}
 	}
-	ss;
+
 	render() {
 		let model = this.state.model;
 		let yValues = [
@@ -151,7 +155,17 @@ class CardTemplate extends React.Component {
 		);
 
 		return (
-			<div>
+			<div
+				style={{
+					display: this.state.showChart
+						? this.state.starred
+							? "block"
+							: this.state.showStarredCharts
+							? "none"
+							: "block"
+						: "none"
+				}}
+			>
 				<Card
 					className="text-center card"
 					id="card"
@@ -164,8 +178,7 @@ class CardTemplate extends React.Component {
 							this.state.width < 800
 								? 200 + 100 * model.Average.length
 								: this.state.width / 6 +
-								  100 * model.Average.length,
-						display: this.state.showChart ? "block" : "none"
+								  100 * model.Average.length
 					}}
 					key={model.TestName + model.SampleType}
 				>

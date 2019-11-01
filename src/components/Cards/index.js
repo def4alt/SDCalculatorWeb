@@ -13,10 +13,10 @@ class CardsHolder extends React.Component {
 
 		this.state = {
 			statisticsModels: props.statisticsModels,
-			showChart: true,
+			showStarredCharts: false,
 			width: 0,
 			height: 0,
-			editMode: false,
+			editMode: false
 		};
 
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -37,7 +37,7 @@ class CardsHolder extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.statisticsModels !== prevProps.statisticsModels) {
-      this.setState({ statisticsModels: this.props.statisticsModels });
+			this.setState({ statisticsModels: this.props.statisticsModels });
 		}
 	}
 
@@ -50,24 +50,29 @@ class CardsHolder extends React.Component {
 					width={this.state.width}
 					height={this.state.height}
 					editMode={this.state.editMode}
+					showStarredCharts={this.state.showStarredCharts}
 				/>
 			);
 		});
 		return (
-			<div style={{color: this.props.theme.theme.color, backgroundColor: this.props.theme.theme.backgroundColor}}>
+			<div
+				style={{
+					color: this.props.theme.theme.color,
+					backgroundColor: this.props.theme.theme.backgroundColor
+				}}
+			>
 				<div className="border-bottom center">
 					<Button
 						variant="link"
 						onClick={() =>
-							this.setState({ showChart: !this.state.showChart })
+							this.setState({
+								showStarredCharts: !this.state.showStarredCharts
+							})
 						}
 					>
-						Toggle charts
+						Toggle starred charts
 					</Button>
 					<Button
-						style={{
-							display: this.state.showChart ? "block" : "none"
-						}}
 						variant="link"
 						onClick={() =>
 							this.setState({ editMode: !this.state.editMode })
@@ -76,12 +81,7 @@ class CardsHolder extends React.Component {
 						Toggle Edit
 					</Button>
 				</div>
-				<div
-					className="cardsHolder center"
-					style={{ display: this.state.showChart ? "flex" : "none" }}
-				>
-					{cards}
-				</div>
+				<div className="cardsHolder center">{cards}</div>
 			</div>
 		);
 	}
