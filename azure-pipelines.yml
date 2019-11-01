@@ -22,6 +22,15 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
+- task: CopyFiles@1
+  displayName: 'Copy'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: |
+      **
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
