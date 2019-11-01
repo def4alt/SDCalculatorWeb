@@ -28,6 +28,7 @@ steps:
     SourceFolder: '$(build.sourcesdirectory)'
     Contents: |
       **
+      !node_modules
     TargetFolder: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
 
