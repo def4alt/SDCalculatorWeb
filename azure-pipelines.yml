@@ -27,16 +27,4 @@ steps:
     ArtifactName: drop
   condition: succeededOrFailed()
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    path: $(System.DefaultWorkingDirectory)/bin/sdcalculatorweb
-    artifact: 'firebase.json'
 
-- task: CopyFiles@1
-  displayName: 'Publish firebase.json'
-  inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: |
-      **\firebase.json
-    TargetFolder: '$(build.artifactstagingdirectory)/'
-  condition: succeededOrFailed()
