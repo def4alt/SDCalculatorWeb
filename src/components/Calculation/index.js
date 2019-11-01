@@ -68,6 +68,9 @@ class CalculationPage extends Component {
 
 	componentWillUnmount() {
 		this.listener();
+		this.props.firebase
+			.backup(this.props.firebase.auth.currentUser.uid)
+			.off();
 	}
 
 	getFileExtension(filename) {
@@ -100,7 +103,6 @@ class CalculationPage extends Component {
 				error: "Wrong file format!",
 				isLoading: false
 			});
-			
 		}
 
 		var statisticsModels = GetStatistics(parsedRows);
@@ -139,11 +141,6 @@ class CalculationPage extends Component {
 			this.setState({ lot: "0" });
 		}
 
-		this.props.callback({
-			statisticsModels: globalStatisticsModels,
-			lot: this.state.lot
-		});
-
 		if (this.props.firebase.auth.currentUser) {
 			const backups = this.props.firebase.backup(
 				this.props.firebase.auth.currentUser.uid
@@ -152,15 +149,18 @@ class CalculationPage extends Component {
 			var backupsObject;
 			backups.on("value", snapshot => (backupsObject = snapshot.val()));
 
-			if (backupsObject)
-				backups.set({
-					...backupsObject,
-					[this.state.lot]: {
-						models: globalStatisticsModels
-					}
-				});
+			backups.set({
+				...backupsObject,
+				[this.state.lot]: {
+					models: globalStatisticsModels
+				}
+			});
 		}
 
+		this.props.callback({
+			statisticsModels: globalStatisticsModels,
+			lot: this.state.lot
+		});
 		this.setState({ error: "", isLoading: false });
 	}
 

@@ -28,6 +28,7 @@ const withTheme = Component => {
 
 				var backupsObject;
 				backups.on("value", snapshot => backupsObject = snapshot.val());
+				
 				backups.set({
 					...backupsObject,
 					theme: this.state.theme === themes.dark ? "light" : "dark"
