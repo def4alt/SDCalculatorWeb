@@ -18,5 +18,5 @@ steps:
 - script: |
     npm install
     npm run build
-    npm run deploy
+    firebase deploy --token $(FIREBASE_TOKEN)
   displayName: 'npm install and build'
