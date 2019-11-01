@@ -27,7 +27,7 @@ steps:
   inputs:
     SourceFolder: '$(build.sourcesdirectory)'
     Contents: |
-      build\**
+      build/**
       firebase.json
     TargetFolder: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
