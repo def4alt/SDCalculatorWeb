@@ -61,7 +61,8 @@ function Read(file) {
 
                 for (let col = range.s.c + 6; col <= range.e.c; col++) {
                     const testValueCell = getValueFromCell(rowNum, col, sheet);
-                    const testValue = parseFloat(testValueCell.v);
+                    let testValue = parseFloat(testValueCell.v);
+                    if(isNaN(testValue)) testValue = 0;
 
                     const testNameCell = getValueFromCell(columnTitleRow, col, sheet);
                     const testName = String(testNameCell.v).trim();

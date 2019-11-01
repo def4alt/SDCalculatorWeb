@@ -94,12 +94,21 @@ class CalculationPage extends Component {
 				}
 			});
 		}
+
+		if (parsedRows.length === 0) {
+			this.setState({
+				error: "Wrong file format!",
+				isLoading: false
+			});
+			
+		}
+
 		var statisticsModels = GetStatistics(parsedRows);
 		let globalStatisticsModels = Array.from(
 			this.state.globalStatisticsModels
 		);
 
-		if (statisticsModels === undefined) {
+		if (statisticsModels === undefined || statisticsModels.length === 0) {
 			this.setState({
 				error: "Wrong file format!",
 				isLoading: false
@@ -249,13 +258,13 @@ class CalculationPage extends Component {
 								multiple={this.state.sdMode}
 								onChange={this.handleChange}
 							/>
-							<span
-								className="file-custom"
-							>
-								{this.state.files.length > 1 
-										? this.state.files.length +
-										  " files selected"
-										: this.state.files.length === 0 ? "" : this.state.files[0].name}
+							<span className="file-custom">
+								{this.state.files.length > 1
+									? this.state.files.length +
+									  " files selected"
+									: this.state.files.length === 0
+									? ""
+									: this.state.files[0].name}
 							</span>
 							<div></div>
 						</label>
