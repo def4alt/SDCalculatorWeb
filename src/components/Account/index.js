@@ -24,6 +24,6 @@ const AccountPage = props => (
 	</AuthUserContext.Consumer>
 );
 
-const condition = (authUser, _) => !!authUser;
+const condition = (authUser) => !!authUser;
 
 export default useTheme(withAuthorization(condition)(AccountPage));

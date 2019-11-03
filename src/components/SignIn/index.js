@@ -39,7 +39,7 @@ class SignInFormBase extends Component {
 	componentDidMount() {
 		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => 
 			authUser ? this.props.history.push(ROUTES.HOME) : this.props.history.push(ROUTES.SIGN_IN)
-		  );
+		);
 	}
 
 	componentWillUnmount() {
@@ -58,7 +58,7 @@ class SignInFormBase extends Component {
 			.catch(error => {
 				this.setState({ error });
 			});
-
+			console.log("he")
 		event.preventDefault();
 	};
 
@@ -96,6 +96,7 @@ class SignInFormBase extends Component {
 					</Button>
 					<Button
 						style={{ marginLeft: 20 }}
+						type="submit"
 						onClick={() => this.props.history.push(ROUTES.HOME)}
 						variant="outline-dark"
 					>

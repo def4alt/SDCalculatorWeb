@@ -27,7 +27,7 @@ const withAuthentication = Component => {
 									"Ih0XNDRPuJSSELqXIxnMaI05C2V2"
 										? ROLES.ADMIN
 										: ROLES.USER
-						  })
+						})
 						: this.setState({ authUser: null });
 				}
 			);

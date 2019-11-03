@@ -88,13 +88,13 @@ class CardTemplate extends React.Component {
 				}}
 			>
 				<XYPlot
-					margin={{ left: 70, right: 30 }}
+					margin={{ left: 70, right: 30, bottom: 50 }}
 					width={
 						this.state.width < 800
 							? 100 + 100 * model.Average.length - 100
 							: this.state.width / 5 +
-							  100 * model.Average.length -
-							  100
+							100 * model.Average.length -
+							100
 					}
 					height={
 						this.state.height < 600 ? 200 : this.state.height / 4
@@ -103,7 +103,17 @@ class CardTemplate extends React.Component {
 					<YAxis
 						tickValues={yValues}
 						style={{ display: "inline-flex" }}
-						tickFormat={(v, i) => Math.round(v) + `, ${yLabels[i]}`}
+						tickFormat={(v, i) => Math.round(v * 100) / 100 + `, ${yLabels[i]}`}
+					/>
+					
+					<XAxis
+						hideLine
+						orientation="bottom"
+						tickValues={[...Array(model.Average.length).keys()]}
+						style={{fontSize: 15,
+							text: {stroke: 'none', fill: '#c62828', fontWeight: 100}}}
+						top={210}
+						tickFormat={i => this.state.model.Warning[i]}
 					/>
 					<XAxis
 						hideLine
@@ -172,13 +182,15 @@ class CardTemplate extends React.Component {
 					style={{
 						borderColor: this.state.starred
 							? "#fdcb6e"
+							: this.state.model.Warning.filter(v => v !== "").length > 0
+							? "#c62828"
 							: this.props.theme.theme.lightBack,
 						backgroundColor: this.props.theme.theme.backgroundColor,
 						width:
 							this.state.width < 800
 								? 200 + 100 * model.Average.length
 								: this.state.width / 6 +
-								  100 * model.Average.length
+								100 * model.Average.length
 					}}
 					key={model.TestName + model.SampleType}
 				>

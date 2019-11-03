@@ -43,16 +43,23 @@ function GetModel(lvlRows, testName, sampleType) {
 	let standardDeviation = GetStandardDeviation(lvlRows, testName);
 	if (isNaN(standardDeviation)) standardDeviation = 0;
 
-	let date = moment(new Date().toUTCString()).toDate().toLocaleString("en-GB", {day: '2-digit', year: '2-digit', month: '2-digit'});
-	if (lvlRows[0] !== undefined)
-		date = lvlRows[0].Date;
+	let date = moment(new Date().toUTCString())
+		.toDate()
+		.toLocaleString("en-GB", {
+			day: "2-digit",
+			year: "2-digit",
+			month: "2-digit"
+		});
+	if (lvlRows[0] !== undefined) date = lvlRows[0].Date;
+
 
 	return {
 		Average: [average],
 		StandardDeviation: standardDeviation,
 		TestName: testName.trim(),
 		SampleType: sampleType,
-		Date: [date]
+		Date: [date],
+		Warning: [""]
 	};
 }
 

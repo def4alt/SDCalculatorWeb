@@ -54,6 +54,7 @@ class CardsHolder extends React.Component {
 				/>
 			);
 		});
+		
 		return (
 			<div
 				style={{

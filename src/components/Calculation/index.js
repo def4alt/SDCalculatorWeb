@@ -11,6 +11,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 import "./index.css";
 
+import * as WestgardRules from "./WestgardRules";
+
 import { useTheme } from "../Theme";
 
 import { compose } from "recompose";
@@ -132,6 +134,14 @@ class CalculationPage extends Component {
 					globalModel.Average.push(model.Average);
 					globalModel.Date.push(model.Date);
 				}
+
+				let warning = WestgardRules.CheckValues(
+					globalModel.Average,
+					globalModel.StandardDeviation
+				);
+
+				if (warning !== globalModel.Warning[globalModel.Warning.length - 1])
+					globalModel.Warning.push(warning);
 			}
 		} else {
 			globalStatisticsModels = statisticsModels;
@@ -164,26 +174,26 @@ class CalculationPage extends Component {
 		this.setState({ error: "", isLoading: false });
 	}
 
-	handleChange(event) {
+	handleChange = event => {
 		this.setState({ files: event.target.files });
-	}
+	};
 
-	handleLotChange(event) {
+	handleLotChange = event => {
 		this.setState({ lot: event.target.value });
-	}
+	};
 
-	handleCheckChange(event) {
+	handleCheckChange = event => {
 		this.setState({ sdMode: event.target.checked });
-	}
+	};
 
-	handleSubmit(event) {
+	handleSubmit = event => {
 		if (this.state.files.length !== 0 && !this.state.lotSelected) {
 			this.setState({ isLoading: true });
 			this.calculate(this.state.files);
 		}
-		event.preventDefault();
 		this.setState({ lotSelected: false });
-	}
+		event.preventDefault();
+	};
 
 	render() {
 		return (
@@ -261,7 +271,7 @@ class CalculationPage extends Component {
 							<span className="file-custom">
 								{this.state.files.length > 1
 									? this.state.files.length +
-									  " files selected"
+									" files selected"
 									: this.state.files.length === 0
 									? ""
 									: this.state.files[0].name}

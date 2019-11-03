@@ -68,7 +68,7 @@ function Read(file) {
                     const testName = String(testNameCell.v).trim();
 
                     if (!testName.includes('/')) {
-                        testResults[testName] = Math.round(testValue);
+                        testResults[testName] = Math.round(testValue * 100) / 100;
                     }
                 }
                 const model = {

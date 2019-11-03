@@ -38,9 +38,9 @@ class BugsPage extends React.Component {
 		});
 	}
 
-	onChange = event => {
+	onChange(event) {
 		this.setState({ [event.target.name]: event.target.value });
-	};
+	}
 
 	render() {
 		const handleClose = () => {
