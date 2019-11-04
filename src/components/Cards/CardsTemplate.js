@@ -113,7 +113,7 @@ class CardTemplate extends React.Component {
 						tickValues={[...Array(model.Average.length).keys()]}
 						style={{fontSize: 15,
 							text: {stroke: 'none', fill: '#c62828', fontWeight: 100}}}
-						top={210}
+						top={this.state.height < 600 ? 165 : this.state.height / 4.8}
 						tickFormat={i => this.state.model.Warning[i]}
 					/>
 					<XAxis

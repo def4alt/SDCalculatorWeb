@@ -110,6 +110,27 @@ const NavigationNonAuth = props => (
 					{props.strings.signIn}
 				</Nav.Link>
 			</Nav>
+
+			<Nav className="mr-10">
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("en")}
+				>
+					En
+				</Nav.Link>
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("ru")}
+				>
+					Ru
+				</Nav.Link>
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("uk")}
+				>
+					Uk
+				</Nav.Link>
+			</Nav>
 			<Nav className="mr-0">
 				<Button
 					variant={props.theme.theme.variant}
