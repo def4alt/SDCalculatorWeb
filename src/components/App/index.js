@@ -17,6 +17,7 @@ import "./index.css";
 import { withAuthentication } from "../Session";
 import { withTheme, useTheme } from "../Theme";
 import { compose } from "recompose";
+import { withLocalization, useLocalization } from "../Localization";
 
 const App = props => (
 	<CookiesProvider>
@@ -46,5 +47,7 @@ const App = props => (
 export default compose(
 	withTheme,
 	useTheme,
-	withAuthentication
+	withLocalization,
+	withAuthentication,
+	useLocalization
 )(App);

@@ -9,6 +9,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
+import { useLocalization } from "../Localization";
 
 class BugsPage extends React.Component {
 	constructor(props) {
@@ -49,7 +50,9 @@ class BugsPage extends React.Component {
 			const { title, about, bugs } = this.state;
 
 			if (title !== "") {
-				const dateTime = moment(new Date().toUTCString()).toDate().getTime();
+				const dateTime = moment(new Date().toUTCString())
+					.toDate()
+					.getTime();
 				const id = this.state.bugs.length;
 				const newBug = {
 					title,
@@ -72,36 +75,59 @@ class BugsPage extends React.Component {
 				}}
 			>
 				<h1>
-					Bugs{" "}
+					{this.props.strings.bugs + " "}
 					<Button
 						variant={this.props.theme.theme.variantOutline}
 						onClick={() => handleShow()}
 					>
-						New bug
+						{this.props.strings.newBug}
 					</Button>
 				</h1>
 				{this.state.bugs.map(bug => (
-					<Toast style={{backgroundColor: this.props.theme.theme.lightBack, borderColor: this.props.theme.theme.lightBack}}>
-						<Toast.Header closeButton={false} style={{backgroundColor: this.props.theme.theme.lightBack, color: this.props.theme.theme.color}}>
+					<Toast
+						style={{
+							backgroundColor: this.props.theme.theme.lightBack,
+							borderColor: this.props.theme.theme.lightBack
+						}}
+					>
+						<Toast.Header
+							closeButton={false}
+							style={{
+								backgroundColor: this.props.theme.theme
+									.lightBack,
+								color: this.props.theme.theme.color
+							}}
+						>
 							<strong className="mr-auto">
 								{bug.title} #{bug.id}
 							</strong>
 							<small>
 								{Math.round(
-									(moment(new Date().toUTCString()).toDate().getTime() -
+									(moment(new Date().toUTCString())
+										.toDate()
+										.getTime() -
 										bug.dateTime) /
 										1000 /
 										60
 								)}{" "}
-								minutes ago
+								{this.props.strings.minAgo}
 							</small>
 						</Toast.Header>
-						{bug.about !== "" && <Toast.Body style={{backgroundColor: this.props.theme.theme.backgroundColor}}>{bug.about}</Toast.Body>}
+						{bug.about !== "" && (
+							<Toast.Body
+								style={{
+									backgroundColor: this.props.theme.theme
+										.backgroundColor
+								}}
+							>
+								{bug.about}
+							</Toast.Body>
+						)}
 					</Toast>
 				))}
 				<Modal show={this.state.showModal} onHide={handleClose}>
 					<Modal.Header closeButton>
-						<Modal.Title>New bug</Modal.Title>
+						<Modal.Title>{this.props.strings.newBug}</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
 						<Form>
@@ -110,7 +136,7 @@ class BugsPage extends React.Component {
 									name="title"
 									onChange={this.onChange}
 									type="text"
-									placeholder="Title"
+									placeholder={this.props.strings.title}
 								/>
 							</Form.Group>
 							<Form.Group>
@@ -118,14 +144,14 @@ class BugsPage extends React.Component {
 									name="about"
 									onChange={this.onChange}
 									as="textarea"
-									placeholder="Leave a comment"
+									placeholder={this.props.strings.leaveComment}
 								/>
 							</Form.Group>
 						</Form>
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="primary" onClick={handleClose}>
-							Submit
+							{this.props.strings.submit}
 						</Button>
 					</Modal.Footer>
 				</Modal>
@@ -137,5 +163,6 @@ class BugsPage extends React.Component {
 export default compose(
 	withFirebase,
 	useTheme,
-	withAuthorization(authUser => !!authUser)
+	withAuthorization(authUser => !!authUser),
+	useLocalization
 )(BugsPage);

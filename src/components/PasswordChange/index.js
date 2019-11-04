@@ -3,6 +3,9 @@ import { withFirebase } from "../Firebase";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+import { compose } from "recompose";
+import { useLocalization } from "../Localization";
+
 const INITIAL_STATE = {
 	passwordOne: "",
 	passwordTwo: "",
@@ -38,27 +41,27 @@ class PasswordChangeForm extends Component {
 		return (
 			<Form onSubmit={this.onSubmit} style={{ marginRight: "60vw" }}>
 				<Form.Group>
-					<Form.Label>Password</Form.Label>
+					<Form.Label>{this.props.strings.password}</Form.Label>
 					<Form.Control
 						name="passwordOne"
 						value={passwordOne}
 						onChange={this.onChange}
 						type="password"
-						placeholder="New Password"
+						placeholder={this.props.strings.passHint}
 					/>
 				</Form.Group>
 				<Form.Group>
-					<Form.Label>Confirm Password</Form.Label>
+					<Form.Label>{this.props.strings.confirmPassword}</Form.Label>
 					<Form.Control
 						name="passwordTwo"
 						value={passwordTwo}
 						onChange={this.onChange}
 						type="password"
-						placeholder="Confirm New Password"
+						placeholder={this.props.strings.confirmPassHint}
 					/>
 				</Form.Group>
 				<Button disabled={isInvalid} type="submit">
-					Change My Password
+					{this.props.strings.changePassword}
 				</Button>
 				{error && <p>{error.message}</p>}
 			</Form>
@@ -66,4 +69,7 @@ class PasswordChangeForm extends Component {
 	}
 }
 
-export default withFirebase(PasswordChangeForm);
+export default compose(
+	withFirebase,
+	useLocalization
+)(PasswordChangeForm);

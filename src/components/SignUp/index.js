@@ -7,10 +7,17 @@ import * as ROUTES from "../../constants/routes";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useTheme } from "../Theme";
+import { useLocalization, LocalizationContext } from "../Localization";
 
 const SignUpPage = props => (
-	<div style={{ color: props.theme.theme.color, paddingLeft: 10, marginRight: "60vw" }}>
-		<h1>Sign Up</h1>
+	<div
+		style={{
+			color: props.theme.theme.color,
+			paddingLeft: 10,
+			marginRight: "60vw"
+		}}
+	>
+		<h1>{props.strings.signUp}</h1>
 		<SignUpForm />
 	</div>
 );
@@ -64,19 +71,19 @@ class SignUpFormBase extends Component {
 		return (
 			<Form onSubmit={this.onSubmit}>
 				<Form.Group>
-					<Form.Label>Username</Form.Label>
+					<Form.Label>{this.props.strings.username}</Form.Label>
 
 					<Form.Control
 						name="username"
 						value={username}
 						onChange={this.onChange}
 						type="text"
-						placeholder="Full Name"
+						placeholder={this.props.strings.usernameHint}
 					/>
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Label>Email address</Form.Label>
+					<Form.Label>{this.props.strings.email}</Form.Label>
 
 					<Form.Control
 						name="email"
@@ -88,7 +95,7 @@ class SignUpFormBase extends Component {
 				</Form.Group>
 
 				<Form.Group>
-					<Form.Label>Password</Form.Label>
+					<Form.Label>{this.props.strings.password}</Form.Label>
 					<Form.Control
 						name="passwordOne"
 						value={passwordOne}
@@ -98,7 +105,7 @@ class SignUpFormBase extends Component {
 					/>
 				</Form.Group>
 				<Form.Group>
-					<Form.Label>Repeat Password</Form.Label>
+					<Form.Label>{this.props.strings.repeatPassword}</Form.Label>
 					<Form.Control
 						name="passwordTwo"
 						value={passwordTwo}
@@ -107,7 +114,7 @@ class SignUpFormBase extends Component {
 					/>
 				</Form.Group>
 				<Button disabled={isInvalid} type="submit">
-					Sign Up
+					{this.props.strings.signUp}
 				</Button>
 				<Form.Text className="text-danger">
 					{error && <p>{error.message}</p>}
@@ -118,15 +125,21 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-	<p>
-		Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-	</p>
+	<LocalizationContext.Consumer>
+		{({ strings }) => (
+			<p>
+				{strings.dontHave}{" "}
+				<Link to={ROUTES.SIGN_UP}>{strings.signUp}</Link>
+			</p>
+		)}
+	</LocalizationContext.Consumer>
 );
 
 const SignUpForm = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	useLocalization
 )(SignUpFormBase);
 
-export default useTheme(SignUpPage);
+export default useLocalization(useTheme(SignUpPage));
 export { SignUpForm, SignUpLink };

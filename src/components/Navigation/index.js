@@ -11,23 +11,36 @@ import * as ROUTES from "../../constants/routes";
 
 import { AuthUserContext } from "../Session";
 import Button from "react-bootstrap/Button";
+import { LocalizationContext } from "../Localization";
 
 const Navigation = () => (
-	<ThemeContext.Consumer>
-		{({ theme, toggleTheme }) => (
-			<div>
-				<AuthUserContext.Consumer>
-					{authUser =>
-						authUser ? (
-							<NavigationAuth theme={{ theme, toggleTheme }} />
-						) : (
-							<NavigationNonAuth theme={{ theme, toggleTheme }} />
-						)
-					}
-				</AuthUserContext.Consumer>
-			</div>
+	<LocalizationContext.Consumer>
+		{({ strings, setLocale }) => (
+			<ThemeContext.Consumer>
+				{({ theme, toggleTheme }) => (
+					<div>
+						<AuthUserContext.Consumer>
+							{authUser =>
+								authUser ? (
+									<NavigationAuth
+										theme={{ theme, toggleTheme }}
+										strings={strings}
+										setLocale={setLocale}
+									/>
+								) : (
+									<NavigationNonAuth
+										theme={{ theme, toggleTheme }}
+										strings={strings}
+										setLocale={setLocale}
+									/>
+								)
+							}
+						</AuthUserContext.Consumer>
+					</div>
+				)}
+			</ThemeContext.Consumer>
 		)}
-	</ThemeContext.Consumer>
+	</LocalizationContext.Consumer>
 );
 
 const NavigationAuth = props => (
@@ -41,21 +54,42 @@ const NavigationAuth = props => (
 		<Navbar.Toggle aria-controls="basic-navbar-nav" />
 		<Navbar.Collapse id="basic-navbar-nav">
 			<Nav className="mr-auto">
-				<Nav.Link href={ROUTES.HOME}>Home</Nav.Link>
-				<Nav.Link href={ROUTES.ACCOUNT}>Account</Nav.Link>
+				<Nav.Link href={ROUTES.HOME}>{props.strings.home}</Nav.Link>
+				<Nav.Link href={ROUTES.ACCOUNT}>
+					{props.strings.account}
+				</Nav.Link>
 			</Nav>
-
-			<Nav.Item>
+			<Nav className="mr-10">
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("en")}
+				>
+					En
+				</Nav.Link>
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("ru")}
+				>
+					Ru
+				</Nav.Link>
+				<Nav.Link
+					variant={props.theme.theme.variant}
+					onClick={() => props.setLocale("uk")}
+				>
+					Uk
+				</Nav.Link>
+			</Nav>
+			<Nav className="mr-0">
 				<Button
 					variant={props.theme.theme.variant}
 					onClick={() => props.theme.toggleTheme()}
 				>
 					{props.theme.theme.navBarIcon}
 				</Button>
-			</Nav.Item>
-			<Nav.Item>
+			</Nav>
+			<Nav>
 				<SignOutButton />
-			</Nav.Item>
+			</Nav>
 		</Navbar.Collapse>
 	</Navbar>
 );
@@ -71,19 +105,21 @@ const NavigationNonAuth = props => (
 		<Navbar.Toggle aria-controls="basic-navbar-nav" />
 		<Navbar.Collapse id="basic-navbar-nav">
 			<Nav className="mr-auto">
-				<Nav.Link href={ROUTES.HOME}>Home</Nav.Link>
-				<Nav.Link href={ROUTES.SIGN_IN}>Sign In</Nav.Link>
+				<Nav.Link href={ROUTES.HOME}>{props.strings.home}</Nav.Link>
+				<Nav.Link href={ROUTES.SIGN_IN}>
+					{props.strings.signIn}
+				</Nav.Link>
 			</Nav>
-			<Nav.Item>
+			<Nav className="mr-0">
 				<Button
 					variant={props.theme.theme.variant}
 					onClick={() => props.theme.toggleTheme()}
 				>
 					{props.theme.theme.navBarIcon}
 				</Button>
-			</Nav.Item>
+			</Nav>
 
-			<Nav className="mr-0"></Nav>
+			<Nav className="mr-1"></Nav>
 		</Navbar.Collapse>
 	</Navbar>
 );

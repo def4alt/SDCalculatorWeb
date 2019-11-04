@@ -197,3 +197,15 @@ input:checked + .slider:before {
 	transform: translate(-50%, 0) scaleX(1);
 	opacity: 1;
 }
+
+.buildChartsLabel {
+	padding-left: 1em;
+	width: 7em;
+
+}
+
+.addAverageLabel {
+	padding-right: 1em;
+	width: 7em;
+
+}

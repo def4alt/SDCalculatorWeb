@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import withAuthorization from "../Session/withAuthorization";
+import { compose } from "recompose";
+import { useLocalization } from "../Localization";
 
 class AdminPage extends Component {
   constructor(props) {
@@ -38,7 +40,7 @@ class AdminPage extends Component {
 
     return (
       <div>
-        <h1>Admin</h1>
+        <h1>{this.props.strings.admin}</h1>
         {loading && <div>Loading ...</div>}
         <UserList users={users} />
       </div>
@@ -54,14 +56,18 @@ const UserList = ({ users }) => (
           <strong>ID:</strong> {user.uid}
         </span>
         <span>
-          <strong>E-Mail:</strong> {user.email}
+          <strong>{this.props.strings.email}:</strong> {user.email}
         </span>
         <span>
-          <strong>Username:</strong> {user.username}
+          <strong>{this.props.strings.username}:</strong> {user.username}
         </span>
       </li>
     ))}
   </ul>
 );
 
-export default withAuthorization((_, role) => console.log(role))(withFirebase(AdminPage));
+export default compose(
+  withAuthorization((_, role) => console.log(role)),
+  withFirebase,
+  useLocalization
+)(AdminPage);

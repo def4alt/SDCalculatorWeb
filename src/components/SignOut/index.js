@@ -1,7 +1,11 @@
 import React from "react";
 import { withFirebase } from "../Firebase";
 import Button from "react-bootstrap/Button";
-const SignOutButton = ({ firebase }) => (
-  <Button onClick={firebase.doSignOut}>Sign Out</Button>
+
+import { useLocalization } from "../Localization";
+
+const SignOutButton = props => (
+	<Button onClick={props.firebase.doSignOut}>{props.strings.signOut}</Button>
 );
-export default withFirebase(SignOutButton);
+
+export default useLocalization(withFirebase(SignOutButton));
