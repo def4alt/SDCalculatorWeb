@@ -6,6 +6,7 @@ import { useTheme } from "../Theme";
 
 import Button from "react-bootstrap/Button";
 import CardTemplate from "./CardsTemplate";
+import { useLocalization } from "../Localization";
 
 class CardsHolder extends React.Component {
 	constructor(props) {
@@ -54,7 +55,7 @@ class CardsHolder extends React.Component {
 				/>
 			);
 		});
-		
+
 		return (
 			<div
 				style={{
@@ -71,7 +72,7 @@ class CardsHolder extends React.Component {
 							})
 						}
 					>
-						Toggle starred charts
+						{this.props.strings.toggleStarred}
 					</Button>
 					<Button
 						variant="link"
@@ -79,7 +80,7 @@ class CardsHolder extends React.Component {
 							this.setState({ editMode: !this.state.editMode })
 						}
 					>
-						Toggle Edit
+						{this.props.strings.toggleEdit}
 					</Button>
 				</div>
 				<div className="cardsHolder center">{cards}</div>
@@ -88,4 +89,4 @@ class CardsHolder extends React.Component {
 	}
 }
 
-export default useTheme(CardsHolder);
+export default useLocalization(useTheme(CardsHolder));

@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import domtoimage from "dom-to-image";
 import printJS from "print-js";
 import { useTheme } from "../Theme";
+import { useLocalization } from "../Localization";
 
 var Line = (value, color, repeat) => {
 	return (
@@ -210,7 +211,7 @@ class CardTemplate extends React.Component {
 										});
 									}}
 								>
-									Star
+									{this.props.strings.star}
 								</Button>
 								<Button
 									variant="outline-info"
@@ -240,7 +241,7 @@ class CardTemplate extends React.Component {
 										);
 									}}
 								>
-									Print
+									{this.props.strings.print}
 								</Button>
 								<Button
 									variant="outline-success"
@@ -274,7 +275,7 @@ class CardTemplate extends React.Component {
 											);
 									}}
 								>
-									Save
+									{this.props.strings.save}
 								</Button>
 
 								<Button
@@ -284,7 +285,7 @@ class CardTemplate extends React.Component {
 										this.setState({ showChart: false });
 									}}
 								>
-									Delete
+									{this.props.strings.delete}
 								</Button>
 							</>
 						)}
@@ -295,4 +296,4 @@ class CardTemplate extends React.Component {
 	}
 }
 
-export default useTheme(CardTemplate);
+export default useLocalization(useTheme(CardTemplate));

@@ -16,6 +16,7 @@ import * as WestgardRules from "./WestgardRules";
 import { useTheme } from "../Theme";
 
 import { compose } from "recompose";
+import { useLocalization } from "../Localization";
 
 class CalculationPage extends Component {
 	constructor(props) {
@@ -140,7 +141,10 @@ class CalculationPage extends Component {
 					globalModel.StandardDeviation
 				);
 
-				if (warning !== globalModel.Warning[globalModel.Warning.length - 1])
+				if (
+					warning !==
+					globalModel.Warning[globalModel.Warning.length - 1]
+				)
 					globalModel.Warning.push(warning);
 			}
 		} else {
@@ -241,8 +245,11 @@ class CalculationPage extends Component {
 							</Dropdown.Menu>
 						</Form.Group>
 					</Dropdown>
+
 					<div className="center">
-						<label style={{ paddingRight: 20 }}>Add average</label>
+						<label class="text-justify text-center addAverageLabel">
+							{this.props.strings.addAverage}
+						</label>
 						<label className="switch">
 							<input
 								type="checkbox"
@@ -251,15 +258,13 @@ class CalculationPage extends Component {
 							/>
 							<span className="slider round"></span>
 						</label>
-						<label style={{ paddingLeft: 20 }}>Build charts</label>
+						<label class="text-justify text-center buildChartsLabel">
+							{this.props.strings.buildCharts}
+						</label>
 					</div>
 
 					<div style={{ paddingTop: 20 }}>
-						<p>
-							{this.state.sdMode
-								? "Select files:"
-								: "Select file:"}
-						</p>
+						<p>{this.props.strings.selectFiles + ":"}</p>
 						<label className="file">
 							<input
 								type="file"
@@ -271,12 +276,11 @@ class CalculationPage extends Component {
 							<span className="file-custom">
 								{this.state.files.length > 1
 									? this.state.files.length +
-									" files selected"
+									this.props.strings.filesSelected
 									: this.state.files.length === 0
 									? ""
 									: this.state.files[0].name}
 							</span>
-							<div></div>
 						</label>
 					</div>
 					<button
@@ -288,11 +292,11 @@ class CalculationPage extends Component {
 					>
 						{this.state.sdMode
 							? this.state.isLoading
-								? "Building..."
-								: "Build charts"
+								? this.props.strings.buildingCharts
+								: this.props.strings.buildCharts
 							: this.state.isLoading
-							? "Adding..."
-							: "Add average"}
+							? this.props.strings.addingAverage
+							: this.props.strings.addAverage}
 					</button>
 				</Form>
 			</div>
@@ -302,5 +306,6 @@ class CalculationPage extends Component {
 
 export default compose(
 	withFirebase,
-	useTheme
+	useTheme,
+	useLocalization
 )(CalculationPage);

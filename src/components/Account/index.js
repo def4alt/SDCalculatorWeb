@@ -3,6 +3,8 @@ import PasswordChangeForm from "../PasswordChange";
 import { withAuthorization, AuthUserContext } from "../Session";
 import { useTheme } from "../Theme";
 import RolesContext from "../Session/rolesContext";
+import { compose } from "recompose";
+import { useLocalization } from "../Localization";
 
 const AccountPage = props => (
 	<AuthUserContext.Consumer>
@@ -15,7 +17,7 @@ const AccountPage = props => (
 							color: props.theme.theme.color
 						}}
 					>
-						<h1>Account: {authUser.email} {role}</h1>
+						<h1>{props.strings.account}: {authUser.email} {role}</h1>
 						<PasswordChangeForm />
 					</div>
 				)}
@@ -26,4 +28,8 @@ const AccountPage = props => (
 
 const condition = (authUser) => !!authUser;
 
-export default useTheme(withAuthorization(condition)(AccountPage));
+export default compose(
+	useTheme,
+	withAuthorization(condition),
+	useLocalization
+)(AccountPage);

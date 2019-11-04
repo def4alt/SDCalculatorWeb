@@ -8,9 +8,11 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
 import "./index.css";
+
 import { useTheme } from "../Theme";
 import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
+import { useLocalization } from "../Localization";
 
 const LazyCards = React.lazy(() => import("../Cards"));
 
@@ -38,7 +40,7 @@ class HomePage extends Component {
 		this.setState({ date: dataFromChild.statisticsModels[0].Date[0] });
 
 		this.setState({ lot: dataFromChild.lot });
-	}
+	};
 
 	componentDidMount() {
 		window.addEventListener("scroll", this.handleScroll);
@@ -73,7 +75,7 @@ class HomePage extends Component {
 							variant="link"
 							onClick={() => this.props.history.push(ROUTES.BUGS)}
 						>
-							Found any bug?
+							{this.props.strings.foundBug}
 						</Button>
 					</div>
 					<div
@@ -111,11 +113,15 @@ class HomePage extends Component {
 								borderColor: this.props.theme.theme.lightBack
 							}}
 						>
-							<Card.Header>Details</Card.Header>
+							<Card.Header>{this.props.strings.details}</Card.Header>
 							<Card.Body>
-								<Card.Text>Date: {this.state.date}</Card.Text>
+								<Card.Text>
+									{this.props.strings.date}: {this.state.date}
+								</Card.Text>
 								<hr />
-								<Card.Text>Lot: {this.state.lot}</Card.Text>
+								<Card.Text>
+									{this.props.strings.lot}: {this.state.lot}
+								</Card.Text>
 							</Card.Body>
 						</Card>
 						<Card
@@ -130,38 +136,19 @@ class HomePage extends Component {
 							<Card.Header>Abbreviations</Card.Header>
 							<Card.Body>
 								<Card.Title>13S</Card.Title>
-								<Card.Text>
-									is shown when a single control measurement
-									exceeds the mean plus 3s or the mean minus
-									3s control limit.
-								</Card.Text>
+								<Card.Text>{this.props.strings.abr13S}</Card.Text>
 								<hr />
 								<Card.Title>22S</Card.Title>
-								<Card.Text>
-									is shown when 2 consecutive control
-									measurements exceed the same mean plus 2s or
-									the same mean minus 2s control limit.
-								</Card.Text>
+								<Card.Text>{this.props.strings.abr22S}</Card.Text>
 								<hr />
 								<Card.Title>R4S</Card.Title>
-								<Card.Text>
-									is shown when 1 control measurement in a
-									group exceeds the mean plus 2s and another
-									exceeds the mean minus 2s.
-								</Card.Text>
+								<Card.Text>{this.props.strings.abrR4S}</Card.Text>
 								<hr />
 								<Card.Title>41S</Card.Title>
-								<Card.Text>
-									is shown when 4 consecutive control
-									measurements exceed the same mean plus 1s or
-									the same mean minus 1s control limit.
-								</Card.Text>
+								<Card.Text>{this.props.strings.abr41S}</Card.Text>
 								<hr />
 								<Card.Title>8X</Card.Title>
-								<Card.Text>
-									is shown when 8 consecutive control
-									measurements fall on one side of the mean.
-								</Card.Text>
+								<Card.Text>{this.props.strings.abr8X}</Card.Text>
 							</Card.Body>
 						</Card>
 						<Suspense
@@ -181,6 +168,7 @@ class HomePage extends Component {
 
 export default compose(
 	useTheme,
-	withAuthorization(authUser => authUser !== null ? true : true),
-	withRouter
+	withAuthorization(authUser => (authUser !== null ? true : true)),
+	withRouter,
+	useLocalization
 )(HomePage);

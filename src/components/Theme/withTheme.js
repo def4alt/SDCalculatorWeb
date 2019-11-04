@@ -57,7 +57,7 @@ const withTheme = Component => {
 						.on("value", snapshot => {
 							this.setState({
 								theme:
-									snapshot.val() === "light"
+									snapshot.val().theme === "light"
 										? themes.light
 										: themes.dark
 							});

@@ -10,6 +10,7 @@ import { PasswordForgetLink } from "../PasswordForget";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useTheme } from "../Theme";
+import { useLocalization } from "../Localization";
 
 const SignInPage = props => (
 	<div
@@ -19,7 +20,7 @@ const SignInPage = props => (
 			marginRight: "60vw"
 		}}
 	>
-		<h1>Sign In</h1>
+		<h1>{props.strings.signIn}</h1>
 		<SignInForm />
 		<PasswordForgetLink />
 		<SignUpLink />
@@ -37,8 +38,10 @@ class SignInFormBase extends Component {
 	}
 
 	componentDidMount() {
-		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => 
-			authUser ? this.props.history.push(ROUTES.HOME) : this.props.history.push(ROUTES.SIGN_IN)
+		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser =>
+			authUser
+				? this.props.history.push(ROUTES.HOME)
+				: this.props.history.push(ROUTES.SIGN_IN)
 		);
 	}
 
@@ -58,7 +61,6 @@ class SignInFormBase extends Component {
 			.catch(error => {
 				this.setState({ error });
 			});
-			console.log("he")
 		event.preventDefault();
 	};
 
@@ -73,26 +75,26 @@ class SignInFormBase extends Component {
 			<div>
 				<Form onSubmit={this.onSubmit}>
 					<Form.Group>
-						<Form.Label>Email address</Form.Label>
+						<Form.Label>{this.props.strings.email}</Form.Label>
 						<Form.Control
 							name="email"
 							onChange={this.onChange}
 							type="email"
-							placeholder="Enter email"
+							placeholder={this.props.strings.email}
 						/>
 					</Form.Group>
 
 					<Form.Group>
-						<Form.Label>Password</Form.Label>
+						<Form.Label>{this.props.strings.password}</Form.Label>
 						<Form.Control
 							name="password"
 							onChange={this.onChange}
 							type="password"
-							placeholder="Password"
+							placeholder={this.props.strings.passHint}
 						/>
 					</Form.Group>
 					<Button disabled={isInvalid} type="submit">
-						Sign In
+						{this.props.strings.signIn}
 					</Button>
 					<Button
 						style={{ marginLeft: 20 }}
@@ -100,7 +102,7 @@ class SignInFormBase extends Component {
 						onClick={() => this.props.history.push(ROUTES.HOME)}
 						variant="outline-dark"
 					>
-						Guest mode
+						{this.props.strings.guestMode}
 					</Button>
 
 					<Form.Text className="text-danger">
@@ -113,8 +115,9 @@ class SignInFormBase extends Component {
 }
 const SignInForm = compose(
 	withRouter,
-	withFirebase
+	withFirebase,
+	useLocalization
 )(SignInFormBase);
 
-export default useTheme(SignInPage);
+export default useLocalization(useTheme(SignInPage));
 export { SignInForm };
