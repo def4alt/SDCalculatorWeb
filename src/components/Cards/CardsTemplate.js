@@ -2,14 +2,10 @@ import React from "react";
 
 import { XYPlot, LineMarkSeries, LineSeries, XAxis, YAxis } from "react-vis";
 import "../../../node_modules/react-vis/dist/style.css";
-import "./CardsTemplate.css";
-
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import "./CardsTemplate.scss";
 
 import domtoimage from "dom-to-image";
 import printJS from "print-js";
-import { useTheme } from "../Theme";
 import { useLocalization } from "../Localization";
 
 var Line = (value, color, repeat) => {
@@ -94,8 +90,8 @@ class CardTemplate extends React.Component {
 						this.state.width < 800
 							? 100 + 100 * model.Average.length - 100
 							: this.state.width / 5 +
-							100 * model.Average.length -
-							100
+							  100 * model.Average.length -
+							  100
 					}
 					height={
 						this.state.height < 600 ? 200 : this.state.height / 4
@@ -104,16 +100,28 @@ class CardTemplate extends React.Component {
 					<YAxis
 						tickValues={yValues}
 						style={{ display: "inline-flex" }}
-						tickFormat={(v, i) => Math.round(v * 100) / 100 + `, ${yLabels[i]}`}
+						tickFormat={(v, i) =>
+							Math.round(v * 100) / 100 + `, ${yLabels[i]}`
+						}
 					/>
-					
+
 					<XAxis
 						hideLine
 						orientation="bottom"
 						tickValues={[...Array(model.Average.length).keys()]}
-						style={{fontSize: 15,
-							text: {stroke: 'none', fill: '#c62828', fontWeight: 100}}}
-						top={this.state.height < 600 ? 165 : this.state.height / 4.8}
+						style={{
+							fontSize: 15,
+							text: {
+								stroke: "none",
+								fill: "#c62828",
+								fontWeight: 100
+							}
+						}}
+						top={
+							this.state.height < 600
+								? 165
+								: this.state.height / 4.8
+						}
 						tickFormat={i => this.state.model.Warning[i]}
 					/>
 					<XAxis
@@ -174,126 +182,108 @@ class CardTemplate extends React.Component {
 							: this.state.showStarredCharts
 							? "none"
 							: "block"
-						: "none"
+						: "none",
+					borderColor: this.state.starred
+						? "#fdcb6e"
+						: this.state.model.Warning.filter(v => v !== "")
+								.length > 0 && "#c62828",
+					width:
+						this.state.width < 800
+							? 200 + 100 * model.Average.length
+							: this.state.width / 6 + 100 * model.Average.length
 				}}
+				className="text-center card"
+				id="card"
+				key={model.TestName + model.SampleType}
 			>
-				<Card
-					className="text-center card"
-					id="card"
-					style={{
-						borderColor: this.state.starred
-							? "#fdcb6e"
-							: this.state.model.Warning.filter(v => v !== "").length > 0
-							? "#c62828"
-							: this.props.theme.theme.lightBack,
-						backgroundColor: this.props.theme.theme.backgroundColor,
-						width:
-							this.state.width < 800
-								? 200 + 100 * model.Average.length
-								: this.state.width / 6 +
-								100 * model.Average.length
-					}}
-					key={model.TestName + model.SampleType}
-				>
-					<Card.Header>
-						{model.TestName + " Lvl" + model.SampleType}
-					</Card.Header>
-					<Card.Body>
-						<div className="center">{chart}</div>
-						{this.state.editMode && (
-							<>
-								<Button
-									variant="outline-warning"
-									style={{ margin: 3 }}
-									onClick={() => {
-										this.setState({
-											starred: !this.state.starred
-										});
-									}}
-								>
-									{this.props.strings.star}
-								</Button>
-								<Button
-									variant="outline-info"
-									style={{ margin: 3 }}
-									onClick={() => {
-										this.setState({ editMode: false });
-										new Promise(res =>
-											this.forceUpdate(res)
-										).then(
-											domtoimage
-												.toPng(
-													document.getElementById(
-														"card"
-													)
-												)
-												.then(pngUrl =>
-													printJS({
-														printable: pngUrl,
-														type: "image"
-													})
-												)
-												.then(() =>
-													this.setState({
-														editMode: true
-													})
-												)
-										);
-									}}
-								>
-									{this.props.strings.print}
-								</Button>
-								<Button
-									variant="outline-success"
-									style={{ margin: 3 }}
-									onClick={() => {
-										this.setState({ editMode: false });
-										this.forceUpdate();
-
-										const card = document.getElementById(
-											"card"
-										);
-
+				<h5>{model.TestName + " Lvl" + model.SampleType}</h5>
+				<div className="cardContent">
+					<div className="center">{chart}</div>
+					{this.state.editMode && (
+						<>
+							<button
+								className="starButton"
+								onClick={() => {
+									this.setState({
+										starred: !this.state.starred
+									});
+								}}
+							>
+								{this.props.strings.star}
+							</button>
+							<button
+								className="printButton"
+								onClick={() => {
+									this.setState({ editMode: false });
+									new Promise(res =>
+										this.forceUpdate(res)
+									).then(
 										domtoimage
-											.toPng(card)
-											.then(dataUrl => {
-												var link = document.createElement(
-													"a"
-												);
-												link.download =
-													model.TestName +
-													" Lvl" +
-													model.SampleType +
-													".png";
-												link.href = dataUrl;
-												link.click();
-											})
-											.then(
+											.toPng(
+												document.querySelector(".card")
+											)
+											.then(pngUrl =>
+												printJS({
+													printable: pngUrl,
+													type: "image"
+												})
+											)
+											.then(() =>
 												this.setState({
 													editMode: true
 												})
-											);
-									}}
-								>
-									{this.props.strings.save}
-								</Button>
+											)
+									);
+								}}
+							>
+								{this.props.strings.print}
+							</button>
+							<button
+								className="saveButton"
+								onClick={() => {
+									this.setState({ editMode: false });
+									this.forceUpdate();
 
-								<Button
-									variant="outline-dark"
-									style={{ margin: 3 }}
-									onClick={() => {
-										this.setState({ showChart: false });
-									}}
-								>
-									{this.props.strings.delete}
-								</Button>
-							</>
-						)}
-					</Card.Body>
-				</Card>
+									const card = document.querySelector(".card");
+
+									domtoimage
+										.toPng(card)
+										.then(dataUrl => {
+											var link = document.createElement(
+												"a"
+											);
+											link.download =
+												model.TestName +
+												" Lvl" +
+												model.SampleType +
+												".png";
+											link.href = dataUrl;
+											link.click();
+										})
+										.then(
+											this.setState({
+												editMode: true
+											})
+										);
+								}}
+							>
+								{this.props.strings.save}
+							</button>
+
+							<button
+								className="deleteButton"
+								onClick={() => {
+									this.setState({ showChart: false });
+								}}
+							>
+								{this.props.strings.delete}
+							</button>
+						</>
+					)}
+				</div>
 			</div>
 		);
 	}
 }
 
-export default useLocalization(useTheme(CardTemplate));
+export default useLocalization(CardTemplate);

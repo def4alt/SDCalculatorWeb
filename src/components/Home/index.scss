@@ -1,3 +1,6 @@
+@import "../App/index.scss";
+@import "../App/functions.scss";
+
 .loadingCircle {
   border: 3px solid hsla(185, 100%, 62%, 0.2);
   border-top-color: #0984e3;
@@ -22,8 +25,56 @@
 }
 
 .detailsBox {
-  display: inline-block;
-  padding-left: 50px;
+  display: block;
+  top: 0px;
+  margin: 0px 0px 10px 25px;
+  width: 10em;
+  border-style: solid;
+  border-color: getColor(border);
+  border-width: 1.5px;
+}
+
+.detailsBox h5 {
+  background-color: getColor(nav-bg);
+  border-bottom: 1.5px solid getColor(border);
+  border-right: 1px solid getColor(border);
+  padding: 10px;
+}
+
+.detailsBox hr {
+  border-top: 1px solid getColor(base);
+}
+
+.detailsContent {
+  margin: 10px;
+}
+
+.infoBox {
+  background-color: getColor(bg);
+}
+
+.abbreviations {
+  display: block;
+  margin: 10px 0px 10px 25px;
+  width: 50%;
+  border-style: solid;
+  border-color: getColor(border);
+  border-width: 1.5px;
+}
+
+.abbreviations h5 {
+  background-color: getColor(nav-bg);
+  border-bottom: 1.5px solid getColor(border);
+  border-top: 1px solid getColor(border);
+  padding: 10px;
+}
+
+.abbreviations hr {
+  border-top: 1px solid getColor(base);
+}
+
+.abbreviationsContent {
+  margin: 10px;
 }
 
 .header {
@@ -32,20 +83,6 @@
   border-bottom: #636e72;
   border-width: 1px;
   border-bottom-style: solid;
-}
-
-.bugButton {
-  justify-content: flex-end;
-  display: flex;
-  align-items: flex-end;
-}
-
-.calculation {
-  overflow: hidden;
-  transition: 0.4s;
-  padding-top: 25vh; 
-  width: 100%;
-  z-index: 99;
 }
 
 .calculation-right {
@@ -88,4 +125,9 @@
   .calculation-right {
     float: none;
   }
+}
+
+.homeRoot {
+  background-color: getColor(bg);
+  height: 100%;
 }

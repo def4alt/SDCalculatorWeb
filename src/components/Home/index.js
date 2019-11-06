@@ -1,17 +1,11 @@
 import React, { Component, Suspense } from "react";
 import { withAuthorization } from "../Session";
-import * as ROUTES from "../../constants/routes";
 
 import Calculation from "../Calculation";
 
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import "./index.scss";
 
-import "./index.css";
-
-import { useTheme } from "../Theme";
 import { compose } from "recompose";
-import { withRouter } from "react-router-dom";
 import { useLocalization } from "../Localization";
 
 const LazyCards = React.lazy(() => import("../Cards"));
@@ -64,93 +58,64 @@ class HomePage extends Component {
 
 	render() {
 		return (
-			<div
-				style={{
-					backgroundColor: this.props.theme.theme.backgroundColor
-				}}
-			>
+			<div className="homeRoot" style={{paddingTop: this.state.displayCalc ? 0 : 100}}>
 				<div>
-					<div className="bugButton">
-						<Button
-							variant="link"
-							onClick={() => this.props.history.push(ROUTES.BUGS)}
-						>
-							{this.props.strings.foundBug}
-						</Button>
-					</div>
-					<div
-						className="calculation"
-						hidden={!this.state.displayCalc}
-					>
+					<div hidden={!this.state.displayCalc}>
 						<Calculation
 							callback={this.myCallback}
 							statisticsModels={this.state.statisticsModels}
 						/>
 					</div>
 					<div className="arrowBtn" hidden={this.state.displayCalc}>
-						<Button
+						<button
 							style={{
 								height: 25,
 								backgroundColor: "transparent",
 								borderColor: "transparent"
 							}}
-							variant={this.props.theme.theme.variantOutline}
 							onClick={() => this.setState({ displayCalc: true })}
 						>
 							<i className="arrow up"></i>
-						</Button>
+						</button>
 					</div>
 				</div>
 
 				{this.state.statisticsModels.length > 0 && (
-					<>
-						<Card
-							style={{
-								width: "18rem",
-								backgroundColor: this.props.theme.theme
-									.backgroundColor,
-								color: this.props.theme.theme.color,
-								borderColor: this.props.theme.theme.lightBack
-							}}
-						>
-							<Card.Header>{this.props.strings.details}</Card.Header>
-							<Card.Body>
-								<Card.Text>
-									{this.props.strings.date}: {this.state.date}
-								</Card.Text>
-								<hr />
-								<Card.Text>
-									{this.props.strings.lot}: {this.state.lot}
-								</Card.Text>
-							</Card.Body>
-						</Card>
-						<Card
-							style={{
-								width: "50rem",
-								backgroundColor: this.props.theme.theme
-									.backgroundColor,
-								color: this.props.theme.theme.color,
-								borderColor: this.props.theme.theme.lightBack
-							}}
-						>
-							<Card.Header>Abbreviations</Card.Header>
-							<Card.Body>
-								<Card.Title>13S</Card.Title>
-								<Card.Text>{this.props.strings.abr13S}</Card.Text>
-								<hr />
-								<Card.Title>22S</Card.Title>
-								<Card.Text>{this.props.strings.abr22S}</Card.Text>
-								<hr />
-								<Card.Title>R4S</Card.Title>
-								<Card.Text>{this.props.strings.abrR4S}</Card.Text>
-								<hr />
-								<Card.Title>41S</Card.Title>
-								<Card.Text>{this.props.strings.abr41S}</Card.Text>
-								<hr />
-								<Card.Title>8X</Card.Title>
-								<Card.Text>{this.props.strings.abr8X}</Card.Text>
-							</Card.Body>
-						</Card>
+					
+						<div className="infoBox">
+							<div className="detailsBox">
+								<h5>{this.props.strings.details}</h5>
+								<div className="detailsContent">
+									<p>
+										{this.props.strings.date}:{" "}
+										{this.state.date}
+									</p>
+									<hr />
+									<p>
+										{this.props.strings.lot}:{" "}
+										{this.state.lot}
+									</p>
+								</div>
+							</div>
+							<div className="abbreviations">
+								<h5>Abbreviations</h5>
+								<div className="abbreviationsContent">
+									<h6>13S</h6>
+									<p>{this.props.strings.abr13S}</p>
+									<hr />
+									<h6>22S</h6>
+									<p>{this.props.strings.abr22S}</p>
+									<hr />
+									<h6>R4S</h6>
+									<p>{this.props.strings.abrR4S}</p>
+									<hr />
+									<h6>41S</h6>
+									<p>{this.props.strings.abr41S}</p>
+									<hr />
+									<h6>8X</h6>
+									<p>{this.props.strings.abr8X}</p>
+								</div>
+							</div>
 						<Suspense
 							fallback={<div className="loadingCircle"></div>}
 						>
@@ -159,7 +124,7 @@ class HomePage extends Component {
 								statisticsModels={this.state.statisticsModels}
 							/>
 						</Suspense>
-					</>
+						</div>
 				)}
 			</div>
 		);
@@ -167,8 +132,6 @@ class HomePage extends Component {
 }
 
 export default compose(
-	useTheme,
 	withAuthorization(authUser => (authUser !== null ? true : true)),
-	withRouter,
 	useLocalization
 )(HomePage);

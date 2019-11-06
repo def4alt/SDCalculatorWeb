@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 
 import { compose } from "recompose";
 import { useLocalization } from "../Localization";
+
+import "./index.scss";
 
 const INITIAL_STATE = {
 	passwordOne: "",
@@ -39,32 +39,32 @@ class PasswordChangeForm extends Component {
 		const { passwordOne, passwordTwo, error } = this.state;
 		const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 		return (
-			<Form onSubmit={this.onSubmit} style={{ marginRight: "60vw" }}>
-				<Form.Group>
-					<Form.Label>{this.props.strings.password}</Form.Label>
-					<Form.Control
+			<form onSubmit={this.onSubmit}>
+				<div className="password">
+					<p>{this.props.strings.password}</p>
+					<input
 						name="passwordOne"
 						value={passwordOne}
 						onChange={this.onChange}
 						type="password"
 						placeholder={this.props.strings.passHint}
 					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>{this.props.strings.confirmPassword}</Form.Label>
-					<Form.Control
+				</div>
+				<div className="password">
+					<p>{this.props.strings.confirmPassword}</p>
+					<input
 						name="passwordTwo"
 						value={passwordTwo}
 						onChange={this.onChange}
 						type="password"
 						placeholder={this.props.strings.confirmPassHint}
 					/>
-				</Form.Group>
-				<Button disabled={isInvalid} type="submit">
+				</div>
+				<button className="submitChange" disabled={isInvalid} type="submit">
 					{this.props.strings.changePassword}
-				</Button>
+				</button>
 				{error && <p>{error.message}</p>}
-			</Form>
+			</form>
 		);
 	}
 }

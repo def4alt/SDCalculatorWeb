@@ -1,22 +1,15 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
+
+import "./index.scss";
 
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { useTheme } from "../Theme";
 import { useLocalization, LocalizationContext } from "../Localization";
 
 const SignUpPage = props => (
-	<div
-		style={{
-			color: props.theme.theme.color,
-			paddingLeft: 10,
-			marginRight: "60vw"
-		}}
-	>
+	<div className="signUpBox">
 		<h1>{props.strings.signUp}</h1>
 		<SignUpForm />
 	</div>
@@ -69,57 +62,55 @@ class SignUpFormBase extends Component {
 			email === "" ||
 			username === "";
 		return (
-			<Form onSubmit={this.onSubmit}>
-				<Form.Group>
-					<Form.Label>{this.props.strings.username}</Form.Label>
+			<form onSubmit={this.onSubmit} className="signUpForm">
+				<div className="username">
+					<p>{this.props.strings.username}</p>
 
-					<Form.Control
+					<input
 						name="username"
 						value={username}
 						onChange={this.onChange}
 						type="text"
 						placeholder={this.props.strings.usernameHint}
 					/>
-				</Form.Group>
+				</div>
 
-				<Form.Group>
-					<Form.Label>{this.props.strings.email}</Form.Label>
+				<div className="email">
+					<p>{this.props.strings.email}</p>
 
-					<Form.Control
+					<input
 						name="email"
 						value={email}
 						onChange={this.onChange}
 						type="text"
 						placeholder="email@example.com"
 					/>
-				</Form.Group>
+				</div>
 
-				<Form.Group>
-					<Form.Label>{this.props.strings.password}</Form.Label>
-					<Form.Control
+				<div className="password">
+					<p>{this.props.strings.password}</p>
+					<input
 						name="passwordOne"
 						value={passwordOne}
 						onChange={this.onChange}
 						type="password"
-						placeholder="E.g. pasdgf@#!1254"
+						placeholder="pasdgf@#!1254"
 					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>{this.props.strings.repeatPassword}</Form.Label>
-					<Form.Control
+				</div>
+				<div className="password">
+					<p>{this.props.strings.repeatPassword}</p>
+					<input
 						name="passwordTwo"
 						value={passwordTwo}
 						onChange={this.onChange}
 						type="password"
 					/>
-				</Form.Group>
-				<Button disabled={isInvalid} type="submit">
+				</div>
+				<button disabled={isInvalid} className="submit" type="submit">
 					{this.props.strings.signUp}
-				</Button>
-				<Form.Text className="text-danger">
-					{error && <p>{error.message}</p>}
-				</Form.Text>
-			</Form>
+				</button>
+				<p className="text-danger">{error && <p>{error.message}</p>}</p>
+			</form>
 		);
 	}
 }
@@ -128,8 +119,7 @@ const SignUpLink = () => (
 	<LocalizationContext.Consumer>
 		{({ strings }) => (
 			<p>
-				{strings.dontHave}{" "}
-				<Link to={ROUTES.SIGN_UP}>{strings.signUp}</Link>
+				{strings.dontHave} <a href={ROUTES.SIGN_UP}>{strings.signUp}</a>
 			</p>
 		)}
 	</LocalizationContext.Consumer>
@@ -141,5 +131,5 @@ const SignUpForm = compose(
 	useLocalization
 )(SignUpFormBase);
 
-export default useLocalization(useTheme(SignUpPage));
+export default useLocalization(SignUpPage);
 export { SignUpForm, SignUpLink };

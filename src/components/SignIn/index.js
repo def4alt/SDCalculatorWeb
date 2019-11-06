@@ -6,20 +6,12 @@ import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 
 import { PasswordForgetLink } from "../PasswordForget";
+import "./index.scss";
 
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { useTheme } from "../Theme";
 import { useLocalization } from "../Localization";
 
 const SignInPage = props => (
-	<div
-		style={{
-			paddingLeft: 10,
-			color: props.theme.theme.color,
-			marginRight: "60vw"
-		}}
-	>
+	<div className="signInBox">
 		<h1>{props.strings.signIn}</h1>
 		<SignInForm />
 		<PasswordForgetLink />
@@ -72,44 +64,39 @@ class SignInFormBase extends Component {
 		const { email, password, error } = this.state;
 		const isInvalid = password === "" || email === "";
 		return (
-			<div>
-				<Form onSubmit={this.onSubmit}>
-					<Form.Group>
-						<Form.Label>{this.props.strings.email}</Form.Label>
-						<Form.Control
-							name="email"
-							onChange={this.onChange}
-							type="email"
-							placeholder={this.props.strings.email}
-						/>
-					</Form.Group>
+			<form onSubmit={this.onSubmit} className="form">
+				<div className="email">
+					<p>{this.props.strings.email}</p>
+					<input
+						name="email"
+						onChange={this.onChange}
+						type="email"
+						placeholder={this.props.strings.email}
+					/>
+				</div>
 
-					<Form.Group>
-						<Form.Label>{this.props.strings.password}</Form.Label>
-						<Form.Control
-							name="password"
-							onChange={this.onChange}
-							type="password"
-							placeholder={this.props.strings.passHint}
-						/>
-					</Form.Group>
-					<Button disabled={isInvalid} type="submit">
-						{this.props.strings.signIn}
-					</Button>
-					<Button
-						style={{ marginLeft: 20 }}
-						type="submit"
-						onClick={() => this.props.history.push(ROUTES.HOME)}
-						variant="outline-dark"
-					>
-						{this.props.strings.guestMode}
-					</Button>
+				<div className="password">
+					<p>{this.props.strings.password}</p>
+					<input
+						name="password"
+						onChange={this.onChange}
+						type="password"
+						placeholder={this.props.strings.passHint}
+					/>
+				</div>
+				<button disabled={isInvalid} className="submit" type="submit">
+					{this.props.strings.signIn}
+				</button>
+				<button
+					className="guestButton"
+					type="submit"
+					onClick={() => this.props.history.push(ROUTES.HOME)}
+				>
+					{this.props.strings.guestMode}
+				</button>
 
-					<Form.Text className="text-danger">
-						{error && <p>{error.message}</p>}
-					</Form.Text>
-				</Form>
-			</div>
+				<p className="text-danger">{error && error.message}</p>
+			</form>
 		);
 	}
 }
@@ -119,5 +106,5 @@ const SignInForm = compose(
 	useLocalization
 )(SignInFormBase);
 
-export default useLocalization(useTheme(SignInPage));
+export default useLocalization(SignInPage);
 export { SignInForm };

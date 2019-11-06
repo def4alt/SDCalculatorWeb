@@ -1,0 +1,66 @@
+@import "./functions.scss";
+
+%button-standard {
+	background-color: getColor(primary);
+	color: #ffffff;
+	border-style: solid;
+	border-radius: 5px;
+	border-color: getColor(primary);
+}
+
+$colors: (
+	base: #272727,
+	primary: #206aff,
+	secondary: #e17055,
+	nav-links: #747474,
+	light: rgb(236, 236, 236),
+	border: rgb(241, 241, 241),
+	nav-bg: rgb(241, 241, 241),
+	bg: #ffffff,
+	whitish: rgb(250, 250, 250) /* Funny name though 😅 */
+);
+
+$colors-dark: (
+	base: map-get($colors, whitish),
+	primary: #206aff,
+	secondary: #689f38,
+	nav-links: #929292,
+	light: #929292,
+	border: #dbdbdb,
+	nav-bg: map-get($colors, base),
+	bg: #121212,
+	whitish: map-get($colors, base)
+);
+
+/* For light mode */
+:root {
+	@each $name, $color in $colors {
+		--color-#{$name}: #{$color};
+	}
+}
+
+/* For dark mode */
+body.dark {
+	@each $name, $color in $colors-dark {
+		--color-#{$name}: #{$color};
+	}
+}
+
+.root {
+	background-color: getColor(bg);
+	color: getColor(base);
+}
+
+.foundBug {
+	justify-content: flex-end;
+	display: flex;
+	align-items: flex-end;
+}
+
+.foundBug button {
+	@extend %button-standard;
+	right: 15px;
+	top: 80px;
+	position: fixed;
+	z-index: 10;
+}

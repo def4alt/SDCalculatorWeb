@@ -1,0 +1,86 @@
+
+@import "../App/functions.scss";
+
+.nav {
+	position: fixed;
+	overflow: hidden;
+	background-color: getColor(nav-bg);
+	align-items: center;
+	width: 100%;
+	border-bottom: 0.5px solid getColor(base);
+	z-index: 10;
+}
+
+.nav-brand {
+	font-size: 24px;
+	color: getColor(base);
+	background-color: getColor(nav-bg);
+	float: left;
+	display: block;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+/* Navbar links */
+.nav a:not(.nav-brand) {
+	float: left;
+	display: block;
+	color: getColor(nav-links);
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+/* Links - change color on hover */
+.nav-brand:hover {
+	background-color: getColor(nav-bg);
+	text-decoration: none;
+	color: getColor(base);
+}
+
+.nav a:hover:not(.nav-brand) {
+	background-color: getColor(nav-bg);
+	border-radius: 5px;
+	color: getColor(base);
+}
+
+.locale button {
+	background-color: getColor(secondary);
+	border-color: getColor(secondary);
+	border-radius: 5px;
+	color: getColor(whitish);
+	margin-right: 4px;
+	margin-left: 4px;
+}
+
+.locale {
+	margin-right: 20px;
+}
+
+.theme {
+	margin-right: 20px;
+}
+
+.theme button {
+	background-color: getColor(base);
+	color: getColor(bg);
+	border-color: getColor(base);
+	border-radius: 5px;
+	width: 2.5rem;
+	height: 2.5rem;
+
+	border-style: solid;
+}
+
+.signOut {
+	margin-right: 20px;
+}
+
+.signOut button {
+	background-color: getColor(secondary);
+	color: getColor(base);
+	border-style: solid;
+	border-radius: 5px;
+	border-color: getColor(secondary);
+}

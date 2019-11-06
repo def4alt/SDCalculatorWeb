@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeContext, themes } from "./index";
+import { ThemeContext } from "./index";
 import { withFirebase } from "../Firebase";
 import { withCookies } from "react-cookie";
 
@@ -11,15 +11,16 @@ const withTheme = Component => {
 			this.toggleTheme = this.toggleTheme.bind(this);
 
 			this.state = {
-				theme: themes.light,
+				isDark: false,
 				toggleTheme: this.toggleTheme
 			};
 		}
 
 		toggleTheme() {
-			this.setState(({
-				theme: this.state.theme === themes.dark ? themes.light : themes.dark
-			}));
+			const isDark = !this.state.isDark;
+			this.setState({
+				isDark: !this.state.isDark
+			});
 
 			if (this.props.firebase.auth.currentUser) {
 				const backups = this.props.firebase.backup(
@@ -27,28 +28,37 @@ const withTheme = Component => {
 				);
 
 				var backupsObject;
-				backups.on("value", snapshot => backupsObject = snapshot.val());
-				
+				backups.on(
+					"value",
+					snapshot => (backupsObject = snapshot.val())
+				);
+
 				backups.set({
 					...backupsObject,
-					theme: this.state.theme === themes.dark ? "light" : "dark"
+					isDark: JSON.stringify(isDark)
 				});
 			}
 
+			const bodyEl = document.querySelector("body");
+
+			isDark
+				? bodyEl.classList.add("dark")
+				: bodyEl.classList.remove("dark");
+
 			this.props.cookies.set(
-				"theme",
-				this.state.theme === themes.dark ? "light" : "dark",
+				"isDark",
+				JSON.stringify(isDark),
 				{ path: "/" }
 			);
 		}
 
 		componentDidMount() {
 			const { cookies } = this.props;
-			const theme = cookies.get("theme");
+			let isDark = cookies.get("isDark") === "true";
 
-			if (theme !== "" && theme !== undefined) {
+			if (isDark !== "" && isDark !== undefined) {
 				this.setState({
-					theme: theme === "light" ? themes.light : themes.dark
+					isDark: isDark === "true"
 				});
 			} else {
 				if (this.props.firebase.auth.currentUser)
@@ -56,13 +66,16 @@ const withTheme = Component => {
 						.backup(this.props.firebase.auth.currentUser.uid)
 						.on("value", snapshot => {
 							this.setState({
-								theme:
-									snapshot.val().theme === "light"
-										? themes.light
-										: themes.dark
+								isDark: snapshot.val().isDark === "true"
 							});
+							isDark = snapshot.val().isDark === "true";
 						});
 			}
+
+			const bodyEl = document.querySelector("body");
+			isDark
+				? bodyEl.classList.add("dark")
+				: bodyEl.classList.remove("dark");
 		}
 
 		render() {

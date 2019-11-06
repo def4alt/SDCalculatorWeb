@@ -5,15 +5,9 @@ import GetStatistics from "./statistics";
 
 import { withFirebase } from "../Firebase";
 
-import Alert from "react-bootstrap/Alert";
-import Form from "react-bootstrap/Form";
-import Dropdown from "react-bootstrap/Dropdown";
-
-import "./index.css";
+import "./index.scss";
 
 import * as WestgardRules from "./WestgardRules";
-
-import { useTheme } from "../Theme";
 
 import { compose } from "recompose";
 import { useLocalization } from "../Localization";
@@ -56,7 +50,7 @@ class CalculationPage extends Component {
 
 							if (backupsObject) {
 								const backupsList = Object.keys(backupsObject)
-									.filter(key => key !== "theme")
+									.filter(key => key !== "isDark")
 									.map(key => ({
 										...backupsObject[key],
 										lot: key
@@ -201,32 +195,22 @@ class CalculationPage extends Component {
 
 	render() {
 		return (
-			<div
-				className="center"
-				style={{ color: this.props.theme.theme.color }}
-			>
-				<Form onSubmit={this.handleSubmit}>
-					{this.state.error !== "" && (
-						<Alert variant={this.props.theme.theme.variant}>
-							{this.state.error}
-						</Alert>
-					)}
-					<Dropdown>
-						<Form.Group>
-							<Form.Label>Lot</Form.Label>
-							<Dropdown.Toggle variant="link">
-								<Form.Control
-									type="number"
-									placeholder="e.g. 1214"
-									value={this.state.lot}
-									onChange={this.handleLotChange}
-								/>
-							</Dropdown.Toggle>
-							<Dropdown.Menu alignRight={true}>
+			<div className="center calculation">
+				<form onSubmit={this.handleSubmit}>
+					{this.state.error !== "" && <p>{this.state.error}</p>}
+					<div>
+						<span className="lotSpan">Lot</span>
+						<div class="dropdown">
+							<input
+								type="number"
+								className="lot"
+								placeholder="e.g. 1214"
+								value={this.state.lot}
+								onChange={this.handleLotChange}
+							/>
+							<div class="dropdown-content">
 								{this.state.backups.map(backup => (
-									<Dropdown.Item
-										as="button"
-										eventKey={backup.lot}
+									<button
 										key={backup.lot}
 										onClick={() => {
 											this.props.callback({
@@ -240,14 +224,14 @@ class CalculationPage extends Component {
 										}}
 									>
 										{backup.lot}
-									</Dropdown.Item>
+									</button>
 								))}
-							</Dropdown.Menu>
-						</Form.Group>
-					</Dropdown>
+							</div>
+						</div>
+					</div>
 
-					<div className="center">
-						<label class="text-justify text-center addAverageLabel">
+					<div className="switchBox">
+						<label class="addAverageLabel">
 							{this.props.strings.addAverage}
 						</label>
 						<label className="switch">
@@ -258,12 +242,12 @@ class CalculationPage extends Component {
 							/>
 							<span className="slider round"></span>
 						</label>
-						<label class="text-justify text-center buildChartsLabel">
+						<label class="buildChartsLabel">
 							{this.props.strings.buildCharts}
 						</label>
 					</div>
 
-					<div style={{ paddingTop: 20 }}>
+					<div>
 						<p>{this.props.strings.selectFiles + ":"}</p>
 						<label className="file">
 							<input
@@ -298,7 +282,7 @@ class CalculationPage extends Component {
 							? this.props.strings.addingAverage
 							: this.props.strings.addAverage}
 					</button>
-				</Form>
+				</form>
 			</div>
 		);
 	}
@@ -306,6 +290,5 @@ class CalculationPage extends Component {
 
 export default compose(
 	withFirebase,
-	useTheme,
 	useLocalization
 )(CalculationPage);

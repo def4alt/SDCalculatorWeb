@@ -3,13 +3,10 @@ import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
 import { withAuthorization } from "../Session";
 
-import Toast from "react-bootstrap/Toast";
-import { useTheme } from "../Theme";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
 import moment from "moment";
 import { useLocalization } from "../Localization";
+
+import "./index.scss";
 
 class BugsPage extends React.Component {
 	constructor(props) {
@@ -68,36 +65,19 @@ class BugsPage extends React.Component {
 		};
 		const handleShow = () => this.setState({ showModal: true });
 		return (
-			<div
-				style={{
-					color: this.props.theme.theme.color,
-					paddingLeft: 10
-				}}
-			>
+			<div className="bugsBox">
 				<h1>
 					{this.props.strings.bugs + " "}
-					<Button
-						variant={this.props.theme.theme.variantOutline}
+					<button
+						className="newBugButton"
 						onClick={() => handleShow()}
 					>
 						{this.props.strings.newBug}
-					</Button>
+					</button>
 				</h1>
 				{this.state.bugs.map(bug => (
-					<Toast
-						style={{
-							backgroundColor: this.props.theme.theme.lightBack,
-							borderColor: this.props.theme.theme.lightBack
-						}}
-					>
-						<Toast.Header
-							closeButton={false}
-							style={{
-								backgroundColor: this.props.theme.theme
-									.lightBack,
-								color: this.props.theme.theme.color
-							}}
-						>
+					<div className="bug">
+						<div className="bugHeader">
 							<strong className="mr-auto">
 								{bug.title} #{bug.id}
 							</strong>
@@ -112,49 +92,47 @@ class BugsPage extends React.Component {
 								)}{" "}
 								{this.props.strings.minAgo}
 							</small>
-						</Toast.Header>
+						</div>
 						{bug.about !== "" && (
-							<Toast.Body
-								style={{
-									backgroundColor: this.props.theme.theme
-										.backgroundColor
-								}}
-							>
-								{bug.about}
-							</Toast.Body>
+							<div className="bugContent">{bug.about}</div>
 						)}
-					</Toast>
+					</div>
 				))}
-				<Modal show={this.state.showModal} onHide={handleClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>{this.props.strings.newBug}</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<Form>
-							<Form.Group>
-								<Form.Control
-									name="title"
-									onChange={this.onChange}
-									type="text"
-									placeholder={this.props.strings.title}
-								/>
-							</Form.Group>
-							<Form.Group>
-								<Form.Control
-									name="about"
-									onChange={this.onChange}
-									as="textarea"
-									placeholder={this.props.strings.leaveComment}
-								/>
-							</Form.Group>
-						</Form>
-					</Modal.Body>
-					<Modal.Footer>
-						<Button variant="primary" onClick={handleClose}>
-							{this.props.strings.submit}
-						</Button>
-					</Modal.Footer>
-				</Modal>
+				<div
+					className="modal"
+					style={{ display: this.state.showModal ? "block" : "none" }}
+				>
+					<div className="modal-content">
+						<div>
+							<form>
+								<div>
+									<input
+										name="title"
+										className="title"
+										onChange={this.onChange}
+										type="text"
+										placeholder={this.props.strings.title}
+									/>
+								</div>
+								<div>
+									<textarea
+										name="about"
+										className="about"
+										onChange={this.onChange}
+										placeholder={
+											this.props.strings.leaveComment
+										}
+									/>
+								</div>
+							</form>
+						</div>
+						<div>
+							<button className="submitBug" onClick={handleClose}>
+								{this.props.strings.submit}
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -162,7 +140,6 @@ class BugsPage extends React.Component {
 
 export default compose(
 	withFirebase,
-	useTheme,
 	withAuthorization(authUser => !!authUser),
 	useLocalization
 )(BugsPage);

@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+
+import "./index.scss";
 
 import { useLocalization } from "../Localization";
 
-const PasswordForgetPage = () => (
-	<div>
-		<h1>{this.props.strings.passwordForget}</h1>
+const PasswordForgetPage = props => (
+	<div className="forgetPasswordBox">
+		<h1>{props.strings.passwordForget}</h1>
 		<PasswordForgetForm />
 	</div>
 );
@@ -23,6 +22,9 @@ class PasswordForgetFormBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
+
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	onSubmit(event) {
@@ -47,36 +49,34 @@ class PasswordForgetFormBase extends Component {
 		const isInvalid = email === "";
 
 		return (
-			<Form onSubmit={this.onSubmit}>
-				<Form.Group>
-					<Form.Label>{this.props.strings.email}</Form.Label>
-					<Form.Control
+			<form onSubmit={this.onSubmit}>
+				<div className="email">
+					<p>{this.props.strings.email}</p>
+					<input
 						name="email"
 						value={this.state.email}
 						onChange={this.onChange}
 						type="text"
 						placeholder={this.props.strings.email}
 					/>
-				</Form.Group>
-				<Button disabled={isInvalid} type="submit">
+				</div>
+				<button className="submitForget" disabled={isInvalid} type="submit">
 					{this.props.strings.resetPassword}
-				</Button>
-				<Form.Text className="text-danger">
-					{error && <p>{error.message}</p>}
-				</Form.Text>
-			</Form>
+				</button>
+				<p className="text-danger">{error && <p>{error.message}</p>}</p>
+			</form>
 		);
 	}
 }
 
 const PasswordForgetLink = () => (
-	<p>
-		<Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>
-	</p>
+	<a href={ROUTES.PASSWORD_FORGET}>Forgot Password?</a>
 );
 
 export default useLocalization(PasswordForgetPage);
 
-const PasswordForgetForm = useLocalization(withFirebase(PasswordForgetFormBase));
+const PasswordForgetForm = useLocalization(
+	withFirebase(PasswordForgetFormBase)
+);
 
 export { PasswordForgetForm, PasswordForgetLink };

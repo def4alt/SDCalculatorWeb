@@ -1,10 +1,8 @@
 import React from "react";
 
-import "./index.css";
+import "./index.scss";
+import domtoimage from 'dom-to-image';
 
-import { useTheme } from "../Theme";
-
-import Button from "react-bootstrap/Button";
 import CardTemplate from "./CardsTemplate";
 import { useLocalization } from "../Localization";
 
@@ -26,6 +24,20 @@ class CardsHolder extends React.Component {
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener("resize", this.updateWindowDimensions);
+
+		domtoimage
+			.toPng(document.querySelector(".cardsRoot"))
+			.then(dataUrl => {
+				var link = document.createElement("a");
+				link.download = "cards.png";
+				link.href = dataUrl;
+				link.click();
+			})
+			.then(
+				this.setState({
+					editMode: true
+				})
+			);
 	}
 
 	componentWillUnmount() {
@@ -57,15 +69,10 @@ class CardsHolder extends React.Component {
 		});
 
 		return (
-			<div
-				style={{
-					color: this.props.theme.theme.color,
-					backgroundColor: this.props.theme.theme.backgroundColor
-				}}
-			>
+			<div className="cardsRoot">
 				<div className="border-bottom center">
-					<Button
-						variant="link"
+					<button
+						className="link-button"
 						onClick={() =>
 							this.setState({
 								showStarredCharts: !this.state.showStarredCharts
@@ -73,15 +80,15 @@ class CardsHolder extends React.Component {
 						}
 					>
 						{this.props.strings.toggleStarred}
-					</Button>
-					<Button
-						variant="link"
+					</button>
+					<button
+						className="link-button"
 						onClick={() =>
 							this.setState({ editMode: !this.state.editMode })
 						}
 					>
 						{this.props.strings.toggleEdit}
-					</Button>
+					</button>
 				</div>
 				<div className="cardsHolder center">{cards}</div>
 			</div>
@@ -89,4 +96,4 @@ class CardsHolder extends React.Component {
 	}
 }
 
-export default useLocalization(useTheme(CardsHolder));
+export default useLocalization(CardsHolder);
