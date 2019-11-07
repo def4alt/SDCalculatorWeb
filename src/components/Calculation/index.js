@@ -200,7 +200,7 @@ class CalculationPage extends Component {
 					{this.state.error !== "" && <p>{this.state.error}</p>}
 					<div>
 						<span className="lotSpan">Lot</span>
-						<div class="dropdown">
+						<div className="dropdown">
 							<input
 								type="number"
 								className="lot"
@@ -208,7 +208,7 @@ class CalculationPage extends Component {
 								value={this.state.lot}
 								onChange={this.handleLotChange}
 							/>
-							<div class="dropdown-content">
+							<div className="dropdown-content">
 								{this.state.backups.map(backup => (
 									<button
 										key={backup.lot}
@@ -231,7 +231,7 @@ class CalculationPage extends Component {
 					</div>
 
 					<div className="switchBox">
-						<label class="addAverageLabel">
+						<label className="addAverageLabel">
 							{this.props.strings.addAverage}
 						</label>
 						<label className="switch">
@@ -242,7 +242,7 @@ class CalculationPage extends Component {
 							/>
 							<span className="slider round"></span>
 						</label>
-						<label class="buildChartsLabel">
+						<label className="buildChartsLabel">
 							{this.props.strings.buildCharts}
 						</label>
 					</div>

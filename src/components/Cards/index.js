@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./index.scss";
-import domtoimage from 'dom-to-image';
 
 import CardTemplate from "./CardsTemplate";
 import { useLocalization } from "../Localization";
@@ -24,20 +23,6 @@ class CardsHolder extends React.Component {
 	componentDidMount() {
 		this.updateWindowDimensions();
 		window.addEventListener("resize", this.updateWindowDimensions);
-
-		domtoimage
-			.toPng(document.querySelector(".cardsRoot"))
-			.then(dataUrl => {
-				var link = document.createElement("a");
-				link.download = "cards.png";
-				link.href = dataUrl;
-				link.click();
-			})
-			.then(
-				this.setState({
-					editMode: true
-				})
-			);
 	}
 
 	componentWillUnmount() {

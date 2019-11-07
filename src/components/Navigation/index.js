@@ -44,10 +44,13 @@ const Navigation = () => (
 
 const NavigationAuth = props => (
 	<div className="nav">
-		<a className="nav-brand" href={ROUTES.LANDING}>
-			SDCalculatorWeb
-		</a>
-		<div className="mr-auto">
+		<input type="checkbox" id="nav-check" />
+		<div>
+			<a className="nav-brand" href={ROUTES.LANDING}>
+				SDCalculatorWeb
+			</a>
+		</div>
+		<div class="mr-auto nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.ACCOUNT}>{props.strings.account}</a>
 		</div>
@@ -64,15 +67,23 @@ const NavigationAuth = props => (
 		<div className="signOut">
 			<SignOutButton />
 		</div>
+		<div className="nav-btn">
+			<label htmlFor="nav-check">
+				<span></span>
+				<span></span>
+				<span></span>
+			</label>
+		</div>
 	</div>
 );
 
 const NavigationNonAuth = props => (
 	<div className="nav">
-		<a className="nav-brand" href={ROUTES.LANDING}>
-			SDCalculatorWeb
-		</a>
-		<div className="mr-auto">
+		<input type="checkbox" id="nav-check" />
+		<div className="nav-brand">
+			<a href={ROUTES.LANDING}>SDCalculatorWeb</a>
+		</div>
+		<div class="mr-auto">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.SIGN_IN}>{props.strings.signIn}</a>
 		</div>
@@ -85,6 +96,13 @@ const NavigationNonAuth = props => (
 			<button onClick={() => props.theme.toggleTheme()}>
 				{!props.theme.isDark ? <WiNightClear /> : <WiDaySunny />}
 			</button>
+		</div>
+		<div className="nav-btn">
+			<label htmlFor="nav-check">
+				<span></span>
+				<span></span>
+				<span></span>
+			</label>
 		</div>
 	</div>
 );
