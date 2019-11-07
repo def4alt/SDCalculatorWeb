@@ -36,7 +36,9 @@ $colors-dark: (
 :root {
 	@each $name, $color in $colors {
 		--color-#{$name}: #{$color};
-	}
+	};
+
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 /* For dark mode */

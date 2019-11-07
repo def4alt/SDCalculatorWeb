@@ -75,7 +75,7 @@ let strings = new LocalizedStrings({
 		buildingCharts: "Строю...",
 		lot: "Лот",
 		browseFiles: "Выбор",
-		selectFiles: "Выберете файлы",
+		selectFiles: "Выберите файлы",
 		foundBug: "Нашли баг?",
 		home: "Дом",
 		account: "Аккаунт",
