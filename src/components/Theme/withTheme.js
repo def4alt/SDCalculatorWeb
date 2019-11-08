@@ -45,11 +45,9 @@ const withTheme = Component => {
 				? bodyEl.classList.add("dark")
 				: bodyEl.classList.remove("dark");
 
-			this.props.cookies.set(
-				"isDark",
-				JSON.stringify(isDark),
-				{ path: "/" }
-			);
+			this.props.cookies.set("isDark", JSON.stringify(isDark), {
+				path: "/"
+			});
 		}
 
 		componentDidMount() {
@@ -58,24 +56,34 @@ const withTheme = Component => {
 
 			if (isDark !== "" && isDark !== undefined) {
 				this.setState({
-					isDark: isDark === "true"
+					isDark: isDark
 				});
 			} else {
-				if (this.props.firebase.auth.currentUser)
-					this.props.firebase
-						.backup(this.props.firebase.auth.currentUser.uid)
-						.on("value", snapshot => {
-							this.setState({
-								isDark: snapshot.val().isDark === "true"
-							});
-							isDark = snapshot.val().isDark === "true";
-						});
+				this.listener = this.props.firebase.auth.onAuthStateChanged(
+					authUser =>
+						authUser
+							? this.props.firebase
+									.backup(authUser.uid)
+									.on("value", snapshot => {
+										this.setState({
+											isDark:
+												snapshot.val().isDark === "true"
+										});
+										isDark =
+											snapshot.val().isDark === "true";
+									})
+							: null
+				);
 			}
 
 			const bodyEl = document.querySelector("body");
 			isDark
 				? bodyEl.classList.add("dark")
 				: bodyEl.classList.remove("dark");
+		}
+
+		componentWillUnmount() {
+			this.listener();
 		}
 
 		render() {

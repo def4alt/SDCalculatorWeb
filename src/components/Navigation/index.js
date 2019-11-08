@@ -50,7 +50,7 @@ const NavigationAuth = props => (
 				SDCalculatorWeb
 			</a>
 		</div>
-		<div class="mr-auto nav-links">
+		<div className="mr-auto nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.ACCOUNT}>{props.strings.account}</a>
 		</div>
@@ -85,7 +85,7 @@ const NavigationNonAuth = props => (
 				SDCalculatorWeb
 			</a>
 		</div>
-		<div class="mr-auto nav-links">
+		<div className="mr-auto nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.SIGN_IN}>{props.strings.signIn}</a>
 		</div>
