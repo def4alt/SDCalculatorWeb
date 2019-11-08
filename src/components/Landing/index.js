@@ -7,7 +7,7 @@ class LandingPage extends React.Component {
 			<div>
 				<div className="brandBox">
 					<p className="brand">SDCalculatorWeb</p>
-					<p className="description">Made for NAME OF PROGRAM</p>
+					<p className="description">Made for ChemoView™</p>
 				</div>
 			</div>
 		);

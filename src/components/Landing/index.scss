@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-	color: var(--color-base);
+	color: getColor(base);
 }
 
 .brand {
@@ -15,5 +15,5 @@
 
 .description {
     font-size: 2.5vmin;
-	color: var(--color-light);
+	color: getColor(light);
 }

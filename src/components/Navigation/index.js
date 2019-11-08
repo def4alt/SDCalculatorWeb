@@ -80,10 +80,12 @@ const NavigationAuth = props => (
 const NavigationNonAuth = props => (
 	<div className="nav">
 		<input type="checkbox" id="nav-check" />
-		<div className="nav-brand">
-			<a href={ROUTES.LANDING}>SDCalculatorWeb</a>
+		<div>
+			<a className="nav-brand" href={ROUTES.LANDING}>
+				SDCalculatorWeb
+			</a>
 		</div>
-		<div class="mr-auto">
+		<div class="mr-auto nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.SIGN_IN}>{props.strings.signIn}</a>
 		</div>
