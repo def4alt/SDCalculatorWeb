@@ -8,6 +8,7 @@
 
 .newBugButton {
 	background-color: getColor(bg);
+	color: getColor(base);
 	border-style: solid;
 	border-color: getColor(border);
 	border-radius: 5px;
@@ -52,90 +53,72 @@
 .bugContent {
 	padding: 10px;
 }
-
-.modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
+.modal-window {
+	position: fixed;
+	background-color: getColor(transparent);
+	top: 0;
+	right: 0;
+	bottom: 0;
 	left: 0;
-    top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0, 0, 0); /* Fallback color */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-/* Modal Content */
-.modal-content {
-    align-items: center;
-    justify-content: center;
-	position: relative;
-	margin: auto;
-	padding: 0;
-	border: 1px solid #888;
-	width: 80%;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	-webkit-animation-name: animatetop;
-	-webkit-animation-duration: 0.4s;
-	animation-name: animatetop;
-	animation-duration: 0.4s;
-}
-
-/* Add Animation */
-@-webkit-keyframes animatetop {
-	from {
-		top: -300px;
-		opacity: 0;
+	z-index: 999;
+	transition: all 0.3s;
+	& > div {
+		width: 400px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		padding: 2em;
+		background: getColor(nav-bg);
 	}
-	to {
-		top: 0;
-		opacity: 1;
+	header {
+		font-weight: bold;
+	}
+	h1 {
+		font-size: 150%;
+		margin: 0 0 15px;
 	}
 }
 
-@keyframes animatetop {
-	from {
-		top: -300px;
-		opacity: 0;
-	}
-	to {
-		top: 0;
-		opacity: 1;
-	}
-}
-
-/* The Close Button */
 .close {
-	color: white;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	width: 20px;
+	height: 20px;
+	opacity: 0.3;
+}
+.close:hover {
+	opacity: 1;
+}
+.close:before,
+.close:after {
+	position: absolute;
+	left: 9px;
+	bottom: 0;
+	content: " ";
+	height: 21px;
+	width: 2px;
+	background-color: getColor(base);
+}
+.close:before {
+	transform: rotate(45deg);
+}
+.close:after {
+	transform: rotate(-45deg);
 }
 
-.close:hover,
-.close:focus {
-	color: #000;
-	text-decoration: none;
-	cursor: pointer;
+.container {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
 }
 
-.modal-header {
-	padding: 2px 16px;
-	background-color: #5cb85c;
-	color: white;
+.modal-window div:not(:last-of-type) {
+	margin-bottom: 15px;
 }
 
-.modal-body {
-	padding: 2px 16px;
-}
-
-.modal-footer {
-	padding: 2px 16px;
-	background-color: #5cb85c;
-	color: white;
-}
 .title {
 	width: 20em;
 	border-style: solid;
@@ -143,6 +126,10 @@
 	border-width: 1.5px;
 	border-radius: 5px;
 	padding: 5px;
+}
+
+.newBugTitle {
+	color: getColor(base);
 }
 
 .about {

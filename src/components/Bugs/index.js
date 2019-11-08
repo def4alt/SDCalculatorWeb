@@ -8,6 +8,19 @@ import { useLocalization } from "../Localization";
 
 import "./index.scss";
 
+const showModal = {
+	show: {
+		visibility: "visible",
+		opacity: 1,
+		pointerEvents: "auto"
+	},
+	hide: {
+		visibility: "hidden",
+		opacity: 0,
+		pointerEvents: "none"
+	}
+};
+
 class BugsPage extends React.Component {
 	constructor(props) {
 		super(props);
@@ -16,8 +29,11 @@ class BugsPage extends React.Component {
 			bugs: [],
 			loading: false,
 			title: "",
-			about: ""
+			about: "",
+			showModal: showModal.hide
 		};
+
+		this.onChange = this.onChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -42,7 +58,7 @@ class BugsPage extends React.Component {
 
 	render() {
 		const handleClose = () => {
-			this.setState({ showModal: false });
+			this.setState({ showModal: showModal.hide });
 
 			const { title, about, bugs } = this.state;
 
@@ -63,7 +79,7 @@ class BugsPage extends React.Component {
 				this.props.firebase.bugs().set([...bugs, newBug]);
 			}
 		};
-		const handleShow = () => this.setState({ showModal: true });
+		const handleShow = () => this.setState({ showModal: showModal.show });
 		return (
 			<div className="bugsBox">
 				<h1>
@@ -98,34 +114,37 @@ class BugsPage extends React.Component {
 						)}
 					</div>
 				))}
-				<div
-					className="modal"
-					style={{ display: this.state.showModal ? "block" : "none" }}
-				>
-					<div className="modal-content">
-						<div>
-							<form>
-								<div>
-									<input
-										name="title"
-										className="title"
-										onChange={this.onChange}
-										type="text"
-										placeholder={this.props.strings.title}
-									/>
-								</div>
-								<div>
-									<textarea
-										name="about"
-										className="about"
-										onChange={this.onChange}
-										placeholder={
-											this.props.strings.leaveComment
-										}
-									/>
-								</div>
-							</form>
-						</div>
+				<div class="modal-window" style={this.state.showModal}>
+					<div className="container">
+						<button
+							onClick={() =>
+								this.setState({ showModal: showModal.hide })
+							}
+							title="Close" className="close"
+						>
+						</button>
+						<h1 className="newBugTitle">New bug</h1>
+						<form>
+							<div>
+								<input
+									name="title"
+									className="title"
+									onChange={this.onChange}
+									type="text"
+									placeholder={this.props.strings.title}
+								/>
+							</div>
+							<div>
+								<textarea
+									name="about"
+									className="about"
+									onChange={this.onChange}
+									placeholder={
+										this.props.strings.leaveComment
+									}
+								/>
+							</div>
+						</form>
 						<div>
 							<button className="submitBug" onClick={handleClose}>
 								{this.props.strings.submit}
