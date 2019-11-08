@@ -123,7 +123,8 @@ class BugsPage extends React.Component {
 							title="Close" className="close"
 						>
 						</button>
-						<h1 className="newBugTitle">New bug</h1>
+						<h1 className="newBugTitle">
+						{this.props.strings.newBug}</h1>
 						<form>
 							<div>
 								<input
