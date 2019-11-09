@@ -140,6 +140,7 @@ class CalculationPage extends Component {
 					globalModel.Warning[globalModel.Warning.length - 1]
 				)
 					globalModel.Warning.push(warning);
+				else globalModel.Warning.push(" ");
 			}
 		} else {
 			globalStatisticsModels = statisticsModels;

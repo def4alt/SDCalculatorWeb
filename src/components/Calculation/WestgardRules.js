@@ -83,6 +83,8 @@ function Rule41S(index) {
 		)
 			numOfMinusExceeds += 1;
 	}
+	console.log(numOfMinusExceeds);
+	console.log(numOfPlusExceeds);
 
 	if (numOfMinusExceeds === 4 || numOfPlusExceeds === 4) return true;
 	else return false;
