@@ -15,7 +15,7 @@ export function CheckValues(AV, SD) {
 		} else if (Rule13S(i)) return "13S";
 	}
 
-	return "";
+	return " ";
 }
 
 function isValueExceedsPlus(value) {

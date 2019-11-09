@@ -14,7 +14,7 @@
 	width: 50%;
 	border-style: solid;
 	border-color: getColor(border);
-	border-width: 1.5px;
+	border-width: 2px;
 	border-radius: 5px;
 }
 
@@ -22,7 +22,6 @@
 	border-radius: 5px 5px 0px 0px;
 	background-color: getColor(nav-bg);
 	border-bottom: 1.5px solid getColor(border);
-	border-top: 1px solid getColor(border);
 	padding: 10px;
 	margin-bottom: 0;
 }
