@@ -1,7 +1,7 @@
 import React from "react";
 import Firebase from "./firebase";
 
-const FirebaseContext = React.createContext<Firebase>(new Firebase());
+const FirebaseContext = React.createContext<Firebase | undefined>(undefined);
 
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
@@ -13,7 +13,7 @@ export const withFirebase = <P extends object>(
 	Component: React.ComponentType<P>
 ): React.FC<Omit<P, keyof withFirebaseProps>> => props => (
 	<FirebaseContext.Consumer>
-		{(firebase: Firebase) => (
+		{(firebase: Firebase | undefined) => (
 			<Component {...(props as P)} firebase={firebase} />
 		)}
 	</FirebaseContext.Consumer>

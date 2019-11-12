@@ -15,7 +15,7 @@ const App: React.FunctionComponent<AppProps> = props => (
 	<CookiesProvider>
 		<Router>
 			<div className="root">
-				<Route exact path={ROUTES.HOME} component={LandingPage}  />
+				<Route exact path={ROUTES.LANDING} component={LandingPage}  />
 			</div>
 		</Router>
 	</CookiesProvider>
