@@ -1,5 +1,59 @@
 import LocalizedStrings, { LocalizedStringsMethods } from "react-localization";
 
+export interface stringsTypeUnknown extends LocalizedStringsMethods {
+	addAverage: string;
+	buildCharts: string;
+	addingAverage: string;
+	buildingCharts: string;
+	lot: string;
+	browseFiles: string;
+	selectFiles: string;
+	foundBug: string;
+	home: string;
+	account: string;
+	signOut: string;
+	signIn: string;
+	signUp: string;
+	email: string;
+	password: string;
+	guestMode: string;
+	forgotPassword: string;
+	dontHave: string;
+	bugs: string;
+	newBug: string;
+	minAgo: string;
+	hoursAgo: string;
+	daysAgo: string;
+	yearsAgo: string;
+	confirmPassword: string;
+	passHint: string;
+	usernameHint: string;
+	confirmPassHint: string;
+	changePassword: string;
+	username: string;
+	repeatPassword: string;
+	date: string;
+	details: string;
+	resetPassword: string;
+	toggleStarred: string;
+	filesSelected: string;
+	toggleEdit: string;
+	print: string;
+	star: string;
+	save: string;
+	delete: string;
+	title: string;
+	submit: string;
+	admin: string;
+	leaveComment: string;
+	passwordForget: string;
+	abr13S: string;
+	abr22S: string;
+	abrR4S: string;
+	abr41S: string;
+	abr8X: string;
+}
+
 var strings: LocalizedStringsMethods = new LocalizedStrings({
 	en: {
 		addAverage: "Add average",

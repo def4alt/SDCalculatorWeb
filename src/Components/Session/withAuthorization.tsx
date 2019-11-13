@@ -43,7 +43,7 @@ const withAuthorization = (
 			return (
 				<AuthUserContext.Consumer>
 					{(authUser?: firebase.User) =>
-						condition(authUser) && <Component {...this.props} />
+						condition(authUser) && <Component {...this.props as P} />
 					}
 				</AuthUserContext.Consumer>
 			);

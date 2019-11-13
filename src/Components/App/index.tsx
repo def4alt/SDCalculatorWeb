@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "../../Constants/routes";
 
 import LandingPage from "../Landing";
+import Navigation from "../Navigation";
 
 interface AppProps {}
 
@@ -15,7 +16,8 @@ const App: React.FunctionComponent<AppProps> = props => (
 	<CookiesProvider>
 		<Router>
 			<div className="root">
-				<Route exact path={ROUTES.LANDING} component={LandingPage}  />
+				<Navigation />
+				<Route exact path={ROUTES.LANDING} component={LandingPage} />
 			</div>
 		</Router>
 	</CookiesProvider>

@@ -1,0 +1,216 @@
+@import "../../functions.scss";
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0px;
+	font-family: "segoe ui";
+}
+
+.nav {
+    width: 100%;
+	background-color: getColor(nav-bg);
+	position: fixed;
+    align-items: center;
+    top: 0;
+	z-index: 100;
+}
+
+
+.nav-brand {
+	font-size: 24px;
+	color: getColor(base);
+	background-color: getColor(nav-bg);
+	float: left;
+	display: block;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+.nav-brand:hover {
+	background-color: getColor(nav-bg);
+	text-decoration: none;
+	color: getColor(base);
+}
+
+.locale button {
+	background-color: getColor(secondary);
+	border-color: getColor(secondary);
+	border-radius: 5px;
+	color: getColor(whitish);
+	margin-right: 4px;
+	margin-left: 4px;
+}
+
+.locale {
+	margin-right: 20px;
+}
+
+.theme {
+	margin-right: 20px;
+}
+
+.theme button {
+	background-color: getColor(base);
+	color: getColor(bg);
+	border-color: getColor(base);
+	border-radius: 5px;
+	width: 2.5rem;
+	height: 2.5rem;
+
+	border-style: solid;
+}
+
+.signOut {
+	margin-right: 20px;
+}
+
+.signOut button {
+	background-color: getColor(secondary);
+	color: #ffffff;
+	border-style: solid;
+	border-radius: 5px;
+	border-color: getColor(secondary);
+}
+
+.nav > .nav-btn {
+	display: none;
+}
+
+.nav > .nav-links {
+	display: inline;
+	font-size: 18px;
+}
+
+.nav > .nav-links > a {
+	display: inline-block;
+	padding: 13px 10px 13px 10px;
+	text-decoration: none;
+	color: getColor(nav-links);
+}
+
+.nav > .nav-links > a:hover {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav > #nav-check {
+	display: none;
+}
+
+@media (max-width: 700px) {
+	.nav > .nav-btn {
+		display: inline-block;
+		position: absolute;
+		right: 5px;
+		top: 5px;
+	}
+	.nav > .nav-btn > label {
+		display: inline-block;
+		width: 50px;
+		height: 50px;
+		padding: 13px;
+	}
+	.nav > .nav-btn > label:hover,
+	.nav ~ .nav-btn > label {
+		background-color: rgba(0, 0, 0, 0.3);
+	}
+	.nav > .nav-btn > label > span {
+		display: block;
+		width: 25px;
+		height: 10px;
+		border-top: 2px solid getColor(base);
+	}
+	.nav > .nav-links {
+		position: absolute;
+		display: block;
+		width: 100%;
+		background-color: getColor(nav-bg);
+		height: 0px;
+		transition: all 0.3s ease-in;
+		overflow-y: hidden;
+		top: 50px;
+		left: 0px;
+	}
+
+	.nav > .locale {
+		position: absolute;
+		display: block;
+		width: 100%;
+		color: getColor(base);
+		height: 0px;
+		transition: all 0.3s ease-in;
+		overflow-y: hidden;
+		top: 160px;
+		left: 0px;
+	}
+
+	.nav > .theme {
+		position: absolute;
+		display: block;
+		width: 100%;
+		color: getColor(base);
+		height: 0px;
+		transition: all 0.3s ease-in;
+		overflow-y: hidden;
+		top: 200px;
+		left: 5px;
+	}
+
+	.nav > .signOut {
+		position: absolute;
+		display: block;
+		width: 100%;
+		color: getColor(base);
+		height: 0px;
+		transition: all 0.3s ease-in;
+		overflow-y: hidden;
+		top: 250px;
+		left: 0px;
+	}
+
+	.nav > .nav-links > a {
+		display: block;
+		width: 100%;
+	}
+
+	.nav > .signOut > button {
+		display: block;
+		width: 100%;
+	}
+
+	.nav > #nav-check:not(:checked) ~ .nav-links,
+	.locale,
+	.theme,
+	.signOut {
+		height: 0px;
+	}
+
+	.nav > #nav-check:checked {
+		:root {
+			overflow: hidden;
+		}
+	}
+
+	.nav > #nav-check:checked ~ .nav-links {
+		height: calc(100vh - 50px);
+		overflow-y: auto;
+	}
+
+	.nav > #nav-check:checked ~ .locale {
+		height: calc(100vh - 160px);
+		overflow-y: auto;
+	}
+
+	.nav > #nav-check:checked ~ .theme {
+		height: calc(100vh - 200px);
+		overflow-y: auto;
+	}
+
+	.nav > #nav-check:checked ~ .signOut {
+		height: calc(100vh - 250px);
+		overflow-y: auto;
+	}
+}

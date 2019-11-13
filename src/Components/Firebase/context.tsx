@@ -13,9 +13,9 @@ export const withFirebase = <P extends object>(
 	Component: React.ComponentType<P>
 ): React.FC<Omit<P, keyof withFirebaseProps>> => props => (
 	<FirebaseContext.Consumer>
-		{(firebase: Firebase | undefined) => (
-			<Component {...(props as P)} firebase={firebase} />
-		)}
+		{(firebase: Firebase | undefined) =>
+			firebase && <Component {...(props as P)} firebase={firebase} />
+		}
 	</FirebaseContext.Consumer>
 );
 
