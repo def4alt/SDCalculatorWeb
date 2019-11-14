@@ -1,9 +1,17 @@
 import React from "react";
+import "./index.scss";
 
-interface Props {
-
+class LandingPage extends React.Component {
+	render() {
+		return (
+			<div>
+				<div className="brandBox">
+					<p className="brand">SDCalculatorWeb</p>
+					<p className="description">Made for ChemoView™</p>
+				</div>
+			</div>
+		);
+	}
 }
-
-const LandingPage: React.SFC<Props> = () => <h1>Hello</h1>;
 
 export default LandingPage;

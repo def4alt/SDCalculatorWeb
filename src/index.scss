@@ -43,6 +43,10 @@ $colors-dark: (
 	font-family: Arial, Helvetica, sans-serif;
 }
 
+.base {
+	margin-top: 80px;
+}
+
 /* For dark mode */
 body.dark {
 	@each $name, $color in $colors-dark {

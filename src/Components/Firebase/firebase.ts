@@ -25,19 +25,19 @@ class Firebase {
 		this.db = app.database();
 	}
 
-	doCreateUserWithEmailAndPassword = (email: string, password: string) => {
+	doCreateUserWithEmailAndPassword = (email: string, password: string) =>
 		this.auth.createUserWithEmailAndPassword(email, password);
-	};
-
-	doSignInWithEmailAndPassword = (email: string, password: string) => {
+		
+	doSignInWithEmailAndPassword = (email: string, password: string) =>
 		this.auth.signInWithEmailAndPassword(email, password);
-	};
 
 	doSignOut = () => this.auth.signOut();
 
-	doPasswordReset = (email: string) => this.auth.sendPasswordResetEmail(email);
+	doPasswordReset = (email: string) =>
+		this.auth.sendPasswordResetEmail(email);
 
-	doPasswordUpdate = (password: string) => this.auth.currentUser && this.auth.currentUser.updatePassword(password);
+	doPasswordUpdate = (password: string) =>
+		this.auth.currentUser && this.auth.currentUser.updatePassword(password);
 
 	user = (uid: string) => this.db.ref(`users/${uid}`);
 

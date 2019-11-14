@@ -1,0 +1,132 @@
+@import "../../functions.scss";
+
+.loadingCircle {
+  border: 3px solid hsla(185, 100%, 62%, 0.2);
+  border-top-color: #0984e3;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  width: 3em;
+  height: 3em;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.center {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.detailsBox {
+  display: block;
+  top: 0px;
+  margin: 0px 0px 10px 25px;
+  width: 10em;
+  border-style: solid;
+  border-color: getColor(border);
+  border-width: 1.5px;
+}
+
+.detailsBox h5 {
+  background-color: getColor(nav-bg);
+  border-bottom: 1.5px solid getColor(border);
+  border-right: 1px solid getColor(border);
+  padding: 10px;
+}
+
+.detailsBox hr {
+  border-top: 1px solid getColor(base);
+}
+
+.detailsContent {
+  margin: 10px;
+}
+
+.infoBox {
+  background-color: getColor(bg);
+}
+
+.abbreviations {
+  display: block;
+  margin: 10px 0px 10px 25px;
+  width: 50%;
+  border-style: solid;
+  border-color: getColor(border);
+  border-width: 1.5px;
+}
+
+.abbreviations h5 {
+  background-color: getColor(nav-bg);
+  border-bottom: 1.5px solid getColor(border);
+  border-top: 1px solid getColor(border);
+  padding: 10px;
+}
+
+.abbreviations hr {
+  border-top: 1px solid getColor(base);
+}
+
+.abbreviationsContent {
+  margin: 10px;
+}
+
+.header {
+  font-size: 1.5em;
+  font-weight: bold;
+  border-bottom: #636e72;
+  border-width: 1px;
+  border-bottom-style: solid;
+}
+
+.calculation-right {
+  float: right;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.arrowBtn {
+  justify-content: center;
+  align-content: center;
+  display: flex;
+  height: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  transition: 0.5s;
+}
+
+.arrowBtn button {
+  border-color: transparent;
+}
+
+
+.arrow {
+  border: solid #636e72;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
+/* Add responsiveness - on screens less than 580px wide, display the navbar vertically instead of horizontally */
+@media screen and (max-width: 580px) {
+  .calculation {
+    padding: 20px 10px !important; /* Use !important to make sure that JavaScript doesn't override the padding on small screens */
+  }
+  .calculation-right {
+    float: none;
+  }
+}
+
+.homeRoot {
+  background-color: getColor(bg);
+  height: 100%;
+}

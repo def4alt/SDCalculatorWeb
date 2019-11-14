@@ -1,0 +1,26 @@
+@import "../../functions.scss";
+
+.cardsHolder {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.card {
+  margin: 10px;
+}
+
+.cardsRoot {
+  background-color: getColor(bg);
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  color: getColor(secondary);
+  margin: 0px 10px 10px 10px;
+}
+
+.link-button:hover {
+  background-color: transparent;
+  border: none;
+}
