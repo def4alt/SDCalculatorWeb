@@ -16,6 +16,7 @@ import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
 
+
 interface AppProps {
 	strings: stringsType
 }
@@ -50,6 +51,8 @@ const App: React.FunctionComponent<AppProps> = props => (
 						path={ROUTES.PASSWORD_FORGET}
 						component={PasswordForgetPage}
 					/>
+
+					<ro /> 
 					<Route path={ROUTES.HOME} component={HomePage} />
 					<Route path={ROUTES.ACCOUNT} component={AccountPage} />
 					<Route path={ROUTES.ADMIN} component={AdminPage} />

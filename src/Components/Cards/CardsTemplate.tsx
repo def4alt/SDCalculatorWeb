@@ -196,7 +196,7 @@ class CardTemplate extends React.Component<
 				</XYPlot>
 			</div>
 		);
-
+		// TODO: Forward to print page if print requested.
 		return (
 			<div
 				style={{
