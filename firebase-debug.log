@@ -1,0 +1,33 @@
+[debug] [2019-11-15T16:27:23.039Z] ----------------------------------------------------------------------
+[debug] [2019-11-15T16:27:23.041Z] Command:       /usr/bin/node /usr/local/bin/firebase deploy
+[debug] [2019-11-15T16:27:23.041Z] CLI Version:   7.7.0
+[debug] [2019-11-15T16:27:23.042Z] Platform:      linux
+[debug] [2019-11-15T16:27:23.042Z] Node Version:  v10.15.2
+[debug] [2019-11-15T16:27:23.042Z] Time:          Fri Nov 15 2019 18:27:23 GMT+0200 (Eastern European Standard Time)
+[debug] [2019-11-15T16:27:23.042Z] ----------------------------------------------------------------------
+[debug] [2019-11-15T16:27:23.042Z] 
+[debug] [2019-11-15T16:27:23.049Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-15T16:27:23.049Z] > authorizing via signed-in user
+[debug] [2019-11-15T16:27:23.049Z] [iam] checking project sdcalculatorweb for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2019-11-15T16:27:23.051Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/sdcalculatorweb:testIamPermissions  
+
+[debug] [2019-11-15T16:27:24.010Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-15T16:27:24.013Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/sdcalculatorweb  
+ 
+[debug] [2019-11-15T16:27:24.357Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'sdcalculatorweb'...
+[info] 
+[info] i  deploying hosting
+[debug] [2019-11-15T16:27:24.362Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/sdcalculatorweb/versions  
+
+[debug] [2019-11-15T16:27:26.006Z] <<< HTTP RESPONSE 200
+[info] i  hosting[sdcalculatorweb]: beginning deploy...
+[info] i  hosting[sdcalculatorweb]: found 29 files in build
+[debug] [2019-11-15T16:27:27.296Z] [hosting] hash cache [YnVpbGQ] stored for 29 files
+[debug] [2019-11-15T16:27:27.296Z] [hosting][hash queue][FINAL]
+[debug] [2019-11-15T16:27:27.297Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/sdcalculatorweb/versions/22abf38580aa9370:populateFiles  
+ <request body omitted>
+[debug] [2019-11-15T16:27:29.248Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-15T16:27:29.255Z] [hosting][populate queue][FINAL]
+[debug] [2019-11-15T16:27:29.255Z] [hosting] uploads queued: 7
