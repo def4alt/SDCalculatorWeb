@@ -83,11 +83,6 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 					</div>
 					<div className="arrowBtn" hidden={this.state.displayCalc}>
 						<button
-							style={{
-								height: 25,
-								backgroundColor: "transparent",
-								borderColor: "transparent"
-							}}
 							onClick={() => this.setState({ displayCalc: true })}
 						>
 							<i className="arrow up"></i>

@@ -13,24 +13,22 @@
 	display: block;
 	width: 50%;
 	border-style: solid;
-	border-color: getColor(border);
+	border-color: getColor(bg);
 	border-width: 2px;
 	border-radius: 5px;
 }
 
 .card h5 {
 	border-radius: 5px 5px 0px 0px;
-	background-color: getColor(nav-bg);
-	border-bottom: 1.5px solid getColor(border);
 	padding: 10px;
 	margin-bottom: 0;
+	background-color: getColor(nav-bg);
 }
 
 .cardContent {
 	margin-top: 0;
 	border-radius: 0px 0px 5px 5px;
 	padding: 10px;
-	background-color: getColor(nav-bg);
 }
 
 .starButton {
