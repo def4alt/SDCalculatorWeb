@@ -52,7 +52,6 @@ const App: React.FunctionComponent<AppProps> = props => (
 						component={PasswordForgetPage}
 					/>
 
-					<ro /> 
 					<Route path={ROUTES.HOME} component={HomePage} />
 					<Route path={ROUTES.ACCOUNT} component={AccountPage} />
 					<Route path={ROUTES.ADMIN} component={AdminPage} />

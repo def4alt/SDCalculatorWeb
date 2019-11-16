@@ -4,6 +4,7 @@ import Read, { ReadModel } from "./reader";
 import GetStatistics, { StatisticsModel } from "./statistics";
 
 import Firebase, { withFirebase } from "../Firebase";
+import { MdEdit, MdDone } from "react-icons/md";
 
 import "./index.scss";
 
@@ -27,6 +28,7 @@ type CalculationPageState = {
   isLoading: boolean;
   lot: string;
   error: string;
+  editLot: boolean
 };
 
 class CalculationPage extends Component<
@@ -45,7 +47,8 @@ class CalculationPage extends Component<
       globalStatisticsModels: [],
       isLoading: false,
       lot: "",
-      error: ""
+      error: "",
+      editLot: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -67,7 +70,7 @@ class CalculationPage extends Component<
       authUser
         ? this.props.firebase
           .backup(authUser.uid)
-          .on("value", snapshot => {
+          .once("value", snapshot => {
             const backupsObject = snapshot.val();
 
             if (backupsObject) {
@@ -179,7 +182,7 @@ class CalculationPage extends Component<
       );
 
       var backupsObject = {};
-      backups.on("value", snapshot => (backupsObject = snapshot.val()));
+      backups.once("value", snapshot => (backupsObject = snapshot.val()));
 
       backups.set({
         ...backupsObject,
@@ -201,12 +204,38 @@ class CalculationPage extends Component<
   };
 
   handleLotChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ lot: event.target.value });
+    if (!this.state.editLot && event.currentTarget.value !== "")
+      this.setState({ lot: event.target.value });
   };
 
   handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ sdMode: event.target.checked });
   };
+
+  handleEditLot = () => {
+    if (this.state.editLot) {
+      const newLotValue = (document.querySelector(".lot") as HTMLInputElement)
+        .value;
+      const currentUser = this.props.firebase.auth.currentUser;
+      const currentLot = this.state.lot;
+      if (currentUser && newLotValue) {
+        var backupsObject = {};
+        this.props.firebase.backup(currentUser.uid).once("value", snapshot => {
+          backupsObject = snapshot.val()[currentLot];
+        })
+        this.props.firebase.backup(currentUser.uid).set({
+          [newLotValue]: backupsObject,
+          [currentLot]: {}
+        });
+      }
+      this.setState({ lot: newLotValue, editLot: false });
+    }
+    else {
+      this.setState({ editLot: true })
+    }
+
+
+  }
 
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (
@@ -228,36 +257,44 @@ class CalculationPage extends Component<
           {this.state.error !== "" && <p>{this.state.error}</p>}
           <div>
 
-            // TODO: Edit lot ability.
-            <span className="lotSpan">Lot</span>
-            <div className="dropdown">
-              <input
-                type="number"
-                className="lot"
-                placeholder="e.g. 1214"
-                value={this.state.lot}
-                onChange={this.handleLotChange}
-              />
-              <div className="dropdown-content">
-                {this.state.backups.map(backup => (
-                  <button
-                    key={backup.lot}
-                    onClick={() => {
-                      this.props.callback({
-                        statisticsModels: backup.models,
-                        lot: backup.lot
-                      });
-                      this.setState({
-                        lotSelected: true,
-                        lot: backup.lot
-                      });
-                    }}
-                  >
-                    {backup.lot}
-                  </button>
-                ))}
+            <div className="lotBox">
+              <span className="lotSpan">Lot</span>
+              <div className="dropdown">
+                <input
+                  type="number"
+                  className="lot"
+                  placeholder="e.g. 1214"
+                  value={!this.state.editLot ? this.state.lot : undefined}
+                  onChange={this.handleLotChange}
+                />
+                {!this.state.editLot && (
+                  <div className="dropdown-content">
+                    {this.state.backups.map(backup => (
+                      <button
+                        key={backup.lot}
+                        onClick={() => {
+                          this.props.callback({
+                            statisticsModels: backup.models,
+                            lot: backup.lot
+                          });
+                          this.setState({
+                            lotSelected: true,
+                            lot: backup.lot
+                          });
+                        }}
+                      >
+                        {backup.lot}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
+            <button className="editLotButton" hidden={this.state.lotSelected}
+              type="button"
+              onClick={() => this.handleEditLot()}>
+              {this.state.editLot ? <MdDone /> : <MdEdit />}
+            </button>
           </div>
 
           <div className="switchBox">

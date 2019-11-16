@@ -9,8 +9,21 @@
 	outline: none;
 	border: none;
 	border-color: transparent;
-	background-color: #0984e3;
+	background-color: getColor(primary);
 	border-radius: 5px;
+}
+
+.lotBox {
+	display: inline-block;
+}
+
+.editLotButton {
+	border-style: solid;
+	border-radius: 5px;
+	background-color: getColor(bg);
+	margin-left: 5px;
+	border-color: getColor(border);
+	color: getColor(base);
 }
 
 /* The switch - the box around the slider */
