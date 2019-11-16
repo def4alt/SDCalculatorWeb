@@ -214,8 +214,9 @@ class CalculationPage extends Component<
 
   handleEditLot = () => {
     if (this.state.editLot) {
-      const newLotValue = (document.querySelector(".lot") as HTMLInputElement)
+      var newLotValue = (document.querySelector(".lot") as HTMLInputElement)
         .value;
+      newLotValue = newLotValue === "" ? "0" : newLotValue;
       const currentUser = this.props.firebase.auth.currentUser;
       const currentLot = this.state.lot;
       if (currentUser && newLotValue) {
