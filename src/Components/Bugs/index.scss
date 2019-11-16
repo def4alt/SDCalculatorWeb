@@ -1,7 +1,6 @@
 @import "../../functions.scss";
 
 .bugsBox {
-	padding-top: 80px;
 	padding-left: 20px;
 	height: 100%;
 }
@@ -34,7 +33,8 @@
 	margin: 10px;
 	display: block;
 	border-style: solid;
-	border-color: getColor(border);
+	border-color: transparent;
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	border-width: 1.5px;
 	padding: 5px;
@@ -53,6 +53,7 @@
 .bugContent {
 	padding: 10px;
 }
+
 .modal-window {
 	position: fixed;
 	background-color: getColor(transparent);
@@ -62,6 +63,7 @@
 	left: 0;
 	z-index: 999;
 	transition: all 0.3s;
+
 	& > div {
 		width: 400px;
 		position: absolute;
@@ -71,9 +73,11 @@
 		padding: 2em;
 		background: getColor(nav-bg);
 	}
+
 	header {
 		font-weight: bold;
 	}
+
 	h1 {
 		font-size: 150%;
 		margin: 0 0 15px;
@@ -88,11 +92,13 @@
 	height: 20px;
 	opacity: 0.3;
 }
+
 .close:hover {
 	opacity: 1;
 }
-.close:before,
-.close:after {
+
+.close:after,
+.close:before {
 	position: absolute;
 	left: 9px;
 	bottom: 0;
@@ -101,9 +107,11 @@
 	width: 2px;
 	background-color: getColor(base);
 }
+
 .close:before {
 	transform: rotate(45deg);
 }
+
 .close:after {
 	transform: rotate(-45deg);
 }

@@ -18,49 +18,49 @@ import AdminPage from "../Admin";
 
 
 interface AppProps {
-	strings: stringsType
+  strings: stringsType
 }
 
 const App: React.FunctionComponent<AppProps> = props => (
-	<CookiesProvider>
-		<Router>
-			<div className="root">
-				<Navigation />
-				<div className="base">
-					<Route
-						render={({ history }) => (
-							<div className="foundBug">
-								<button
-									onClick={() => history.push(ROUTES.BUGS)}
-								>
-									{props.strings.foundBug}
-								</button>
-							</div>
-						)}
-					/>
+  <CookiesProvider>
+    <Router>
+      <div className="root">
+        <Navigation />
+        <div className="base">
+          <Route
+            render={({ history }) => (
+              <div className="foundBug">
+                <button
+                  onClick={() => history.push(ROUTES.BUGS)}
+                >
+                  {props.strings.foundBug}
+                </button>
+              </div>
+            )}
+          />
 
-					<Route
-						exact
-						path={ROUTES.LANDING}
-						component={LandingPage}
-					/>
-					<Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-					<Route path={ROUTES.SIGN_IN} component={SignInPage} />
-					<Route path={ROUTES.BUGS} component={BugsPage} />
-					<Route
-						path={ROUTES.PASSWORD_FORGET}
-						component={PasswordForgetPage}
-					/>
+          <Route
+            exact
+            path={ROUTES.LANDING}
+            component={LandingPage}
+          />
+          <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route path={ROUTES.BUGS} component={BugsPage} />
+          <Route
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForgetPage}
+          />
 
-					<Route path={ROUTES.HOME} component={HomePage} />
-					<Route path={ROUTES.ACCOUNT} component={AccountPage} />
-					<Route path={ROUTES.ADMIN} component={AdminPage} />
-				</div>
-			</div>
-		</Router>
-	</CookiesProvider>
+          <Route path={ROUTES.HOME} component={HomePage} />
+          <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route path={ROUTES.ADMIN} component={AdminPage} />
+        </div>
+      </div>
+    </Router>
+  </CookiesProvider>
 );
 
 export default withTheme(
-	withAuthentication(withLocalization(useLocalization(App)))
+  withAuthentication(withLocalization(useLocalization(App)))
 );

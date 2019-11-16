@@ -256,40 +256,38 @@ class CalculationPage extends Component<
       <div className="center calculation">
         <form onSubmit={this.handleSubmit}>
           {this.state.error !== "" && <p>{this.state.error}</p>}
-          <div>
 
-            <div className="lotBox">
-              <span className="lotSpan">Lot</span>
-              <div className="dropdown">
-                <input
-                  type="number"
-                  className="lot"
-                  placeholder="e.g. 1214"
-                  value={!this.state.editLot ? this.state.lot : undefined}
-                  onChange={this.handleLotChange}
-                />
-                {!this.state.editLot && (
-                  <div className="dropdown-content">
-                    {this.state.backups.map(backup => (
-                      <button
-                        key={backup.lot}
-                        onClick={() => {
-                          this.props.callback({
-                            statisticsModels: backup.models,
-                            lot: backup.lot
-                          });
-                          this.setState({
-                            lotSelected: true,
-                            lot: backup.lot
-                          });
-                        }}
-                      >
-                        {backup.lot}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+          <div className="lotBox">
+            <span className="lotSpan">Lot</span>
+            <div className="dropdown">
+              <input
+                type="number"
+                className="lot"
+                placeholder="e.g. 1214"
+                value={!this.state.editLot ? this.state.lot : undefined}
+                onChange={this.handleLotChange}
+              />
+              {!this.state.editLot && (
+                <div className="dropdown-content">
+                  {this.state.backups.map(backup => (
+                    <button
+                      key={backup.lot}
+                      onClick={() => {
+                        this.props.callback({
+                          statisticsModels: backup.models,
+                          lot: backup.lot
+                        });
+                        this.setState({
+                          lotSelected: true,
+                          lot: backup.lot
+                        });
+                      }}
+                    >
+                      {backup.lot}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <button className="editLotButton" hidden={this.state.lotSelected}
               type="button"

@@ -7,7 +7,6 @@
 	border-radius: 5px;
 	border-color: getColor(primary);
 }
-
 $colors: (
 	base: #272727,
 	transparent: rgba(93, 93, 93, 0.25),
@@ -18,9 +17,9 @@ $colors: (
 	border: rgb(149, 149, 149),
 	nav-bg: rgb(241, 241, 241),
 	bg: #ffffff,
-	whitish: rgb(250, 250, 250) /* Funny name though 😅 */
+	whitish: rgb(250, 250, 250)
+	/* Funny name though 😅 */
 );
-
 $colors-dark: (
 	base: map-get($colors, whitish),
 	transparent: rgba(255, 255, 255, 0.25),
@@ -33,16 +32,28 @@ $colors-dark: (
 	bg: #121212,
 	whitish: map-get($colors, base)
 );
-
 /* For light mode */
 :root {
 	@each $name, $color in $colors {
 		--color-#{$name}: #{$color};
 	};
-
 }
 
+#root {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 
+body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 /* For dark mode */
 body.dark {
 	@each $name, $color in $colors-dark {
@@ -53,6 +64,7 @@ body.dark {
 .root {
 	background-color: getColor(bg);
 	color: getColor(base);
+	height: 100%;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -65,7 +77,14 @@ body.dark {
 .foundBug button {
 	@extend %button-standard;
 	right: 15px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+	border-radius: 5px;
 	top: 80px;
 	position: fixed;
 	z-index: 10;
+}
+
+.base {
+	padding-top: 80px;
+	height: 100%;
 }

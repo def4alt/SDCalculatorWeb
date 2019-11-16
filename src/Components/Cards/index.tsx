@@ -89,7 +89,9 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 						{this.props.strings.toggleEdit}
 					</button>
 				</div>
-				<div className="cardsHolder center">{cards}</div>
+				<div className="cardsHolder center">
+          {cards}
+        </div>
 			</div>
 		);
 	}
