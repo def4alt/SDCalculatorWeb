@@ -109,8 +109,7 @@ class CardTemplate extends React.Component<
         id="canvas"
         style={{
           width: 300 + 100 * model.Average.length > this.state.width - 50  ?
-            this.state.width  - 80 : 300 + 100 * model.Average.length,
-					paddingLeft: 5
+            this.state.width  - 80 : 300 + 100 * model.Average.length
         }}
       >
         <XYPlot

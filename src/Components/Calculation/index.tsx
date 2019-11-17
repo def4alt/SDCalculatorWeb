@@ -75,7 +75,7 @@ class CalculationPage extends Component<
 
             if (backupsObject) {
               const backupsList = Object.keys(backupsObject)
-                .filter(key => key !== "isDark")
+                .filter(key => key !== "isDark" && key !== "details")
                 .map(key => ({
                   ...backupsObject[key],
                   lot: key
