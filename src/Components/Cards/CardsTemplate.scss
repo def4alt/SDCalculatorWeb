@@ -1,78 +1,78 @@
 @import "../../functions.scss";
 
 %editButton {
-	margin: 3px;
-	border-style: solid;
-	background-color: transparent;
-	width: 4em;
-    border-radius: 5px;
-    color: getColor(base);
+  margin: 3px;
+  border-style: solid;
+  background-color: transparent;
+  width: 6em;
+  border-radius: 5px;
+  color: getColor(base);
 }
 
 .card {
-	display: block;
-	width: 50%;
-	border-style: solid;
-	border-color: getColor(bg);
-	border-width: 2px;
-	border-radius: 5px;
+  display: block;
+  width: 50%;
+  border-style: solid;
+  border-color: getColor(bg);
+  border-width: 2px;
+  border-radius: 5px;
 }
 
 .plot {
-	padding: 10px 20px 30px 10px;
-	width: 500px;
-	height: 500px
+  padding: 10px 20px 30px 10px;
+  width: 500px;
+  height: 500px;
 }
 
 .card h5 {
-	border-radius: 5px 5px 0px 0px;
-	padding: 10px;
-	margin-bottom: 0;
-	background-color: getColor(nav-bg);
+  border-radius: 5px 5px 0px 0px;
+  padding: 10px;
+  margin-bottom: 0;
+  background-color: getColor(nav-bg);
 }
 
 .cardContent {
-	margin-top: 0;
-	border-radius: 0px 0px 5px 5px;
-	padding: 10px;
+  margin-top: 0;
+  border-radius: 0px 0px 5px 5px;
+  padding: 10px;
 }
 
 .starButton {
-	@extend %editButton;
+  @extend %editButton;
 
-	border-color: #fdcb6e;
+  border-color: #fdcb6e;
 }
 
 .starButton:hover {
-	background-color: #fdcb6e;
+  background-color: #fdcb6e;
 }
 
 .printButton {
-	@extend %editButton;
+  @extend %editButton;
 
-	border-color: #00bfa5;
+  border-color: #00bfa5;
 }
 
 .printButton:hover {
-	background-color: #00bfa5;
+  background-color: #00bfa5;
 }
 
 .saveButton {
-	@extend %editButton;
+  @extend %editButton;
 
-	border-color: #43a047;
+  border-color: #43a047;
 }
 
 .saveButton:hover {
-	background-color: #43a047;
+  background-color: #43a047;
 }
 
 .deleteButton {
-	@extend %editButton;
+  @extend %editButton;
 
-	border-color: #757575;
+  border-color: #757575;
 }
 
 .deleteButton:hover {
-	background-color: #757575;
+  background-color: #757575;
 }

@@ -5,8 +5,6 @@ import { XYPlot, LineMarkSeries, LineSeries, XAxis, YAxis } from "react-vis";
 import "../../../node_modules/react-vis/dist/style.css";
 import "./CardsTemplate.scss";
 
-import domtoimage from "dom-to-image";
-import printJS from "print-js";
 import { useLocalization, stringsType } from "../Localization";
 import { StatisticsModel } from "../Calculation/statistics";
 
@@ -46,7 +44,7 @@ type CardTemplateState = {
 class CardTemplate extends React.Component<
   CardTemplateProps,
   CardTemplateState
-  > {
+> {
   constructor(props: CardTemplateProps) {
     super(props);
 
@@ -64,11 +62,11 @@ class CardTemplate extends React.Component<
 
   componentDidMount() {
     this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
+    window.addEventListener("resize", this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
+    window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
   updateWindowDimensions() {
@@ -108,14 +106,19 @@ class CardTemplate extends React.Component<
       <div
         id="canvas"
         style={{
-          width: 300 + 100 * model.Average.length > this.state.width - 50  ?
-            this.state.width  - 80 : 300 + 100 * model.Average.length
+          width:
+            300 + 100 * model.Average.length > this.state.width - 50
+              ? this.state.width - 80
+              : 300 + 100 * model.Average.length
         }}
       >
         <XYPlot
           margin={{ left: 90, right: 30, bottom: 50 }}
-          width={250 + 100 * model.Average.length > this.state.width - 50 ?
-            this.state.width - 80 : 250 + 100 * model.Average.length}
+          width={
+            250 + 100 * model.Average.length > this.state.width - 50
+              ? this.state.width - 80
+              : 250 + 100 * model.Average.length
+          }
           height={250}
         >
           <YAxis
@@ -198,7 +201,6 @@ class CardTemplate extends React.Component<
         </XYPlot>
       </div>
     );
-    // TODO: Forward to print page if print requested.
 
     return (
       <div
@@ -207,15 +209,17 @@ class CardTemplate extends React.Component<
             ? this.state.starred
               ? "block"
               : this.state.showStarredCharts
-                ? "none"
-                : "block"
+              ? "none"
+              : "block"
             : "none",
           borderColor: this.state.starred
             ? "#fdcb6e"
-            : this.state.model.Warning.filter(v => v !== " ")
-              .length > 1 && "#c62828",
-          width: 300 + 100 * model.Average.length > window.innerWidth ?
-            window.innerWidth - 20 : 300 + 100 * model.Average.length
+            : this.state.model.Warning.filter(v => v !== " ").length > 1 &&
+              "#c62828",
+          width:
+            300 + 100 * model.Average.length > window.innerWidth
+              ? window.innerWidth - 20
+              : 300 + 100 * model.Average.length
         }}
         className="text-center card"
         id="card"
@@ -236,71 +240,6 @@ class CardTemplate extends React.Component<
               >
                 {this.props.strings.star}
               </button>
-              <button
-                className="printButton"
-                onClick={() => {
-                  this.setState({ editMode: false });
-                  const card = document.querySelector(
-                    ".card"
-                  );
-                  new Promise(res =>
-                    this.forceUpdate(res)
-                  ).then(
-                    () =>
-                      card &&
-                      domtoimage
-                        .toPng(card)
-                        .then(pngUrl =>
-                          printJS({
-                            printable: pngUrl,
-                            type: "image"
-                          })
-                        )
-                        .then(() =>
-                          this.setState({
-                            editMode: true
-                          })
-                        )
-                  );
-                }}
-              >
-                {this.props.strings.print}
-              </button>
-              <button
-                className="saveButton"
-                onClick={() => {
-                  this.setState({ editMode: false });
-                  this.forceUpdate();
-
-                  const card = document.querySelector(
-                    ".card"
-                  );
-
-                  if (card)
-                    domtoimage
-                      .toPng(card)
-                      .then((dataUrl: any) => {
-                        var link = document.createElement(
-                          "a"
-                        );
-                        link.download =
-                          model.TestName +
-                          " Lvl" +
-                          model.SampleType +
-                          ".png";
-                        link.href = dataUrl;
-                        link.click();
-                      })
-                      .then(() =>
-                        this.setState({
-                          editMode: true
-                        })
-                      );
-                }}
-              >
-                {this.props.strings.save}
-              </button>
-
               <button
                 className="deleteButton"
                 onClick={() => {

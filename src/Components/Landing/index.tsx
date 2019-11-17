@@ -1,15 +1,21 @@
 import React from "react";
 import "./index.scss";
 
-class LandingPage extends React.Component {
+import { useLocalization, stringsType } from "../Localization";
+
+type LandingPageProps = {
+  strings: stringsType
+}
+
+class LandingPage extends React.Component<LandingPageProps> {
   render() {
     return (
       <div className="brandBox">
         <p className="brand">SDCalculatorWeb</p>
-        <p className="description">Made for ChemoView™</p>
+        <p className="description">{this.props.strings.madeFor} ChemoView™</p>
       </div>
     );
   }
 }
 
-export default LandingPage;
+export default useLocalization(LandingPage);

@@ -174,89 +174,94 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         </div>
 
         {this.state.statisticsModels.length > 0 && (
-          <div className="infoBox">
-            <div className="detailsBox">
-              <h5>{this.props.strings.details}</h5>
-              <div className="detailsContent">
-                <form onSubmit={handleDetailsChange}>
-                  <label>{this.props.strings.date}:</label>
-                  <input
-                    className="dateInput"
-                    type="text"
-                    value={this.state.date}
-                    name="date"
-                    onChange={handleChange}
-                  />
-                  <hr />
-                  <label>
-                    {this.props.strings.lot}: {this.state.lot}
-                  </label>
-                  <hr />
-                  <label>Operator's lastname:</label>
-                  <input
-                    className="lastnameInput"
-                    type="text"
-                    value={this.state.lastname}
-                    name="lastname"
-                    onChange={handleChange}
-                  />
-                  <hr />
-                  <label>Device name:</label>
-                  <input
-                    className="deviceNameInput"
-                    type="text"
-                    value={this.state.deviceName}
-                    name="deviceName"
-                    onChange={handleChange}
-                  />
-                  <hr />
-                  <label>Units:</label>
-                  <input
-                    className="unitsInput"
-                    type="text"
-                    value={this.state.units}
-                    name="units"
-                    onChange={handleChange}
-                  />
+          <>
+            <div className="infoBox">
+              <div className="detailsBox">
+                <h5>{this.props.strings.details}</h5>
+                <div className="detailsContent">
+                  <form onSubmit={handleDetailsChange}>
+                    <label>{this.props.strings.date}:</label>
+                    <input
+                      className="dateInput"
+                      type="text"
+                      value={this.state.date}
+                      name="date"
+                      onChange={handleChange}
+                    />
+                    <hr />
+                    <label>
+                      {this.props.strings.lot}: {this.state.lot}
+                    </label>
+                    <hr />
+                    <label>{this.props.strings.lastname}:</label>
+                    <input
+                      className="lastnameInput"
+                      type="text"
+                      value={this.state.lastname}
+                      name="lastname"
+                      onChange={handleChange}
+                    />
+                    <hr />
+                    <label>{this.props.strings.deviceName}:</label>
+                    <input
+                      className="deviceNameInput"
+                      type="text"
+                      value={this.state.deviceName}
+                      name="deviceName"
+                      onChange={handleChange}
+                    />
+                    <hr />
+                    <label>{this.props.strings.units}:</label>
+                    <input
+                      className="unitsInput"
+                      type="text"
+                      value={this.state.units}
+                      name="units"
+                      onChange={handleChange}
+                    />
 
-                  <hr />
-                  <label>Notes:</label>
-                  <input
-                    className="notesInput"
-                    type="text"
-                    value={this.state.notes}
-                    name="notes"
-                    onChange={handleChange}
-                  />
-                  <button type="submit" className="updateButton">
-                    Update
-                  </button>
-                </form>
+                    <hr />
+                    <label>{this.props.strings.notes}:</label>
+                    <input
+                      className="notesInput"
+                      type="text"
+                      value={this.state.notes}
+                      name="notes"
+                      onChange={handleChange}
+                    />
+                    <button type="submit" className="updateButton">
+                      {this.props.strings.update}
+                    </button>
+                  </form>
+                </div>
               </div>
-            </div>
-            <div className="abbreviations">
-              <h5>Abbreviations</h5>
-              <div className="abbreviationsContent">
-                <h6>13S</h6>
-                <p>{this.props.strings.abr13S}</p>
-                <hr />
-                <h6>22S</h6>
-                <p>{this.props.strings.abr22S}</p>
-                <hr />
-                <h6>R4S</h6>
-                <p>{this.props.strings.abrR4S}</p>
-                <hr />
-                <h6>41S</h6>
-                <p>{this.props.strings.abr41S}</p>
-                <hr />
-                <h6>8X</h6>
-                <p>{this.props.strings.abr8X}</p>
+              <div className="abbreviations">
+                <h5>{this.props.strings.abbreviations}</h5>
+                <div className="abbreviationsContent">
+                  <h6>13S</h6>
+                  <p>{this.props.strings.abr13S}</p>
+                  <hr />
+                  <h6>22S</h6>
+                  <p>{this.props.strings.abr22S}</p>
+                  <hr />
+                  <h6>R4S</h6>
+                  <p>{this.props.strings.abrR4S}</p>
+                  <hr />
+                  <h6>41S</h6>
+                  <p>{this.props.strings.abr41S}</p>
+                  <hr />
+                  <h6>8X</h6>
+                  <p>{this.props.strings.abr8X}</p>
+                </div>
               </div>
             </div>
             <Suspense fallback={<div className="loadingCircle"></div>}>
-              <LazyCards statisticsModels={this.state.statisticsModels} />
+              <LazyCards
+                lot={this.state.lot}
+                statisticsModels={this.state.statisticsModels}
+              />
             </Suspense>
-          </div>
+          </>
         )}
       </div>
     );

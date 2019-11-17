@@ -107,7 +107,7 @@ class CalculationPage extends Component<
         if (this.getFileExtension(file.name) !== "xls") {
           this.setState({
             error:
-              "Wrong file extension! Use only .xls, .xlsx files.",
+              this.props.strings.wrongExtensionError,
             isLoading: false
           });
           return;
@@ -123,7 +123,7 @@ class CalculationPage extends Component<
 
     if (parsedRows.length === 0) {
       this.setState({
-        error: "Wrong file format!",
+        error: this.props.strings.wrongFormatError,
         isLoading: false
       });
     }
@@ -135,7 +135,7 @@ class CalculationPage extends Component<
 
     if (statisticsModels === undefined || statisticsModels.length === 0) {
       this.setState({
-        error: "Wrong file format!",
+        error: this.props.strings.wrongFormatError,
         isLoading: false
       });
       return;
@@ -259,7 +259,7 @@ class CalculationPage extends Component<
           {this.state.error !== "" && <p>{this.state.error}</p>}
 
           <div className="lotBox">
-            <span className="lotSpan">Lot</span>
+            <span className="lotSpan">{this.props.strings.lot}</span>
             <div className="dropdown">
               <input
                 type="number"
