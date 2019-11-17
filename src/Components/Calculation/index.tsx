@@ -290,7 +290,7 @@ class CalculationPage extends Component<
                 </div>
               )}
             </div>
-            {this.state.lot !== "" && (
+            {this.state.lot !== "" && this.props.firebase.auth.currentUser && (
               <button className="editLotButton" hidden={this.state.lotSelected}
                 type="button"
                 onClick={() => this.handleEditLot()}>

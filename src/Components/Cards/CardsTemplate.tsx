@@ -108,15 +108,15 @@ class CardTemplate extends React.Component<
       <div
         id="canvas"
         style={{
-          width: 300 + 100 * model.Average.length > this.state.width  ?
-            this.state.width  - 100 : 300 + 100 * model.Average.length,
+          width: 300 + 100 * model.Average.length > this.state.width - 50  ?
+            this.state.width  - 80 : 300 + 100 * model.Average.length,
 					paddingLeft: 5
         }}
       >
         <XYPlot
           margin={{ left: 90, right: 30, bottom: 50 }}
-          width={250 + 100 * model.Average.length > this.state.width ?
-            this.state.width - 100 : 250 + 100 * model.Average.length}
+          width={250 + 100 * model.Average.length > this.state.width - 50 ?
+            this.state.width - 80 : 250 + 100 * model.Average.length}
           height={250}
         >
           <YAxis
