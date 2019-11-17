@@ -137,6 +137,9 @@ class CardTemplate extends React.Component<
                 stroke: "none",
                 fill: "#c62828",
                 fontWeight: 100
+              },
+              ticks: {
+                stroke: "none"
               }
             }}
             top={220}
@@ -146,6 +149,11 @@ class CardTemplate extends React.Component<
             hideLine
             tickValues={[...Array(model.Average.length).keys()]}
             tickFormat={(i: number) => model.Date[i]}
+            style={{
+              ticks: {
+                stroke: "none"
+              }
+            }}
             tickLabelAngle={-20}
           />
 
