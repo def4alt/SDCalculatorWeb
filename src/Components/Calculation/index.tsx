@@ -182,7 +182,7 @@ class CalculationPage extends Component<
       );
 
       var backupsObject = {};
-      backups.once("value", snapshot => (backupsObject = snapshot.val()));
+      backups.on("value", snapshot => (backupsObject = snapshot.val()));
 
       backups.set({
         ...backupsObject,
@@ -219,7 +219,7 @@ class CalculationPage extends Component<
       newLotValue = newLotValue === "" ? "0" : newLotValue;
       const currentUser = this.props.firebase.auth.currentUser;
       const currentLot = this.state.lot;
-      if (currentUser && newLotValue) {
+      if (currentUser && newLotValue && this.state.lot !== "") {
         var backupsObject = {};
         this.props.firebase.backup(currentUser.uid).once("value", snapshot => {
           backupsObject = snapshot.val()[currentLot];
@@ -228,8 +228,9 @@ class CalculationPage extends Component<
           [newLotValue]: backupsObject,
           [currentLot]: {}
         });
+        this.setState({ lot: newLotValue });
       }
-      this.setState({ lot: newLotValue, editLot: false });
+      this.setState({ editLot: false });
     }
     else {
       this.setState({ editLot: true })
@@ -289,11 +290,13 @@ class CalculationPage extends Component<
                 </div>
               )}
             </div>
-            <button className="editLotButton" hidden={this.state.lotSelected}
-              type="button"
-              onClick={() => this.handleEditLot()}>
-              {this.state.editLot ? <MdDone /> : <MdEdit />}
-            </button>
+            {this.state.lot !== "" && (
+              <button className="editLotButton" hidden={this.state.lotSelected}
+                type="button"
+                onClick={() => this.handleEditLot()}>
+                {this.state.editLot ? <MdDone /> : <MdEdit />}
+              </button>
+            )}
           </div>
 
           <div className="switchBox">
