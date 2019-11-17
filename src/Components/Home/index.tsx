@@ -70,22 +70,19 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 
   render() {
     return (
-      <div
-        className="homeRoot"
-        style={{ paddingTop: this.state.displayCalc ? 0 : 100 }}
-      >
+      <div className="homeRoot">
         <div className="calculationBox" hidden={!this.state.displayCalc}>
           <Calculation
             callback={this.myCallback}
             statisticsModels={this.state.statisticsModels}
           />
-          <div className="arrowBtn" hidden={this.state.displayCalc}>
-            <button
-              onClick={() => this.setState({ displayCalc: true })}
-            >
-              <i className="arrow up"></i>
-            </button>
-          </div>
+        </div>
+        <div className="arrowBtn" hidden={this.state.displayCalc}>
+          <button
+            onClick={() => this.setState({ displayCalc: true })}
+          >
+            <i className="arrow up"></i>
+          </button>
         </div>
 
         {this.state.statisticsModels.length > 0 && (

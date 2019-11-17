@@ -80,12 +80,11 @@ body.dark {
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 	top: 80px;
-	position: fixed;
+	position: absolute;
 	z-index: 10;
 }
 
 .base {
-	padding-left: 20px;
 	padding-top: 80px;
 	height: 100%;
 }

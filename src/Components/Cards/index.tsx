@@ -14,8 +14,6 @@ type CardsHolderProps = {
 type CardsHolderState = {
     statisticsModels: StatisticsModel[],
     showStarredCharts: boolean,
-    width: number,
-    height: number,
     editMode: boolean
 }
 
@@ -26,25 +24,9 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 		this.state = {
 			statisticsModels: props.statisticsModels,
 			showStarredCharts: false,
-			width: 0,
-			height: 0,
 			editMode: false
 		};
 
-		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-	}
-
-	componentDidMount() {
-		this.updateWindowDimensions();
-		window.addEventListener("resize", this.updateWindowDimensions);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener("resize", this.updateWindowDimensions);
-	}
-
-	updateWindowDimensions() {
-		this.setState({ width: window.innerWidth, height: window.innerHeight });
 	}
 
 	componentDidUpdate(prevProps: CardsHolderProps) {
@@ -59,8 +41,6 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 				<CardTemplate
 					key={model.TestName + model.SampleType}
 					model={model}
-					width={this.state.width}
-					height={this.state.height}
 					editMode={this.state.editMode}
 					showStarredCharts={this.state.showStarredCharts}
 				/>
