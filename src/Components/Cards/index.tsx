@@ -54,7 +54,7 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 
     return (
       <div className="cardsRoot">
-        <div className="border-bottom center">
+        <div className="border-bottom links-box center">
           <button
             className="link-button"
             onClick={() =>

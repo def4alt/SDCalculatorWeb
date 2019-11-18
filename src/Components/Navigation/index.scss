@@ -201,22 +201,22 @@ body {
 	}
 
 	.nav > #nav-check:checked ~ .nav-links {
-		height: calc(100vh - 50px);
+		height: calc(70vh - 50px);
 		overflow-y: auto;
 	}
 
 	.nav > #nav-check:checked ~ .locale {
-		height: calc(100vh - 160px);
+		height: calc(70vh - 160px);
 		overflow-y: auto;
 	}
 
 	.nav > #nav-check:checked ~ .theme {
-		height: calc(100vh - 200px);
+		height: calc(70vh - 200px);
 		overflow-y: auto;
 	}
 
 	.nav > #nav-check:checked ~ .signOut {
-		height: calc(100vh - 250px);
+		height: calc(70vh - 250px);
 		overflow-y: auto;
 	}
 }
