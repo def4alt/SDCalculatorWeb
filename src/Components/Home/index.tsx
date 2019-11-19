@@ -51,12 +51,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
     statisticsModels: StatisticsModel[];
     lot: string;
   }) => {
-    this.setState({ statisticsModels: dataFromChild.statisticsModels });
-
-    if (dataFromChild.statisticsModels.length > 0) {
-    }
-
     this.setState({
+      statisticsModels: dataFromChild.statisticsModels,
       date: dataFromChild.statisticsModels[0].Date[0],
       lot: dataFromChild.lot
     });

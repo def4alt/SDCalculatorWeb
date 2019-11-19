@@ -61,6 +61,7 @@ export interface stringsTypeUnknown extends LocalizedStringsMethods {
   madeFor: string;
   wrongFormatError: string;
   wrongExtensionError: string;
+  letsStart: string;
 }
 
 var strings: LocalizedStringsMethods = new LocalizedStrings({
@@ -70,7 +71,7 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     addingAverage: "Adding...",
     buildingCharts: "Building...",
     lot: "Lot",
-    browseFiles: "Browse",
+    browseFiles: "browse-en",
     selectFiles: "Select files",
     foundBug: "Found any bug?",
     home: "Home",
@@ -138,7 +139,8 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     update: "Update",
     madeFor: "Made for",
     wrongFormatError: "Wrong file format!",
-    wrongExtensionError: "Wrong file extension! Use only .xls, .xlsx files."
+    wrongExtensionError: "Wrong file extension! Use only .xls, .xlsx files.",
+    letsStart: "Let's calculate!"
   },
   ru: {
     addAverage: "Добавить среднее",
@@ -146,7 +148,7 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     addingAverage: "Добавляю...",
     buildingCharts: "Строю...",
     lot: "Лот",
-    browseFiles: "Выбор",
+    browseFiles: "browse-ru",
     selectFiles: "Выберите файлы",
     foundBug: "Нашли баг?",
     home: "Дом",
@@ -202,7 +204,8 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     update: "Обновить",
     madeFor: "Сделано для",
     wrongFormatError: "Неверная структура файла!",
-    wrongExtensionError: "Неверное расширение файла(ов)! Используйте только .xls, .xlsx расширения"
+    wrongExtensionError: "Неверное расширение файла(ов)! Используйте только .xls, .xlsx расширения",
+    letsStart: "Давай считать!"
   },
   uk: {
     addAverage: "Додати середнє значення",
@@ -210,7 +213,7 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     addingAverage: "Додаю...",
     buildingCharts: "Будую...",
     lot: "Лот",
-    browseFiles: "Вибір",
+    browseFiles: "browse-uk",
     selectFiles: "Вибрати файли",
     foundBug: "Знайшли баг?",
     home: "Дім",
@@ -266,7 +269,8 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     update: "Оновити",
     madeFor: "Зроблено для",
     wrongFormatError: "Хибна структура файла!",
-    wrongExtensionError: "Хибне розширення файла(ів)! Використовуюте тільки .xls та .xlsx розширення"
+    wrongExtensionError: "Хибне розширення файла(ів)! Використовуюте тільки .xls та .xlsx розширення",
+    letsStart: "Давай рахувати!"
   }
 });
 

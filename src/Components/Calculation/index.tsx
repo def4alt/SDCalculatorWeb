@@ -326,7 +326,7 @@ class CalculationPage extends Component<
                 multiple={this.state.sdMode}
                 onChange={this.handleFilesChange}
               />
-              <span className="file-custom">
+              <span className={"file-custom " + this.props.strings.browseFiles}>
                 {this.state.files &&
                   (this.state.files.length > 1
                     ? this.state.files.length +

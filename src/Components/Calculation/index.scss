@@ -43,9 +43,11 @@
 
 .switchBox {
 	display: flex;
-	align-items: center;
 	margin: 10px 0px 10px 0;
 	height: 60px;
+	align-items: center;
+	align-content: center;
+	text-align: center;
 }
 
 /* The slider */
@@ -161,6 +163,18 @@ input:checked + .slider:before {
 	background-color: #eee;
 	border: 0.075rem solid #ddd;
 	border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.browse-en::before {
+	content: "Browse"
+}
+
+.browse-ru::before {
+	content: "Выбрать"
+}
+
+.browse-uk::before {
+	content: "Вибрати"
 }
 
 /* Focus */
