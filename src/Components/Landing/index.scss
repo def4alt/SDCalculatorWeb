@@ -3,7 +3,9 @@
 .brandBox {
   height: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   align-items: center;
   color: getColor(base);
 }
@@ -13,6 +15,6 @@
 }
 
 .description {
-  font-size: 2.5vmin;
+  font-size: 4vmin;
   color: getColor(light);
 }
