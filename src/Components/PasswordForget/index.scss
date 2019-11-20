@@ -1,0 +1,32 @@
+@import "../../functions.scss";
+
+.forgetPasswordBox {
+	padding-left: 20px;
+    height: 100%;
+}
+
+.submitForget {
+    background-color: getColor(primary);
+    color: #ffffff;
+    border-style: solid;
+    border-width: 1.5px;
+    border-color: getColor(primary);
+    border-radius: 5px;
+    margin: 20px 30px 0px 0px;
+    width: 8em;
+}
+
+.email {
+	display: block;
+	p {
+		margin: 20px 0px 10px 0px;
+	}
+	input {
+        width: 20em;
+		border-style: solid;
+		border-color: getColor(border);
+		border-width: 1.5px;
+		border-radius: 5px;
+		padding: 5px;
+	}
+}
