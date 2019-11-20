@@ -208,7 +208,7 @@ var strings: LocalizedStringsMethods = new LocalizedStrings({
     letsStart: "Давай считать!"
   },
   uk: {
-    addAverage: "Додати середнє значення",
+    addAverage: "Додати середнє",
     buildCharts: "Побудувати графіки",
     addingAverage: "Додаю...",
     buildingCharts: "Будую...",
