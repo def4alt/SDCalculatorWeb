@@ -22,6 +22,6 @@ const AccountPage: React.SFC<AccountPageProps> = props => (
 	</AuthUserContext.Consumer>
 );
 
-const condition = (authUser: firebase.User | undefined) => !!authUser;
+const condition = (authUser: firebase.User | null) => !!authUser;
 
 export default withAuthorization(condition)(useLocalization(AccountPage));

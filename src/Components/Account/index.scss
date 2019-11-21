@@ -4,8 +4,9 @@
 .accountBox {
     height: 100%;
     padding-left: 20px;
+
+    .email {
+        font-size: 5vmin;
+    }
 }
 
-.email {
-    font-size: 5vmin;
-}

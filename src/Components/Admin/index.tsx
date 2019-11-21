@@ -79,6 +79,6 @@ class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
 	);
 }
 
-const condition = (authUser: firebase.User | undefined) => !!authUser;
+const condition = (authUser: firebase.User | null) => !!authUser;
 
 export default withAuthorization(condition)(withFirebase(useLocalization(AdminPage)));
