@@ -214,8 +214,8 @@ class CardTemplate extends React.Component<
             : "none",
           borderColor: this.state.starred
             ? "#fdcb6e"
-            : this.state.model.Warning.filter(v => v !== " ").length > 1 &&
-              "#c62828",
+            : this.state.model.Warning.filter(v => v !== " ").length > 1 ?
+              "#c62828" : "",
           width:
             300 + 100 * model.Average.length > window.innerWidth
               ? window.innerWidth - 20

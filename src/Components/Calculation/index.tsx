@@ -66,11 +66,11 @@ class CalculationPage extends Component<
   }
 
   componentDidMount() {
-    this.listener = this.props.firebase.auth.onAuthStateChanged(authUser =>
+    this.listener = this.props.firebase.auth.onAuthStateChanged((authUser: firebase.User | null) =>
       authUser
         ? this.props.firebase
           .backup(authUser.uid)
-          .once("value", snapshot => {
+          .once("value", (snapshot: any) => {
             const backupsObject = snapshot.val();
 
             if (backupsObject) {
@@ -182,7 +182,7 @@ class CalculationPage extends Component<
       );
 
       var backupsObject = {};
-      backups.on("value", snapshot => (backupsObject = snapshot.val()));
+      backups.once("value", (snapshot: any) => (backupsObject = snapshot.val()));
 
       backups.set({
         ...backupsObject,
@@ -221,7 +221,7 @@ class CalculationPage extends Component<
       const currentLot = this.state.lot;
       if (currentUser && newLotValue && this.state.lot !== "") {
         var backupsObject = {};
-        this.props.firebase.backup(currentUser.uid).once("value", snapshot => {
+        this.props.firebase.backup(currentUser.uid).once("value", (snapshot: any) => {
           backupsObject = snapshot.val()[currentLot];
         })
         this.props.firebase.backup(currentUser.uid).set({

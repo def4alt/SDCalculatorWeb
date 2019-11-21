@@ -50,6 +50,19 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	font-size: 18px;
+
+	h1 {
+		font-size: 44px;
+	}
+
+	h2 {
+		font-size: 33px;
+	}
+
+	h3 {
+		font-size: 22px;
+	}
 }
 /* For dark mode */
 body.dark {

@@ -50,7 +50,7 @@ class BugsPage extends React.Component<BugsPageProps, BugsPageState> {
 
   componentDidMount() {
     this.setState({ loading: true });
-    this.props.firebase.bugs().on("value", snapshot => {
+    this.props.firebase.bugs().on("value", (snapshot: any) => {
       const bugsObject = snapshot.val();
 
       if (bugsObject) {

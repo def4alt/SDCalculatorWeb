@@ -14,7 +14,7 @@ const AccountPage: React.SFC<AccountPageProps> = props => (
 		{authUser => (
 			<div className="accountBox">
 				<h1>
-					{props.strings.account}: {authUser && authUser.email}
+					{props.strings.account}: <p className="email">{authUser && authUser.email}</p> 
 				</h1>
 				<PasswordChangeForm />
 			</div>
