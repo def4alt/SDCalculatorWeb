@@ -156,9 +156,11 @@
 
 .calculationBox {
   height: 100%;
+  background-color: getColor(bg);
 }
 
 .homeRoot {
   background-color: getColor(bg);
+  overflow-x: hidden;
   height: 100%;
 }

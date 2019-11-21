@@ -170,7 +170,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
         </div>
 
         {this.state.statisticsModels.length > 0 && (
-          <>
+          <div>
             <div className="infoBox">
               <div className="detailsBox">
                 <h5>{this.props.strings.details}</h5>
@@ -257,7 +257,7 @@ class HomePage extends Component<HomePageProps, HomePageState> {
                 statisticsModels={this.state.statisticsModels}
               />
             </Suspense>
-          </>
+          </div>
         )}
       </div>
     );
