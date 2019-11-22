@@ -181,15 +181,17 @@ class CalculationPage extends Component<
         this.props.firebase.auth.currentUser.uid
       );
 
-      var backupsObject = {};
-      backups.once("value", (snapshot: any) => (backupsObject = snapshot.val()));
-
-      backups.set({
-        ...backupsObject,
-        [this.state.lot]: {
-          models: globalStatisticsModels
-        }
+      backups.on("value", (snapshot: any) => {
+        var backupsObject = snapshot.val();
+        backups.set({
+          ...backupsObject,
+          [this.state.lot]: {
+            models: globalStatisticsModels
+          }
+        });
       });
+
+      
     }
 
     this.props.callback({
