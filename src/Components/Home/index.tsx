@@ -18,7 +18,6 @@ type HomePageState = {
 	statisticsModels: StatisticsModel[];
 	date: string;
 	lot: string;
-	displayCalc: boolean;
 };
 
 class HomePage extends Component<HomePageProps, HomePageState> {
@@ -28,11 +27,8 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 		this.state = {
 			statisticsModels: [],
 			date: "",
-			lot: "",
-			displayCalc: true
+			lot: ""
 		};
-
-		this.handleScroll = this.handleScroll.bind(this);
 	}
 	myCallback = (dataFromChild: {
 		statisticsModels: StatisticsModel[];
@@ -45,44 +41,14 @@ class HomePage extends Component<HomePageProps, HomePageState> {
 		});
 	};
 
-	componentDidMount() {
-		window.addEventListener("scroll", this.handleScroll);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener("scroll", this.handleScroll);
-	}
-
-	handleScroll() {
-		let scrollTop = window.scrollY;
-		if (
-			scrollTop > window.outerHeight / 2 &&
-			this.state.displayCalc &&
-			this.state.statisticsModels.length > 0
-		) {
-			window.scrollTo(0, 0);
-			this.setState({ displayCalc: false });
-		}
-	}
-
 	render() {
 		return (
 			<div className="homeRoot">
-				<div
-					className="calculationBox"
-					hidden={!this.state.displayCalc}
-				>
+				<div className="calculationBox">
 					<Calculation
 						callback={this.myCallback}
 						statisticsModels={this.state.statisticsModels}
 					/>
-				</div>
-				<div className="arrowBtn" hidden={this.state.displayCalc}>
-					<button
-						onClick={() => this.setState({ displayCalc: true })}
-					>
-						<i className="arrow up"></i>
-					</button>
 				</div>
 
 				{this.state.statisticsModels.length > 0 && (

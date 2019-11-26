@@ -69,7 +69,9 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 				? this.props.firebase
 						.backup(authUser.uid)
 						.once("value", snapshot => {
-							const backupsObject = snapshot.val();
+							const backupsObject = snapshot.val()[
+								this.state.lot
+							];
 
 							if (backupsObject && backupsObject.details) {
 								this.setState({
@@ -102,100 +104,109 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 		const handleDetailsChange = (
 			event: React.ChangeEvent<HTMLFormElement>
 		) => {
+			event.preventDefault();
 			if (this.props.firebase.auth.currentUser) {
-				var backupsObject = {};
-
 				const backups = this.props.firebase.backup(
 					this.props.firebase.auth.currentUser.uid
 				);
 
-				backups.on(
-					"value",
-					snapshot => (backupsObject = snapshot.val())
-				);
+				backups.on("value", snapshot => {
+					const backupsObject = snapshot.val()[this.state.lot];
 
-				const date = (document.querySelector(
-					".dateInput"
-				) as HTMLInputElement).value;
-				const lastname = (document.querySelector(
-					".lastnameInput"
-				) as HTMLInputElement).value;
-				const deviceName = (document.querySelector(
-					".deviceNameInput"
-				) as HTMLInputElement).value;
-				const units = (document.querySelector(
-					".unitsInput"
-				) as HTMLInputElement).value;
-				const notes = (document.querySelector(
-					".notesInput"
-				) as HTMLTextAreaElement).value;
+					const date = (event.currentTarget.querySelector(
+						'input[name="date"]'
+					) as HTMLInputElement).value;
 
-				backups.set({
-					...backupsObject,
-					details: {
-						lot: this.state.lot,
-						date: date,
-						deviceName: deviceName,
-						lastname: lastname,
-						notes: notes,
-						units: units
-					}
+					const lastname = (event.currentTarget.querySelector(
+						'input[name="lastname"]'
+					) as HTMLInputElement).value;
+
+					const deviceName = (event.currentTarget.querySelector(
+						'input[name="deviceName"]'
+					) as HTMLInputElement).value;
+
+					const units = (event.currentTarget.querySelector(
+						'input[name="units"]'
+					) as HTMLInputElement).value;
+
+					const notes = (event.currentTarget.querySelector(
+						'textarea[name="notes"]'
+					) as HTMLTextAreaElement).value;
+
+					backups.set({
+						[this.state.lot]: {
+							...backupsObject,
+							details: {
+								lot: this.state.lot,
+								date: date,
+								deviceName: deviceName,
+								lastname: lastname,
+								notes: notes,
+								units: units
+							}
+						}
+					});
 				});
-
-				event.preventDefault();
 			}
 		};
+
+		const { date, lot, lastname, deviceName, units, notes } = this.state;
 
 		return (
 			<div className="cardsRoot">
 				<div className="infoBox">
 					<div className="detailsBox">
-						<h5>{this.props.strings.details}</h5>
+						<h3>{this.props.strings.details}</h3>
 						<div className="detailsContent">
 							<form onSubmit={handleDetailsChange}>
-								<label>{this.props.strings.date}:</label>
-								<input
-									className="dateInput"
-									type="text"
-									defaultValue={this.state.date}
-									name="date"
-								/>
+								<div className="date">
+									<p>{this.props.strings.date}:</p>
+									<input
+										type="text"
+										defaultValue={date}
+										name="date"
+									/>
+								</div>
 								<hr />
-								<label>
-									{this.props.strings.lot}: {this.state.lot}
-								</label>
+								<p>
+									{this.props.strings.lot}: {lot}
+								</p>
 								<hr />
-								<label>{this.props.strings.lastname}:</label>
-								<input
-									className="lastnameInput"
-									type="text"
-									defaultValue={this.state.lastname}
-									name="lastname"
-								/>
+								<div className="lastname">
+									<p>{this.props.strings.lastname}</p>
+									<input
+										type="text"
+										defaultValue={lastname}
+										name="lastname"
+									/>
+								</div>
 								<hr />
-								<label>{this.props.strings.deviceName}:</label>
-								<input
-									className="deviceNameInput"
-									type="text"
-									defaultValue={this.state.deviceName}
-									name="deviceName"
-								/>
+								<div className="deviceName">
+									<p>{this.props.strings.deviceName}</p>
+									<input
+										type="text"
+										defaultValue={deviceName}
+										name="deviceName"
+									/>
+								</div>
 								<hr />
-								<label>{this.props.strings.units}:</label>
-								<input
-									className="unitsInput"
-									type="text"
-									defaultValue={this.state.units}
-									name="units"
-								/>
 
+								<div className="units">
+									<p>{this.props.strings.units}</p>
+									<input
+										type="text"
+										defaultValue={units}
+										name="units"
+									/>
+								</div>
 								<hr />
-								<label>{this.props.strings.notes}:</label>
-								<textarea
-									className="notesInput"
-									defaultValue={this.state.notes}
-									name="notes"
-								/>
+								<div className="notes">
+									<p>{this.props.strings.notes}</p>
+									<textarea
+										defaultValue={notes}
+										name="notes"
+									/>
+								</div>
 								<button type="submit" className="updateButton">
 									{this.props.strings.update}
 								</button>
@@ -203,21 +214,21 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 						</div>
 					</div>
 					<div className="abbreviations">
-						<h5>{this.props.strings.abbreviations}</h5>
+						<h3>{this.props.strings.abbreviations}</h3>
 						<div className="abbreviationsContent">
-							<h6>13S</h6>
+							<h4>13S</h4>
 							<p>{this.props.strings.abr13S}</p>
 							<hr />
-							<h6>22S</h6>
+							<h4>22S</h4>
 							<p>{this.props.strings.abr22S}</p>
 							<hr />
-							<h6>R4S</h6>
+							<h4>R4S</h4>
 							<p>{this.props.strings.abrR4S}</p>
 							<hr />
-							<h6>41S</h6>
+							<h4>41S</h4>
 							<p>{this.props.strings.abr41S}</p>
 							<hr />
-							<h6>8X</h6>
+							<h4>8X</h4>
 							<p>{this.props.strings.abr8X}</p>
 						</div>
 					</div>

@@ -1,166 +1,78 @@
 @import "../../functions.scss";
+@import "../../defaults.scss";
 
 .loadingCircle {
-  border: 3px solid hsla(185, 100%, 62%, 0.2);
-  border-top-color: #0984e3;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 50%;
-  width: 3em;
-  height: 3em;
-  animation: spin 1s linear infinite;
+	border: 3px solid hsla(185, 100%, 62%, 0.2);
+	border-top-color: #0984e3;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 50%;
+	width: 3em;
+	height: 3em;
+	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.detailsContent input {
-  border-radius: 5px;
-  margin-left: 10px;
-  border-style: solid;
-  border-color: getColor(border);
-  padding-left: 5px;
-	  width: 40%;
-}
-
-.notesInput {
-  width: 50%;
-}
-
-.updateButton {
-  background-color: getColor(secondary);
-  color: #ffffff;
-  border-style: solid;
-  border-radius: 5px;
-  border-color: getColor(secondary);
-	float: right;
-	width: 6em;
-	height: 2.5em;
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 .center {
-  justify-content: center;
-  display: flex;
-  align-items: center;
-}
-
-.detailsBox {
-  top: 0px;
-  margin: 0px 0px 10px 20px;
-  border-radius: 5px;
+	justify-content: center;
 	display: flex;
-  border-style: solid;
-  border-color: getColor(bg);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-  border-width: 1.5px;
-}
-
-
-
-.detailsBox h5 {
-  background-color: getColor(nav-bg);
-  border-radius: 5px 5px 0px 0px;
-  padding: 10px;
-}
-
-.detailsBox hr {
-  border-top: 1px solid getColor(base);
-}
-
-.detailsContent form {
-  margin: 10px;
-	display: block;
-}
-
-.infoBox {
-  background-color: getColor(bg);
-}
-
-.abbreviations {
-  display: block;
-  margin: 10px 0px 10px 20px;
-  width: 50%;
-  border-style: solid;
-  border-color: getColor(bg);
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  border-width: 1.5px;
-}
-
-.abbreviations h5 {
-  background-color: getColor(nav-bg);
-  border-radius: 5px 5px 0px 0px;
-  padding: 10px;
-}
-
-.abbreviations hr {
-  border-top: 1px solid getColor(base);
-}
-
-.abbreviationsContent {
-  margin: 10px;
-}
-
-.header {
-  font-size: 1.5em;
-  font-weight: bold;
-  border-bottom: #636e72;
-  border-width: 1px;
-  border-bottom-style: solid;
+	align-items: center;
 }
 
 .calculation-right {
-  float: right;
+	float: right;
 }
 
 .up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
 }
 
 .arrowBtn {
-  justify-content: center;
-  align-content: center;
-  display: flex;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  transition: 0.5s;
+	justify-content: center;
+	align-content: center;
+	display: flex;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	transition: 0.5s;
 }
 
 .arrowBtn button {
-  border-color: transparent;
-  background-color: transparent;
-  height: 40px;
+	border-color: transparent;
+	background-color: transparent;
+	height: 40px;
 }
 
 .arrow {
-  border: solid #636e72;
-  border-width: 0 3px 3px 0;
-  display: flex;
-  width: 25px;
-  height: 25px;
+	border: solid #636e72;
+	border-width: 0 3px 3px 0;
+	display: flex;
+	width: 25px;
+	height: 25px;
 }
 
 /* Add responsiveness - on screens less than 580px wide, display the navbar vertically instead of horizontally */
 @media screen and (max-width: 580px) {
-  .calculation {
-    padding: 20px 10px !important; /* Use !important to make sure that JavaScript doesn't override the padding on small screens */
-  }
-  .calculation-right {
-    float: none;
-  }
+	.calculation {
+		padding: 20px 10px !important; /* Use !important to make sure that JavaScript doesn't override the padding on small screens */
+	}
+	.calculation-right {
+		float: none;
+	}
 }
 
 .calculationBox {
-  height: 100%;
-  background-color: getColor(bg);
+	height: 100%;
+	background-color: getColor(bg);
 }
 
 .homeRoot {
-  background-color: getColor(bg);
-  overflow-x: hidden;
-  height: 100%;
+	background-color: getColor(bg);
+	overflow-x: hidden;
+	height: 100%;
 }

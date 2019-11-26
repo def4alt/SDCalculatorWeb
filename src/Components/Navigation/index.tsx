@@ -54,12 +54,12 @@ interface NavigationProps {
 const NavigationAuth: React.SFC<NavigationProps> = props => (
 	<div className="nav">
 		<input type="checkbox" id="nav-check" />
-		<div>
-			<a className="nav-brand" href={ROUTES.LANDING}>
+		<div className="nav-brand">
+			<a href={ROUTES.LANDING}>
 				SDCalculatorWeb
 			</a>
 		</div>
-		<div className="mr-auto nav-links">
+		<div className="nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.ACCOUNT}>{props.strings.account}</a>
 		</div>
@@ -87,14 +87,15 @@ const NavigationAuth: React.SFC<NavigationProps> = props => (
 );
 
 const NavigationNonAuth: React.SFC<NavigationProps> = props => (
+	
 	<div className="nav">
 		<input type="checkbox" id="nav-check" />
-		<div>
-			<a className="nav-brand" href={ROUTES.LANDING}>
+		<div className="nav-brand">
+			<a href={ROUTES.LANDING}>
 				SDCalculatorWeb
 			</a>
 		</div>
-		<div className="mr-auto nav-links">
+		<div className="nav-links">
 			<a href={ROUTES.HOME}>{props.strings.home}</a>
 			<a href={ROUTES.SIGN_IN}>{props.strings.signIn}</a>
 		</div>

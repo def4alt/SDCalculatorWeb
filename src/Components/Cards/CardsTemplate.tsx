@@ -225,7 +225,7 @@ class CardTemplate extends React.Component<
         id="card"
         key={model.TestName + model.SampleType}
       >
-        <h5>{model.TestName + " Lvl" + model.SampleType}</h5>
+        <h3>{model.TestName + " Lvl" + model.SampleType}</h3>
         <div className="cardContent">
           <div className="center">{chart}</div>
           {this.state.editMode && (
