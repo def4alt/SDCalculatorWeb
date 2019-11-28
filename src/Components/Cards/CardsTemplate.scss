@@ -11,11 +11,11 @@
 
 .card {
 	display: block;
-	width: 50%;
 	border-style: solid;
 	border-color: getColor(bg);
 	border-width: 2px;
 	border-radius: 5px;
+    height: 320px;
 
 	h3 {
 		border-radius: 5px 5px 0px 0px;
@@ -25,12 +25,6 @@
 		text-align: center;
 		background-color: getColor(nav-bg);
 	}
-}
-
-.plot {
-	padding: 10px 20px 30px 10px;
-	width: 500px;
-	height: 500px;
 }
 
 .cardContent {

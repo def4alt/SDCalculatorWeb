@@ -5,9 +5,10 @@ import "./index.scss";
 import CardTemplate from "./CardsTemplate";
 import { useLocalization, stringsType } from "../Localization";
 import { StatisticsModel } from "../Calculation/statistics";
-import PrintPage from "../Print";
 import ReactToPrint from "react-to-print";
 import Firebase, { withFirebase } from "../Firebase";
+
+const LazyPrint = React.lazy(() => import("../Print"));
 
 type CardsHolderProps = {
 	statisticsModels: StatisticsModel[];
@@ -19,6 +20,7 @@ type CardsHolderProps = {
 
 type CardsHolderState = {
 	statisticsModels: StatisticsModel[];
+	innerWidth: number;
 	showStarredCharts: boolean;
 	editMode: boolean;
 	date: string;
@@ -38,6 +40,7 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 
 		this.state = {
 			statisticsModels: props.statisticsModels,
+			innerWidth: 0,
 			showStarredCharts: false,
 			date: this.props.date,
 			lot: this.props.lot,
@@ -49,6 +52,7 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 		};
 
 		this.printObject = document.createElement("div");
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 	}
 
 	componentDidUpdate(prevProps: CardsHolderProps) {
@@ -63,7 +67,22 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 		}
 	}
 
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.updateWindowDimensions);
+		if (this.props.firebase.auth.currentUser) {
+			this.props.firebase
+				.backup(this.props.firebase.auth.currentUser.uid)
+				.off();
+		}
+	}
+	updateWindowDimensions() {
+		this.setState({ innerWidth: window.innerWidth });
+	}
+
 	componentDidMount() {
+		console.log(0);
+		window.addEventListener("resize", this.updateWindowDimensions);
+		this.updateWindowDimensions();
 		this.listener = this.props.firebase.auth.onAuthStateChanged(authUser =>
 			authUser
 				? this.props.firebase
@@ -93,6 +112,7 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 		var cards = Array.from(this.state.statisticsModels).map(model => {
 			return (
 				<CardTemplate
+					cardWidth={this.state.innerWidth}
 					key={model.TestName + model.SampleType}
 					model={model}
 					editMode={this.state.editMode}
@@ -269,7 +289,7 @@ class CardsHolder extends React.Component<CardsHolderProps, CardsHolderState> {
 					/>
 				</div>
 				<div style={{ display: "none" }}>
-					<PrintPage
+					<LazyPrint
 						lot={this.props.lot}
 						componentRef={el => el && (this.printObject = el)}
 					/>

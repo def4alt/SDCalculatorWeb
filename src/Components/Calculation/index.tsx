@@ -98,7 +98,7 @@ class CalculationPage extends Component<
 
 	componentWillUnmount() {
 		this.listener = undefined;
-		this.props.firebase.auth.currentUser &&
+		if (this.props.firebase.auth.currentUser) 
 			this.props.firebase
 				.backup(this.props.firebase.auth.currentUser.uid)
 				.off();
@@ -196,6 +196,7 @@ class CalculationPage extends Component<
 						models: globalStatisticsModels
 					}
 				});
+
 			});
 		}
 

@@ -17,6 +17,7 @@ type PrintPageState = {
 	lot: string;
 	date: string;
 	lastname: string;
+	innerWidth: number;
 	notes: string;
 	units: string;
 	deviceName: string;
@@ -33,11 +34,21 @@ class PrintPage extends React.Component<PrintPageProps, PrintPageState> {
 			lot: this.props.lot,
 			date: "",
 			lastname: "",
+			innerWidth: 0,
 			notes: "",
 			units: "",
 			deviceName: "",
 			models: []
 		};
+	}
+
+	componentWillUnmount() {
+		this.listener = undefined;
+		if (this.props.firebase.auth.currentUser) {
+			this.props.firebase
+				.backup(this.props.firebase.auth.currentUser.uid)
+				.off();
+		}
 	}
 
 	componentDidMount() {
@@ -47,10 +58,10 @@ class PrintPage extends React.Component<PrintPageProps, PrintPageState> {
 				this.props.firebase
 					.backup(authUser.uid)
 					.on("value", snapshot => {
-						const object = snapshot.val();
+						const object = snapshot.val()[this.state.lot];
 
 						this.setState({
-							models: object[this.state.lot].models
+							models: object.models
 						});
 
 						if (object.details) {
@@ -69,6 +80,7 @@ class PrintPage extends React.Component<PrintPageProps, PrintPageState> {
 	render() {
 		var cards = Array.from(this.state.models).map(model => (
 			<CardTemplate
+				cardWidth={this.state.innerWidth}
 				key={model.TestName + model.SampleType}
 				model={model}
 				editMode={false}
@@ -80,7 +92,7 @@ class PrintPage extends React.Component<PrintPageProps, PrintPageState> {
 			<div ref={this.props.componentRef} className="printRoot">
 				<div className="infoBox">
 					<div className="detailsBox">
-						<h5>{this.props.strings.details}</h5>
+						<h3>{this.props.strings.details}</h3>
 						<div className="detailsContent">
 							<p>
 								{this.props.strings.date}: {this.state.date}
@@ -107,25 +119,6 @@ class PrintPage extends React.Component<PrintPageProps, PrintPageState> {
 							<p>
 								{this.props.strings.notes}: {this.state.notes}
 							</p>
-						</div>
-					</div>
-					<div className="abbreviations">
-						<h5>{this.props.strings.abbreviations}</h5>
-						<div className="abbreviationsContent">
-							<h6>13S</h6>
-							<p>{this.props.strings.abr13S}</p>
-							<hr />
-							<h6>22S</h6>
-							<p>{this.props.strings.abr22S}</p>
-							<hr />
-							<h6>R4S</h6>
-							<p>{this.props.strings.abrR4S}</p>
-							<hr />
-							<h6>41S</h6>
-							<p>{this.props.strings.abr41S}</p>
-							<hr />
-							<h6>8X</h6>
-							<p>{this.props.strings.abr8X}</p>
 						</div>
 					</div>
 				</div>
