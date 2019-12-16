@@ -4,8 +4,8 @@ stages:
     - init
     - build
     - deploy
-
-initialize:
+    
+deploy_sdcalculator:
     stage: init
     environment: Production
     only:
@@ -13,16 +13,12 @@ initialize:
     script:
         - npm install -g firebase-tools
         - npm install
-
-build_project:
     stage: build
     environment: Production
     only:
         - master
     script:
         - npm run build
-
-deploy_production:
     stage: deploy
     environment: Production
     only:
