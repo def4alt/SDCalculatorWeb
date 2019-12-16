@@ -13,4 +13,4 @@ deploy_sdcalculator:
         - npm install
         - npm run build
         - firebase use --token $FIREBASE_DEPLOY_KEY sdcalculatorweb
-        - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID"
+        - firebase deploy --token $FIREBASE_DEPLOY_KEY -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID"
