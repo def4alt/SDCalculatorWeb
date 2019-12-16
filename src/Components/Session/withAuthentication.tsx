@@ -9,7 +9,7 @@ type withAuthenticationProps = {
 };
 
 type withAuthenticationState = {
-	authUser: firebase.User | undefined;
+	authUser: firebase.User | null;
 };
 
 const withAuthentication = <P extends object>(
@@ -25,7 +25,7 @@ const withAuthentication = <P extends object>(
 			super(props);
 
 			this.state = {
-				authUser: undefined
+				authUser: null
 			};
 		}
 
@@ -34,7 +34,7 @@ const withAuthentication = <P extends object>(
 				(authUser: firebase.User | null) =>
 					authUser
 						? this.setState({ authUser })
-						: this.setState({ authUser: undefined })
+						: this.setState({ authUser: null })
 			);
 		}
 

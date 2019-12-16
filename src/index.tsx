@@ -5,7 +5,6 @@ import App from "./Components/App";
 import Firebase, { FirebaseContext } from "./Components/Firebase";
 
 import "./index.scss";
-import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
 	<FirebaseContext.Provider value={new Firebase()}>
@@ -14,4 +13,4 @@ ReactDOM.render(
 	document.getElementById("root")
 );
 
-serviceWorker.unregister();
+serviceWorker.register();

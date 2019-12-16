@@ -1,4 +1,5 @@
 @import "../../functions.scss";
+@import "../../defaults.scss";
 
 * {
 	box-sizing: border-box;
@@ -14,55 +15,59 @@ body {
 	background-color: getColor(nav-bg);
 	position: absolute;
 	align-items: center;
+	display: inline-flex;
 	top: 0;
 	z-index: 100;
 }
 
-.nav-brand {
+.nav-brand > a {
 	font-size: 24px;
 	color: getColor(base);
 	background-color: getColor(nav-bg);
-	float: left;
 	display: block;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
 }
 
-.nav-brand:hover {
+.nav-brand > a:hover {
 	background-color: getColor(nav-bg);
 	text-decoration: none;
 	color: getColor(base);
 }
 
 .locale button {
+	@extend %button-standard;
 	background-color: getColor(secondary);
 	border-color: getColor(secondary);
-	border-radius: 5px;
 	color: getColor(whitish);
-	border-style: solid;
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+	height: 2.3rem;
+	width: 2.3rem;
+	padding: 0.4em 0.4em;
+	font-size: 16px;
 	margin-right: 4px;
 	margin-left: 4px;
 }
 
 .locale {
 	margin-right: 20px;
+	display: flex;
 }
+
 
 .theme {
 	margin-right: 20px;
 }
 
 .theme button {
+	@extend %button-standard;
 	background-color: getColor(base);
 	color: getColor(bg);
 	border-color: getColor(base);
-	border-radius: 5px;
+	padding: 0.4em 0.4em;
+	font-size: 20px;
 	width: 2.5rem;
 	height: 2.5rem;
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-	border-style: solid;
 }
 
 .signOut {
@@ -72,10 +77,11 @@ body {
 }
 
 .signOut button {
+	@extend %button-standard;
 	background-color: getColor(secondary);
 	color: #ffffff;
-	border-style: solid;
-	border-radius: 5px;
+	height: 2.3rem;
+	width: 6em;
 	border-color: getColor(secondary);
 }
 
@@ -84,8 +90,9 @@ body {
 }
 
 .nav > .nav-links {
-	display: inline;
+	display: inline-flex;
 	font-size: 18px;
+	width: calc(100vw - 517.28px);
 }
 
 .nav > .nav-links > a {

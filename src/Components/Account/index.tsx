@@ -14,7 +14,7 @@ const AccountPage: React.SFC<AccountPageProps> = props => (
 		{authUser => (
 			<div className="accountBox">
 				<h1>
-					{props.strings.account}: {authUser && authUser.email}
+					{props.strings.account}: <p className="email">{authUser && authUser.email}</p> 
 				</h1>
 				<PasswordChangeForm />
 			</div>
@@ -22,6 +22,6 @@ const AccountPage: React.SFC<AccountPageProps> = props => (
 	</AuthUserContext.Consumer>
 );
 
-const condition = (authUser: firebase.User | undefined) => !!authUser;
+const condition = (authUser: firebase.User | null) => !!authUser;
 
 export default withAuthorization(condition)(useLocalization(AccountPage));

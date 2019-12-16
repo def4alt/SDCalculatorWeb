@@ -27,7 +27,7 @@ class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
 
 	componentDidMount() {
 		this.setState({ loading: true });
-		this.props.firebase.users().on("value", snapshot => {
+		this.props.firebase.users().on("value", (snapshot: any) => {
 			const usersObject = snapshot.val();
 
 			const usersList = Object.keys(usersObject).map(key => ({
@@ -79,6 +79,6 @@ class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
 	);
 }
 
-const condition = (authUser: firebase.User | undefined) => !!authUser;
+const condition = (authUser: firebase.User | null) => !!authUser;
 
 export default withAuthorization(condition)(withFirebase(useLocalization(AdminPage)));

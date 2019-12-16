@@ -79,7 +79,7 @@ class PasswordForgetFormBase extends React.Component<
 					/>
 				</div>
 				<button
-					className="submitForget"
+					className="submit"
 					disabled={isInvalid}
 					type="submit"
 				>

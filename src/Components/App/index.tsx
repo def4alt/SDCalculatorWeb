@@ -27,8 +27,8 @@ const App: React.FunctionComponent<AppProps> = props => (
       <div className="root">
         <Navigation />
         <div className="base">
-          <Route
-            render={({ history }) => (
+         	<Route
+            render={({ history }) => (history.location.pathname !== ROUTES.BUGS && history.location.pathname !== ROUTES.LANDING) && (
               <div className="foundBug">
                 <button
                   onClick={() => history.push(ROUTES.BUGS)}

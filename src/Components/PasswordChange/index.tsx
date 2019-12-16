@@ -66,8 +66,8 @@ class PasswordChangeForm extends React.Component<
 		const { passwordOne, passwordTwo, error } = this.state;
 		const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 		return (
-			<form onSubmit={this.onSubmit}>
-				<div className="password">
+			<form className="changeForm" onSubmit={this.onSubmit}>
+				<div className="passwordOne">
 					<p>{this.props.strings.password}</p>
 					<input
 						name="passwordOne"
@@ -77,7 +77,7 @@ class PasswordChangeForm extends React.Component<
 						placeholder={this.props.strings.passHint}
 					/>
 				</div>
-				<div className="password">
+				<div className="passwordTwo">
 					<p>{this.props.strings.confirmPassword}</p>
 					<input
 						name="passwordTwo"
@@ -88,7 +88,7 @@ class PasswordChangeForm extends React.Component<
 					/>
 				</div>
 				<button
-					className="submitChange"
+					className="submit"
 					disabled={isInvalid}
 					type="submit"
 				>

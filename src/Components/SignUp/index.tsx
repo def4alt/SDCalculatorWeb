@@ -104,7 +104,6 @@ class SignUpFormBase extends React.Component<
 						value={username}
 						onChange={this.onChange}
 						type="text"
-						placeholder={this.props.strings.usernameHint}
 					/>
 				</div>
 
