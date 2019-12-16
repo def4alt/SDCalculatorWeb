@@ -1,8 +1,26 @@
 image: node:latest
 
-cache:
-    paths:
-        - node_modules/
+stages:
+    - init
+    - build
+    - deploy
+
+initialize:
+    stage: init
+    environment: Production
+    only:
+        - master
+    script:
+        - npm install -g firebase-tools
+        - npm install
+
+build_project:
+    stage: build
+    environment: Production
+    only:
+        - master
+    script:
+        - npm run build
 
 deploy_production:
     stage: deploy
@@ -10,8 +28,5 @@ deploy_production:
     only:
         - master
     script:
-        - npm install -g firebase-tools
-        - npm install
-        - npm run build
-        - firebase use --token $FIREBASE_DEPLOY_KEY production
+        - firebase use --token $FIREBASE_DEPLOY_KEY sdcalculatorweb
         - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
