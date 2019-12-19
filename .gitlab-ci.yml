@@ -1,4 +1,5 @@
-image: node:latest
+default:
+    image: node:latest
 
 stages:
     - build
@@ -14,7 +15,7 @@ build:
         - npm run build
     artifacts:
         paths:
-            - build/
+            - dist/
             - firebase.json
             - .firebaserc
 

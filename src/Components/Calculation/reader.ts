@@ -1,10 +1,10 @@
-import xlsx from "xlsx";
+import {Sheet, read, utils} from "xlsx";
 import SampleType from "./SampleType";
 import moment from "moment";
 
-const getValueFromCell = (r: number, c: number, sheet: xlsx.Sheet) => {
+const getValueFromCell = (r: number, c: number, sheet: Sheet) => {
 	return sheet[
-		xlsx.utils.encode_cell({
+		utils.encode_cell({
 			r: r,
 			c: c
 		})
@@ -47,7 +47,7 @@ function Read(file: File) {
 							month: "2-digit"
 						});
 
-			const workbook = xlsx.read(reader.result, {
+			const workbook = read(reader.result, {
 				type: "binary"
 			});
 
@@ -55,7 +55,7 @@ function Read(file: File) {
 
 			const columnTitleRow = 2;
 
-			const range = xlsx.utils.decode_range(sheet["!ref"] || "");
+			const range = utils.decode_range(sheet["!ref"] || "");
 			for (let rowNum = range.s.r + 4; rowNum <= range.e.r; rowNum++) {
 				const sampleTypeCell = getValueFromCell(rowNum, 3, sheet);
 

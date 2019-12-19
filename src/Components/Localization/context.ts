@@ -7,6 +7,6 @@ type LocalizationType = {
     strings: LocalizedStringsMethods;
 }
 
-const LocalizationContext = React.createContext<LocalizationType>({setLocale: (code: string) => null, strings: strings});
+const LocalizationContext = React.createContext<LocalizationType>({setLocale: (_: string) => null, strings: strings});
 
 export default LocalizationContext;

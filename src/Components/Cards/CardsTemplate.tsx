@@ -2,7 +2,7 @@ import React from "react";
 
 //@ts-ignore
 import { XYPlot, LineMarkSeries, LineSeries, XAxis, YAxis } from "react-vis";
-import "../../../node_modules/react-vis/dist/style.css";
+import "./style.css";
 import "./CardsTemplate.scss";
 
 import { useLocalization, stringsType } from "../Localization";
