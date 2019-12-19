@@ -2,8 +2,6 @@ const path = require("path"),
 	webpack = require("webpack"),
 	HtmlWebpackPlugin = require("html-webpack-plugin");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-	.BundleAnalyzerPlugin;
 
 module.exports = {
 	entry: "./src/index.tsx",
@@ -75,7 +73,6 @@ module.exports = {
 		}),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
-		new LodashModuleReplacementPlugin(),
-		new BundleAnalyzerPlugin()
+		new LodashModuleReplacementPlugin()
 	]
 };
