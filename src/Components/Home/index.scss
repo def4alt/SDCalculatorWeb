@@ -69,11 +69,11 @@
 .calculationBox {
 	height: 100%;
 	background-color: getColor(bg);
-	color: getColor(base);
 }
 
 .homeRoot {
 	background-color: getColor(bg);
 	overflow-x: hidden;
 	height: 100%;
+	color: getColor(base);
 }
