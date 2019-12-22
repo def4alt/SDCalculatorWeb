@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
 	entry: path.resolve(__dirname, "src", "index.tsx"),
 	resolve: {
-		extensions: [".js", ".ts", ".tsx"]
+		extensions: [".js", ".ts", ".tsx", ".json"]
 	},
 	module: {
 		rules: [
