@@ -5,15 +5,11 @@
 /.pnp
 .pnp.js
 
-/.firebase
-/.vscode
-
 # testing
 /coverage
 
 # production
 /build
-/dist
 
 # misc
 .DS_Store
