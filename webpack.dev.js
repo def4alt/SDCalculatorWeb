@@ -6,6 +6,7 @@ const path = require("path");
 module.exports = merge(common, {
   mode: "development",
   devServer: {
+    historyApiFallback: true,
     hot: true // enable HMR on the server
   },
   devtool: "cheap-module-eval-source-map",
