@@ -1,0 +1,15 @@
+.navigation {
+  display: flex;
+  height: 50px;
+  justify-content: center;
+
+  p {
+    font-size: 28px;
+    align-self: center;
+  }
+
+  .settings {
+    left: 20px;
+    top: 20px;
+  }
+}

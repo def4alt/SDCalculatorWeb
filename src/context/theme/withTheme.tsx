@@ -87,6 +87,8 @@ const withTheme = <P extends object>(Component: React.ComponentType<P>) => {
           : bodyEl.classList.remove("dark"));
     }
 
+    
+
     componentWillUnmount() {
       this.listener = undefined;
     }
