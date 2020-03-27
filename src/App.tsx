@@ -10,6 +10,9 @@ import Navigation from "./components/navigation";
 import Admin from "./components/admin";
 import PasswordForget from "./components/password_forget";
 import { CookiesProvider } from "react-cookie";
+import { withTheme } from "./context/theme";
+import { withAuthentication } from "./context/session";
+import { withLocalization } from "./context/localization";
 
 const App: React.FC = _ => (
   <CookiesProvider>
@@ -29,4 +32,4 @@ const App: React.FC = _ => (
   </CookiesProvider>
 );
 
-export default App;
+export default withTheme(withAuthentication(withLocalization(App)));
