@@ -101,10 +101,20 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
         );
 
         backups.on("value", (snapshot: any) => {
+            if (!snapshot.child(String(lot)).ref) return;
             snapshot.child(String(lot)).ref.remove();
         });
 
-        this.setState({ lotList: this.state.lotList.filter(t => t !== lot) });
+        let newList =
+            this.state.lotList.filter(t => t !== lot).length > 0
+                ? this.state.lotList.filter(t => t !== lot)
+                : [];
+
+        this.setState({ lotList: newList });
+
+        if (newList.length === 0) {
+            this.props.callback(0, []);
+        }
     };
     selectLot = (lot: number) => {
         this.setState({ lot });
