@@ -1,0 +1,50 @@
+@import "../../variables.scss";
+
+.card {
+    margin: 30px auto;
+    height: 22rem;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px #ffffff;
+}
+
+
+.card .card_image {
+    width: inherit;
+    height: 19rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: #000000;
+    border-width: 2px;
+}
+
+.card .card_image img {
+    width: inherit;
+    height: inherit;
+    border-radius: 40px;
+    object-fit: cover;
+}
+
+.card .card_title {
+    text-align: center;
+    margin: 0;
+    font-size: 22px;
+    margin-top: 1.5rem;
+    color: rgba($black, 0.7);
+}
+
+.title-white {
+    color: white;
+}
+
+.title-black {
+    color: black;
+}
+
+@media all and (max-width: 500px) {
+    .card-list {
+        /* On small screens, we are no longer using row direction but column */
+        flex-direction: column;
+    }
+}
