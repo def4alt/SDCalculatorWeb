@@ -4,26 +4,25 @@
   overflow: hidden;
   width: 20rem;
   position: absolute;
+  margin-top: 20px;
   z-index: 10;
   background-color: $white;
 
   a {
     float: left;
+    width: inherit;
+    background-color: $white;
+    text-decoration: none;
     display: block;
     color: rgba($black, 0.5);
     text-align: center;
     padding: 14px 16px;
-    text-decoration: none;
     font-size: $font-size;
     display: none;
   }
 
   a:hover {
     background-color: $grey;
-    color: $black;
-  }
-
-  a.router-link-exact-active {
     color: $black;
   }
 }
@@ -80,6 +79,7 @@
   line-height: 29px;
   background-color: $white;
   border: 0;
+  text-decoration: none;
   font-weight: 400;
   color: $black;
 }

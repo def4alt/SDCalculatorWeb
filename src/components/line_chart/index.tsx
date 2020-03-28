@@ -11,7 +11,9 @@ interface LineChartProps {
     model: StatModel;
 }
 
-interface LineChartState {}
+interface LineChartState {
+    yValues: number[];
+}
 
 let Line = (value: number, color: string, repeat: number) => {
     return (
@@ -30,13 +32,16 @@ let Line = (value: number, color: string, repeat: number) => {
     );
 };
 
+const yLabels = ["3SD", "2SD", "SD", "M", "SD", "2SD", "3SD"];
+
 class LineChart extends React.Component<LineChartProps, LineChartState> {
     getLevelText = (level: SampleType) =>
         level === SampleType.Lvl1 ? "Lvl1" : "Lvl2";
 
-    render() {
-        let model = this.props.model;
+    constructor(props: LineChartProps) {
+        super(props);
 
+        let model = props.model;
         let yValues = [
             model.Average[0] + 3 * model.SD,
             model.Average[0] + 2 * model.SD,
@@ -47,7 +52,13 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
             model.Average[0] - 3 * model.SD
         ];
 
-        let yLabels = ["3SD", "2SD", "SD", "M", "SD", "2SD", "3SD"];
+        this.state = {
+            yValues
+        };
+    }
+
+    render() {
+        let model = this.props.model;
 
         var data = [...Array(model.Average.length)].map((_, i) => ({
             x: i,
@@ -67,7 +78,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
                     height={250}
                 >
                     <YAxis
-                        tickValues={yValues}
+                        tickValues={this.state.yValues}
                         style={{
                             display: "inline-flex",
                             fontSize: 12,
@@ -75,8 +86,7 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
                             text: { fill: "#636e72" }
                         }}
                         tickFormat={(v: number, i: number) =>
-                            Math.round(v * 100) / 100 +
-                            `, ${yLabels[i]}`
+                            Math.round(v * 100) / 100 + `, ${yLabels[i]}`
                         }
                     />
 

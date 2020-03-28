@@ -2,22 +2,28 @@ import React, { Suspense } from "react";
 import Calculation from "../calculation";
 import { StatModel } from "../../types";
 import Loading from "../loading";
-import CardsList from "../cards_list";
+import Firebase, { withFirebase } from "../../context/firebase";
 
-interface HomeProps {}
+interface HomeProps {
+    firebase: Firebase;
+}
 interface HomeState {
     models: StatModel[];
     lot: number;
     date: Date;
 }
 
+const CardsList = React.lazy(() => import("../cards_list"));
+
 class Home extends React.Component<HomeProps, HomeState> {
-    componentWillMount() {
-        this.setState({
+    constructor(props: HomeProps) {
+        super(props);
+
+        this.state = {
             models: [],
             lot: 0,
             date: new Date()
-        });
+        };
     }
 
     modelsCallback = (lot: number, models: StatModel[]) => {
@@ -25,6 +31,22 @@ class Home extends React.Component<HomeProps, HomeState> {
             models,
             lot,
             date: models[0].Date[0]
+        });
+
+        if (!this.props.firebase.auth.currentUser) return;
+
+        const backups = this.props.firebase.backup(
+            this.props.firebase.auth.currentUser!.uid
+        );
+
+        backups.on("value", (snapshot: any) => {
+            const backupsObject = snapshot.val();
+            backups.set({
+                ...backupsObject,
+                [lot]: {
+                    models
+                }
+            });
         });
     };
 
@@ -48,4 +70,4 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
 }
 
-export default Home;
+export default withFirebase(Home);
