@@ -81,7 +81,7 @@ function Read(file: File): Promise<ReadModel[]> {
         reader.onload = () => {
             const models = [];
 
-            let date: Date = moment(
+            let date: string = moment(
                 String(file.name)
                     .replace("Summary Report", "")
                     .replace("-", "")
@@ -91,9 +91,9 @@ function Read(file: File): Promise<ReadModel[]> {
                     .replace("_", "/")
                     .trim(),
                 "DD/MM/YY"
-            ).toDate();
+            ).toDate().toUTCString();
 
-            date = date ? date : new Date();
+            date = date ? date : new Date().toUTCString();
 
             const workbook = read(reader.result, {
                 type: "binary"

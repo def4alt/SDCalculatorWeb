@@ -12,7 +12,7 @@ export type ReadModel = {
     SampleType: SampleType;
     FailedTests: Array<string>;
     TestResults: Dictionary<number>;
-    Date: Array<Date>;
+    Date: Array<string>;
 };
 
 export type StatModel = {
@@ -20,7 +20,7 @@ export type StatModel = {
     SD: number;
     TestName: string;
     SampleType: SampleType;
-    Date: Array<Date>;
+    Date: Array<string>;
     Warnings: Array<string>;
 };
 

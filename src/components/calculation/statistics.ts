@@ -46,7 +46,7 @@ function GetModel(
     let standardDeviation = GetStandardDeviation(lvlRows, testName);
     if (isNaN(standardDeviation)) standardDeviation = 0;
 
-    let date = new Date();
+    let date = new Date().toUTCString();
     if (lvlRows[0] !== undefined) date = lvlRows[0].Date[0];
 
     return {

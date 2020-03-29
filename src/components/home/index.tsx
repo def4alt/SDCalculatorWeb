@@ -10,7 +10,7 @@ interface HomeProps {
 interface HomeState {
     models: StatModel[];
     lot: number;
-    date: Date;
+    date: string;
 }
 
 const CardsList = React.lazy(() => import("../cards_list"));
@@ -22,7 +22,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         this.state = {
             models: [],
             lot: 0,
-            date: new Date()
+            date: new Date().toUTCString()
         };
     }
 
@@ -43,9 +43,7 @@ class Home extends React.Component<HomeProps, HomeState> {
             const backupsObject = snapshot.val();
             backups.set({
                 ...backupsObject,
-                [lot]: {
-                    models
-                }
+                [lot]: models
             });
         });
     };
