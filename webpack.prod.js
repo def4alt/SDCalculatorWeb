@@ -10,43 +10,36 @@ const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
-	mode: "production",
-	output: {
-		path: path.resolve(__dirname, "dist"),
-		filename: "main.[contentHash].bundle.js"
-	},
-	plugins: [
-		new CleanWebpackPlugin(),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-		new LodashModuleReplacementPlugin(),
-		new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
-		new HtmlWebpackPlugin({
-			template: path.resolve(__dirname, "public", "index.html"),
-			favicon: path.resolve(__dirname, "public", "favicon.ico"),
-			minify: {
-				removeAttributeQuotes: true,
-				collapseWhitespace: true,
-				removeComments: true
-			}
-		})
-	],
-	optimization: {
-		minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()]
-	},
-	module: {
-		rules: [
-			{
-				exclude: /node_modules/,
-				test: /\.(s*)css$/,
-				include: [
-					path.resolve(
-						__dirname,
-						"/node_modules/react-vis/dist/style.css"
-					),
-					path.resolve(__dirname, "src")
-				],
-				use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
-			}
-		]
-	}
+    mode: "production",
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "main.[contentHash].bundle.js"
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        new LodashModuleReplacementPlugin(),
+        new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "public", "index.html"),
+            favicon: path.resolve(__dirname, "public", "favicon.ico"),
+            minify: {
+                removeAttributeQuotes: true,
+                collapseWhitespace: true,
+                removeComments: true
+            }
+        })
+    ],
+    optimization: {
+        minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()]
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(s*)css$/,
+                include: /src/,
+                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
+            }
+        ]
+    }
 });
