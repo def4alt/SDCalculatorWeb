@@ -3,6 +3,8 @@ import { withRouter, RouterProps } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { withFirebase } from "../../context/firebase";
 
+import "./sign_in.scss";
+
 interface SignInProps extends RouterProps {
     firebase: Firebase;
 }
@@ -47,8 +49,8 @@ class SignIn extends React.Component<SignInProps, SignInState> {
             this.state.email === "" && this.state.password === "";
 
         return (
-            <form onSubmit={this.onSubmit} className="form">
-                <div className="email">
+            <form onSubmit={this.onSubmit} className="signin">
+                <div className="form">
                     <p>Email</p>
                     <input
                         name="email"
@@ -58,7 +60,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                     />
                 </div>
 
-                <div className="password">
+                <div className="form">
                     <p>Password</p>
                     <input
                         name="password"
@@ -67,6 +69,11 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                         placeholder="15%$vd09"
                     />
                 </div>
+
+                <div className="pwd-forget-link">
+                    <a href={ROUTES.PASSWORD_FORGET}>Forgot password?</a>
+                </div>
+                
                 <button disabled={isInvalid} className="submit" type="submit">
                     Sign In
                 </button>

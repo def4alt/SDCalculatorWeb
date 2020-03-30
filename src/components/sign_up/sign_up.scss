@@ -1,0 +1,45 @@
+@import "../../variables.scss";
+
+.signup {
+    display: block;
+    text-align: left;
+    margin-left: 40vw;
+    margin-top: 5vh;
+}
+
+.form {
+    font-size: $font-size;
+
+    input {
+        border-radius: 5px;
+        border-style: solid;
+        border-color: rgba($black, 0.2);
+        border-width: 1px;
+
+        width: 16rem;
+        height: 2rem;
+
+        font-size: 15px;
+    }
+}
+
+.submit {
+    margin-top: 20px;
+    margin-top: 30px;
+    width: 6rem;
+    height: 2.5rem;
+    font-size: $font-size;
+    border-radius: 5px;
+
+    color: $white;
+    border: 0;
+    background-color: rgba($blue, 1);
+
+    transition: all 0.25s ease-in-out;
+
+    text-align: center;
+}
+
+.submit:hover {
+    cursor: pointer;
+}

@@ -2,8 +2,9 @@ import React from "react";
 
 import "./navigation.scss";
 import * as ROUTES from "../../routes";
+import { withRouter, RouterProps } from "react-router";
 
-interface NavigationProps {}
+interface NavigationProps extends RouterProps {}
 
 const toggleMenu = () => {
     const x = document.getElementById("myTopnav") as HTMLElement;
@@ -22,31 +23,55 @@ const Navigation: React.FC<NavigationProps> = props => (
                 <p></p>
                 <p></p>
             </button>
-            <a id="logo" href={ROUTES.HOME}>
+            <button id="logo" onClick={() => props.history.push(ROUTES.HOME)}>
                 SDCalculator
-            </a>
+            </button>
         </div>
         <div className="topnav" id="myTopnav">
-            <a className="link" href={ROUTES.LANDING}>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.HOME)}
+            >
+                Home
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.ABOUT)}
+            >
                 About
-            </a>
-            <a className="link" href={ROUTES.BUGS}>
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.BUGS)}
+            >
                 Bugs
-            </a>
-            <a className="link" href={ROUTES.ACCOUNT}>
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.ACCOUNT)}
+            >
                 Account
-            </a>
-            <a className="link" href={ROUTES.SIGN_IN}>
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.SIGN_IN)}
+            >
                 Sign In
-            </a>
-            <a className="link" href={ROUTES.SIGN_UP}>
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.SIGN_UP)}
+            >
                 Sign Up
-            </a>
-            <a className="link" href={ROUTES.ADMIN}>
+            </button>
+            <button
+                className="link"
+                onClick={() => props.history.push(ROUTES.ADMIN)}
+            >
                 Control Panel
-            </a>
+            </button>
         </div>
     </div>
 );
 
-export default Navigation;
+export default withRouter(Navigation);
