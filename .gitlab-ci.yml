@@ -19,7 +19,6 @@ build:
         - echo "STORAGE_BUCKET=$STORAGE_BUCKET" >> ~/.env
         - echo "MESSAGING_SENDER_ID=$MESSAGING_SENDER_ID" >> ~/.env
         - echo "APP_ID=$APP_ID" >> .env
-        - echo "MEASUREMENT_ID=$MEASUREMENT_ID" >> ~/.env
         - npm run build
     artifacts:
         paths:
@@ -33,6 +32,6 @@ deploy:
         - master
     script:
         - npm install -g firebase-tools
-        - firebase use --token $FIREBASE_DEPLOY_KEY sdcalculatorweb
+        - firebase use --token $FIREBASE_DEPLOY_KEY sdcalculus
         - firebase deploy --token $FIREBASE_DEPLOY_KEY -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID"
     
