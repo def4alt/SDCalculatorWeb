@@ -7,10 +7,12 @@ stages:
     
 build:
     stage: build
+    environment: production
     only:
         - master
     script:
         - npm install
+        - echo "API_KEY=$API_KEY" >> .env
         - npm run build
     artifacts:
         paths:
