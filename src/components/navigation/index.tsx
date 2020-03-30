@@ -42,12 +42,6 @@ const Navigation: React.FC<NavigationProps> = props => (
             </button>
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.BUGS)}
-            >
-                Bugs
-            </button>
-            <button
-                className="link"
                 onClick={() => props.history.push(ROUTES.ACCOUNT)}
             >
                 Account
