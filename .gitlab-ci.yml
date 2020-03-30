@@ -7,20 +7,12 @@ stages:
     
 build:
     stage: build
-    environment:
-        API_KEY: $API_KEY
-        AUTH_DOMAIN: $AUTH_DOMAIN
-        DATABASE_URL: $DATABASE_URL
-        PROJECT_ID: $PROJECT_ID
-        STORAGE_BUCKET: $STORAGE_BUCKET
-        MESSAGING_SENDER_ID: $MESSAGING_SENDER_ID
-        APP_ID: $APP_ID
-        MEASUREMENT_ID: $MEASUREMENT_ID
-
+    environment: production
     only:
         - master
     script:
         - npm install
+        - echo "API_KEY=$API_KEY" >> .env
         - npm run build
     artifacts:
         paths:
