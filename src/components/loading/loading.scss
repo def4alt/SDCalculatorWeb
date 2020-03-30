@@ -1,39 +1,16 @@
-@import "../../variables.scss";
-
-.lds-spinner {
-    color: $grey;
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-}
-.lds-spinner div {
-    transform-origin: 40px 40px;
-    animation: lds-spinner 1.2s linear infinite;
-}
-.lds-spinner div:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 3px;
-    left: 37px;
-    width: 6px;
-    height: 18px;
-    border-radius: 20%;
-    background: $white;
+.loadingCircle {
+	border: 3px solid hsla(185, 100%, 62%, 0.2);
+	border-top-color: #0984e3;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 50%;
+	width: 3em;
+	height: 3em;
+	animation: spin 1s linear infinite;
 }
 
-@for $i from 1 through 12 {
-    .lds-spinner div:nth-child(#{$i}) {
-        transform: rotate(30deg * $i);
-        animation-delay: -1.2s + $i;
-    }
-}
-@keyframes lds-spinner {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
 }

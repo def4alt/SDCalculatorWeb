@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import Calculation from "../calculation";
 import { StatModel } from "../../types";
-import Loading from "../loading";
 import Firebase, { withFirebase } from "../../context/firebase";
+import Loading from "../loading";
 
 interface HomeProps {
     firebase: Firebase;
@@ -32,35 +32,24 @@ class Home extends React.Component<HomeProps, HomeState> {
             lot,
             date: models[0].Date[0]
         });
-
-        if (!this.props.firebase.auth.currentUser) return;
-
-        const backups = this.props.firebase.backup(
-            this.props.firebase.auth.currentUser!.uid
-        );
-
-        backups.on("value", (snapshot: any) => {
-            const backupsObject = snapshot.val();
-            backups.set({
-                ...backupsObject,
-                [lot]: models
-            });
-        });
     };
 
     render() {
+        const { models } = this.state;
         return (
             <div className="home">
                 <div className="calculationBox">
-                    <Calculation
-                        callback={this.modelsCallback}
-                        models={this.state.models}
-                    />
+                    <Suspense fallback={<div></div>}>
+                        <Calculation
+                            callback={this.modelsCallback}
+                            models={models}
+                        />
+                    </Suspense>
                 </div>
 
-                {this.state.models.length > 0 && (
-                    <Suspense fallback={<Loading />}>
-                        <CardsList models={this.state.models} />
+                {models.length > 0 && (
+                    <Suspense fallback={Loading}>
+                        <CardsList models={models} />
                     </Suspense>
                 )}
             </div>

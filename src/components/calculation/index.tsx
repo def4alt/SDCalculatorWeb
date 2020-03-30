@@ -36,6 +36,11 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
     componentWillUnmount() {
         this.authStateListener = undefined;
+
+        if (this.props.firebase.auth.currentUser)
+            this.props.firebase
+                .backup(this.props.firebase.auth.currentUser.uid)
+                .off();
     }
 
     // Handlers
@@ -59,14 +64,29 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
     // Custom functions
     async calculate(files: File[], sdMode: boolean) {
-        await Calculate(files, this.props.models, sdMode).then(models =>
-            this.props.callback(this.state.lot, models)
-        );
+        await Calculate(files, this.props.models, sdMode).then(models => {
+            this.props.callback(this.state.lot, models);
+
+            if (!this.props.firebase.auth.currentUser) return;
+
+            const backups = this.props.firebase.backup(
+                this.props.firebase.auth.currentUser!.uid
+            );
+
+            backups.once("value", (snapshot: any) => {
+                const object = snapshot.val();
+
+                backups.set({
+                    ...object,
+                    [this.state.lot]: models
+                });
+            });
+        });
     }
 
     // Callbacks
     lotCallback = (lot: number) => {
-        this.setState({ lot: lot });
+        this.setState({ lot });
 
         if (!this.props.firebase.auth.currentUser) return;
 
@@ -74,14 +94,16 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
             this.props.firebase.auth.currentUser.uid
         );
 
-        backups.on("value", (snapshot: any) => {
-            var backupsObject: StatModel[] = snapshot.child(lot).val();
+        backups.once("value", (snapshot: any) => {
+            let backupsObject: StatModel[] = snapshot.child(lot).val();
 
             this.props.callback(lot, backupsObject);
         });
     };
 
     render() {
+        const { files, sdMode } = this.state;
+
         return (
             <div className="calculation">
                 <div id="lot">
@@ -96,7 +118,7 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
                                 <input
                                     type="checkbox"
                                     className="checkbox"
-                                    checked={this.state.sdMode}
+                                    checked={sdMode}
                                     onChange={this.onSdModeChange}
                                 />
                                 <div className="knobs"></div>
@@ -114,14 +136,14 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
                         <input
                             type="file"
                             aria-label="File browser"
-                            multiple
+                            multiple={sdMode}
                             onChange={this.onFilesChange}
                         />
                         <span className="file-custom">
-                            {this.state.files.length > 1
-                                ? this.state.files.length + " selected"
-                                : this.state.files.length === 1
-                                ? this.state.files[0].name
+                            {files.length > 1
+                                ? files.length + " selected"
+                                : files.length === 1
+                                ? files[0].name
                                 : "Choose files..."}
                         </span>
                     </label>
@@ -131,7 +153,7 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
                     <button
                         className="buildButton"
                         onClick={() =>
-                            this.calculate(this.state.files, this.state.sdMode)
+                            this.calculate(files, sdMode)
                         }
                     >
                         Build charts

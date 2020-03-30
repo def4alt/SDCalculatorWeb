@@ -6,6 +6,7 @@ import "./card.scss";
 
 interface CardProps {
     model: StatModel;
+    width: number;
 }
 
 let getLevelText = (lvl: SampleType) =>
@@ -15,18 +16,14 @@ const Card: React.FC<CardProps> = props => (
     <div
         className="card"
         style={{
-            width:
-                250 + 100 * props.model.Average.length > window.innerWidth - 50 &&
-                window.innerWidth !== 0
-                    ? window.innerWidth - 80
-                    : 250 + 100 * props.model.Average.length
+            width: props.width
         }}
     >
         <p className="card_title">
             {props.model.TestName + " " + getLevelText(props.model.SampleType)}
         </p>
         <div className="card_image">
-            <LineChart model={props.model} />
+            <LineChart model={props.model} width={props.width}/>
         </div>
     </div>
 );

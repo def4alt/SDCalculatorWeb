@@ -9,6 +9,7 @@ import "./line_chart.scss";
 
 interface LineChartProps {
     model: StatModel;
+    width: number;
 }
 
 interface LineChartState {
@@ -41,7 +42,13 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
     constructor(props: LineChartProps) {
         super(props);
 
-        let model = props.model;
+        this.state = {
+            yValues: []
+        };
+    }
+
+    componentDidMount() {
+        const model = this.props.model;
         let yValues = [
             model.Average[0] + 3 * model.SD,
             model.Average[0] + 2 * model.SD,
@@ -52,30 +59,21 @@ class LineChart extends React.Component<LineChartProps, LineChartState> {
             model.Average[0] - 3 * model.SD
         ];
 
-        this.state = {
-            yValues
-        };
+        this.setState({ yValues });
     }
 
     render() {
-        let model = this.props.model;
-
-        var data = [...Array(model.Average.length)].map((_, i) => ({
+        const model = this.props.model;
+        let data = [...Array(model.Average.length)].map((_, i) => ({
             x: i,
             y: model.Average[i]
         }));
-
         return (
             <div id="canvas">
                 <XYPlot
                     margin={{ left: 90, right: 30, bottom: 50 }}
-                    width={
-                        250 + 100 * model.Average.length >
-                            window.innerWidth - 50 && window.innerWidth !== 0
-                            ? window.innerWidth - 80
-                            : 250 + 100 * model.Average.length
-                    }
-                    height={250}
+                    width={this.props.width}
+                    height={260}
                 >
                     <YAxis
                         tickValues={this.state.yValues}
