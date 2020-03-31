@@ -23,7 +23,7 @@ module.exports = {
     },
     plugins: [
         new Dotenv({
-            path: "./.env"
+            path: "~/.env"
         }),
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
