@@ -152,11 +152,9 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
                 <div className="buildDiv">
                     <button
                         className="buildButton"
-                        onClick={() =>
-                            this.calculate(files, sdMode)
-                        }
+                        onClick={() => this.calculate(files, sdMode)}
                     >
-                        Build charts
+                        {sdMode ? "Build charts" : "Add average"}
                     </button>
                 </div>
             </div>

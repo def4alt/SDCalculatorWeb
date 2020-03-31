@@ -54,12 +54,6 @@ const Navigation: React.FC<NavigationProps> = props => (
             </button>
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.SIGN_UP)}
-            >
-                Sign Up
-            </button>
-            <button
-                className="link"
                 onClick={() => props.history.push(ROUTES.ADMIN)}
             >
                 Control Panel
