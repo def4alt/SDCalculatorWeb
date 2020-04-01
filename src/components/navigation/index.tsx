@@ -3,8 +3,12 @@ import React from "react";
 import "./navigation.scss";
 import * as ROUTES from "../../routes";
 import { withRouter, RouterProps } from "react-router";
+import Firebase, { withFirebase } from "../../context/firebase";
+import { FaSignInAlt } from "react-icons/fa";
 
-interface NavigationProps extends RouterProps {}
+interface NavigationProps extends RouterProps {
+    firebase: Firebase;
+}
 
 const toggleMenu = () => {
     const x = document.getElementById("myTopnav") as HTMLElement;
@@ -12,6 +16,15 @@ const toggleMenu = () => {
         x.className += " responsive";
     } else {
         x.className = "topnav";
+    }
+};
+
+const toggleAvatar = () => {
+    const x = document.getElementById("accountPopup") as HTMLElement;
+    if (x.className === "accountPopup") {
+        x.className += " responsive";
+    } else {
+        x.className = "accountPopup";
     }
 };
 
@@ -26,46 +39,63 @@ const Navigation: React.FC<NavigationProps> = props => (
             <button id="logo" onClick={() => props.history.push(ROUTES.HOME)}>
                 SDCalculator
             </button>
+            {props.firebase.auth.currentUser ? (
+                <button className="avatar" onClick={toggleAvatar}>
+                    <img
+                        src={props.firebase.auth.currentUser.photoURL as string}
+                        alt="avatar"
+                    />
+                </button>
+            ) : (
+                <button
+                    className="signinIcon"
+                    onClick={() => {
+                        toggleAvatar();
+                        props.history.push(ROUTES.SIGN_IN);
+                    }}
+                >
+                    <FaSignInAlt />
+                </button>
+            )}
         </div>
         <div className="topnav" id="myTopnav">
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.HOME)}
+                onClick={() => {
+                    toggleMenu();
+                    props.history.push(ROUTES.SETTINGS);
+                }}
             >
-                Home
+                Settings
             </button>
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.ABOUT)}
+                onClick={() => {
+                    toggleMenu();
+                    props.history.push(ROUTES.ABOUT);
+                }}
             >
                 About
             </button>
+        </div>
+        <div className="accountPopup" id="accountPopup">
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.ACCOUNT)}
+                onClick={() => {
+                    toggleAvatar();
+                    props.history.push(ROUTES.ACCOUNT);
+                }}
             >
-                Account
+                Preferences
             </button>
             <button
                 className="link"
-                onClick={() => props.history.push(ROUTES.SIGN_IN)}
+                onClick={() => props.firebase.doSignOut() && toggleAvatar()}
             >
-                Sign In
-            </button>
-            <button
-                className="link"
-                onClick={() => props.history.push(ROUTES.SIGN_UP)}
-            >
-                Sign Up
-            </button>
-            <button
-                className="link"
-                onClick={() => props.history.push(ROUTES.ADMIN)}
-            >
-                Control Panel
+                Sign Out
             </button>
         </div>
     </div>
 );
 
-export default withRouter(Navigation);
+export default withRouter(withFirebase(Navigation));
