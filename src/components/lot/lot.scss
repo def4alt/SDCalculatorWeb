@@ -1,13 +1,14 @@
 @import "../../variables.scss";
 
-
 .lotView {
     text-align: start;
     font-size: $font-size;
+    width: 7rem;
+    margin-left: 1rem;
 }
 
 .lotEdit {
-    margin-top: 20px;
+    margin-top: 5px;
     display: flex;
     height: 9.5rem;
     flex-wrap: wrap;
@@ -15,7 +16,7 @@
     border-radius: 5px;
     border-width: 1px;
     border-color: rgba($black, 0.2);
-    width: 20rem;
+    width: 19rem;
     overflow: auto;
     overflow-y: hidden;
 
@@ -28,17 +29,15 @@
 }
 
 .lotCell {
-    width: 9rem;
-    height: 3.5rem;
+    width: 8rem;
+    height: 2.5rem;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 7.5px;
     margin-left: 10px;
     border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: rgba($black, 0.2);
+    border: 1px solid rgba($black, 0.2);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -61,13 +60,14 @@
 }
 
 .addLot {
-    width: 9rem;
-    height: 3.5rem;
+    width: 6rem;
+    height: 2rem;
     text-align: left;
-    margin-top: 10px;
+    margin-top: 7.5px;
     font-size: 20px;
     margin-left: 10px;
-    border: none;
+    border: 1px solid rgba($black, 0.2);
+    border-radius: 5px;
     background-color: $white;
     display: flex;
     align-items: center;
@@ -80,17 +80,25 @@
 
 .inputLot {
     width: 9rem;
-    height: 3.5rem;
+    height: 2rem;
+    margin-top: 7.5px;
     display: flex;
+    margin-left: 5px;
     align-items: center;
     justify-content: space-around;
 
     input {
         width: 5rem;
+        height: 2rem;
+        padding-left: 5px;
+        font-size: 16px;
         border-radius: 5px;
         border-style: solid;
         border-color: rgba($black, 0.2);
         border-width: 1px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     button {

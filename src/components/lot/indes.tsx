@@ -57,17 +57,6 @@ class Lot extends React.Component<LotProps, LotState> {
     };
 
     removeLot = (lot: number) => {
-        if (this.props.firebase.auth.currentUser === null) return;
-
-        const backups = this.props.firebase.backup(
-            this.props.firebase.auth.currentUser.uid
-        );
-
-        backups.on("value", (snapshot: any) => {
-            if (!snapshot.child(String(lot)).ref) return;
-            snapshot.child(String(lot)).ref.remove();
-        });
-
         let newList =
             this.state.lotList.filter(t => t !== lot).length > 0
                 ? this.state.lotList.filter(t => t !== lot)
@@ -78,12 +67,25 @@ class Lot extends React.Component<LotProps, LotState> {
         if (newList.length === 0) {
             this.props.callback(0);
         }
+
+        if (this.props.firebase.auth.currentUser === null) return;
+
+        const backups = this.props.firebase.backup(
+            this.props.firebase.auth.currentUser.uid
+        );
+
+        backups.on("value", (snapshot: any) => {
+            if (!snapshot.child(String(lot)).ref) return;
+            snapshot.child(String(lot)).ref.remove();
+        });
     };
     selectLot = (lot: number) => {
         this.setState({ lot });
         this.props.callback(lot);
     };
     addLot = (lot: number) => {
+        if (isNaN(lot)) return;
+
         this.setState({ lotList: this.state.lotList.concat(lot) });
     };
 
@@ -117,7 +119,11 @@ class Lot extends React.Component<LotProps, LotState> {
                                 type="text"
                                 onChange={(
                                     event: React.FormEvent<HTMLInputElement>
-                                ) => (tempLot = event.currentTarget.value)}
+                                ) =>
+                                    (tempLot = 
+                                        event.currentTarget.value
+                                    )
+                                }
                             />
                             <button
                                 onClick={() => {

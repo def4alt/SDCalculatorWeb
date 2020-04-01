@@ -6,3 +6,4 @@ export const BUGS = "/bugs";
 export const ACCOUNT = "/account";
 export const ADMIN = "/admin";
 export const PASSWORD_FORGET = "/pwd-forget";
+export const SETTINGS = "/settings";

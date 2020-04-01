@@ -8,6 +8,7 @@ import SignUp from "./components/sign_up";
 import SignIn from "./components/sing_in";
 import Account from "./components/account";
 import Navigation from "./components/navigation";
+import Settings from "./components/settings";
 import PasswordForget from "./components/password_forget";
 import { CookiesProvider } from "react-cookie";
 import { withTheme } from "./context/theme";
@@ -25,6 +26,7 @@ const App: React.FC = _ => (
         <Route path={ROUTES.SIGN_UP} component={SignUp} />
         <Route path={ROUTES.SIGN_IN} component={SignIn} />
         <Route path={ROUTES.ACCOUNT} component={Account} />
+        <Route path={ROUTES.SETTINGS} component={Settings} />
         <Route path={ROUTES.ADMIN} component={Admin} />
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
       </div>
