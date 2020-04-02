@@ -43,7 +43,7 @@ class CardsList extends React.Component<CardsListProps, CardsListState> {
         return (
             <div className="cardslist">
                 {models.map((model: StatModel, i: number) => (
-                    <Suspense fallback={<div></div>}>
+                    <Suspense fallback={<div></div>} key={i}>
                         <Card model={model} key={i} width={width} />
                     </Suspense>
                 ))}

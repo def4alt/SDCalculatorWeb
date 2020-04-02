@@ -48,7 +48,7 @@ class Home extends React.Component<HomeProps, HomeState> {
                 </div>
 
                 {models.length > 0 && (
-                    <Suspense fallback={Loading}>
+                    <Suspense fallback={<Loading />}>
                         <CardsList models={models} />
                     </Suspense>
                 )}
