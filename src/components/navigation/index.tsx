@@ -50,7 +50,6 @@ const Navigation: React.FC<NavigationProps> = props => (
                 <button
                     className="signinIcon"
                     onClick={() => {
-                        toggleAvatar();
                         props.history.push(ROUTES.SIGN_IN);
                     }}
                 >
