@@ -2,7 +2,8 @@ import React from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import Firebase, { withFirebase } from "../../context/firebase";
 
-import "./lot.scss";
+import "../../styles/lot/lot.scss";
+import "../../styles/edit/edit.scss";
 
 interface LotProps {
     callback: (lot: number) => void;
@@ -93,20 +94,20 @@ class Lot extends React.Component<LotProps, LotState> {
         let tempLot = "";
         return (
             <div className="lot">
-                <div className="lotView">
-                    Lot <span className="lotNumber">#{this.state.lot}</span>
+                <div className="lot__view">
+                    Lot <span className="lot__view_gray">#{this.state.lot}</span>
                 </div>
-                <div className="lotEdit">
+                <div className="edit">
                     {this.state.lotList.map((lot, i) => (
-                        <div className="lotCell" key={i}>
+                        <div className="edit__cell" key={i}>
                             <button
-                                className="lotSelect"
+                                className="edit__select"
                                 onClick={() => this.selectLot(lot)}
                             >
                                 {lot}
                             </button>
                             <button
-                                className="lotRemove"
+                                className="edit__remove"
                                 onClick={() => this.removeLot(lot)}
                             >
                                 <FiX />
@@ -114,7 +115,7 @@ class Lot extends React.Component<LotProps, LotState> {
                         </div>
                     ))}
                     {this.state.addLot ? (
-                        <div className="inputLot">
+                        <div className="edit__input">
                             <input
                                 type="text"
                                 onChange={(
@@ -137,7 +138,7 @@ class Lot extends React.Component<LotProps, LotState> {
                         </div>
                     ) : (
                         <button
-                            className="addLot"
+                            className="edit__add"
                             onClick={() => this.setState({ addLot: true })}
                         >
                             <FiPlus />

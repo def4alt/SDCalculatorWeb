@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
 import { StatModel } from "../../types";
-import "./cards_list.scss";
 const Card = React.lazy(() => import("../card"));
+
+import "../../styles/cards-list/cards-list.scss";
 
 interface CardsListProps {
     models: StatModel[];
@@ -16,7 +17,7 @@ class CardsList extends React.Component<CardsListProps, CardsListState> {
         super(props);
 
         this.state = {
-            innerWidth: 0
+            innerWidth: 0,
         };
 
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -41,7 +42,7 @@ class CardsList extends React.Component<CardsListProps, CardsListState> {
                 : 250 + 100 * this.props.models[0].Average.length;
 
         return (
-            <div className="cardslist">
+            <div className="cards-list">
                 {models.map((model: StatModel, i: number) => (
                     <Suspense fallback={<div></div>} key={i}>
                         <Card model={model} key={i} width={width} />

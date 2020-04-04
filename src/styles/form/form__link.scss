@@ -1,0 +1,13 @@
+.form__link {
+    font-size: 17px;
+    background-color: $white;
+    margin-top: 20px;
+    display: block;
+    border: none;
+    color: rgba($black, 0.5);
+}
+
+.form__link:hover {
+    cursor: pointer;
+    color: rgba($black, 0.7);
+}

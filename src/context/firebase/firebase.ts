@@ -1,6 +1,10 @@
+/// <reference path="../../images.d.ts"/>
+
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
+
+import * as avatar from "../../../public/assets/avatars/1.png";
 
 const config = {
     apiKey: process.env.API_KEY,
@@ -32,7 +36,13 @@ class Firebase {
     }
 
     doCreateUserWithEmailAndPassword = (email: string, password: string) =>
-        this.auth.createUserWithEmailAndPassword(email, password);
+        this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+            user.user?.updateProfile({
+                photoURL: avatar
+            });
+
+            return user;
+        });
 
     doSignInWithEmailAndPassword = (email: string, password: string) =>
         this.auth.signInWithEmailAndPassword(email, password);

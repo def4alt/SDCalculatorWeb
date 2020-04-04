@@ -4,7 +4,8 @@ import * as ROUTES from "../../routes";
 import Firebase, { withFirebase } from "../../context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
-import "./sign_in.scss";
+import "../../styles/form/form.scss";
+import "../../styles/form/form__oauth/form__oauth.scss";
 
 interface SignInProps extends RouterProps {
     firebase: Firebase;
@@ -22,7 +23,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
         this.state = {
             email: "",
             password: "",
-            error: ""
+            error: "",
         };
 
         this.signInWithFacebook = this.signInWithFacebook.bind(this);
@@ -48,7 +49,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                 this.setState({ email: "", password: "", error: "" });
                 this.props.history.push(ROUTES.HOME);
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ error: error.message });
             });
     };
@@ -64,15 +65,21 @@ class SignIn extends React.Component<SignInProps, SignInState> {
             this.state.email === "" && this.state.password === "";
 
         return (
-            <div className="signin">
-                <button onClick={this.signInWithFacebook} className="fb btn">
+            <div className="form">
+                <button
+                    onClick={this.signInWithFacebook}
+                    className="form__oauth form__oauth_fb"
+                >
                     <FaFacebookF className="icon" /> Login with Facebook
                 </button>
-                <button onClick={this.signInWithGoogle} className="google btn">
+                <button
+                    onClick={this.signInWithGoogle}
+                    className="form__oauth form__oauth_gl"
+                >
                     <FaGoogle className="icon" /> Login with Google
                 </button>
                 <form onSubmit={this.onSubmit}>
-                    <div className="form">
+                    <div className="form__input">
                         <p>Email</p>
                         <input
                             name="email"
@@ -82,7 +89,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                         />
                     </div>
 
-                    <div className="form">
+                    <div className="form__input">
                         <p>Password</p>
                         <input
                             name="password"
@@ -93,7 +100,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                     </div>
 
                     <button
-                        className="link"
+                        className="form__link"
                         onClick={() =>
                             this.props.history.push(ROUTES.PASSWORD_FORGET)
                         }
@@ -101,7 +108,7 @@ class SignIn extends React.Component<SignInProps, SignInState> {
                         Forgot password?
                     </button>
                     <button
-                        className="link"
+                        className="form__link"
                         onClick={() => this.props.history.push(ROUTES.SIGN_UP)}
                     >
                         Sign Up
@@ -109,13 +116,13 @@ class SignIn extends React.Component<SignInProps, SignInState> {
 
                     <button
                         disabled={isInvalid}
-                        className="submit"
+                        className="form__submit"
                         type="submit"
                     >
                         Sign In
                     </button>
 
-                    <p className="text-danger">{this.state.error}</p>
+                    <p className="form__error">{this.state.error}</p>
                 </form>
             </div>
         );

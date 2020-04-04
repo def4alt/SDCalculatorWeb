@@ -1,0 +1,15 @@
+@import "../variables.scss";
+
+@import "./toggle-button__button.scss";
+@import "./toggle-button__checkbox.scss";
+@import "./toggle-button__cover.scss";
+@import "./toggle-button__knobs.scss";
+@import "./toggle-button__layer.scss";
+
+.toggle-button {
+    display: table-cell;
+    position: relative;
+    width: 74px;
+    height: 50px;
+    box-sizing: border-box;
+}

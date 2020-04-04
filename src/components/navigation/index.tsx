@@ -1,46 +1,50 @@
 import React from "react";
 
-import "./navigation.scss";
 import * as ROUTES from "../../routes";
 import { withRouter, RouterProps } from "react-router";
 import Firebase, { withFirebase } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
+
+import "../../styles/nav/nav.scss";
 
 interface NavigationProps extends RouterProps {
     firebase: Firebase;
 }
 
 const toggleMenu = () => {
-    const x = document.getElementById("myTopnav") as HTMLElement;
-    if (x.className === "topnav") {
-        x.className += " responsive";
+    const x = document.getElementById("nav__menu") as HTMLElement;
+    if (x.className === "nav__menu") {
+        x.className += " nav__menu_expanded";
     } else {
-        x.className = "topnav";
+        x.className = "nav__menu";
     }
 };
 
-const toggleAvatar = () => {
-    const x = document.getElementById("accountPopup") as HTMLElement;
-    if (x.className === "accountPopup") {
-        x.className += " responsive";
+const toggleAccountMenu = () => {
+    const x = document.getElementById("nav__account-menu") as HTMLElement;
+    if (x.className === "nav__account-menu") {
+        x.className += " nav__account-menu_expanded";
     } else {
-        x.className = "accountPopup";
+        x.className = "nav__account-menu";
     }
 };
 
-const Navigation: React.FC<NavigationProps> = props => (
+const Navigation: React.FC<NavigationProps> = (props) => (
     <div>
-        <div id="nav">
-            <button id="settings" onClick={toggleMenu}>
+        <div className="nav">
+            <button className="nav__menu-button" onClick={toggleMenu}>
                 <p></p>
                 <p></p>
                 <p></p>
             </button>
-            <button id="logo" onClick={() => props.history.push(ROUTES.HOME)}>
+            <button
+                className="nav__logo"
+                onClick={() => props.history.push(ROUTES.HOME)}
+            >
                 SDCalculator
             </button>
             {props.firebase.auth.currentUser ? (
-                <button className="avatar" onClick={toggleAvatar}>
+                <button className="nav__avatar" onClick={toggleAccountMenu}>
                     <img
                         src={props.firebase.auth.currentUser.photoURL as string}
                         alt="avatar"
@@ -48,7 +52,7 @@ const Navigation: React.FC<NavigationProps> = props => (
                 </button>
             ) : (
                 <button
-                    className="signinIcon"
+                    className="nav__sign-in"
                     onClick={() => {
                         props.history.push(ROUTES.SIGN_IN);
                     }}
@@ -57,9 +61,9 @@ const Navigation: React.FC<NavigationProps> = props => (
                 </button>
             )}
         </div>
-        <div className="topnav" id="myTopnav">
+        <div className="nav__menu" id="nav__menu">
             <button
-                className="link"
+                className="nav__link"
                 onClick={() => {
                     toggleMenu();
                     props.history.push(ROUTES.SETTINGS);
@@ -68,7 +72,7 @@ const Navigation: React.FC<NavigationProps> = props => (
                 Settings
             </button>
             <button
-                className="link"
+                className="nav__link"
                 onClick={() => {
                     toggleMenu();
                     props.history.push(ROUTES.ABOUT);
@@ -77,19 +81,19 @@ const Navigation: React.FC<NavigationProps> = props => (
                 About
             </button>
         </div>
-        <div className="accountPopup" id="accountPopup">
+        <div className="nav__account-menu" id="nav__account-menu">
             <button
-                className="link"
+                className="nav__link"
                 onClick={() => {
-                    toggleAvatar();
+                    toggleAccountMenu();
                     props.history.push(ROUTES.ACCOUNT);
                 }}
             >
                 Preferences
             </button>
             <button
-                className="link"
-                onClick={() => props.firebase.doSignOut() && toggleAvatar()}
+                className="nav__link"
+                onClick={() => props.firebase.doSignOut() && toggleAccountMenu()}
             >
                 Sign Out
             </button>

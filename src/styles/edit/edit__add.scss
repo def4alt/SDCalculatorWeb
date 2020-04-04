@@ -1,0 +1,19 @@
+.edit__add {
+    width: 6rem;
+    height: 2rem;
+    text-align: left;
+    margin-top: 7.5px;
+    font-size: 20px;
+    margin-left: 10px;
+    border: 1px solid rgba($black, 0.2);
+    border-radius: 5px;
+    background-color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit__add:hover {
+    cursor: pointer;
+    background-color: rgba($black, 0.1);
+}

@@ -1,0 +1,19 @@
+.component__button {
+    width: 120px;
+    height: 55px;
+    font-size: $font-size;
+    border-radius: 5px;
+
+    color: $white;
+    border: 0;
+    background-color: rgba($blue, 1);
+
+    transition: all 0.25s ease-in-out;
+
+    text-align: center;
+}
+
+.component__button:hover {
+    background-color: rgba($blue, 0.8);
+    cursor: pointer;
+}

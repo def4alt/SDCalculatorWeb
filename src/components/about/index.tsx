@@ -1,15 +1,14 @@
 import React from "react";
 import { useLocalization, localizationType } from "../../context/localization";
-
-import "./about.scss";
+import "../../styles/component/component.scss";
 
 interface AboutProps {
   localization: localizationType
 }
 
 const About: React.FC<AboutProps> = _ => (
-  <div className="about">
-    <p className="description">Made for ChemoView™</p>
+  <div className="component component_centered">
+    <div className="component__element_centered">Made for ChemoView™</div>
   </div>
 );
 

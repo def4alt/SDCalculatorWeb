@@ -1,0 +1,28 @@
+.nav__menu-button {
+    left: 20px;
+    width: 2rem;
+    height: 2rem;
+    background-color: $white;
+    border: $white;
+    outline: none;
+    position: absolute;
+    flex-flow: column;
+    justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    p {
+        width: 1.5rem;
+        margin-top: 0px;
+        margin-left: 0;
+        margin-bottom: 0px;
+        height: 2px;
+
+        background: #595f71;
+    }
+}
+
+.nav__menu-button:hover {
+    background-color: rgba($black, 0.1);
+    outline: none;
+    cursor: pointer;
+}

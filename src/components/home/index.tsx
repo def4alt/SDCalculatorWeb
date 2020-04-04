@@ -4,6 +4,8 @@ import { StatModel } from "../../types";
 import Firebase, { withFirebase } from "../../context/firebase";
 import Loading from "../loading";
 
+import "../../styles/component/component.scss";
+
 interface HomeProps {
     firebase: Firebase;
 }
@@ -22,7 +24,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         this.state = {
             models: [],
             lot: 0,
-            date: new Date().toUTCString()
+            date: new Date().toUTCString(),
         };
     }
 
@@ -30,22 +32,20 @@ class Home extends React.Component<HomeProps, HomeState> {
         this.setState({
             models,
             lot,
-            date: models[0].Date[0]
+            date: models[0].Date[0],
         });
     };
 
     render() {
         const { models } = this.state;
         return (
-            <div className="home">
-                <div className="calculationBox">
-                    <Suspense fallback={<div></div>}>
-                        <Calculation
-                            callback={this.modelsCallback}
-                            models={models}
-                        />
-                    </Suspense>
-                </div>
+            <div className="component">
+                <Suspense fallback={<div></div>}>
+                    <Calculation
+                        callback={this.modelsCallback}
+                        models={models}
+                    />
+                </Suspense>
 
                 {models.length > 0 && (
                     <Suspense fallback={<Loading />}>

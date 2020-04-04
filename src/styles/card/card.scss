@@ -1,0 +1,12 @@
+@import "../variables.scss";
+
+@import "./card__image.scss";
+@import "./card__title.scss";
+
+.card {
+    margin: 30px auto;
+    height: 22rem;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px #ffffff;
+}

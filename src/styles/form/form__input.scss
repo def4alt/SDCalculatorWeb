@@ -1,0 +1,16 @@
+.form__input {
+    font-size: $font-size;
+
+    input {
+        border-radius: 5px;
+        border-style: solid;
+        border-color: rgba($black, 0.2);
+        border-width: 1px;
+        padding-left: 10px;
+
+        width: 16rem;
+        height: 2rem;
+
+        font-size: 15px;
+    }
+}

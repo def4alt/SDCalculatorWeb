@@ -1,7 +1,13 @@
-.cardslist {
+.cards-list {
     display: flex;
     margin-top: 10vh;
     flex-wrap: wrap;
     width: 100%;
     justify-content: space-around;
+}
+
+@media all and (max-width: 750px) {
+    .cards-list {
+        flex-direction: column;
+    }
 }
