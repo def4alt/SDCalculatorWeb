@@ -29,7 +29,7 @@ class Home extends React.Component<HomeProps, HomeState> {
         };
     }
 
-    modelsCallback = (lot: number, models: StatModel[]) => {
+    modelsCallback = async (lot: number, models: StatModel[]) => {
         this.setState({
             models,
             lot,

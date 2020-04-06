@@ -63,12 +63,12 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
     // Custom functions
     async calculate(files: File[], sdMode: boolean) {
-        await Calculate(files, this.props.models, sdMode).then((models) => {
+        await Calculate(files, this.props.models, sdMode).then(async (models) => {
             this.props.callback(this.state.lot, models);
 
             if (!this.props.firebase.auth.currentUser) return;
 
-            this.props.firebase
+            await this.props.firebase
                 .backup(this.props.firebase.auth.currentUser!.uid)
                 .collection("lots")
                 .doc(String(this.state.lot))
@@ -80,18 +80,17 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
     }
 
     // Callbacks
-    lotCallback = (lot: number) => {
+    lotCallback = async (lot: number) => {
         this.setState({ lot });
 
         if (!this.props.firebase.auth.currentUser) return;
 
-        const backup = this.props.firebase.backup(
-            this.props.firebase.auth.currentUser.uid
-        );
+        const doc = this.props.firebase
+            .backup(this.props.firebase.auth.currentUser.uid)
+            .collection("lots")
+            .doc(String(lot));
 
-        const doc = backup.collection("lots").doc(String(lot));
-
-        doc.get().then((snapshot) => {
+        await doc.get().then((snapshot) => {
             if (snapshot.data())
                 this.props.callback(lot, snapshot.data()?.models);
             else this.props.callback(lot, []);

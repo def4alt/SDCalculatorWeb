@@ -37,20 +37,22 @@ class Lot extends React.Component<LotProps, LotState> {
         );
     }
 
-    onAuthStateChange = (user: firebase.User | null) => {
+    onAuthStateChange = async (user: firebase.User | null) => {
         if (user === null) return;
 
-        const backups = this.props.firebase.backup(user.uid).collection("lots");
-
-        backups.get().then((snapshot) => {
-            let lotList = snapshot.docs.map((t) => {
-                if (t.id !== "notes") return Number(t.id);
-            }) as number[];
-            this.setState({ lotList });
-        });
+        await this.props.firebase
+            .backup(user.uid)
+            .collection("lots")
+            .get()
+            .then((snapshot) => {
+                let lotList = snapshot.docs.map((t) => {
+                    if (t.id !== "notes") return Number(t.id);
+                }) as number[];
+                this.setState({ lotList });
+            });
     };
 
-    removeLot = (lot: number) => {
+    removeLot = async (lot: number) => {
         let newList =
             this.state.lotList.filter((t) => t !== lot).length > 0
                 ? this.state.lotList.filter((t) => t !== lot)
@@ -64,7 +66,7 @@ class Lot extends React.Component<LotProps, LotState> {
 
         if (!this.props.firebase.auth.currentUser) return;
 
-        this.props.firebase
+        await this.props.firebase
             .backup(this.props.firebase.auth.currentUser.uid)
             .collection("lots")
             .doc(String(lot))

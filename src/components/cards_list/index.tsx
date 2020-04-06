@@ -1,8 +1,10 @@
 import React, { Suspense } from "react";
 import { StatModel } from "../../types";
-const Card = React.lazy(() => import("../card"));
+import Loading from "../loading";
 
 import "../../styles/cards-list/cards-list.scss";
+
+const Card = React.lazy(() => import("../card"));
 
 interface CardsListProps {
     models: StatModel[];
@@ -43,11 +45,11 @@ class CardsList extends React.Component<CardsListProps, CardsListState> {
 
         return (
             <div className="cards-list">
-                {models.map((model: StatModel, i: number) => (
-                    <Suspense fallback={<div></div>} key={i}>
+                <Suspense fallback={<Loading />}>
+                    {models.map((model: StatModel, i: number) => (
                         <Card model={model} key={i} width={width} />
-                    </Suspense>
-                ))}
+                    ))}
+                </Suspense>
             </div>
         );
     }
