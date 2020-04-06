@@ -1,0 +1,13 @@
+@import "../variables.scss";
+
+@import "./form__link.scss";
+@import "./form__error.scss";
+@import "./form__input.scss";
+@import "./form__submit.scss";
+
+.form {
+    display: block;
+    text-align: left;
+    margin-left: calc(50vw - 8.5rem);
+    margin-top: 40px;
+}

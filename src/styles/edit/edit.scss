@@ -1,0 +1,23 @@
+@import "../variables.scss";
+
+@import "./edit__add.scss";
+@import "./edit__cell.scss";
+@import "./edit__input.scss";
+@import "./edit__remove.scss";
+@import "./edit__select.scss";
+
+.edit {
+    margin-top: 5px;
+    display: flex;
+    height: 9.5rem;
+    flex-wrap: wrap;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: rgba($black, 0.2);
+    width: 19rem;
+    overflow: auto;
+    overflow-y: hidden;
+
+    flex-direction: column;
+}

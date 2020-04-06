@@ -10,16 +10,11 @@ import Account from "./components/account";
 import Navigation from "./components/navigation";
 import Settings from "./components/settings";
 import PasswordForget from "./components/password_forget";
-import { CookiesProvider } from "react-cookie";
-import { withTheme } from "./context/theme";
 import { withAuthentication } from "./context/session";
 import { withLocalization } from "./context/localization";
 
-
 const App: React.FC = _ => (
-  <CookiesProvider>
-    <Router>
-      <div className="root">
+    <div className="root">
         <Navigation />
         <Route exact path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.ABOUT} component={About} />
@@ -29,9 +24,7 @@ const App: React.FC = _ => (
         <Route path={ROUTES.SETTINGS} component={Settings} />
         <Route path={ROUTES.ADMIN} component={Admin} />
         <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-      </div>
-    </Router>
-  </CookiesProvider>
+    </div>
 );
 
-export default withTheme(withAuthentication(withLocalization(App)));
+export default withAuthentication(withLocalization(App));

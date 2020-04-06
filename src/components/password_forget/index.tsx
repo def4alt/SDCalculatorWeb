@@ -1,7 +1,7 @@
 import React from "react";
 import Firebase, { withFirebase } from "../../context/firebase";
 
-import "./password_forget.scss";
+import "../../styles/form/form.scss";
 
 interface PasswordForgetProps {
     firebase: Firebase;
@@ -20,7 +20,7 @@ class PasswordForget extends React.Component<
 
         this.state = {
             email: "",
-            error: ""
+            error: "",
         };
     }
 
@@ -32,7 +32,7 @@ class PasswordForget extends React.Component<
             .then(() => {
                 this.setState({ email: "", error: "" });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ error });
             });
     };
@@ -43,8 +43,8 @@ class PasswordForget extends React.Component<
     render() {
         let isInvalid = this.state.email === "";
         return (
-            <form onSubmit={this.onSubmit} className="pwd-forget">
-                <div className="form">
+            <form onSubmit={this.onSubmit} className="form">
+                <div className="form__input">
                     <p>Email</p>
                     <input
                         name="email"
@@ -54,10 +54,14 @@ class PasswordForget extends React.Component<
                         placeholder="example@example.com"
                     />
                 </div>
-                <button className="submit" disabled={isInvalid} type="submit">
+                <button
+                    className="form__submit"
+                    disabled={isInvalid}
+                    type="submit"
+                >
                     Reset
                 </button>
-                <p className="text-danger">{<p>{this.state.error}</p>}</p>
+                <p className="form__error">{<p>{this.state.error}</p>}</p>
             </form>
         );
     }

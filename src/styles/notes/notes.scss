@@ -1,0 +1,14 @@
+@import "../variables.scss";
+
+@import "./notes__form.scss";
+@import "./notes__input.scss";
+@import "./notes__label.scss";
+@import "./notes__submit.scss";
+@import "./notes__toggle.scss";
+@import "./notes__textarea.scss";
+
+.notes {
+    margin-top: 20px;
+    margin-left: 15px;
+    width: 30rem;
+}

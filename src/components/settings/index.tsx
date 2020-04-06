@@ -1,10 +1,10 @@
 import React from "react";
-import "./settings.scss";
+import "../../styles/component/component.scss";
 
 interface SettingsProps {}
 
-const Settings: React.FC<SettingsProps> = props => (
-    <div className="settings">Not implemented</div>
+const Settings: React.FC<SettingsProps> = (props) => (
+    <div className="component">Not implemented</div>
 );
 
 export default Settings;

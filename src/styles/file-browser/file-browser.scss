@@ -1,0 +1,17 @@
+@import "../variables.scss";
+
+@import "./file-browser__text.scss";
+
+.file-browser {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    height: 46px;
+
+    input {
+        min-width: 18rem;
+        margin: 0;
+        filter: alpha(opacity=0);
+        opacity: 0;
+    }
+}

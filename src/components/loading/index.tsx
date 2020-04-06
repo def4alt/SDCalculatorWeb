@@ -1,5 +1,7 @@
 import React from "react";
 
-const Loading: React.FC = _ => <div className="loadingCircle"></div>;
+import "../../styles/loading-circle/loading-circle.scss";
+
+const Loading: React.FC = (_) => <div className="loading-circle"></div>;
 
 export default Loading;

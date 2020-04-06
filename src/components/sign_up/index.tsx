@@ -3,7 +3,7 @@ import { withRouter, RouterProps } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { withFirebase } from "../../context/firebase";
 
-import "./sign_up.scss";
+import "../../styles/form/form.scss";
 
 interface SignUpProps extends RouterProps {
     firebase: Firebase;
@@ -25,7 +25,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
             password: "",
             passwordConfirm: "",
             error: "",
-            username: ""
+            username: "",
         };
     }
 
@@ -35,7 +35,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, password)
-            .then(authUser => {
+            .then((authUser) => {
                 return (
                     authUser.user &&
                     this.props.firebase
@@ -48,11 +48,11 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
                     email: "",
                     password: "",
                     passwordConfirm: "",
-                    error: ""
+                    error: "",
                 });
                 this.props.history.push(ROUTES.HOME);
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ error: error.message });
             });
     };
@@ -77,8 +77,8 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
             this.state.password === "";
 
         return (
-            <form onSubmit={this.onSubmit} className="signup">
-                <div className="form">
+            <form onSubmit={this.onSubmit} className="form">
+                <div className="form__input">
                     <p>Username</p>
                     <input
                         name="username"
@@ -87,7 +87,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
                         placeholder="def4alt"
                     />
                 </div>
-                <div className="form">
+                <div className="form__input">
                     <p>Email</p>
                     <input
                         name="email"
@@ -97,7 +97,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
                     />
                 </div>
 
-                <div className="form">
+                <div className="form__input">
                     <p>Password</p>
                     <input
                         name="password"
@@ -106,7 +106,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
                         placeholder="15%$vd09"
                     />
                 </div>
-                <div className="form">
+                <div className="form__input">
                     <p>Password Confirm</p>
                     <input
                         name="passwordConfirm"
@@ -114,11 +114,15 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
                         type="password"
                     />
                 </div>
-                <button disabled={isInvalid} className="submit" type="submit">
+                <button
+                    disabled={isInvalid}
+                    className="form__submit"
+                    type="submit"
+                >
                     Sign In
                 </button>
 
-                <p className="text-danger">{this.state.error}</p>
+                <p className="form__error">{this.state.error}</p>
             </form>
         );
     }

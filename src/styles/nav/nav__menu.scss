@@ -1,0 +1,11 @@
+.nav__menu {
+    overflow: hidden;
+    width: 20rem;
+    position: absolute;
+    z-index: 10;
+    background-color: $white;
+
+    button {
+        display: none;
+    }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { StatModel, SampleType } from "../../types";
 import LineChart from "../line_chart";
 
-import "./card.scss";
+import "../../styles/card/card.scss";
 
 interface CardProps {
     model: StatModel;
@@ -12,18 +12,18 @@ interface CardProps {
 let getLevelText = (lvl: SampleType) =>
     lvl === SampleType.Lvl1 ? "Lvl1" : "Lvl2";
 
-const Card: React.FC<CardProps> = props => (
+const Card: React.FC<CardProps> = (props) => (
     <div
         className="card"
         style={{
-            width: props.width
+            width: props.width,
         }}
     >
-        <p className="card_title">
+        <p className="card__title">
             {props.model.TestName + " " + getLevelText(props.model.SampleType)}
         </p>
-        <div className="card_image">
-            <LineChart model={props.model} width={props.width}/>
+        <div className="card__image">
+            <LineChart model={props.model} width={props.width} />
         </div>
     </div>
 );

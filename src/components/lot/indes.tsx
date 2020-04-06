@@ -2,7 +2,8 @@ import React from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import Firebase, { withFirebase } from "../../context/firebase";
 
-import "./lot.scss";
+import "../../styles/lot/lot.scss";
+import "../../styles/edit/edit.scss";
 
 interface LotProps {
     callback: (lot: number) => void;
@@ -24,7 +25,7 @@ class Lot extends React.Component<LotProps, LotState> {
         this.state = {
             lot: 0,
             lotList: [],
-            addLot: false
+            addLot: false,
         };
 
         this.onAuthStateChange = this.onAuthStateChange.bind(this);
@@ -36,30 +37,25 @@ class Lot extends React.Component<LotProps, LotState> {
         );
     }
 
-    onAuthStateChange = (user: firebase.User | null) => {
+    onAuthStateChange = async (user: firebase.User | null) => {
         if (user === null) return;
 
-        const backups = this.props.firebase.backup(user.uid);
-
-        backups.once("value", (snapshot: any) => {
-            const backupsObject = snapshot.val();
-
-            if (!backupsObject) return;
-
-            let lotList: number[] = Array.from(
-                Object.keys(backupsObject)
-                    .filter(j => j !== "isDark" && j !== "details")
-                    .values()
-            ).map(t => Number(t));
-
-            this.setState({ lotList });
-        });
+        await this.props.firebase
+            .backup(user.uid)
+            .collection("lots")
+            .get()
+            .then((snapshot) => {
+                let lotList = snapshot.docs.map((t) => {
+                    if (t.id !== "notes") return Number(t.id);
+                }) as number[];
+                this.setState({ lotList });
+            });
     };
 
-    removeLot = (lot: number) => {
+    removeLot = async (lot: number) => {
         let newList =
-            this.state.lotList.filter(t => t !== lot).length > 0
-                ? this.state.lotList.filter(t => t !== lot)
+            this.state.lotList.filter((t) => t !== lot).length > 0
+                ? this.state.lotList.filter((t) => t !== lot)
                 : [];
 
         this.setState({ lotList: newList });
@@ -68,16 +64,13 @@ class Lot extends React.Component<LotProps, LotState> {
             this.props.callback(0);
         }
 
-        if (this.props.firebase.auth.currentUser === null) return;
+        if (!this.props.firebase.auth.currentUser) return;
 
-        const backups = this.props.firebase.backup(
-            this.props.firebase.auth.currentUser.uid
-        );
-
-        backups.on("value", (snapshot: any) => {
-            if (!snapshot.child(String(lot)).ref) return;
-            snapshot.child(String(lot)).ref.remove();
-        });
+        await this.props.firebase
+            .backup(this.props.firebase.auth.currentUser.uid)
+            .collection("lots")
+            .doc(String(lot))
+            .delete();
     };
     selectLot = (lot: number) => {
         this.setState({ lot });
@@ -93,20 +86,21 @@ class Lot extends React.Component<LotProps, LotState> {
         let tempLot = "";
         return (
             <div className="lot">
-                <div className="lotView">
-                    Lot <span className="lotNumber">#{this.state.lot}</span>
+                <div className="lot__view">
+                    Lots{" "}
+                    <span className="lot__view_gray">#{this.state.lot}</span>
                 </div>
-                <div className="lotEdit">
+                <div className="edit">
                     {this.state.lotList.map((lot, i) => (
-                        <div className="lotCell" key={i}>
+                        <div className="edit__cell" key={i}>
                             <button
-                                className="lotSelect"
+                                className="edit__select"
                                 onClick={() => this.selectLot(lot)}
                             >
                                 {lot}
                             </button>
                             <button
-                                className="lotRemove"
+                                className="edit__remove"
                                 onClick={() => this.removeLot(lot)}
                             >
                                 <FiX />
@@ -114,16 +108,12 @@ class Lot extends React.Component<LotProps, LotState> {
                         </div>
                     ))}
                     {this.state.addLot ? (
-                        <div className="inputLot">
+                        <div className="edit__input">
                             <input
                                 type="text"
                                 onChange={(
                                     event: React.FormEvent<HTMLInputElement>
-                                ) =>
-                                    (tempLot = 
-                                        event.currentTarget.value
-                                    )
-                                }
+                                ) => (tempLot = event.currentTarget.value)}
                             />
                             <button
                                 onClick={() => {
@@ -137,7 +127,7 @@ class Lot extends React.Component<LotProps, LotState> {
                         </div>
                     ) : (
                         <button
-                            className="addLot"
+                            className="edit__add"
                             onClick={() => this.setState({ addLot: true })}
                         >
                             <FiPlus />

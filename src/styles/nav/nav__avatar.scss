@@ -1,0 +1,22 @@
+.nav__avatar {
+    right: 25px;
+    z-index: 12;
+    top: 16.5px;
+    margin: 0;
+    position: absolute;
+    border-radius: 50%;
+    border: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+
+    img {
+        border-radius: 50%;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+.nav__avatar:hover {
+    cursor: pointer;
+}
