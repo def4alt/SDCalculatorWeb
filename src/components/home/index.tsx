@@ -5,6 +5,7 @@ import Firebase, { withFirebase } from "../../context/firebase";
 import Loading from "../loading";
 
 import "../../styles/component/component.scss";
+import Notes from "../notes";
 
 interface HomeProps {
     firebase: Firebase;
@@ -37,7 +38,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     };
 
     render() {
-        const { models } = this.state;
+        const { models, lot } = this.state;
         return (
             <div className="component">
                 <Suspense fallback={<div></div>}>
@@ -48,9 +49,12 @@ class Home extends React.Component<HomeProps, HomeState> {
                 </Suspense>
 
                 {models.length > 0 && (
-                    <Suspense fallback={<Loading />}>
-                        <CardsList models={models} />
-                    </Suspense>
+                    <React.Fragment>
+                        <Notes lot={lot} />
+                        <Suspense fallback={<Loading />}>
+                            <CardsList models={models} />
+                        </Suspense>
+                    </React.Fragment>
                 )}
             </div>
         );

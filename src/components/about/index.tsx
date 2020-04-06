@@ -8,7 +8,7 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = _ => (
   <div className="component component_centered">
-    <div className="component__element_centered">Made for ChemoView™</div>
+    <p>Made for ChemoView™</p>
   </div>
 );
 

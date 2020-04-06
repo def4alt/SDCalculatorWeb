@@ -8,6 +8,7 @@ import Firebase, { withFirebase } from "../../context/firebase";
 import "../../styles/component/component.scss";
 import "../../styles/toggle-button/toggle-button.scss";
 import "../../styles/file-browser/file-browser.scss";
+import "../../styles/calculation/calculation.scss";
 
 interface CalculationProps {
     models: StatModel[];
@@ -39,11 +40,6 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
     componentWillUnmount() {
         this.authStateListener = undefined;
-
-        if (this.props.firebase.auth.currentUser)
-            this.props.firebase
-                .backup(this.props.firebase.auth.currentUser.uid)
-                .off();
     }
 
     // Handlers
@@ -72,18 +68,14 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
             if (!this.props.firebase.auth.currentUser) return;
 
-            const backups = this.props.firebase.backup(
-                this.props.firebase.auth.currentUser!.uid
-            );
-
-            backups.once("value", (snapshot: any) => {
-                const object = snapshot.val();
-
-                backups.set({
-                    ...object,
-                    [this.state.lot]: models,
+            this.props.firebase
+                .backup(this.props.firebase.auth.currentUser!.uid)
+                .collection("lots")
+                .doc(String(this.state.lot))
+                .set({
+                    models: models,
+                    notes: {},
                 });
-            });
         });
     }
 
@@ -93,14 +85,16 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
 
         if (!this.props.firebase.auth.currentUser) return;
 
-        const backups = this.props.firebase.backup(
+        const backup = this.props.firebase.backup(
             this.props.firebase.auth.currentUser.uid
         );
 
-        backups.once("value", (snapshot: any) => {
-            let backupsObject: StatModel[] = snapshot.child(lot).val();
+        const doc = backup.collection("lots").doc(String(lot));
 
-            this.props.callback(lot, backupsObject);
+        doc.get().then((snapshot) => {
+            if (snapshot.data())
+                this.props.callback(lot, snapshot.data()?.models);
+            else this.props.callback(lot, []);
         });
     };
 
@@ -108,7 +102,7 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
         const { files, sdMode } = this.state;
 
         return (
-            <div className="component component_centered">
+            <div className="component calculation">
                 <div className="component__element">
                     <Lot callback={this.lotCallback} />
                 </div>

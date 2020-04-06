@@ -10,7 +10,6 @@ import Account from "./components/account";
 import Navigation from "./components/navigation";
 import Settings from "./components/settings";
 import PasswordForget from "./components/password_forget";
-import { withTheme } from "./context/theme";
 import { withAuthentication } from "./context/session";
 import { withLocalization } from "./context/localization";
 
@@ -28,4 +27,4 @@ const App: React.FC = _ => (
     </div>
 );
 
-export default withTheme(withAuthentication(withLocalization(App)));
+export default withAuthentication(withLocalization(App));

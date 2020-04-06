@@ -1,0 +1,13 @@
+.notes__toggle {
+    border-radius: 5px;
+    border: none;
+    color: rgba($black, 0.4);
+
+    background-color: $white;
+    font-size: 46px;
+}
+
+.notes__toggle:hover {
+    cursor: pointer;
+    color: rgba($black, 0.3);
+}
