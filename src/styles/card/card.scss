@@ -1,7 +1,8 @@
 @import "../variables.scss";
 
-@import "./card__image.scss";
+@import "./card__chart.scss";
 @import "./card__title.scss";
+@import "./card__chart_hidden.scss";
 
 .card {
     margin: 30px auto;
