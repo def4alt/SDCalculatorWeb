@@ -28,7 +28,7 @@ const Card: React.FC<CardProps> = (props) => {
     const isInView = () => {
         if (cardRef.current) {
             const rect = cardRef.current.getBoundingClientRect();
-            return rect.top >= -300 && rect.bottom <= window.innerWidth + 150;
+            return rect.top >= 0 && rect.bottom <= window.innerWidth;
         }
         return false;
     };
