@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { StatModel, SampleType } from "../../types";
 import LineChart from "../line_chart";
 
@@ -12,20 +12,44 @@ interface CardProps {
 let getLevelText = (lvl: SampleType) =>
     lvl === SampleType.Lvl1 ? "Lvl1" : "Lvl2";
 
-const Card: React.FC<CardProps> = (props) => (
-    <div
-        className="card"
-        style={{
-            width: props.width,
-        }}
-    >
-        <p className="card__title">
-            {props.model.TestName + " " + getLevelText(props.model.SampleType)}
-        </p>
-        <div className="card__image">
-            <LineChart model={props.model} width={props.width} />
+const Card: React.FC<CardProps> = (props) => {
+    const [inView, setInView] = useState<boolean>(false);
+    const cardRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        window.addEventListener("scroll", scrollHandler);
+        setInView(isInView);
+
+        return () => {
+            window.removeEventListener("scroll", scrollHandler);
+        };
+    });
+
+    const isInView = () => {
+        if (cardRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            return rect.top >= -300 && rect.bottom <= window.innerWidth + 150;
+        }
+        return false;
+    };
+
+    const scrollHandler = () => setInView(isInView);
+    return (
+        <div className={"card"} ref={cardRef} style={{ width: props.width }}>
+            <p className="card__title">
+                {props.model.TestName +
+                    " " +
+                    getLevelText(props.model.SampleType)}
+            </p>
+            <div
+                className={
+                    inView ? "card__chart" : "card__chart card__chart_hidden"
+                }
+            >
+                <LineChart model={props.model} width={props.width} />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default Card;
