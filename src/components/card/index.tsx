@@ -26,7 +26,8 @@ const Card: React.FC<CardProps> = (props) => {
         return (
             rect.top >= -300 &&
             rect.bottom <=
-                (window.innerHeight + 300 || document.documentElement.clientHeight + 300)
+                (window.innerHeight + 300 ||
+                    document.documentElement.clientHeight + 300)
         );
     };
 
