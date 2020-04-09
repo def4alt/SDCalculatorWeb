@@ -1,131 +1,102 @@
-import React from "react";
-import { withRouter, RouterProps } from "react-router";
+import React, { useState, useContext } from "react";
+import { withRouter, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { withFirebase } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/form/form.scss";
 
-interface SignUpProps extends RouterProps {
-    firebase: Firebase;
-}
-interface SignUpState {
-    email: string;
-    password: string;
-    passwordConfirm: string;
-    error: string;
-    username: string;
-}
+const SignUp: React.FunctionComponent = (_) => {
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+    const [username, setUsername] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
-class SignUp extends React.Component<SignUpProps, SignUpState> {
-    constructor(props: SignUpProps) {
-        super(props);
+    const firebase = useContext(FirebaseContext) as Firebase;
+    const router = useContext(__RouterContext);
 
-        this.state = {
-            email: "",
-            password: "",
-            passwordConfirm: "",
-            error: "",
-            username: "",
-        };
-    }
-
-    onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { username, email, password } = this.state;
 
-        this.props.firebase
+        firebase
             .doCreateUserWithEmailAndPassword(email, password)
             .then((authUser) => {
                 return (
                     authUser.user &&
-                    this.props.firebase
-                        .user(authUser.user.uid)
-                        .set({ username, email })
+                    firebase.user(authUser.user.uid).set({ username, email })
                 );
             })
             .then(() => {
-                this.setState({
-                    email: "",
-                    password: "",
-                    passwordConfirm: "",
-                    error: "",
-                });
-                this.props.history.push(ROUTES.HOME);
+                router.history.push(ROUTES.HOME);
             })
             .catch((error) => {
-                this.setState({ error: error.message });
+                setError(error.message);
             });
     };
-    onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ password: event.currentTarget.value });
+    const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setPassword(event.currentTarget.value);
     };
-    onPasswordConfirmChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ passwordConfirm: event.currentTarget.value });
+    const onPasswordConfirmChange = (
+        event: React.FormEvent<HTMLInputElement>
+    ) => {
+        setPasswordConfirm(event.currentTarget.value);
     };
-    onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ email: event.currentTarget.value });
+    const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value);
     };
-    onUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ username: event.currentTarget.value });
+    const onUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setUsername(event.currentTarget.value);
     };
 
-    render() {
-        let isInvalid: boolean =
-            this.state.email === "" ||
-            this.state.password === "" ||
-            this.state.password !== this.state.passwordConfirm ||
-            this.state.password === "";
+    let isInvalid: boolean =
+        email === "" ||
+        password === "" ||
+        password !== passwordConfirm ||
+        password === "";
+    return (
+        <form onSubmit={onSubmit} className="form">
+            <div className="form__input">
+                <p>Username</p>
+                <input
+                    name="username"
+                    onChange={onUsernameChange}
+                    type="text"
+                    placeholder="def4alt"
+                />
+            </div>
+            <div className="form__input">
+                <p>Email</p>
+                <input
+                    name="email"
+                    onChange={onEmailChange}
+                    type="email"
+                    placeholder="example@example.com"
+                />
+            </div>
+            <div className="form__input">
+                <p>Password</p>
+                <input
+                    name="password"
+                    onChange={onPasswordChange}
+                    type="password"
+                    placeholder="15%$vd09"
+                />
+            </div>
+            <div className="form__input">
+                <p>Password Confirm</p>
+                <input
+                    name="passwordConfirm"
+                    onChange={onPasswordConfirmChange}
+                    type="password"
+                />
+            </div>
+            <button disabled={isInvalid} className="form__submit" type="submit">
+                Sign In
+            </button>
 
-        return (
-            <form onSubmit={this.onSubmit} className="form">
-                <div className="form__input">
-                    <p>Username</p>
-                    <input
-                        name="username"
-                        onChange={this.onUsernameChange}
-                        type="text"
-                        placeholder="def4alt"
-                    />
-                </div>
-                <div className="form__input">
-                    <p>Email</p>
-                    <input
-                        name="email"
-                        onChange={this.onEmailChange}
-                        type="email"
-                        placeholder="example@example.com"
-                    />
-                </div>
+            <p className="form__error">{error}</p>
+        </form>
+    );
+};
 
-                <div className="form__input">
-                    <p>Password</p>
-                    <input
-                        name="password"
-                        onChange={this.onPasswordChange}
-                        type="password"
-                        placeholder="15%$vd09"
-                    />
-                </div>
-                <div className="form__input">
-                    <p>Password Confirm</p>
-                    <input
-                        name="passwordConfirm"
-                        onChange={this.onPasswordConfirmChange}
-                        type="password"
-                    />
-                </div>
-                <button
-                    disabled={isInvalid}
-                    className="form__submit"
-                    type="submit"
-                >
-                    Sign In
-                </button>
-
-                <p className="form__error">{this.state.error}</p>
-            </form>
-        );
-    }
-}
-
-export default withRouter(withFirebase(SignUp));
+export default withRouter(SignUp);

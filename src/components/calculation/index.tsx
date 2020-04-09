@@ -1,54 +1,32 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
 import Calculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot/indes";
-import Firebase, { withFirebase } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/component/component.scss";
 import "../../styles/toggle-button/toggle-button.scss";
 import "../../styles/file-browser/file-browser.scss";
 import "../../styles/calculation/calculation.scss";
+import { AuthUserContext } from "../../context/session";
 
 interface CalculationProps {
     models: StatModel[];
     callback: (lot: number, models: StatModel[]) => void;
-    firebase: Firebase;
 }
 
-interface CalculationState {
-    sdMode: boolean;
-    files: File[];
-    lot: number;
-}
+const Calculation: React.FC<CalculationProps> = (props) => {
+    const [lot, setLot] = useState<number>(0);
+    const [sdMode, setSdMode] = useState<boolean>(true);
+    const [files, setFiles] = useState<File[]>([]);
 
-class Calculation extends React.Component<CalculationProps, CalculationState> {
-    authStateListener?: EventListener;
-
-    constructor(props: CalculationProps) {
-        super(props);
-
-        this.state = {
-            sdMode: true,
-            lot: 0,
-            files: [],
-        };
-
-        this.onSdModeChange = this.onSdModeChange.bind(this);
-        this.onFilesChange = this.onFilesChange.bind(this);
-    }
-
-    componentWillUnmount() {
-        this.authStateListener = undefined;
-    }
+    const firebase = useContext(FirebaseContext) as Firebase;
+    const user = useContext(AuthUserContext) as firebase.User;
 
     // Handlers
-    onSdModeChange = () => {
-        this.setState({
-            sdMode: !this.state.sdMode,
-        });
-    };
-    onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onSdModeChange = () => setSdMode(!sdMode);
+    const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
 
         const fileList: FileList = (event.currentTarget as HTMLInputElement)
@@ -58,104 +36,100 @@ class Calculation extends React.Component<CalculationProps, CalculationState> {
             fileArray.push(fileList[i]);
         }
 
-        this.setState({ files: fileArray });
+        setFiles(fileArray);
     };
 
     // Custom functions
-    async calculate(files: File[], sdMode: boolean) {
-        await Calculate(files, this.props.models, sdMode).then(async (models) => {
-            this.props.callback(this.state.lot, models);
+    const calculate = async (files: File[], sdMode: boolean) => {
+        await Calculate(files, props.models, sdMode).then(async (models) => {
+            props.callback(lot, models);
 
-            if (!this.props.firebase.auth.currentUser) return;
+            if (!user) return;
 
-            await this.props.firebase
-                .backup(this.props.firebase.auth.currentUser!.uid)
+            await firebase
+                .backup(user.uid)
                 .collection("lots")
-                .doc(String(this.state.lot))
+                .doc(String(lot))
                 .set({
                     models: models,
                     notes: {},
                 });
         });
-    }
+    };
 
     // Callbacks
-    lotCallback = async (lot: number) => {
-        this.setState({ lot });
+    const lotCallback = async (lot: number) => {
+        setLot(lot);
 
-        if (!this.props.firebase.auth.currentUser) return;
+        if (!user) return;
 
-        const doc = this.props.firebase
-            .backup(this.props.firebase.auth.currentUser.uid)
+        const doc = firebase
+            .backup(user.uid)
             .collection("lots")
             .doc(String(lot));
 
         await doc.get().then((snapshot) => {
-            if (snapshot.data())
-                this.props.callback(lot, snapshot.data()?.models);
-            else this.props.callback(lot, []);
+            if (snapshot.data()) props.callback(lot, snapshot.data()?.models);
+            else props.callback(lot, []);
         });
     };
 
-    render() {
-        const { files, sdMode } = this.state;
+    let fileSelectText =
+        files.length > 1
+            ? files.length + " selected"
+            : files.length === 1
+            ? files[0].name
+            : "Choose files...";
 
-        return (
-            <div className="component calculation">
-                <div className="component__element">
-                    <Lot callback={this.lotCallback} />
-                </div>
+    return (
+        <div className="component calculation">
+            <div className="component__element">
+                <Lot callback={lotCallback} />
+            </div>
 
-                <div className="component__element component__element_centered">
-                    <p>Add average</p>
-                    <div className="toggle-button">
-                        <div className="toggle-button__cover">
-                            <div className="toggle-button__button">
-                                <input
-                                    type="checkbox"
-                                    className="toggle-button__checkbox"
-                                    checked={sdMode}
-                                    onChange={this.onSdModeChange}
-                                />
-                                <div className="toggle-button__knobs"></div>
-                                <div className="toggle-button__layer"></div>
-                            </div>
+            <div className="component__element component__element_centered">
+                <p>Add average</p>
+                <div className="toggle-button">
+                    <div className="toggle-button__cover">
+                        <div className="toggle-button__button">
+                            <input
+                                type="checkbox"
+                                className="toggle-button__checkbox"
+                                checked={sdMode}
+                                onChange={onSdModeChange}
+                            />
+                            <div className="toggle-button__knobs"></div>
+                            <div className="toggle-button__layer"></div>
                         </div>
                     </div>
-                    <p>Build chart</p>
                 </div>
-
-                <div className="component__element">
-                    <p>Select files:</p>
-
-                    <label className="file-browser">
-                        <input
-                            type="file"
-                            aria-label="File browser"
-                            multiple={sdMode}
-                            onChange={this.onFilesChange}
-                        />
-                        <span className="file-browser__text">
-                            {files.length > 1
-                                ? files.length + " selected"
-                                : files.length === 1
-                                ? files[0].name
-                                : "Choose files..."}
-                        </span>
-                    </label>
-                </div>
-
-                <div className="component__element">
-                    <button
-                        className="component__button"
-                        onClick={() => this.calculate(files, sdMode)}
-                    >
-                        {sdMode ? "Build charts" : "Add average"}
-                    </button>
-                </div>
+                <p>Build chart</p>
             </div>
-        );
-    }
-}
 
-export default withFirebase(Calculation);
+            <div className="component__element">
+                <p>Select files:</p>
+
+                <label className="file-browser">
+                    <input
+                        type="file"
+                        aria-label="File browser"
+                        multiple={sdMode}
+                        onChange={onFilesChange}
+                    />
+                    <span className="file-browser__text">{fileSelectText}</span>
+                </label>
+            </div>
+
+            <div className="component__element">
+                <button
+                    className="component__button"
+                    onClick={() => calculate(files, sdMode)}
+                >
+                    {sdMode ? "Build charts" : "Add average"}
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default Calculation;

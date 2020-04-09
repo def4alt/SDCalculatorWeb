@@ -1,6 +1,6 @@
 /// <reference path="../../react-vis.d.ts"/>
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { StatModel } from "../../types";
 import { XYPlot, YAxis, XAxis, LineMarkSeries, LineSeries } from "react-vis";
 import moment from "moment";
@@ -10,10 +10,6 @@ import "../../styles/line-chart/line-chart.scss";
 interface LineChartProps {
     model: StatModel;
     width: number;
-}
-
-interface LineChartState {
-    yValues: number[];
 }
 
 const Line = (value: number, color: string, repeat: number) => {

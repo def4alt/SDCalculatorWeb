@@ -2,9 +2,7 @@ import React from "react";
 import { withAuthorization } from "../../context/session";
 import "../../styles/component/component.scss";
 
-interface AccountProps {}
-
-const Account: React.FC<AccountProps> = props => (
+const Account: React.FC = (_) => (
     <div className="component">Not implemented</div>
 );
 

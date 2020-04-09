@@ -1,132 +1,110 @@
-import React from "react";
-import { withRouter, RouterProps } from "react-router";
+import React, { useState, useContext } from "react";
+import { withRouter, RouterProps, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { withFirebase } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
 import "../../styles/form/form.scss";
 import "../../styles/form/form__oauth/form__oauth.scss";
 
-interface SignInProps extends RouterProps {
-    firebase: Firebase;
-}
-interface SignInState {
-    email: string;
-    password: string;
-    error: string;
-}
+const SignIn: React.FunctionComponent = (_) => {
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
-class SignIn extends React.Component<SignInProps, SignInState> {
-    constructor(props: SignInProps) {
-        super(props);
+    const firebase = useContext(FirebaseContext) as Firebase;
+    const router = useContext(__RouterContext) as RouterProps;
 
-        this.state = {
-            email: "",
-            password: "",
-            error: "",
-        };
-
-        this.signInWithFacebook = this.signInWithFacebook.bind(this);
-        this.signInWithGoogle = this.signInWithGoogle.bind(this);
-    }
-
-    signInWithGoogle = () => {
-        this.props.firebase
+    const signInWithGoogle = () => {
+        firebase
             .doSignInWithGoogle()
-            .then(() => this.props.history.push(ROUTES.HOME));
+            .then(() => router.history.push(ROUTES.HOME));
     };
-    signInWithFacebook = () => {
-        this.props.firebase
+    const signInWithFacebook = () => {
+        firebase
             .doSignInWithFacebook()
-            .then(() => this.props.history.push(ROUTES.HOME));
+            .then(() => router.history.push(ROUTES.HOME));
     };
 
-    onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        this.props.firebase
-            .doSignInWithEmailAndPassword(this.state.email, this.state.password)
+        firebase
+            .doSignInWithEmailAndPassword(email, password)
             .then(() => {
-                this.setState({ email: "", password: "", error: "" });
-                this.props.history.push(ROUTES.HOME);
+                router.history.push(ROUTES.HOME);
             })
             .catch((error) => {
-                this.setState({ error: error.message });
+                setError(error.message);
             });
     };
-    onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ password: event.currentTarget.value });
+    const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setPassword(event.currentTarget.value);
     };
-    onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({ email: event.currentTarget.value });
+    const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value);
     };
 
-    render() {
-        let isInvalid: boolean =
-            this.state.email === "" && this.state.password === "";
+    let isInvalid: boolean = email === "" && password === "";
+    return (
+        <div className="form">
+            <button
+                onClick={signInWithFacebook}
+                className="form__oauth form__oauth_fb"
+            >
+                <FaFacebookF className="icon" /> Login with Facebook
+            </button>
+            <button
+                onClick={signInWithGoogle}
+                className="form__oauth form__oauth_gl"
+            >
+                <FaGoogle className="icon" /> Login with Google
+            </button>
+            <form onSubmit={onSubmit}>
+                <div className="form__input">
+                    <p>Email</p>
+                    <input
+                        name="email"
+                        onChange={onEmailChange}
+                        type="email"
+                        placeholder="example@example.com"
+                    />
+                </div>
 
-        return (
-            <div className="form">
+                <div className="form__input">
+                    <p>Password</p>
+                    <input
+                        name="password"
+                        onChange={onPasswordChange}
+                        type="password"
+                        placeholder="15%$vd09"
+                    />
+                </div>
+
                 <button
-                    onClick={this.signInWithFacebook}
-                    className="form__oauth form__oauth_fb"
+                    className="form__link"
+                    onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
                 >
-                    <FaFacebookF className="icon" /> Login with Facebook
+                    Forgot password?
                 </button>
                 <button
-                    onClick={this.signInWithGoogle}
-                    className="form__oauth form__oauth_gl"
+                    className="form__link"
+                    onClick={() => router.history.push(ROUTES.SIGN_UP)}
                 >
-                    <FaGoogle className="icon" /> Login with Google
+                    Sign Up
                 </button>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form__input">
-                        <p>Email</p>
-                        <input
-                            name="email"
-                            onChange={this.onEmailChange}
-                            type="email"
-                            placeholder="example@example.com"
-                        />
-                    </div>
 
-                    <div className="form__input">
-                        <p>Password</p>
-                        <input
-                            name="password"
-                            onChange={this.onPasswordChange}
-                            type="password"
-                            placeholder="15%$vd09"
-                        />
-                    </div>
+                <button
+                    disabled={isInvalid}
+                    className="form__submit"
+                    type="submit"
+                >
+                    Sign In
+                </button>
 
-                    <button
-                        className="form__link"
-                        onClick={() =>
-                            this.props.history.push(ROUTES.PASSWORD_FORGET)
-                        }
-                    >
-                        Forgot password?
-                    </button>
-                    <button
-                        className="form__link"
-                        onClick={() => this.props.history.push(ROUTES.SIGN_UP)}
-                    >
-                        Sign Up
-                    </button>
+                <p className="form__error">{error}</p>
+            </form>
+        </div>
+    );
+};
 
-                    <button
-                        disabled={isInvalid}
-                        className="form__submit"
-                        type="submit"
-                    >
-                        Sign In
-                    </button>
-
-                    <p className="form__error">{this.state.error}</p>
-                </form>
-            </div>
-        );
-    }
-}
-
-export default withRouter(withFirebase(SignIn));
+export default withRouter(SignIn);

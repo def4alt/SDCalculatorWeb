@@ -1,19 +1,18 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 
 import * as ROUTES from "../../routes";
-import { withRouter, RouterProps } from "react-router";
-import Firebase, { withFirebase } from "../../context/firebase";
+import { withRouter, __RouterContext } from "react-router";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
 
 import "../../styles/nav/nav.scss";
 
-interface NavigationProps extends RouterProps {
-    firebase: Firebase;
-}
-
-const Navigation: React.FC<NavigationProps> = (props) => {
+const Navigation: React.FC = _ => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+    
+    const firebase = useContext(FirebaseContext) as Firebase;
+    const router = useContext(__RouterContext);
 
     const toggleAccountMenu = () => {
         const accountMenu = accountMenuRef.current;
@@ -48,15 +47,15 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                 </button>
                 <button
                     className="nav__logo"
-                    onClick={() => props.history.push(ROUTES.HOME)}
+                    onClick={() => router.history.push(ROUTES.HOME)}
                 >
                     SDCalculator
                 </button>
-                {props.firebase.auth.currentUser ? (
+                {firebase.auth.currentUser ? (
                     <button className="nav__avatar" onClick={toggleAccountMenu}>
                         <img
                             src={
-                                props.firebase.auth.currentUser
+                                firebase.auth.currentUser
                                     .photoURL as string
                             }
                             alt="avatar"
@@ -66,7 +65,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                     <button
                         className="nav__sign-in"
                         onClick={() => {
-                            props.history.push(ROUTES.SIGN_IN);
+                            router.history.push(ROUTES.SIGN_IN);
                         }}
                     >
                         <FaSignInAlt />
@@ -78,7 +77,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                     className="nav__link"
                     onClick={() => {
                         toggleMenu();
-                        props.history.push(ROUTES.SETTINGS);
+                        router.history.push(ROUTES.SETTINGS);
                     }}
                 >
                     Settings
@@ -87,7 +86,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                     className="nav__link"
                     onClick={() => {
                         toggleMenu();
-                        props.history.push(ROUTES.ABOUT);
+                        router.history.push(ROUTES.ABOUT);
                     }}
                 >
                     About
@@ -98,7 +97,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                     className="nav__link"
                     onClick={() => {
                         toggleAccountMenu();
-                        props.history.push(ROUTES.ACCOUNT);
+                        router.history.push(ROUTES.ACCOUNT);
                     }}
                 >
                     Preferences
@@ -106,7 +105,7 @@ const Navigation: React.FC<NavigationProps> = (props) => {
                 <button
                     className="nav__link"
                     onClick={() =>
-                        props.firebase.doSignOut() && toggleAccountMenu()
+                        firebase.doSignOut() && toggleAccountMenu()
                     }
                 >
                     Sign Out
@@ -116,4 +115,4 @@ const Navigation: React.FC<NavigationProps> = (props) => {
     );
 };
 
-export default withRouter(withFirebase(Navigation));
+export default withRouter(Navigation);
