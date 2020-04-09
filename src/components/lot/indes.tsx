@@ -1,142 +1,128 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import Firebase, { withFirebase } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/lot/lot.scss";
 import "../../styles/edit/edit.scss";
+import { AuthUserContext } from "../../context/session";
 
 interface LotProps {
     callback: (lot: number) => void;
-    firebase: Firebase;
 }
 
-interface LotState {
-    lot: number;
-    lotList: number[];
-    addLot: boolean;
-}
+const Lot: React.FC<LotProps> = (props) => {
+    const [lot, setLot] = useState<number>(0);
+    const [lotList, setLotList] = useState<number[]>([]);
+    const [isAdding, setIsAdding] = useState<boolean>(false);
 
-class Lot extends React.Component<LotProps, LotState> {
-    authStateListener?: EventListener;
+    const firebase = useContext(FirebaseContext) as Firebase;
+    const user = useContext(AuthUserContext) as firebase.User;
 
-    constructor(props: LotProps) {
-        super(props);
-
-        this.state = {
-            lot: 0,
-            lotList: [],
-            addLot: false,
-        };
-
-        this.onAuthStateChange = this.onAuthStateChange.bind(this);
-    }
-
-    componentDidMount() {
-        this.authStateListener = this.props.firebase.auth.onAuthStateChanged(
-            this.onAuthStateChange
+    useEffect(() => {
+        let listener: firebase.Unsubscribe = firebase.auth.onAuthStateChanged(
+            onAuthStateChanged
         );
-    }
 
-    onAuthStateChange = async (user: firebase.User | null) => {
-        if (user === null) return;
+        return () => listener();
+    });
 
-        await this.props.firebase
+    const onAuthStateChanged = async (user: firebase.User | null) => {
+        if (!user) return;
+
+        await firebase
             .backup(user.uid)
             .collection("lots")
             .get()
             .then((snapshot) => {
-                let lotList = snapshot.docs.map((t) => {
-                    if (t.id !== "notes") return Number(t.id);
-                }) as number[];
-                this.setState({ lotList });
+                setLotList(
+                    snapshot.docs.map((t) => {
+                        if (t.id !== "notes") return Number(t.id);
+                    }) as number[]
+                );
             });
     };
 
-    removeLot = async (lot: number) => {
+    const removeLot = async (lot: number) => {
         let newList =
-            this.state.lotList.filter((t) => t !== lot).length > 0
-                ? this.state.lotList.filter((t) => t !== lot)
+            lotList.filter((t) => t !== lot).length > 0
+                ? lotList.filter((t) => t !== lot)
                 : [];
 
-        this.setState({ lotList: newList });
+        setLotList(newList);
 
         if (newList.length === 0) {
-            this.props.callback(0);
+            props.callback(0);
         }
 
-        if (!this.props.firebase.auth.currentUser) return;
+        if (!user) return;
 
-        await this.props.firebase
-            .backup(this.props.firebase.auth.currentUser.uid)
+        await firebase
+            .backup(user.uid)
             .collection("lots")
             .doc(String(lot))
             .delete();
     };
-    selectLot = (lot: number) => {
-        this.setState({ lot });
-        this.props.callback(lot);
+    const selectLot = (lot: number) => {
+        setLot(lot);
+        props.callback(lot);
     };
-    addLot = (lot: number) => {
+    const addLot = (lot: number) => {
         if (isNaN(lot)) return;
-
-        this.setState({ lotList: this.state.lotList.concat(lot) });
+        setLotList(lotList.concat(lot));
     };
 
-    render() {
-        let tempLot = "";
-        return (
-            <div className="lot">
-                <div className="lot__view">
-                    Lots{" "}
-                    <span className="lot__view_gray">#{this.state.lot}</span>
-                </div>
-                <div className="edit">
-                    {this.state.lotList.map((lot, i) => (
-                        <div className="edit__cell" key={i}>
-                            <button
-                                className="edit__select"
-                                onClick={() => this.selectLot(lot)}
-                            >
-                                {lot}
-                            </button>
-                            <button
-                                className="edit__remove"
-                                onClick={() => this.removeLot(lot)}
-                            >
-                                <FiX />
-                            </button>
-                        </div>
-                    ))}
-                    {this.state.addLot ? (
-                        <div className="edit__input">
-                            <input
-                                type="text"
-                                onChange={(
-                                    event: React.FormEvent<HTMLInputElement>
-                                ) => (tempLot = event.currentTarget.value)}
-                            />
-                            <button
-                                onClick={() => {
-                                    this.setState({ addLot: false });
-                                    this.addLot(Number(tempLot));
-                                }}
-                                type="button"
-                            >
-                                <FiCheck />
-                            </button>
-                        </div>
-                    ) : (
-                        <button
-                            className="edit__add"
-                            onClick={() => this.setState({ addLot: true })}
-                        >
-                            <FiPlus />
-                        </button>
-                    )}
-                </div>
+    let tempLot = "";
+    return (
+        <div className="lot">
+            <div className="lot__view">
+                Lots <span className="lot__view_gray">#{lot}</span>
             </div>
-        );
-    }
-}
+            <div className="edit">
+                {lotList.map((lot, i) => (
+                    <div className="edit__cell" key={i}>
+                        <button
+                            className="edit__select"
+                            onClick={() => selectLot(lot)}
+                        >
+                            {lot}
+                        </button>
+                        <button
+                            className="edit__remove"
+                            onClick={() => removeLot(lot)}
+                        >
+                            <FiX />
+                        </button>
+                    </div>
+                ))}
+                {isAdding ? (
+                    <div className="edit__input">
+                        <input
+                            type="text"
+                            onChange={(
+                                event: React.FormEvent<HTMLInputElement>
+                            ) => (tempLot = event.currentTarget.value)}
+                        />
+                        <button
+                            onClick={() => {
+                                setIsAdding(false);
+                                addLot(Number(tempLot));
+                            }}
+                            type="button"
+                        >
+                            <FiCheck />
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        className="edit__add"
+                        onClick={() => setIsAdding(true)}
+                    >
+                        <FiPlus />
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+};
 
-export default withFirebase(Lot);
+export default Lot;

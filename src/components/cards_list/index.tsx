@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, useMemo } from "react";
 import { StatModel } from "../../types";
 import Loading from "../loading";
 
@@ -8,10 +8,6 @@ const Card = React.lazy(() => import("../card"));
 
 interface CardsListProps {
     models: StatModel[];
-}
-
-interface CardsListState {
-    innerWidth: number;
 }
 
 const CardsList: React.FunctionComponent<CardsListProps> = (props) => {
@@ -36,11 +32,10 @@ const CardsList: React.FunctionComponent<CardsListProps> = (props) => {
         );
     };
 
-    const models = props.models;
     return (
         <div className="cards-list">
             <Suspense fallback={<Loading />}>
-                {models.map((model: StatModel, i: number) => (
+                {props.models.map((model: StatModel, i: number) => (
                     <Card model={model} key={i} width={width} />
                 ))}
             </Suspense>

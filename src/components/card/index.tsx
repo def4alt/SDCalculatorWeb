@@ -9,31 +9,36 @@ interface CardProps {
     width: number;
 }
 
-let getLevelText = (lvl: SampleType) =>
+const getLevelText = (lvl: SampleType) =>
     lvl === SampleType.Lvl1 ? "Lvl1" : "Lvl2";
 
 const Card: React.FC<CardProps> = (props) => {
     const [inView, setInView] = useState<boolean>(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        window.addEventListener("scroll", scrollHandler);
-        setInView(isInView);
-
-        return () => {
-            window.removeEventListener("scroll", scrollHandler);
-        };
-    });
-
     const isInView = () => {
-        if (cardRef.current) {
-            const rect = cardRef.current.getBoundingClientRect();
-            return rect.top >= -300 && rect.bottom <= window.innerWidth + 150;
-        }
-        return false;
+        let card = cardRef.current;
+
+        if (!card) return false;
+
+        var rect = card.getBoundingClientRect();
+
+        return (
+            rect.top >= -300 &&
+            rect.bottom <=
+                (window.innerHeight + 300 || document.documentElement.clientHeight + 300)
+        );
     };
 
-    const scrollHandler = () => setInView(isInView);
+    useEffect(() => {
+        setInView(isInView);
+        window.addEventListener("scroll", () => setInView(isInView));
+
+        return () => {
+            window.removeEventListener("scroll", () => setInView(isInView));
+        };
+    }, []);
+
     return (
         <div className={"card"} ref={cardRef} style={{ width: props.width }}>
             <p className="card__title">

@@ -1,69 +1,49 @@
-import React from "react";
-import Firebase, { withFirebase } from "../../context/firebase";
+import React, { useState, useContext } from "react";
+import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/form/form.scss";
 
-interface PasswordForgetProps {
-    firebase: Firebase;
-}
-interface PasswordForgetState {
-    email: string;
-    error: string;
-}
+const PasswordForget: React.FC = (_) => {
+    const [email, setEmail] = useState<string>("");
+    const [error, setError] = useState<string>("");
 
-class PasswordForget extends React.Component<
-    PasswordForgetProps,
-    PasswordForgetState
-> {
-    constructor(props: PasswordForgetProps) {
-        super(props);
+    const firebase = useContext(FirebaseContext) as Firebase;
 
-        this.state = {
-            email: "",
-            error: "",
-        };
-    }
-
-    onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        this.props.firebase
-            .doPasswordReset(this.state.email)
+        firebase
+            .doPasswordReset(email)
             .then(() => {
-                this.setState({ email: "", error: "" });
+                setEmail("");
+                setError("");
             })
             .catch((error) => {
-                this.setState({ error });
+                setError(error);
             });
     };
-    onEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
-        this.setState({ email: event.currentTarget.value });
+    const onEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
+        setEmail(event.currentTarget.value);
     };
 
-    render() {
-        let isInvalid = this.state.email === "";
-        return (
-            <form onSubmit={this.onSubmit} className="form">
-                <div className="form__input">
-                    <p>Email</p>
-                    <input
-                        name="email"
-                        value={this.state.email}
-                        onChange={this.onEmailChange}
-                        type="text"
-                        placeholder="example@example.com"
-                    />
-                </div>
-                <button
-                    className="form__submit"
-                    disabled={isInvalid}
-                    type="submit"
-                >
-                    Reset
-                </button>
-                <p className="form__error">{<p>{this.state.error}</p>}</p>
-            </form>
-        );
-    }
-}
-export default withFirebase(PasswordForget);
+    let isInvalid = email === "";
+    return (
+        <form onSubmit={onSubmit} className="form">
+            <div className="form__input">
+                <p>Email</p>
+                <input
+                    name="email"
+                    value={email}
+                    onChange={onEmailChange}
+                    type="text"
+                    placeholder="example@example.com"
+                />
+            </div>
+            <button className="form__submit" disabled={isInvalid} type="submit">
+                Reset
+            </button>
+            <p className="form__error">{<p>{error}</p>}</p>
+        </form>
+    );
+};
+export default PasswordForget;

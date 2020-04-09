@@ -1,9 +1,7 @@
 import React from "react";
 import "../../styles/component/component.scss";
 
-interface SettingsProps {}
-
-const Settings: React.FC<SettingsProps> = (props) => (
+const Settings: React.FC = (_) => (
     <div className="component">Not implemented</div>
 );
 
