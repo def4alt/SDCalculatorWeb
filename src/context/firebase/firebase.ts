@@ -4,8 +4,6 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-import * as avatar from "../../../public/assets/avatars/1.png";
-
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
