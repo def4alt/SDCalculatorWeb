@@ -1,6 +1,7 @@
 @import "../variables.scss";
 
 @import "./file-browser__text.scss";
+@import "./file-browser__text_minimal.scss";
 
 .file-browser {
     position: relative;
@@ -9,7 +10,7 @@
     height: 46px;
 
     input {
-        min-width: 18rem;
+        max-width: 18rem;
         margin: 0;
         filter: alpha(opacity=0);
         opacity: 0;

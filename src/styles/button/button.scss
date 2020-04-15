@@ -1,21 +1,23 @@
-.form__submit {
-    margin-top: 20px;
-    margin-top: 30px;
-    width: 6rem;
+@import "../variables.scss";
+
+@import "./button_link.scss";
+
+.button {
+    width: 8rem;
     height: 2.5rem;
     font-size: $font-size;
     border-radius: 5px;
 
     color: $white;
     border: 0;
-    background-color: rgba($blue, 1);
+    background-color: $blue;
 
     transition: all 0.25s ease-in-out;
 
     text-align: center;
 }
 
-.form__submit:hover {
+.button:hover {
     cursor: pointer;
     background-color: rgba($blue, 0.8);
 }

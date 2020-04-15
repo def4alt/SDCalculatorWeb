@@ -1,0 +1,10 @@
+@import "../variables.scss";
+
+@import "./avatar_big.scss";
+@import "./avatar_small.scss";
+@import "./avatar_rounded.scss";
+@import "./avatar_squared.scss";
+
+.avatar {
+    border: 2px solid rgba($black, 0.25);
+}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import Firebase, { FirebaseContext } from "../../context/firebase";
+import { AuthUserContext } from "../../context/session";
 
 import "../../styles/lot/lot.scss";
 import "../../styles/edit/edit.scss";
-import { AuthUserContext } from "../../context/session";
 
 interface LotProps {
     callback: (lot: number) => void;
@@ -19,17 +19,9 @@ const Lot: React.FC<LotProps> = (props) => {
     const user = useContext(AuthUserContext) as firebase.User;
 
     useEffect(() => {
-        let listener: firebase.Unsubscribe = firebase.auth.onAuthStateChanged(
-            onAuthStateChanged
-        );
-
-        return () => listener();
-    });
-
-    const onAuthStateChanged = async (user: firebase.User | null) => {
         if (!user) return;
 
-        await firebase
+        firebase
             .backup(user.uid)
             .collection("lots")
             .get()
@@ -40,7 +32,7 @@ const Lot: React.FC<LotProps> = (props) => {
                     }) as number[]
                 );
             });
-    };
+    }, [firebase, user]);
 
     const removeLot = async (lot: number) => {
         let newList =

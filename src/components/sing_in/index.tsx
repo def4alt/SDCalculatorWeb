@@ -6,6 +6,8 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 
 import "../../styles/form/form.scss";
 import "../../styles/form/form__oauth/form__oauth.scss";
+import "../../styles/button/button.scss";
+import "../../styles/component/component.scss";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -81,13 +83,13 @@ const SignIn: React.FunctionComponent = (_) => {
                 </div>
 
                 <button
-                    className="form__link"
+                    className="component__element button_link"
                     onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
                 >
                     Forgot password?
                 </button>
                 <button
-                    className="form__link"
+                    className="component__element button_link"
                     onClick={() => router.history.push(ROUTES.SIGN_UP)}
                 >
                     Sign Up
@@ -95,7 +97,7 @@ const SignIn: React.FunctionComponent = (_) => {
 
                 <button
                     disabled={isInvalid}
-                    className="form__submit"
+                    className="component__element button"
                     type="submit"
                 >
                     Sign In

@@ -4,6 +4,7 @@ import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/form/form.scss";
+import "../../styles/button/button.scss";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -90,7 +91,7 @@ const SignUp: React.FunctionComponent = (_) => {
                     type="password"
                 />
             </div>
-            <button disabled={isInvalid} className="form__submit" type="submit">
+            <button disabled={isInvalid} className="button" type="submit">
                 Sign In
             </button>
 

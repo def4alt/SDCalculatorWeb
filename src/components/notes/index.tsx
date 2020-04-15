@@ -15,6 +15,8 @@ interface NotesState {
     notes?: string;
 }
 
+// TODO: Ask for notes fields
+
 const Notes: React.FC<NotesProps> = (props) => {
     const [name, setName] = useState<string>("");
     const [notes, setNotes] = useState<string>("");
