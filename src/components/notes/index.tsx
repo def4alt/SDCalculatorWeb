@@ -33,7 +33,7 @@ const Notes: React.FC<NotesProps> = (props) => {
             .doc(String(props.lot))
             .get()
             .then((snapshot) => {
-                let notes = snapshot.data()?.notes as NotesState;
+                const notes = snapshot.data()?.notes as NotesState;
 
                 setName(notes.name as string);
                 setNotes(notes.notes as string);

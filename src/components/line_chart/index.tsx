@@ -1,6 +1,6 @@
 /// <reference path="../../react-vis.d.ts"/>
 
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { StatModel } from "../../types";
 import { XYPlot, YAxis, XAxis, LineMarkSeries, LineSeries } from "react-vis";
 import moment from "moment";
@@ -12,32 +12,13 @@ interface LineChartProps {
     width: number;
 }
 
-const Line = (value: number, color: string, repeat: number) => {
-    return (
-        <LineSeries
-            data={[...Array(repeat === 1 ? 2 : repeat)].map((_, i) => ({
-                x: i,
-                y: value,
-            }))}
-            style={{
-                strokeLinejoin: "round",
-                strokeWidth: 2,
-            }}
-            strokeStyle="dashed"
-            color={color}
-        />
-    );
-};
-
 const yLabels = ["3SD", "2SD", "SD", "M", "SD", "2SD", "3SD"];
 
 const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
-    const [yValues, setYValues] = useState<number[]>([]);
-    const [data, setData] = useState<any[]>([]);
     const model = props.model;
 
-    useEffect(() => {
-        let values = [
+    const yValues = useMemo(
+        () => [
             model.Average[0] + 3 * model.SD,
             model.Average[0] + 2 * model.SD,
             model.Average[0] + model.SD,
@@ -45,19 +26,35 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             model.Average[0] - model.SD,
             model.Average[0] - 2 * model.SD,
             model.Average[0] - 3 * model.SD,
-        ];
+        ],
+        [model.Average, model.SD]
+    );
 
-        setYValues(values);
-    }, [model.Average, model.SD]);
-
-    useEffect(() => {
-        setData(
+    const data = useMemo(
+        () =>
             [...Array(model.Average.length)].map((_, i) => ({
                 x: i,
                 y: model.Average[i],
-            }))
+            })),
+        [model.Average, model.Average.length]
+    );
+
+    const Line = (value: number, color: string, repeat: number) => {
+        return (
+            <LineSeries
+                data={[...Array(repeat === 1 ? 2 : repeat)].map((_, i) => ({
+                    x: i,
+                    y: value,
+                }))}
+                style={{
+                    strokeLinejoin: "round",
+                    strokeWidth: 2,
+                }}
+                strokeStyle="dashed"
+                color={color}
+            />
         );
-    }, [model.Average]);
+    };
 
     return (
         <div className="line-chart">
@@ -121,37 +118,13 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                     }}
                     color="#d63031"
                 />
-                {Line(
-                    model.Average[0] + 3 * model.SD,
-                    "#e84393",
-                    model.Average.length
-                )}
-                {Line(
-                    model.Average[0] + 2 * model.SD,
-                    "#00cec9",
-                    model.Average.length
-                )}
-                {Line(
-                    model.Average[0] + model.SD,
-                    "#ff7675",
-                    model.Average.length
-                )}
-                {Line(model.Average[0], "#6c5ce7", model.Average.length)}
-                {Line(
-                    model.Average[0] - model.SD,
-                    "#ff7675",
-                    model.Average.length
-                )}
-                {Line(
-                    model.Average[0] - 2 * model.SD,
-                    "#00cec9",
-                    model.Average.length
-                )}
-                {Line(
-                    model.Average[0] - 3 * model.SD,
-                    "#e84393",
-                    model.Average.length
-                )}
+                {Line(yValues[0], "#e84393", model.Average.length)}
+                {Line(yValues[1], "#00cec9", model.Average.length)}
+                {Line(yValues[2], "#ff7675", model.Average.length)}
+                {Line(yValues[3], "#6c5ce7", model.Average.length)}
+                {Line(yValues[4], "#ff7675", model.Average.length)}
+                {Line(yValues[5], "#00cec9", model.Average.length)}
+                {Line(yValues[6], "#e84393", model.Average.length)}
             </XYPlot>
         </div>
     );

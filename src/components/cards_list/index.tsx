@@ -1,8 +1,14 @@
-import React, { Suspense, useState, useEffect } from "react";
+import React, {
+    useState,
+    useEffect,
+    useMemo,
+    Suspense,
+    useCallback,
+} from "react";
 import { StatModel } from "../../types";
-import Loading from "../loading";
 
 import "../../styles/cards-list/cards-list.scss";
+import Loading from "../loading";
 
 const Card = React.lazy(() => import("../card"));
 
@@ -17,13 +23,12 @@ const CardsList: React.FunctionComponent<CardsListProps> = (props) => {
         window.addEventListener("resize", resizeHandler);
         resizeHandler();
 
-        return () => {
-            window.removeEventListener("resize", resizeHandler);
-        };
+        return () => window.removeEventListener("resize", resizeHandler);
     });
 
     const resizeHandler = () => {
         const innerWidth = window.innerWidth;
+
         setWidth(
             250 + 100 * props.models[0].Average.length > innerWidth - 50 &&
                 innerWidth !== 0
@@ -32,13 +37,15 @@ const CardsList: React.FunctionComponent<CardsListProps> = (props) => {
         );
     };
 
+    const cards = useMemo(() => {
+        return props.models.map((model: StatModel, i: number) => (
+            <Card model={model} key={i} width={width} />
+        ));
+    }, [props.models, width]);
+
     return (
         <div className="cards-list">
-            <Suspense fallback={<Loading />}>
-                {props.models.map((model: StatModel, i: number) => (
-                    <Card model={model} key={i} width={width} />
-                ))}
-            </Suspense>
+            <Suspense fallback={<Loading />}>{cards}</Suspense>
         </div>
     );
 };

@@ -15,7 +15,6 @@ import "../../styles/avatar/avatar.scss";
 import "../../styles/button/button.scss";
 
 interface CalculationProps {
-    models: StatModel[];
     callback: (lot: number, models: StatModel[]) => void;
 }
 
@@ -25,6 +24,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     const [lot, setLot] = useState<number>(0);
     const [sdMode, setSdMode] = useState<boolean>(true);
     const [files, setFiles] = useState<File[]>([]);
+    const [models, setModels] = useState<StatModel[]>([]);
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User;
@@ -44,8 +44,9 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
-        await Calculate(files, props.models, sdMode).then(async (models) => {
+        await Calculate(files, models, sdMode).then(async (models) => {
             props.callback(lot, models);
+            setModels(models);
 
             if (!user) return;
 
@@ -71,8 +72,13 @@ const Calculation: React.FC<CalculationProps> = (props) => {
             .doc(String(lot));
 
         await doc.get().then((snapshot) => {
-            if (snapshot.data()) props.callback(lot, snapshot.data()?.models);
-            else props.callback(lot, []);
+            if (snapshot.data()) {
+                props.callback(lot, snapshot.data()?.models);
+                setModels(snapshot.data()?.models);
+            } else {
+                props.callback(lot, []);
+                setModels([]);
+            }
         });
     };
 

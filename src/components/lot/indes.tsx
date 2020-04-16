@@ -42,9 +42,8 @@ const Lot: React.FC<LotProps> = (props) => {
 
         setLotList(newList);
 
-        if (newList.length === 0) {
-            props.callback(0);
-        }
+        if (newList.length === 0) props.callback(0);
+        else props.callback(newList[newList.length - 1]);
 
         if (!user) return;
 
