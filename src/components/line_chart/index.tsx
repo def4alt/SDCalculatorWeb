@@ -1,6 +1,6 @@
 /// <reference path="../../react-vis.d.ts"/>
 
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { StatModel } from "../../types";
 import { XYPlot, YAxis, XAxis, LineMarkSeries, LineSeries } from "react-vis";
 import moment from "moment";

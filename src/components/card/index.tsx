@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { StatModel, SampleType } from "../../types";
 import LineChart from "../line_chart";
 
@@ -17,11 +17,11 @@ const Card: React.FC<CardProps> = (props) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
     const isInView = () => {
-        let card = cardRef.current;
+        const card = cardRef.current;
 
         if (!card) return false;
 
-        var rect = card.getBoundingClientRect();
+        const rect = card.getBoundingClientRect();
 
         setInView(
             rect.top >= -300 &&
@@ -31,6 +31,11 @@ const Card: React.FC<CardProps> = (props) => {
         );
     };
 
+    const hasWarning = useMemo(
+        () => props.model.Warnings.filter((t) => t.trim() !== "").length > 0,
+        [props.model.Warnings, props.model.Warnings.length]
+    );
+
     useEffect(() => {
         isInView();
         window.addEventListener("scroll", isInView);
@@ -39,7 +44,11 @@ const Card: React.FC<CardProps> = (props) => {
     }, []);
 
     return (
-        <div className="card" ref={cardRef} style={{ width: props.width }}>
+        <div
+            className={hasWarning ? "card_red" : "card"}
+            ref={cardRef}
+            style={{ width: props.width }}
+        >
             <p className="card__title">
                 {props.model.TestName +
                     " " +

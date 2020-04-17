@@ -3,11 +3,13 @@
 @import "./card__chart.scss";
 @import "./card__title.scss";
 @import "./card__chart_hidden.scss";
+@import "./card_red.scss";
 
 .card {
     margin: 30px auto;
     height: 22rem;
+    border: 1px solid $white;
     border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px #ffffff;
+    background: $white;
+    box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px $white;
 }
