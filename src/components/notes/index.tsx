@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import Firebase, { FirebaseContext } from "../../context/firebase";
+import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
 
 import "../../styles/notes/notes.scss";
 import "../../styles/component/component.scss";
-import { AuthUserContext } from "../../context/session";
+import "../../styles/button/button.scss";
 
 interface NotesProps {
     lot: number;
@@ -94,9 +95,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     onChange={(e) => setNotes(e.currentTarget.value)}
                 />
 
-                <button className="component__button notes__submit">
-                    Submit
-                </button>
+                <button className="button notes__submit">Submit</button>
             </form>
         </div>
     );
