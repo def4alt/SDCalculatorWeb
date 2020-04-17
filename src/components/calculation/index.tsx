@@ -3,28 +3,32 @@ import React, { useState, useContext } from "react";
 import Calculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot/indes";
+
 import Firebase, { FirebaseContext } from "../../context/firebase";
+import { AuthUserContext } from "../../context/session";
 
 import "../../styles/component/component.scss";
 import "../../styles/toggle-button/toggle-button.scss";
 import "../../styles/file-browser/file-browser.scss";
 import "../../styles/calculation/calculation.scss";
-import { AuthUserContext } from "../../context/session";
+import "../../styles/avatar/avatar.scss";
+import "../../styles/button/button.scss";
 
 interface CalculationProps {
-    models: StatModel[];
     callback: (lot: number, models: StatModel[]) => void;
 }
+
+// TODO: Add other calculation types
 
 const Calculation: React.FC<CalculationProps> = (props) => {
     const [lot, setLot] = useState<number>(0);
     const [sdMode, setSdMode] = useState<boolean>(true);
     const [files, setFiles] = useState<File[]>([]);
+    const [models, setModels] = useState<StatModel[]>([]);
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User;
 
-    // Handlers
     const onSdModeChange = () => setSdMode(!sdMode);
     const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
@@ -39,10 +43,10 @@ const Calculation: React.FC<CalculationProps> = (props) => {
         setFiles(fileArray);
     };
 
-    // Custom functions
     const calculate = async (files: File[], sdMode: boolean) => {
-        await Calculate(files, props.models, sdMode).then(async (models) => {
+        await Calculate(files, models, sdMode).then(async (models) => {
             props.callback(lot, models);
+            setModels(models);
 
             if (!user) return;
 
@@ -57,7 +61,6 @@ const Calculation: React.FC<CalculationProps> = (props) => {
         });
     };
 
-    // Callbacks
     const lotCallback = async (lot: number) => {
         setLot(lot);
 
@@ -69,8 +72,13 @@ const Calculation: React.FC<CalculationProps> = (props) => {
             .doc(String(lot));
 
         await doc.get().then((snapshot) => {
-            if (snapshot.data()) props.callback(lot, snapshot.data()?.models);
-            else props.callback(lot, []);
+            if (snapshot.data()) {
+                props.callback(lot, snapshot.data()?.models);
+                setModels(snapshot.data()?.models);
+            } else {
+                props.callback(lot, []);
+                setModels([]);
+            }
         });
     };
 
@@ -122,7 +130,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
 
             <div className="component__element">
                 <button
-                    className="component__button"
+                    className="button"
                     onClick={() => calculate(files, sdMode)}
                 >
                     {sdMode ? "Build charts" : "Add average"}

@@ -1,4 +1,4 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useEffect, useState } from "react";
 
 import * as ROUTES from "../../routes";
 import { withRouter, __RouterContext } from "react-router";
@@ -6,13 +6,22 @@ import Firebase, { FirebaseContext } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
 
 import "../../styles/nav/nav.scss";
+import { AuthUserContext } from "../../context/session";
 
-const Navigation: React.FC = _ => {
+const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
-    
+
     const firebase = useContext(FirebaseContext) as Firebase;
+    const user = useContext(AuthUserContext) as firebase.User | null;
     const router = useContext(__RouterContext);
+
+    const [avatar, setAvatar] = useState<string>("");
+
+    useEffect(() => {
+        if (!user) return;
+        setAvatar(user.photoURL as string);
+    }, [user, user?.photoURL]);
 
     const toggleAccountMenu = () => {
         const accountMenu = accountMenuRef.current;
@@ -51,26 +60,29 @@ const Navigation: React.FC = _ => {
                 >
                     SDCalculator
                 </button>
-                {firebase.auth.currentUser ? (
-                    <button className="nav__avatar" onClick={toggleAccountMenu}>
-                        <img
-                            src={
-                                firebase.auth.currentUser
-                                    .photoURL as string
-                            }
-                            alt="avatar"
-                        />
-                    </button>
-                ) : (
-                    <button
-                        className="nav__sign-in"
-                        onClick={() => {
-                            router.history.push(ROUTES.SIGN_IN);
-                        }}
-                    >
-                        <FaSignInAlt />
-                    </button>
-                )}
+                {router.location.pathname !== ROUTES.ACCOUNT ? (
+                    user ? (
+                        <button
+                            className="nav__avatar"
+                            onClick={toggleAccountMenu}
+                        >
+                            <img
+                                src={avatar}
+                                className="avatar avatar_small avatar_rounded"
+                                alt="avatar"
+                            />
+                        </button>
+                    ) : (
+                        <button
+                            className="nav__sign-in"
+                            onClick={() => {
+                                router.history.push(ROUTES.SIGN_IN);
+                            }}
+                        >
+                            <FaSignInAlt />
+                        </button>
+                    )
+                ) : null}
             </div>
             <div className="nav__menu" ref={menuRef}>
                 <button
@@ -104,9 +116,7 @@ const Navigation: React.FC = _ => {
                 </button>
                 <button
                     className="nav__link"
-                    onClick={() =>
-                        firebase.doSignOut() && toggleAccountMenu()
-                    }
+                    onClick={() => firebase.doSignOut() && toggleAccountMenu()}
                 >
                     Sign Out
                 </button>

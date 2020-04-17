@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { StatModel, SampleType } from "../../types";
 import LineChart from "../line_chart";
 
@@ -17,42 +17,47 @@ const Card: React.FC<CardProps> = (props) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
     const isInView = () => {
-        let card = cardRef.current;
+        const card = cardRef.current;
 
         if (!card) return false;
 
-        var rect = card.getBoundingClientRect();
+        const rect = card.getBoundingClientRect();
 
-        return (
+        setInView(
             rect.top >= -300 &&
-            rect.bottom <=
-                (window.innerHeight + 300 ||
-                    document.documentElement.clientHeight + 300)
+                rect.bottom <=
+                    (window.innerHeight + 300 ||
+                        document.documentElement.clientHeight + 300)
         );
     };
 
-    useEffect(() => {
-        setInView(isInView);
-        window.addEventListener("scroll", () => setInView(isInView));
+    const hasWarning = useMemo(
+        () => props.model.Warnings.filter((t) => t.trim() !== "").length > 0,
+        [props.model.Warnings, props.model.Warnings.length]
+    );
 
-        return () => {
-            window.removeEventListener("scroll", () => setInView(isInView));
-        };
+    useEffect(() => {
+        isInView();
+        window.addEventListener("scroll", isInView);
+
+        return () => window.removeEventListener("scroll", isInView);
     }, []);
 
     return (
-        <div className={"card"} ref={cardRef} style={{ width: props.width }}>
+        <div
+            className={hasWarning ? "card_red" : "card"}
+            ref={cardRef}
+            style={{ width: props.width }}
+        >
             <p className="card__title">
                 {props.model.TestName +
                     " " +
                     getLevelText(props.model.SampleType)}
             </p>
-            <div
-                className={
-                    inView ? "card__chart" : "card__chart card__chart_hidden"
-                }
-            >
-                <LineChart model={props.model} width={props.width} />
+            <div className="card__chart">
+                {inView && (
+                    <LineChart model={props.model} width={props.width} />
+                )}
             </div>
         </div>
     );

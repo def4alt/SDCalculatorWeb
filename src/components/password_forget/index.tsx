@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 
 import "../../styles/form/form.scss";
+import "../../styles/button/button.scss";
 
 const PasswordForget: React.FC = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -39,7 +40,7 @@ const PasswordForget: React.FC = (_) => {
                     placeholder="example@example.com"
                 />
             </div>
-            <button className="form__submit" disabled={isInvalid} type="submit">
+            <button className="button" disabled={isInvalid} type="submit">
                 Reset
             </button>
             <p className="form__error">{<p>{error}</p>}</p>

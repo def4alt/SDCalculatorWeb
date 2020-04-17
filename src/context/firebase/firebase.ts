@@ -4,18 +4,15 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
-import * as avatar from "../../../public/assets/avatars/1.png";
-
-const config = {
-    apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUREMENT_ID
+const firebaseConfig = {
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+    measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
-
 class Firebase {
     auth: firebase.auth.Auth;
     db: firebase.firestore.Firestore;
@@ -23,7 +20,7 @@ class Firebase {
     glProvider: firebase.auth.AuthProvider;
 
     constructor() {
-        app.initializeApp(config);
+        app.initializeApp(firebaseConfig);
 
         this.auth = app.auth();
 
@@ -35,13 +32,16 @@ class Firebase {
     }
 
     doCreateUserWithEmailAndPassword = (email: string, password: string) =>
-        this.auth.createUserWithEmailAndPassword(email, password).then(user => {
-            user.user?.updateProfile({
-                photoURL: avatar
-            });
+        this.auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((user) => {
+                let index = Math.floor(Math.random() * 104 + 1); // number of files in cdn
+                user.user?.updateProfile({
+                    photoURL: `https://cdn.image4.io/def4alt/f_auto/avatars/${index}.png`,
+                });
 
-            return user;
-        });
+                return user;
+            });
 
     doSignInWithEmailAndPassword = (email: string, password: string) =>
         this.auth.signInWithEmailAndPassword(email, password);

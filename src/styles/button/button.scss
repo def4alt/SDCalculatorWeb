@@ -1,0 +1,23 @@
+@import "../variables.scss";
+
+@import "./button_link.scss";
+
+.button {
+    width: 8rem;
+    height: 2.5rem;
+    font-size: $font-size;
+    border-radius: 5px;
+
+    color: $white;
+    border: 0;
+    background-color: $blue;
+
+    transition: all 0.25s ease-in-out;
+
+    text-align: center;
+}
+
+.button:hover {
+    cursor: pointer;
+    background-color: rgba($blue, 0.8);
+}

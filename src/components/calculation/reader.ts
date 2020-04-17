@@ -4,84 +4,74 @@ import CheckValues from "./westgard";
 import { StatModel, ReadModel, SampleType } from "../../types";
 import GetStatistics from "./statistics";
 
-function getExtension(name: string): string {
-    return name.split(".").pop() as string;
-}
+const types = /(\.xls|\.xlsx)$/i;
 
 export default async function Calculate(
     files: File[],
     globalStatModels: StatModel[],
     sdMode: boolean
 ): Promise<StatModel[]> {
+    let newModels: StatModel[] = [];
     const parsedRows: ReadModel[] = [];
+
     for (const file of files) {
-        const extension = getExtension(file.name);
-        if (extension === "xlsx" || extension === "xls") {
-            await Read(file).then(parsed => {
-                for (const model of parsed as ReadModel[]) {
-                    parsedRows.push(model);
-                }
-            });
-        }
+        if (!file.name.match(types)) continue;
+
+        await Read(file).then((parsed) =>
+            parsed.forEach((model) => parsedRows.push(model))
+        );
     }
 
-    if (parsedRows.length === 0) {
-    }
+    if (parsedRows.length === 0) return [];
 
-    let statModels = GetStatistics(parsedRows);
+    const statModels = GetStatistics(parsedRows);
 
-    if (statModels === undefined || statModels.length === 0) {
-        return new Array<StatModel>();
-    }
+    if (statModels === undefined || statModels.length === 0) return [];
 
     if (!sdMode) {
-        for (let i = 0; i < statModels.length; i++) {
-            const model = statModels[i];
-
-            let globalModel = globalStatModels.filter(
-                t =>
+        Object.assign<StatModel[], StatModel[]>(newModels, globalStatModels);
+        statModels.forEach((model) => {
+            let newModel = newModels.filter(
+                (t) =>
                     t.TestName === model.TestName &&
                     t.SampleType === model.SampleType
             )[0];
 
-            if (globalModel !== undefined) {
-                globalModel.Average.push(model.Average[0]);
-                globalModel.Date.push(model.Date[0]);
-            }
+            if (!newModel) return;
 
-            let warning = CheckValues(globalModel.Average, globalModel.SD);
+            newModel.Average.push(model.Average[0]);
+            newModel.Date.push(model.Date[0]);
 
-            if (
-                warning !==
-                globalModel.Warnings[globalModel.Warnings.length - 1]
-            )
-                globalModel.Warnings.push(warning);
-            else globalModel.Warnings.push(" ");
-        }
-    } else {
-        globalStatModels = statModels;
-    }
+            const warning = CheckValues(newModel.Average, newModel.SD);
 
-    return globalStatModels;
+            newModel.Warnings.push(
+                warning !== newModel.Warnings[newModel.Warnings.length - 1]
+                    ? warning
+                    : " "
+            );
+        });
+    } else newModels = statModels;
+
+    return newModels;
 }
 
-const getValueFromCell = (r: number, c: number, sheet: Sheet) => {
-    return sheet[
+const getValueFromCell = (r: number, c: number, sheet: Sheet) =>
+    sheet[
         utils.encode_cell({
             r: r,
-            c: c
+            c: c,
         })
     ];
-};
 
 function Read(file: File): Promise<ReadModel[]> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsBinaryString(file);
-        reader.onload = () => {
-            const models = [];
 
-            let date: string = moment(
+        reader.onload = () => {
+            let models = [];
+
+            let date = moment(
                 String(file.name)
                     .replace("Summary Report", "")
                     .replace("-", "")
@@ -91,12 +81,14 @@ function Read(file: File): Promise<ReadModel[]> {
                     .replace("_", "/")
                     .trim(),
                 "DD/MM/YY"
-            ).toDate().toUTCString();
+            )
+                .toDate()
+                .toUTCString();
 
             date = date ? date : new Date().toUTCString();
 
             const workbook = read(reader.result, {
-                type: "binary"
+                type: "binary",
             });
 
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -107,9 +99,7 @@ function Read(file: File): Promise<ReadModel[]> {
             for (let rowNum = range.s.r + 4; rowNum <= range.e.r; rowNum++) {
                 const sampleTypeCell = getValueFromCell(rowNum, 3, sheet);
 
-                if (sampleTypeCell == null) {
-                    continue;
-                }
+                if (!sampleTypeCell) continue;
 
                 const failedTestsCell = getValueFromCell(rowNum, 5, sheet);
 
@@ -136,16 +126,15 @@ function Read(file: File): Promise<ReadModel[]> {
                     );
                     const testName = String(testNameCell.v).trim();
 
-                    if (!testName.includes("/")) {
+                    if (!testName.includes("/"))
                         testResults[testName] =
                             Math.round(testValue * 100) / 100;
-                    }
                 }
                 const model = {
                     SampleType: sampleType,
                     FailedTests: failedTests,
                     TestResults: testResults,
-                    Date: [date]
+                    Date: [date],
                 };
 
                 models.push(model);
