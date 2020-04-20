@@ -13,6 +13,7 @@ import { LocalizationContext } from "../../context/localization";
 import "../../styles/notes/notes.scss";
 import "../../styles/component/component.scss";
 import "../../styles/button/button.scss";
+import "../../styles/header/header.scss";
 
 interface NotesProps {
     lot: number;
@@ -107,6 +108,25 @@ const Notes: React.FC<NotesProps> = (props) => {
 
     return (
         <div className="notes">
+            <div className="header notes__print-only">
+                <img
+                    className="header__image"
+                    alt="ohmatdyt logo"
+                    src="https://scontent.fiev12-1.fna.fbcdn.net/v/t31.0-8/p960x960/27164021_1923262394651155_2381188020606320187_o.png?_nc_cat=103&_nc_sid=85a577&_nc_ohc=yOxOuE34ZxgAX8AxDT6&_nc_ht=scontent.fiev12-1.fna&oh=dab891cac1968553724ab997034d9ec5&oe=5EC5698B"
+                />
+                <p className="header__label">
+                    МІНІСТЕРСТВО ОХОРОНИ ЗДОРОВ’Я УКРАЇНИ НАЦІОНАЛЬНА ДИТЯЧА
+                    СПЕЦІАЛІЗОВАНА ЛІКАРНЯ «ОХМАТДИТ»
+                </p>
+                <p className="header__right-top">Ф-ЛМГ-010-01</p>
+                <p className="header__text">Лабораторія медичної генетики</p>
+                <p className="header__text_second">
+                    Відділ діагностики спадкової патології
+                </p>
+                <p className="header__title">
+                    ВНУТРІШНЬОЛАБОРАТОРНИЙ КОНТРОЛЬ ЯКОСТІ
+                </p>
+            </div>
             <button
                 className="notes__toggle button_icon"
                 onClick={() => toggleMenu(notesRef, "notes__form_expanded")}
@@ -114,7 +134,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <GoNote />
             </button>
             <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
-                <p className="notes__header">{localization.methodName}</p>
+                <p className="notes__title">{localization.methodName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.methodName}
@@ -127,7 +147,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     }
                 />
 
-                <p className="notes__header">{localization.operatorName}</p>
+                <p className="notes__title">{localization.operatorName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.operatorName}
@@ -140,7 +160,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     }
                 />
 
-                <p className="notes__header">{localization.foundingDate}</p>
+                <p className="notes__title">{localization.foundingDate}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.foundingDate}
@@ -154,7 +174,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 />
                 <br />
 
-                <p className="notes__header">{localization.controlMaterial}</p>
+                <p className="notes__title">{localization.controlMaterial}</p>
                 <div className="notes__level">
                     <p className="notes__label">{localization.materialName}</p>
                     <input
@@ -245,7 +265,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 </div>
 
                 <br />
-                <p className="notes__header">{localization.machineName}</p>
+                <p className="notes__title">{localization.machineName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.machineName}

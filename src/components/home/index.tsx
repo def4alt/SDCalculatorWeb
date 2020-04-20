@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useRef } from "react";
+import React, { Suspense, useState, useRef, useEffect } from "react";
 import { StatModel } from "../../types";
 import Loading from "../loading";
 import Notes from "../notes";
