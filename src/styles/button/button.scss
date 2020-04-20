@@ -1,9 +1,9 @@
 @import "../variables.scss";
 
 @import "./button_link.scss";
+@import "./button_icon.scss";
 
 .button {
-    width: 8rem;
     height: 2.5rem;
     font-size: $font-size;
     border-radius: 5px;
@@ -13,6 +13,11 @@
     background-color: $blue;
 
     transition: all 0.25s ease-in-out;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
 
     text-align: center;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import Calculate from "./reader";
 import { StatModel } from "../../types";
@@ -82,7 +82,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
         });
     };
 
-    let fileSelectText =
+    const fileSelectText =
         files.length > 1
             ? files.length + " selected"
             : files.length === 1

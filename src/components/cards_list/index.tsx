@@ -1,10 +1,4 @@
-import React, {
-    useState,
-    useEffect,
-    useMemo,
-    Suspense,
-    useCallback,
-} from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { StatModel } from "../../types";
 
 import "../../styles/cards-list/cards-list.scss";
@@ -16,7 +10,7 @@ interface CardsListProps {
     models: StatModel[];
 }
 
-const CardsList: React.FunctionComponent<CardsListProps> = (props) => {
+const CardsList: React.FC<CardsListProps> = (props) => {
     const [width, setWidth] = useState<number>(0);
 
     useEffect(() => {

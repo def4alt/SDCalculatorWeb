@@ -13,3 +13,14 @@
     background: $white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px $white;
 }
+
+@media print {
+    .card {
+        margin-top: 2.5vh;
+        margin-bottom: 2.5vh;
+        height: 28.478vh;
+        border: 1px solid rgba($black, 0.2);
+        background: $white;
+        box-shadow: none;
+    }
+}

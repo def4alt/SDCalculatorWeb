@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect, useReducer, Reducer } from "react";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
@@ -12,15 +12,37 @@ interface NotesProps {
 }
 
 interface NotesState {
-    name?: string;
-    notes?: string;
+    methodName?: string;
+    operatorName?: string;
+    foundingDate?: string;
+    materialName?: string;
+    materialProducer?: string;
+    materialLot?: string;
+    materialExpDate?: string;
+    materialLvl1?: string;
+    materialLvl2?: string;
+    machineName?: string;
 }
 
-// TODO: Ask for notes fields
+interface Action {
+    type?: string;
+    payload: NotesState;
+}
+
+const reducer: Reducer<NotesState, Action> = (state, action) => {
+    switch (action.type) {
+        default:
+            return Object.assign({}, state, action.payload);
+    }
+};
 
 const Notes: React.FC<NotesProps> = (props) => {
-    const [name, setName] = useState<string>("");
-    const [notes, setNotes] = useState<string>("");
+    const [notes, dispatch] = useReducer<
+        Reducer<NotesState, Action>,
+        NotesState
+    >(reducer, {}, () => {
+        return { materialLot: String(props.lot) } as NotesState;
+    });
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User;
@@ -36,8 +58,9 @@ const Notes: React.FC<NotesProps> = (props) => {
             .then((snapshot) => {
                 const notes = snapshot.data()?.notes as NotesState;
 
-                setName(notes.name as string);
-                setNotes(notes.notes as string);
+                if (!notes) return;
+
+                dispatch({ payload: notes });
             });
     });
 
@@ -62,13 +85,12 @@ const Notes: React.FC<NotesProps> = (props) => {
             .collection("lots")
             .doc(String(props.lot));
 
+        console.log(notes);
+
         doc.get().then((snapshot) => {
             doc.set({
                 models: snapshot.data()?.models,
-                notes: {
-                    name,
-                    notes,
-                },
+                notes,
             });
         });
     };
@@ -79,20 +101,144 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <GoNote />
             </button>
             <form className="notes__form" id="notes__form" onSubmit={onSubmit}>
-                <p className="notes__label">Name</p>
+                <p className="notes__header">Method name</p>
                 <input
                     className="notes__input"
-                    defaultValue={name}
+                    defaultValue={notes.methodName}
                     name="name"
                     type="text"
-                    onChange={(e) => setName(e.currentTarget.value)}
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { methodName: e.currentTarget.value },
+                        })
+                    }
                 />
-                <p className="notes__label">Notes</p>
-                <textarea
-                    className="notes__textarea"
-                    defaultValue={notes}
-                    name="notes"
-                    onChange={(e) => setNotes(e.currentTarget.value)}
+
+                <p className="notes__header">Operator name</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.operatorName}
+                    name="name"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { operatorName: e.currentTarget.value },
+                        })
+                    }
+                />
+
+                <p className="notes__header">Date of founding mesurements</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.foundingDate}
+                    name="name"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { foundingDate: e.currentTarget.value },
+                        })
+                    }
+                />
+                <br />
+
+                <p className="notes__header">Control material</p>
+                <div className="notes__level">
+                    <p className="notes__label">Name</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialName}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: {
+                                    materialName: e.currentTarget.value,
+                                },
+                            })
+                        }
+                    />
+                    <p className="notes__label">Manufacturer</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialProducer}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: {
+                                    materialProducer: e.currentTarget.value,
+                                },
+                            })
+                        }
+                    />
+                    <p className="notes__label">Lot</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialLot}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: { materialLot: e.currentTarget.value },
+                            })
+                        }
+                    />
+                    <p className="notes__label">Expiration date</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialExpDate}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: {
+                                    materialExpDate: e.currentTarget.value,
+                                },
+                            })
+                        }
+                    />
+                    <p className="notes__label">Level 1</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialLvl1}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: {
+                                    materialLvl1: e.currentTarget.value,
+                                },
+                            })
+                        }
+                    />
+                    <p className="notes__label">Level 2</p>
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.materialLvl2}
+                        name="name"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: {
+                                    materialLvl2: e.currentTarget.value,
+                                },
+                            })
+                        }
+                    />
+                </div>
+
+                <br />
+                <p className="notes__header">Measurements machine name</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.machineName}
+                    name="name"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { machineName: e.currentTarget.value },
+                        })
+                    }
                 />
 
                 <button className="button notes__submit">Submit</button>

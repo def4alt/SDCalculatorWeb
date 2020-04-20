@@ -54,10 +54,8 @@ const Card: React.FC<CardProps> = (props) => {
                     " " +
                     getLevelText(props.model.SampleType)}
             </p>
-            <div className="card__chart">
-                {inView && (
-                    <LineChart model={props.model} width={props.width} />
-                )}
+            <div className={inView ? "card__chart" : "card__chart_hidden"}>
+                <LineChart model={props.model} width={props.width} />
             </div>
         </div>
     );

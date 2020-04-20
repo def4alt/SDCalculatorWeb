@@ -61,7 +61,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             <XYPlot
                 margin={{ left: 90, right: 30, bottom: 50 }}
                 width={props.width}
-                height={260}
+                height={250}
             >
                 <YAxis
                     tickValues={yValues}

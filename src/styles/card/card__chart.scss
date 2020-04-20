@@ -4,6 +4,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-color: #000000;
-    border-width: 2px;
+}
+
+@media print {
+    .card__chart {
+        height: 300px;
+    }
 }

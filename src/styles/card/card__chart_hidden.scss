@@ -1,3 +1,9 @@
 .card__chart_hidden {
     display: none;
 }
+
+@media print {
+    .card__chart_hidden {
+        display: block;
+    }
+}

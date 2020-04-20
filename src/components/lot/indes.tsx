@@ -64,7 +64,7 @@ const Lot: React.FC<LotProps> = (props) => {
 
     let tempLot = "";
     return (
-        <div className="lot">
+        <>
             <div className="lot__view">
                 Lots <span className="lot__view_gray">#{lot}</span>
             </div>
@@ -112,7 +112,7 @@ const Lot: React.FC<LotProps> = (props) => {
                     </button>
                 )}
             </div>
-        </div>
+        </>
     );
 };
 
