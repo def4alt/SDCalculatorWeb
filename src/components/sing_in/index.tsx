@@ -3,6 +3,7 @@ import { withRouter, RouterProps, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/form/form.scss";
 import "../../styles/form/form__oauth/form__oauth.scss";
@@ -16,6 +17,7 @@ const SignIn: React.FunctionComponent = (_) => {
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const router = useContext(__RouterContext) as RouterProps;
+    const localization = useContext(LocalizationContext).localization;
 
     const signInWithGoogle = () => {
         firebase
@@ -53,17 +55,19 @@ const SignIn: React.FunctionComponent = (_) => {
                 onClick={signInWithFacebook}
                 className="form__oauth form__oauth_fb"
             >
-                <FaFacebookF className="icon" /> Login with Facebook
+                <FaFacebookF className="icon" />
+                {localization.loginWith} Facebook
             </button>
             <button
                 onClick={signInWithGoogle}
                 className="form__oauth form__oauth_gl"
             >
-                <FaGoogle className="icon" /> Login with Google
+                <FaGoogle className="icon" />
+                {localization.loginWith} Google
             </button>
             <form onSubmit={onSubmit}>
                 <div className="form__input">
-                    <p>Email</p>
+                    <p>{localization.email}</p>
                     <input
                         name="email"
                         onChange={onEmailChange}
@@ -73,7 +77,7 @@ const SignIn: React.FunctionComponent = (_) => {
                 </div>
 
                 <div className="form__input">
-                    <p>Password</p>
+                    <p>{localization.password}</p>
                     <input
                         name="password"
                         onChange={onPasswordChange}
@@ -86,13 +90,13 @@ const SignIn: React.FunctionComponent = (_) => {
                     className="component__element button_link"
                     onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
                 >
-                    Forgot password?
+                    {localization.forgotPassword}
                 </button>
                 <button
                     className="component__element button_link"
                     onClick={() => router.history.push(ROUTES.SIGN_UP)}
                 >
-                    Sign Up
+                    {localization.signUp}
                 </button>
 
                 <button
@@ -100,7 +104,7 @@ const SignIn: React.FunctionComponent = (_) => {
                     className="component__element button"
                     type="submit"
                 >
-                    Sign In
+                    {localization.signIn}
                 </button>
 
                 <p className="form__error">{error}</p>

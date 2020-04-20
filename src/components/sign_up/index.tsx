@@ -2,9 +2,11 @@ import React, { useState, useContext } from "react";
 import { withRouter, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "../../context/firebase";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/form/form.scss";
 import "../../styles/button/button.scss";
+import "../../styles/component/component.scss";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -15,6 +17,7 @@ const SignUp: React.FunctionComponent = (_) => {
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const router = useContext(__RouterContext);
+    const localization = useContext(LocalizationContext).localization;
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -57,7 +60,7 @@ const SignUp: React.FunctionComponent = (_) => {
     return (
         <form onSubmit={onSubmit} className="form">
             <div className="form__input">
-                <p>Username</p>
+                <p>{localization.username}</p>
                 <input
                     name="username"
                     onChange={onUsernameChange}
@@ -66,7 +69,7 @@ const SignUp: React.FunctionComponent = (_) => {
                 />
             </div>
             <div className="form__input">
-                <p>Email</p>
+                <p>{localization.email}</p>
                 <input
                     name="email"
                     onChange={onEmailChange}
@@ -75,7 +78,7 @@ const SignUp: React.FunctionComponent = (_) => {
                 />
             </div>
             <div className="form__input">
-                <p>Password</p>
+                <p>{localization.password}</p>
                 <input
                     name="password"
                     onChange={onPasswordChange}
@@ -84,15 +87,19 @@ const SignUp: React.FunctionComponent = (_) => {
                 />
             </div>
             <div className="form__input">
-                <p>Password Confirm</p>
+                <p>{localization.passwordConfirm}</p>
                 <input
                     name="passwordConfirm"
                     onChange={onPasswordConfirmChange}
                     type="password"
                 />
             </div>
-            <button disabled={isInvalid} className="button" type="submit">
-                Sign In
+            <button
+                disabled={isInvalid}
+                className="component__element button"
+                type="submit"
+            >
+                {localization.signUp}
             </button>
 
             <p className="form__error">{error}</p>

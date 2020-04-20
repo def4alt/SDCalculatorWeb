@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/lot/lot.scss";
 import "../../styles/edit/edit.scss";
@@ -17,6 +18,7 @@ const Lot: React.FC<LotProps> = (props) => {
 
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User;
+    const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
         if (!user) return;
@@ -66,7 +68,7 @@ const Lot: React.FC<LotProps> = (props) => {
     return (
         <>
             <div className="lot__view">
-                Lots <span className="lot__view_gray">#{lot}</span>
+                {localization.lots} <span className="lot__view_gray">#{lot}</span>
             </div>
             <div className="edit">
                 {lotList.map((lot, i) => (

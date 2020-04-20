@@ -1,7 +1,14 @@
-import React, { useContext, useEffect, useReducer, Reducer } from "react";
+import React, {
+    useContext,
+    useEffect,
+    useReducer,
+    Reducer,
+    useRef,
+} from "react";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/notes/notes.scss";
 import "../../styles/component/component.scss";
@@ -16,7 +23,7 @@ interface NotesState {
     operatorName?: string;
     foundingDate?: string;
     materialName?: string;
-    materialProducer?: string;
+    materialManufacturer?: string;
     materialLot?: string;
     materialExpDate?: string;
     materialLvl1?: string;
@@ -44,8 +51,11 @@ const Notes: React.FC<NotesProps> = (props) => {
         return { materialLot: String(props.lot) } as NotesState;
     });
 
+    const notesRef = useRef<HTMLFormElement | null>(null);
+
     const firebase = useContext(FirebaseContext) as Firebase;
-    const user = useContext(AuthUserContext) as firebase.User;
+    const user = useContext(AuthUserContext);
+    const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
         if (!user) return;
@@ -63,14 +73,16 @@ const Notes: React.FC<NotesProps> = (props) => {
                 dispatch({ payload: notes });
             });
     });
+    const toggleMenu = (
+        ref: React.RefObject<HTMLElement>,
+        className: string
+    ) => {
+        const menu = ref.current;
 
-    const toggleNotes = () => {
-        const x = document.getElementById("notes__form") as HTMLElement;
-        if (x.className === "notes__form") {
-            x.className += " notes__form_expanded";
-        } else {
-            x.className = "notes__form";
-        }
+        if (!menu) return;
+
+        if (!menu.classList.contains(className)) menu.classList.add(className);
+        else menu.classList.remove(className);
     };
 
     const onSubmit = (event: React.FormEvent) => {
@@ -85,8 +97,6 @@ const Notes: React.FC<NotesProps> = (props) => {
             .collection("lots")
             .doc(String(props.lot));
 
-        console.log(notes);
-
         doc.get().then((snapshot) => {
             doc.set({
                 models: snapshot.data()?.models,
@@ -97,11 +107,14 @@ const Notes: React.FC<NotesProps> = (props) => {
 
     return (
         <div className="notes">
-            <button className="notes__toggle" onClick={toggleNotes}>
+            <button
+                className="notes__toggle button_icon"
+                onClick={() => toggleMenu(notesRef, "notes__form_expanded")}
+            >
                 <GoNote />
             </button>
-            <form className="notes__form" id="notes__form" onSubmit={onSubmit}>
-                <p className="notes__header">Method name</p>
+            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
+                <p className="notes__header">{localization.methodName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.methodName}
@@ -114,7 +127,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     }
                 />
 
-                <p className="notes__header">Operator name</p>
+                <p className="notes__header">{localization.operatorName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.operatorName}
@@ -127,7 +140,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     }
                 />
 
-                <p className="notes__header">Date of founding mesurements</p>
+                <p className="notes__header">{localization.foundingDate}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.foundingDate}
@@ -141,9 +154,9 @@ const Notes: React.FC<NotesProps> = (props) => {
                 />
                 <br />
 
-                <p className="notes__header">Control material</p>
+                <p className="notes__header">{localization.controlMaterial}</p>
                 <div className="notes__level">
-                    <p className="notes__label">Name</p>
+                    <p className="notes__label">{localization.materialName}</p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialName}
@@ -157,21 +170,23 @@ const Notes: React.FC<NotesProps> = (props) => {
                             })
                         }
                     />
-                    <p className="notes__label">Manufacturer</p>
+                    <p className="notes__label">
+                        {localization.materialManufacturer}
+                    </p>
                     <input
                         className="notes__input"
-                        defaultValue={notes.materialProducer}
+                        defaultValue={notes.materialManufacturer}
                         name="name"
                         type="text"
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialProducer: e.currentTarget.value,
+                                    materialManufacturer: e.currentTarget.value,
                                 },
                             })
                         }
                     />
-                    <p className="notes__label">Lot</p>
+                    <p className="notes__label">{localization.materialLot}</p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLot}
@@ -183,7 +198,9 @@ const Notes: React.FC<NotesProps> = (props) => {
                             })
                         }
                     />
-                    <p className="notes__label">Expiration date</p>
+                    <p className="notes__label">
+                        {localization.materialExpDate}
+                    </p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialExpDate}
@@ -197,7 +214,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                             })
                         }
                     />
-                    <p className="notes__label">Level 1</p>
+                    <p className="notes__label">{localization.materialLvl1}</p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLvl1}
@@ -211,7 +228,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                             })
                         }
                     />
-                    <p className="notes__label">Level 2</p>
+                    <p className="notes__label">{localization.materialLvl2}</p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLvl2}
@@ -228,7 +245,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 </div>
 
                 <br />
-                <p className="notes__header">Measurements machine name</p>
+                <p className="notes__header">{localization.machineName}</p>
                 <input
                     className="notes__input"
                     defaultValue={notes.machineName}
@@ -240,8 +257,12 @@ const Notes: React.FC<NotesProps> = (props) => {
                         })
                     }
                 />
-
-                <button className="button notes__submit">Submit</button>
+                <br />
+                <br />
+                <br />
+                <button className="button notes__submit">
+                    {localization.submit}
+                </button>
             </form>
         </div>
     );

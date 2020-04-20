@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import Calculate from "./reader";
 import { StatModel } from "../../types";
@@ -6,6 +6,7 @@ import Lot from "../lot/indes";
 
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/component/component.scss";
 import "../../styles/toggle-button/toggle-button.scss";
@@ -21,6 +22,8 @@ interface CalculationProps {
 // TODO: Add other calculation types
 
 const Calculation: React.FC<CalculationProps> = (props) => {
+    const localization = useContext(LocalizationContext).localization;
+
     const [lot, setLot] = useState<number>(0);
     const [sdMode, setSdMode] = useState<boolean>(true);
     const [files, setFiles] = useState<File[]>([]);
@@ -84,10 +87,10 @@ const Calculation: React.FC<CalculationProps> = (props) => {
 
     const fileSelectText =
         files.length > 1
-            ? files.length + " selected"
+            ? files.length + " " + localization.selected
             : files.length === 1
             ? files[0].name
-            : "Choose files...";
+            : localization.selectFiles + "...";
 
     return (
         <div className="component calculation">
@@ -96,7 +99,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
             </div>
 
             <div className="component__element component__element_centered">
-                <p>Add average</p>
+                <p className="toggle-button__text">{localization.addAverage}</p>
                 <div className="toggle-button">
                     <div className="toggle-button__cover">
                         <div className="toggle-button__button">
@@ -111,11 +114,13 @@ const Calculation: React.FC<CalculationProps> = (props) => {
                         </div>
                     </div>
                 </div>
-                <p>Build chart</p>
+                <p className="toggle-button__text">
+                    {localization.buildCharts}
+                </p>
             </div>
 
             <div className="component__element">
-                <p>Select files:</p>
+                <p>{localization.selectFiles}:</p>
 
                 <label className="file-browser">
                     <input
@@ -124,7 +129,15 @@ const Calculation: React.FC<CalculationProps> = (props) => {
                         multiple={sdMode}
                         onChange={onFilesChange}
                     />
-                    <span className="file-browser__text">{fileSelectText}</span>
+                    <span
+                        className={
+                            "file-browser__text " +
+                            "file-browser__text_" +
+                            localization.getLanguage()
+                        }
+                    >
+                        {fileSelectText}
+                    </span>
                 </label>
             </div>
 
@@ -133,7 +146,9 @@ const Calculation: React.FC<CalculationProps> = (props) => {
                     className="button"
                     onClick={() => calculate(files, sdMode)}
                 >
-                    {sdMode ? "Build charts" : "Add average"}
+                    {sdMode
+                        ? localization.buildCharts
+                        : localization.addAverage}
                 </button>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { withAuthorization, AuthUserContext } from "../../context/session";
 import { User } from "firebase";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/component/component.scss";
 import "../../styles/avatar/avatar.scss";
@@ -8,8 +9,10 @@ import "../../styles/button/button.scss";
 
 // TODO: Add password change
 // TODO: Add email change
+// TODO: Add username change
 const Account: React.FC = (_) => {
     const user = useContext(AuthUserContext) as User;
+    const localization = useContext(LocalizationContext).localization;
 
     const [avatar, setAvatar] = useState<string>(user.photoURL as string);
 
@@ -48,7 +51,7 @@ const Account: React.FC = (_) => {
                         onChange={onAvatarChange}
                     />
                     <span className="file-browser__text file-browser__text_minimal">
-                        Upload image
+                        {localization.uploadImage}
                     </span>
                 </label>
             </div>

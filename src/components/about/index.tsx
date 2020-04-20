@@ -1,15 +1,16 @@
-import React from "react";
-import { useLocalization, localizationType } from "../../context/localization";
+import React, { useContext } from "react";
+import { LocalizationContext } from "../../context/localization";
+
 import "../../styles/component/component.scss";
 
-interface AboutProps {
-    localization: localizationType;
-}
+const About: React.FC = (_) => {
+    const localization = useContext(LocalizationContext).localization;
 
-const About: React.FC<AboutProps> = (_) => (
-    <div className="component component_centered">
-        <p>Made for ChemoView™</p>
-    </div>
-);
+    return (
+        <div className="component component_centered">
+            <p>{localization.madeFor} ChemoView™</p>
+        </div>
+    );
+};
 
-export default useLocalization(About);
+export default About;

@@ -28,7 +28,6 @@
     bottom: -0.075rem;
     z-index: 6;
     display: block;
-    content: "Browse";
     height: 27px;
     padding: 0.5rem 1rem;
     line-height: 1.5;
@@ -36,4 +35,16 @@
     background-color: #eee;
     border: 0.075rem solid #ddd;
     border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.file-browser__text_en::before {
+    content: "Browse";
+}
+
+.file-browser__text_ru::before {
+    content: "Выбрать";
+}
+
+.file-browser__text_uk::before {
+    content: "Вибрати";
 }
