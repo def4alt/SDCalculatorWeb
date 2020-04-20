@@ -1,0 +1,9 @@
+.notes__print-only {
+    display: none;
+}
+
+@media print {
+    .notes__print-only {
+        display: block;
+    }
+}

@@ -21,7 +21,11 @@ const Lot: React.FC<LotProps> = (props) => {
     const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
-        if (!user) return;
+        if (!user) {
+            setLotList([]);
+            setLot(0);
+            return;
+        }
 
         firebase
             .backup(user.uid)
@@ -68,7 +72,8 @@ const Lot: React.FC<LotProps> = (props) => {
     return (
         <>
             <div className="lot__view">
-                {localization.lots} <span className="lot__view_gray">#{lot}</span>
+                {localization.lots}{" "}
+                <span className="lot__view_gray">#{lot}</span>
             </div>
             <div className="edit">
                 {lotList.map((lot, i) => (

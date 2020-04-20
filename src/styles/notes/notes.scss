@@ -5,9 +5,10 @@
 @import "./notes__label.scss";
 @import "./notes__submit.scss";
 @import "./notes__textarea.scss";
-@import "./notes__header.scss";
+@import "./notes__title.scss";
 @import "./notes__level.scss";
 @import "./notes__toggle.scss";
+@import "./notes__print-only.scss";
 
 .notes {
     margin-left: 15px;
@@ -23,7 +24,7 @@
 @media print {
     .notes {
         width: 80vw;
-        height: 100vh;
+        height: 80vh;
         display: block;
     }
 }
