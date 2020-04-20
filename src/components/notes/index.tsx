@@ -138,7 +138,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <input
                     className="notes__input"
                     defaultValue={notes.methodName}
-                    name="name"
+                    name="methodName"
                     type="text"
                     onChange={(e) =>
                         dispatch({
@@ -151,7 +151,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <input
                     className="notes__input"
                     defaultValue={notes.operatorName}
-                    name="name"
+                    name="operatorName"
                     type="text"
                     onChange={(e) =>
                         dispatch({
@@ -164,8 +164,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <input
                     className="notes__input"
                     defaultValue={notes.foundingDate}
-                    name="name"
-                    type="text"
+                    name="foundingDate"
+                    type="date"
                     onChange={(e) =>
                         dispatch({
                             payload: { foundingDate: e.currentTarget.value },
@@ -180,7 +180,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialName}
-                        name="name"
+                        name="materialName"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -196,7 +196,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialManufacturer}
-                        name="name"
+                        name="materialManufacturer"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -210,7 +210,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLot}
-                        name="name"
+                        name="materialLot"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -224,7 +224,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialExpDate}
-                        name="name"
+                        name="materialExpDate"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -238,7 +238,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLvl1}
-                        name="name"
+                        name="materialLvl1"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -252,7 +252,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     <input
                         className="notes__input"
                         defaultValue={notes.materialLvl2}
-                        name="name"
+                        name="materialLvl2"
                         type="text"
                         onChange={(e) =>
                             dispatch({
@@ -269,7 +269,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <input
                     className="notes__input"
                     defaultValue={notes.machineName}
-                    name="name"
+                    name="machineName"
                     type="text"
                     onChange={(e) =>
                         dispatch({
