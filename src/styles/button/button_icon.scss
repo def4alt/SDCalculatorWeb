@@ -1,4 +1,4 @@
-.notes__toggle {
+.button_icon {
     border-radius: 5px;
     border: none;
     color: rgba($black, 0.4);
@@ -7,13 +7,7 @@
     font-size: 46px;
 }
 
-.notes__toggle:hover {
+.button_icon:hover {
     cursor: pointer;
     color: rgba($black, 0.3);
-}
-
-@media print {
-    .notes__toggle {
-        display: none;
-    }
 }

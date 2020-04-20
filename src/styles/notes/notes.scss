@@ -6,9 +6,10 @@
 @import "./notes__submit.scss";
 @import "./notes__toggle.scss";
 @import "./notes__textarea.scss";
+@import "./notes__header.scss";
+@import "./notes__level.scss";
 
 .notes {
-    margin-top: 20px;
     margin-left: 15px;
     width: 30rem;
 }
@@ -16,5 +17,13 @@
 @media screen and (max-width: 960px) {
     .notes {
         width: 90vw;
+    }
+}
+
+@media print {
+    .notes {
+        width: 80vw;
+        height: 100vh;
+        display: block;
     }
 }

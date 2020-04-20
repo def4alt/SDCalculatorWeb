@@ -11,3 +11,11 @@
         flex-direction: column;
     }
 }
+
+@media print {
+    .cards-list {
+        position: absolute;
+        top: 0;
+        margin-top: 100vh;
+    }
+}

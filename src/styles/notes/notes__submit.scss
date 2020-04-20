@@ -5,3 +5,9 @@
     bottom: 10px;
     right: 10px;
 }
+
+@media print {
+    .notes__submit {
+        display: none;
+    }
+}

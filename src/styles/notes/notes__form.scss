@@ -1,10 +1,15 @@
 .notes__form {
+    margin-top: 20px;
     border: 1px solid rgba($black, 0.2);
     border-radius: 5px;
     position: relative;
     display: none;
     width: 30rem;
-    height: 30rem;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .notes__form_expanded {
@@ -14,5 +19,13 @@
 @media all and (max-width: 750px) {
     .notes__form {
         width: 21rem;
+    }
+}
+
+@media print {
+    .notes__form {
+        width: 60vw;
+        height: calc(100vh - 40px);
+        display: block;
     }
 }

@@ -1,8 +1,18 @@
 .card_red {
     margin: 30px auto;
     height: 22rem;
-    border: 2px solid $red;
+    border: 1px solid $red;
     border-radius: 20px;
     background: $white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px $white;
+}
+
+@media print {
+    .card_red {
+        margin-top: 2.5vh;
+        margin-bottom: 2.5vh;
+        height: 28.478vh;
+        background: $white;
+        box-shadow: none;
+    }
 }
