@@ -4,9 +4,10 @@ import * as ROUTES from "../../routes";
 import { withRouter, __RouterContext } from "react-router";
 import Firebase, { FirebaseContext } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
+import { AuthUserContext } from "../../context/session";
+import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/nav/nav.scss";
-import { AuthUserContext } from "../../context/session";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -15,6 +16,7 @@ const Navigation: React.FC = (_) => {
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User | null;
     const router = useContext(__RouterContext);
+    const localization = useContext(LocalizationContext).localization;
 
     const [avatar, setAvatar] = useState<string>("");
 
@@ -23,33 +25,25 @@ const Navigation: React.FC = (_) => {
         setAvatar(user.photoURL as string);
     }, [user, user?.photoURL]);
 
-    const toggleAccountMenu = () => {
-        const accountMenu = accountMenuRef.current;
-
-        if (!accountMenu) return;
-
-        if (accountMenu.className === "nav__account-menu") {
-            accountMenu.className += " nav__account-menu_expanded";
-        } else {
-            accountMenu.className = "nav__account-menu";
-        }
-    };
-    const toggleMenu = () => {
-        const menu = menuRef.current;
+    const toggleMenu = (
+        ref: React.RefObject<HTMLElement>,
+        className: string
+    ) => {
+        const menu = ref.current;
 
         if (!menu) return;
 
-        if (menu.className === "nav__menu") {
-            menu.className += " nav__menu_expanded";
-        } else {
-            menu.className = "nav__menu";
-        }
+        if (!menu.classList.contains(className)) menu.classList.add(className);
+        else menu.classList.remove(className);
     };
 
     return (
         <div>
             <div className="nav">
-                <button className="nav__menu-button" onClick={toggleMenu}>
+                <button
+                    className="nav__menu-button"
+                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
+                >
                     <p></p>
                     <p></p>
                     <p></p>
@@ -64,7 +58,12 @@ const Navigation: React.FC = (_) => {
                     user ? (
                         <button
                             className="nav__avatar"
-                            onClick={toggleAccountMenu}
+                            onClick={() =>
+                                toggleMenu(
+                                    accountMenuRef,
+                                    "nav__account-menu_expanded"
+                                )
+                            }
                         >
                             <img
                                 src={avatar}
@@ -88,37 +87,43 @@ const Navigation: React.FC = (_) => {
                 <button
                     className="nav__link"
                     onClick={() => {
-                        toggleMenu();
+                        toggleMenu(menuRef, "nav__menu_expanded");
                         router.history.push(ROUTES.SETTINGS);
                     }}
                 >
-                    Settings
+                    {localization.preferences}
                 </button>
                 <button
                     className="nav__link"
                     onClick={() => {
-                        toggleMenu();
+                        toggleMenu(menuRef, "nav__menu_expanded");
                         router.history.push(ROUTES.ABOUT);
                     }}
                 >
-                    About
+                    {localization.about}
                 </button>
             </div>
             <div className="nav__account-menu" ref={accountMenuRef}>
                 <button
                     className="nav__link"
                     onClick={() => {
-                        toggleAccountMenu();
+                        toggleMenu(
+                            accountMenuRef,
+                            "nav__account-menu_expanded"
+                        );
                         router.history.push(ROUTES.ACCOUNT);
                     }}
                 >
-                    Preferences
+                    {localization.accountSettings}
                 </button>
                 <button
                     className="nav__link"
-                    onClick={() => firebase.doSignOut() && toggleAccountMenu()}
+                    onClick={() =>
+                        firebase.doSignOut() &&
+                        toggleMenu(accountMenuRef, "nav__account-menu_expanded")
+                    }
                 >
-                    Sign Out
+                    {localization.signOut}
                 </button>
             </div>
         </div>

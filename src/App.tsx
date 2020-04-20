@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import * as ROUTES from "./routes";
 import About from "./components/about";
 import Home from "./components/home";
@@ -13,7 +13,7 @@ import PasswordForget from "./components/password_forget";
 import { withAuthentication } from "./context/session";
 import { withLocalization } from "./context/localization";
 
-const App: React.FC = _ => (
+const App: React.FC = (_) => (
     <div className="root">
         <Navigation />
         <Route exact path={ROUTES.HOME} component={Home} />
