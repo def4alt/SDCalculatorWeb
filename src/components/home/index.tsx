@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useRef, useEffect } from "react";
+import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
 import Loading from "../loading";
 import Notes from "../notes";
@@ -10,6 +10,8 @@ import "../../styles/button/button.scss";
 
 const Calculation = React.lazy(() => import("../calculation"));
 const CardsList = React.lazy(() => import("../cards_list"));
+
+// TODO: Charts removal from printing
 
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
