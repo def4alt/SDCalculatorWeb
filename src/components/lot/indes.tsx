@@ -66,6 +66,7 @@ const Lot: React.FC<LotProps> = (props) => {
     const addLot = (lot: number) => {
         if (isNaN(lot)) return;
         setLotList(lotList.concat(lot));
+        setLot(lot);
     };
 
     let tempLot = "";
