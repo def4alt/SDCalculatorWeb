@@ -9,18 +9,20 @@ const withLocalization = <P extends object>(
 ) => {
     const WithLocalization: React.FC<P & ReactCookieProps> = (props) => {
         const setLocale = (code: string) => {
-            props.cookies && props.cookies.set("lang", code, { path: "/" });
             localization.setLanguage(code);
+            
+            if (!props.cookies) return;
+            props.cookies.set("lang", code, { path: "/" });
         };
 
         useEffect(() => {
-            if (props.cookies) {
-                const lang = props.cookies.get("lang");
+            if (!props.cookies) return;
 
-                if (!lang) return;
+            const lang = props.cookies.get("lang");
 
-                localization.setLanguage(lang);
-            }
+            if (!lang) return;
+
+            localization.setLanguage(lang);
         });
 
         return (

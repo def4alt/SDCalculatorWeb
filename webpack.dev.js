@@ -5,6 +5,7 @@ const webpack = require("webpack");
 module.exports = merge(common, {
     mode: "development",
     devServer: {
+        host: "192.168.88.254",
         historyApiFallback: true,
         hot: true // enable HMR on the server
     },
