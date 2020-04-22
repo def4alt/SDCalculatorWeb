@@ -37,15 +37,15 @@ const Card: React.FC<CardProps> = (props) => {
     );
 
     useEffect(() => {
-        isInView();
         window.addEventListener("scroll", isInView);
+        isInView();
 
         return () => window.removeEventListener("scroll", isInView);
     }, []);
 
     return (
         <div
-            className={hasWarning ? "card_red" : "card"}
+            className={hasWarning ? "card card_red" : "card"}
             ref={cardRef}
             style={{ width: props.width }}
         >

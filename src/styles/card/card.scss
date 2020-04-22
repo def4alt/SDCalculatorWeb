@@ -3,30 +3,35 @@
 @import "./card__chart.scss";
 @import "./card__title.scss";
 @import "./card__chart_hidden.scss";
-@import "./card_red.scss";
 
 .card {
     margin: 30px auto;
     height: 22rem;
-    border: 1px solid $white;
     border-radius: 20px;
     background: $white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px $white;
+}
+
+.card_red {
+    border: 1px solid $red;
 }
 
 @media print {
     .card {
         margin-top: 2.5vh;
         margin-bottom: 2.5vh;
-        height: 32.3vh;
         border: 1px solid rgba($black, 0.2);
         background: $white;
         box-shadow: none;
     }
+
+    .card_red {
+        border: 1px solid $red;
+    }
 }
 
-@media print and (orientation: landscape) {
+@media print {
     .card {
-        height: 47.97vh;
+        height: 45.13vh;
     }
 }
