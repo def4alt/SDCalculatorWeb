@@ -5,7 +5,7 @@ import React, {
     Reducer,
     useRef,
 } from "react";
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
 import { LocalizationContext } from "../../context/localization";
@@ -54,12 +54,12 @@ const Notes: React.FC<NotesProps> = (props) => {
 
     const notesRef = useRef<HTMLFormElement | null>(null);
 
-    const firebase = useContext(FirebaseContext) as Firebase;
+    const firebase = useContext(FirebaseContext);
     const user = useContext(AuthUserContext);
     const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
-        if (!user) return;
+        if (!user || !firebase) return;
 
         firebase
             .backup(user.uid)
@@ -73,7 +73,7 @@ const Notes: React.FC<NotesProps> = (props) => {
 
                 dispatch({ payload: notes });
             });
-    });
+    }, [firebase, props.lot, user]);
     const toggleMenu = (
         ref: React.RefObject<HTMLElement>,
         className: string
@@ -89,44 +89,27 @@ const Notes: React.FC<NotesProps> = (props) => {
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        const uid = firebase.auth.currentUser?.uid;
+        if (!user || !firebase) return;
 
-        if (!uid) return;
-
-        let doc = firebase
-            .backup(uid)
+        firebase
+            .backup(user.uid)
             .collection("lots")
-            .doc(String(props.lot));
-
-        doc.get().then((snapshot) => {
-            doc.set({
-                models: snapshot.data()?.models,
-                notes,
+            .doc(String(props.lot))
+            .get()
+            .then((snapshot) => {
+                firebase
+                    .backup(user.uid)
+                    .collection("lots")
+                    .doc(String(props.lot))
+                    .set({
+                        models: snapshot.data()?.models,
+                        notes,
+                    });
             });
-        });
     };
 
     return (
         <div className="notes">
-            {/*<div className="header notes__print-only">
-                <img
-                    className="header__image"
-                    alt="ohmatdyt logo"
-                    src="https://scontent.fiev12-1.fna.fbcdn.net/v/t31.0-8/p960x960/27164021_1923262394651155_2381188020606320187_o.png?_nc_cat=103&_nc_sid=85a577&_nc_ohc=yOxOuE34ZxgAX8AxDT6&_nc_ht=scontent.fiev12-1.fna&oh=dab891cac1968553724ab997034d9ec5&oe=5EC5698B"
-                />
-                <p className="header__label">
-                    МІНІСТЕРСТВО ОХОРОНИ ЗДОРОВ’Я УКРАЇНИ НАЦІОНАЛЬНА ДИТЯЧА
-                    СПЕЦІАЛІЗОВАНА ЛІКАРНЯ «ОХМАТДИТ»
-                </p>
-                <p className="header__right-top">Ф-ЛМГ-010-01</p>
-                <p className="header__text">Лабораторія медичної генетики</p>
-                <p className="header__text_second">
-                    Відділ діагностики спадкової патології
-                </p>
-                <p className="header__title">
-                    ВНУТРІШНЬОЛАБОРАТОРНИЙ КОНТРОЛЬ ЯКОСТІ
-                </p>
-    </div>*/}
             <button
                 className="notes__toggle button_icon"
                 onClick={() => toggleMenu(notesRef, "notes__form_expanded")}

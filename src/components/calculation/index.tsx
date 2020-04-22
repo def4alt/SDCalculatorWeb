@@ -4,7 +4,7 @@ import Calculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot/indes";
 
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
 
@@ -29,8 +29,8 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     const [files, setFiles] = useState<File[]>([]);
     const [models, setModels] = useState<StatModel[]>([]);
 
-    const firebase = useContext(FirebaseContext) as Firebase;
-    const user = useContext(AuthUserContext) as firebase.User;
+    const firebase = useContext(FirebaseContext);
+    const user = useContext(AuthUserContext);
 
     const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
@@ -46,42 +46,42 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
-        await Calculate(files, models, sdMode).then(async (models) => {
+        await Calculate(files, models, sdMode).then((models) => {
             props.callback(lot, models);
             setModels(models);
 
             if (!user || !firebase) return;
 
-            await firebase
-                .backup(user.uid)
-                .collection("lots")
-                .doc(String(lot))
-                .set({
-                    models: models,
-                    notes: {},
-                });
+            console.log("calculate");
+
+            firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
+                models: models,
+                notes: {},
+            });
         });
     };
 
-    const lotCallback = async (lot: number) => {
+    const lotCallback = (lot: number) => {
         setLot(lot);
 
         if (!user || !firebase) return;
 
-        const doc = firebase
+        console.log("lotCallback");
+
+        firebase
             .backup(user.uid)
             .collection("lots")
-            .doc(String(lot));
-
-        await doc.get().then((snapshot) => {
-            if (snapshot.data()) {
-                props.callback(lot, snapshot.data()?.models);
-                setModels(snapshot.data()?.models);
-            } else {
-                props.callback(lot, []);
-                setModels([]);
-            }
-        });
+            .doc(String(lot))
+            .get()
+            .then((snapshot) => {
+                if (snapshot.data()) {
+                    setModels(snapshot.data()?.models);
+                    props.callback(lot, snapshot.data()?.models);
+                } else {
+                    setModels([]);
+                    props.callback(lot, []);
+                }
+            });
     };
 
     const fileSelectText =

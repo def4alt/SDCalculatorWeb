@@ -2,7 +2,7 @@ import React, { useRef, useContext, useEffect, useState } from "react";
 
 import * as ROUTES from "../../routes";
 import { withRouter, __RouterContext } from "react-router";
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
 import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
@@ -13,8 +13,8 @@ const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    const firebase = useContext(FirebaseContext) as Firebase;
-    const user = useContext(AuthUserContext) as firebase.User | null;
+    const firebase = useContext(FirebaseContext);
+    const user = useContext(AuthUserContext);
     const router = useContext(__RouterContext);
     const localization = useContext(LocalizationContext).localization;
 
@@ -118,10 +118,14 @@ const Navigation: React.FC = (_) => {
                 </button>
                 <button
                     className="nav__link"
-                    onClick={() =>
-                        firebase.doSignOut() &&
-                        toggleMenu(accountMenuRef, "nav__account-menu_expanded")
-                    }
+                    onClick={() => {
+                        if (!firebase) return;
+                        firebase.doSignOut();
+                        toggleMenu(
+                            accountMenuRef,
+                            "nav__account-menu_expanded"
+                        );
+                    }}
                 >
                     {localization.signOut}
                 </button>

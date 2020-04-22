@@ -14,39 +14,18 @@ const CardsList: React.FC<CardsListProps> = (props) => {
     const [width, setWidth] = useState<number>(0);
 
     useEffect(() => {
-        window.addEventListener("resize", resizeHandler);
-        window.addEventListener("beforeprint", () =>
-            setWidth(
-                250 + 100 * props.models[0].Average.length >
-                    document.body.clientWidth - 50 &&
-                    document.documentElement.clientWidth !== 0
-                    ? document.documentElement.clientWidth - 80
-                    : 250 + 100 * props.models[0].Average.length
-            )
-        );
-        resizeHandler();
+        window.addEventListener("resize", a4ResizeHandler);
+        a4ResizeHandler();
 
-        return () => {
-            window.removeEventListener("resize", resizeHandler);
-            window.removeEventListener("beforeprint", () =>
-                setWidth(
-                    250 + 100 * props.models[0].Average.length >
-                        document.body.clientWidth - 50 &&
-                        document.documentElement.clientWidth !== 0
-                        ? document.documentElement.clientWidth - 80
-                        : 250 + 100 * props.models[0].Average.length
-                )
-            );
-        };
+        return () => window.removeEventListener("resize", a4ResizeHandler);
     });
 
-    const resizeHandler = () => {
-        const innerWidth = document.body.offsetWidth;
+    const a4ResizeHandler = () => {
+        const a4Width = 1123;
 
         setWidth(
-            250 + 100 * props.models[0].Average.length > innerWidth - 50 &&
-                innerWidth !== 0
-                ? innerWidth - 80
+            250 + 100 * props.models[0].Average.length > a4Width - 80
+                ? a4Width - 80
                 : 250 + 100 * props.models[0].Average.length
         );
     };

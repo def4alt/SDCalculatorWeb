@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
+import { User } from "firebase";
 
 import "../../styles/lot/lot.scss";
 import "../../styles/edit/edit.scss";
@@ -16,11 +17,21 @@ const Lot: React.FC<LotProps> = (props) => {
     const [lotList, setLotList] = useState<number[]>([]);
     const [isAdding, setIsAdding] = useState<boolean>(false);
 
-    const firebase = useContext(FirebaseContext) as Firebase;
-    const user = useContext(AuthUserContext) as firebase.User;
+    const firebase = useContext(FirebaseContext);
+    const user = useContext(AuthUserContext);
     const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
+        if (!firebase) return;
+
+        const unsubscribe = firebase.auth.onAuthStateChanged(
+            authStateChangeHandler
+        );
+
+        return () => unsubscribe();
+    }, [firebase]);
+
+    const authStateChangeHandler = (user: User | null) => {
         if (!user || !firebase) {
             setLotList([]);
             setLot(0);
@@ -33,10 +44,12 @@ const Lot: React.FC<LotProps> = (props) => {
             .get()
             .then((snapshot) => {
                 setLotList(
-                    snapshot.docs.filter((t) => t.id !== "notes").map(t => Number(t.id))
+                    snapshot.docs
+                        .filter((t) => t.id !== "notes")
+                        .map((t) => Number(t.id))
                 );
             });
-    }, [firebase, user]);
+    };
 
     const removeLot = async (lot: number) => {
         let newList =
@@ -50,7 +63,7 @@ const Lot: React.FC<LotProps> = (props) => {
         else props.callback(newList[newList.length - 1]);
 
         if (!user || !firebase) return;
-
+        
         await firebase
             .backup(user.uid)
             .collection("lots")

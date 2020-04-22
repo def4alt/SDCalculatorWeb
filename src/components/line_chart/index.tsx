@@ -67,7 +67,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             margin={{ left: 90, right: 30, bottom: 50 }}
             className="line-chart"
             width={props.width}
-            height={300}
+            height={250}
         >
             <YAxis
                 tickValues={yValues}
@@ -98,7 +98,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                         fill: "#ffffff",
                     },
                 }}
-                top={270}
+                top={220}
                 tickFormat={(i: number) => model.Warnings[i]}
             />
             <XAxis
@@ -117,7 +117,6 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                     },
                 }}
                 tickLabelAngle={-20}
-                left={30}
             />
 
             {Line(yValues[0], "#e84393", model.Average.length)}
