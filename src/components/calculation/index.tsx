@@ -32,7 +32,6 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     const firebase = useContext(FirebaseContext) as Firebase;
     const user = useContext(AuthUserContext) as firebase.User;
 
-    const onSdModeChange = () => setSdMode(!sdMode);
     const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
 
@@ -51,7 +50,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
             props.callback(lot, models);
             setModels(models);
 
-            if (!user) return;
+            if (!user || !firebase) return;
 
             await firebase
                 .backup(user.uid)
@@ -67,7 +66,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     const lotCallback = async (lot: number) => {
         setLot(lot);
 
-        if (!user) return;
+        if (!user || !firebase) return;
 
         const doc = firebase
             .backup(user.uid)
@@ -107,7 +106,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
                                 type="checkbox"
                                 className="toggle-button__checkbox"
                                 checked={sdMode}
-                                onChange={onSdModeChange}
+                                onChange={() => setSdMode(!sdMode)}
                             />
                             <div className="toggle-button__knobs"></div>
                             <div className="toggle-button__layer"></div>

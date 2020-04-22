@@ -18,9 +18,15 @@
     .card {
         margin-top: 2.5vh;
         margin-bottom: 2.5vh;
-        height: 28.478vh;
+        height: 32.3vh;
         border: 1px solid rgba($black, 0.2);
         background: $white;
         box-shadow: none;
+    }
+}
+
+@media print and (orientation: landscape) {
+    .card {
+        height: 47.97vh;
     }
 }

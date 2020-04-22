@@ -15,13 +15,33 @@ const CardsList: React.FC<CardsListProps> = (props) => {
 
     useEffect(() => {
         window.addEventListener("resize", resizeHandler);
+        window.addEventListener("beforeprint", () =>
+            setWidth(
+                250 + 100 * props.models[0].Average.length >
+                    document.body.clientWidth - 50 &&
+                    document.documentElement.clientWidth !== 0
+                    ? document.documentElement.clientWidth - 80
+                    : 250 + 100 * props.models[0].Average.length
+            )
+        );
         resizeHandler();
 
-        return () => window.removeEventListener("resize", resizeHandler);
+        return () => {
+            window.removeEventListener("resize", resizeHandler);
+            window.removeEventListener("beforeprint", () =>
+                setWidth(
+                    250 + 100 * props.models[0].Average.length >
+                        document.body.clientWidth - 50 &&
+                        document.documentElement.clientWidth !== 0
+                        ? document.documentElement.clientWidth - 80
+                        : 250 + 100 * props.models[0].Average.length
+                )
+            );
+        };
     });
 
     const resizeHandler = () => {
-        const innerWidth = window.innerWidth;
+        const innerWidth = document.body.offsetWidth;
 
         setWidth(
             250 + 100 * props.models[0].Average.length > innerWidth - 50 &&

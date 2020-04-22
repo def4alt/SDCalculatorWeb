@@ -108,7 +108,7 @@ const Notes: React.FC<NotesProps> = (props) => {
 
     return (
         <div className="notes">
-            <div className="header notes__print-only">
+            {/*<div className="header notes__print-only">
                 <img
                     className="header__image"
                     alt="ohmatdyt logo"
@@ -126,7 +126,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 <p className="header__title">
                     ВНУТРІШНЬОЛАБОРАТОРНИЙ КОНТРОЛЬ ЯКОСТІ
                 </p>
-            </div>
+    </div>*/}
             <button
                 className="notes__toggle button_icon"
                 onClick={() => toggleMenu(notesRef, "notes__form_expanded")}

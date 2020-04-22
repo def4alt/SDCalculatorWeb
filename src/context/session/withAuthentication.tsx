@@ -12,7 +12,9 @@ const withAuthentication = <P extends object>(
         const firebase = useContext(FirebaseContext) as Firebase;
 
         useEffect(() => {
-            firebase.auth.onAuthStateChanged(setUser);
+            const unsubscribe = firebase.auth.onAuthStateChanged(setUser);
+
+            return () => unsubscribe();
         }, [firebase.auth]);
 
         return (

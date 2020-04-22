@@ -11,12 +11,12 @@ const withAuthorization = (
         const firebase = useContext(FirebaseContext) as Firebase;
 
         useEffect(() => {
-            let listener: firebase.Unsubscribe = firebase.auth.onAuthStateChanged(
+            const unsubscribe = firebase.auth.onAuthStateChanged(
                 (authUser) =>
                     !condition(authUser) && props.history.push(ROUTES.SIGN_IN)
             );
 
-            return () => listener();
+            return () => unsubscribe();
         });
 
         return (

@@ -39,12 +39,12 @@ const Home: React.FC = (_) => {
                         )}
                         content={() => printRef.current}
                     />
-                    <div ref={printRef}>
-                        <Suspense fallback={<Loading />}>
-                            <Notes lot={lot} />
+                    <Suspense fallback={<Loading />}>
+                        <Notes lot={lot} />
+                        <div ref={printRef}>
                             <CardsList models={models} />
-                        </Suspense>
-                    </div>
+                        </div>
+                    </Suspense>
                 </>
             )}
         </div>

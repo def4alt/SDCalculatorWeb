@@ -21,7 +21,7 @@ const Lot: React.FC<LotProps> = (props) => {
     const localization = useContext(LocalizationContext).localization;
 
     useEffect(() => {
-        if (!user) {
+        if (!user || !firebase) {
             setLotList([]);
             setLot(0);
             return;
@@ -33,9 +33,7 @@ const Lot: React.FC<LotProps> = (props) => {
             .get()
             .then((snapshot) => {
                 setLotList(
-                    snapshot.docs.map((t) => {
-                        if (t.id !== "notes") return Number(t.id);
-                    }) as number[]
+                    snapshot.docs.filter((t) => t.id !== "notes").map(t => Number(t.id))
                 );
             });
     }, [firebase, user]);
@@ -51,7 +49,7 @@ const Lot: React.FC<LotProps> = (props) => {
         if (newList.length === 0) props.callback(0);
         else props.callback(newList[newList.length - 1]);
 
-        if (!user) return;
+        if (!user || !firebase) return;
 
         await firebase
             .backup(user.uid)

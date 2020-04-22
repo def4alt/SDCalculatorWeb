@@ -35,7 +35,8 @@ class Firebase {
         this.auth
             .createUserWithEmailAndPassword(email, password)
             .then((user) => {
-                let index = Math.floor(Math.random() * 104 + 1); // number of files in cdn
+                const cdnFilesCount = 104;
+                const index = Math.floor(Math.random() * cdnFilesCount + 1);
                 user.user?.updateProfile({
                     photoURL: `https://cdn.image4.io/def4alt/f_auto/avatars/${index}.png`,
                 });
