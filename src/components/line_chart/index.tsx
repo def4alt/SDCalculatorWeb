@@ -2,13 +2,7 @@
 
 import React, { useMemo } from "react";
 import { StatModel } from "../../types";
-import {
-    XYPlot,
-    YAxis,
-    XAxis,
-    LineMarkSeries,
-    LineSeries,
-} from "react-vis";
+import { LineMarkSeries, LineSeries, XAxis, XYPlot, YAxis } from "react-vis";
 import moment from "moment";
 
 import "../../styles/line-chart/line-chart.scss";
@@ -31,7 +25,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             model.Average[0],
             model.Average[0] - model.SD,
             model.Average[0] - 2 * model.SD,
-            model.Average[0] - 3 * model.SD,
+            model.Average[0] - 3 * model.SD
         ],
         [model.Average, model.SD]
     );
@@ -40,7 +34,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
         () =>
             [...Array(model.Average.length)].map((_, i) => ({
                 x: i,
-                y: model.Average[i],
+                y: model.Average[i]
             })),
         [model.Average, model.Average.length]
     );
@@ -50,11 +44,11 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             <LineSeries
                 data={[...Array(repeat === 1 ? 2 : repeat)].map((_, i) => ({
                     x: i,
-                    y: value,
+                    y: value
                 }))}
                 style={{
                     strokeLinejoin: "round",
-                    strokeWidth: 2,
+                    strokeWidth: 2
                 }}
                 strokeStyle="dashed"
                 color={color}
@@ -65,12 +59,12 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
     const dateFormat = (index: number) => {
         if (props.width < model.Date.length * 50 - 150)
             if (index == 0 || model.Warnings[index].trim() != "")
-                return moment(model.Date[index]).format("DD/MM/YY").toLocaleString()
+                return moment(model.Date[index]).format("DD/MM/YY").toLocaleString();
             else
-                return ""
+                return "";
         else
-            return moment(model.Date[index]).format("DD/MM/YY").toLocaleString()
-    }
+            return moment(model.Date[index]).format("DD/MM/YY").toLocaleString();
+    };
 
     return (
         <XYPlot
@@ -85,7 +79,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                     display: "inline-flex",
                     fontSize: 12,
                     fontWeight: 100,
-                    text: { fill: "#636e72" },
+                    text: { fill: "#636e72" }
                 }}
                 tickFormat={(v: number, i: number) =>
                     Math.round(v * 100) / 100 + `, ${yLabels[i]}`
@@ -101,12 +95,12 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                     text: {
                         stroke: "none",
                         fill: "#c62828",
-                        fontWeight: 100,
+                        fontWeight: 100
                     },
                     line: {
                         stroke: "none",
-                        fill: "#ffffff",
-                    },
+                        fill: "#ffffff"
+                    }
                 }}
                 top={220}
                 tickFormat={(i: number) => model.Warnings[i]}
@@ -119,12 +113,12 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 }
                 style={{
                     ticks: {
-                        stroke: "none",
+                        stroke: "none"
                     },
                     line: {
                         stroke: "none",
-                        fill: "#ffffff",
-                    },
+                        fill: "#ffffff"
+                    }
                 }}
                 tickLabelAngle={-20}
             />
@@ -140,7 +134,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 data={data}
                 style={{
                     strokeLinejoin: "round",
-                    strokeWidth: 4,
+                    strokeWidth: 4
                 }}
                 color="#d63031"
             />
