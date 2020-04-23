@@ -59,13 +59,8 @@ const Lot: React.FC<LotProps> = (props) => {
 
         setLotList(newList);
 
-        if (newList.length === 0) {
-            props.callback(0);
-            setLot(0);
-        } else {
-            props.callback(newList[newList.length - 1]);
-            setLot(newList[newList.length - 1]);
-        }
+        if (newList.length === 0) selectLot(0);
+        else selectLot(newList[newList.length - 1]);
 
         if (!user || !firebase) return;
 
