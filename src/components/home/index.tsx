@@ -11,8 +11,6 @@ import "../../styles/button/button.scss";
 const Calculation = React.lazy(() => import("../calculation"));
 const CardsList = React.lazy(() => import("../cards_list"));
 
-// TODO: Charts removal from printing
-
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
     const [lot, setLot] = useState<number>(0);

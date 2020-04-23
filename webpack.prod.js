@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require("webpack");
 const common = require("./webpack.common");
 const merge = require("webpack-merge");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
@@ -17,7 +16,6 @@ module.exports = merge(common, {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin(),
         new LodashModuleReplacementPlugin(),
         new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
         new HtmlWebpackPlugin({

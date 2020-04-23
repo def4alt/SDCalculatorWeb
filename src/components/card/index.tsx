@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import { StatModel, SampleType } from "../../types";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { StatModel } from "../../types";
+import { MdAdd, MdClear } from "react-icons/md";
 import LineChart from "../line_chart";
 
 import "../../styles/card/card.scss";
@@ -11,6 +12,8 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = (props) => {
     const [inView, setInView] = useState<boolean>(false);
+    const [hideFromPrint, setHideFromPrint] = useState<boolean>(false);
+
     const cardRef = useRef<HTMLDivElement>(null);
 
     const isInView = () => {
@@ -22,14 +25,15 @@ const Card: React.FC<CardProps> = (props) => {
 
         setInView(
             rect.top >= -300 &&
-                rect.bottom <=
-                    (window.innerHeight + 300 ||
-                        document.documentElement.clientHeight + 300)
+            rect.bottom <=
+            (window.innerHeight + 300 ||
+                document.documentElement.clientHeight + 300)
         );
     };
 
     const hasWarning = useMemo(
-        () => props.model.Warnings.filter((t) => t.trim() !== "").length > 0,
+        () => props.model.Warnings.filter((t) =>
+            t.trim() !== "").length > 0,
         [props.model.Warnings, props.model.Warnings.length]
     );
 
@@ -40,17 +44,35 @@ const Card: React.FC<CardProps> = (props) => {
         return () => window.removeEventListener("scroll", isInView);
     }, []);
 
+    const cardState = useMemo(() => {
+        if (hideFromPrint)
+            return "card card_hidden";
+
+        if (hasWarning)
+            return "card card_red";
+
+        return "card";
+    }, [hideFromPrint, hasWarning]);
+
     return (
         <div
-            className={hasWarning ? "card card_red" : "card"}
+            className={cardState}
             ref={cardRef}
             style={{ width: props.width }}
         >
-            <p className="card__title">
-                {props.model.TestName + " Lvl" + String(props.model.SampleType)}
-            </p>
+            <div className="card__header">
+                <p className="card__title">
+                    {props.model.TestName + " Lvl" +
+                    String(props.model.SampleType)}
+                </p>
+                <button className="card__close" onClick={() =>
+                    setHideFromPrint(!hideFromPrint)}>{
+                    hideFromPrint ?
+                        <MdAdd/> : <MdClear/>
+                }</button>
+            </div>
             <div className={inView ? "card__chart" : "card__chart_hidden"}>
-                <LineChart model={props.model} width={props.width} />
+                <LineChart model={props.model} width={props.width}/>
             </div>
         </div>
     );

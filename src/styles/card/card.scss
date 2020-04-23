@@ -3,8 +3,12 @@
 @import "./card__chart.scss";
 @import "./card__title.scss";
 @import "./card__chart_hidden.scss";
+@import "./card__close";
+@import "./card_hidden";
+@import "./card__header";
 
 .card {
+    position: relative;
     margin: 30px auto;
     height: 22rem;
     border-radius: 20px;
@@ -16,10 +20,15 @@
     border: 1px solid $red;
 }
 
+.card_hidden {
+    border: 2px dashed $yellow;
+}
+
 @media print {
     .card {
         margin-top: 2.5vh;
         margin-bottom: 2.5vh;
+        height: 45.13vh;
         border: 1px solid rgba($black, 0.2);
         background: $white;
         box-shadow: none;
@@ -28,10 +37,8 @@
     .card_red {
         border: 1px solid $red;
     }
-}
 
-@media print {
-    .card {
-        height: 45.13vh;
+    .card_hidden {
+        display: none;
     }
 }
