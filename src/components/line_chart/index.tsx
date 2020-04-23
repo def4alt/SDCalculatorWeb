@@ -62,6 +62,16 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
         );
     };
 
+    const dateFormat = (index: number) => {
+        if (props.width < model.Date.length * 50 - 150)
+            if (index == 0 || model.Warnings[index].trim() != "")
+                return moment(model.Date[index]).format("DD/MM/YY").toLocaleString()
+            else
+                return ""
+        else
+            return moment(model.Date[index]).format("DD/MM/YY").toLocaleString()
+    }
+
     return (
         <XYPlot
             margin={{ left: 90, right: 30, bottom: 50 }}
@@ -105,7 +115,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 hideLine
                 tickValues={[...Array(model.Average.length).keys()]}
                 tickFormat={(i: number) =>
-                    moment(model.Date[i]).format("DD/MM/YY").toLocaleString()
+                    dateFormat(i)
                 }
                 style={{
                     ticks: {
