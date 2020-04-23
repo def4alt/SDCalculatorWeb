@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { StatModel } from "../../types";
+import Loading from "../loading";
 
 import "../../styles/cards-list/cards-list.scss";
-import Loading from "../loading";
 
 const Card = React.lazy(() => import("../card"));
 
@@ -14,13 +14,13 @@ const CardsList: React.FC<CardsListProps> = (props) => {
     const [width, setWidth] = useState<number>(0);
 
     useEffect(() => {
-        window.addEventListener("resize", a4ResizeHandler);
-        a4ResizeHandler();
+        window.addEventListener("resize", resizeHandler);
+        resizeHandler();
 
-        return () => window.removeEventListener("resize", a4ResizeHandler);
+        return () => window.removeEventListener("resize", resizeHandler);
     });
 
-    const a4ResizeHandler = () => {
+    const resizeHandler = () => {
         const a4Width = 1123;
 
         setWidth(

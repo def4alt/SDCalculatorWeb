@@ -52,8 +52,6 @@ const Calculation: React.FC<CalculationProps> = (props) => {
 
             if (!user || !firebase) return;
 
-            console.log("calculate");
-
             firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
                 models: models,
                 notes: {},
@@ -65,8 +63,6 @@ const Calculation: React.FC<CalculationProps> = (props) => {
         setLot(lot);
 
         if (!user || !firebase) return;
-
-        console.log("lotCallback");
 
         firebase
             .backup(user.uid)
