@@ -1,8 +1,9 @@
-/// <reference path="../../images.d.ts"/>
+
 
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import firebase from "firebase";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -56,7 +57,7 @@ class Firebase {
         this.auth.sendPasswordResetEmail(email);
 
     doPasswordUpdate = (password: string) =>
-        this.auth.currentUser && this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser &&  this.auth.currentUser.updatePassword(password);
 
     user = (uid: string) => this.db.collection("users").doc(uid);
 
