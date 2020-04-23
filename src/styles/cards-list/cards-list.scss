@@ -15,6 +15,7 @@
 @media print {
     .cards-list {
         position: absolute;
+        flex-direction: row;
         margin-top: 0;
         top: 0;
     }

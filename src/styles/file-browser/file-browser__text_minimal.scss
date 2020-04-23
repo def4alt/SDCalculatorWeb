@@ -1,16 +1,9 @@
 .file-browser__text_minimal {
-    width: 14rem;
     text-align: center;
     border: none;
+    width: inherit;
+    padding: 0;
     box-shadow: none;
-}
-
-.file-browser {
-    width: 14rem;
-
-    input {
-        width: 14rem;
-    }
 }
 
 .file-browser__text_minimal::before {

@@ -1,6 +1,7 @@
 .toggle-button__text {
     width: 7rem;
-    height: 3rem;
+    display: flex;
     text-align: center;
-    justify-content: center;
+    justify-content: space-between;
+    overflow-wrap: normal;
 }

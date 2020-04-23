@@ -9,9 +9,6 @@ interface CardProps {
     width: number;
 }
 
-const getLevelText = (lvl: SampleType) =>
-    lvl === SampleType.Lvl1 ? "Lvl1" : "Lvl2";
-
 const Card: React.FC<CardProps> = (props) => {
     const [inView, setInView] = useState<boolean>(false);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -50,9 +47,7 @@ const Card: React.FC<CardProps> = (props) => {
             style={{ width: props.width }}
         >
             <p className="card__title">
-                {props.model.TestName +
-                    " " +
-                    getLevelText(props.model.SampleType)}
+                {props.model.TestName + " Lvl" + String(props.model.SampleType)}
             </p>
             <div className={inView ? "card__chart" : "card__chart_hidden"}>
                 <LineChart model={props.model} width={props.width} />

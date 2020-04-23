@@ -5,6 +5,7 @@ import { StatModel, ReadModel, SampleType } from "../../types";
 import GetStatistics from "./statistics";
 
 const types = /(\.xls|\.xlsx)$/i;
+const dateCheck = /\d{2}_\d{2}_\d{2}/i;
 
 export default async function Calculate(
     files: File[],
@@ -12,7 +13,7 @@ export default async function Calculate(
     sdMode: boolean
 ): Promise<StatModel[]> {
     let newModels: StatModel[] = [];
-    const parsedRows: ReadModel[] = [];
+    let parsedRows: ReadModel[] = [];
 
     for (const file of files) {
         if (!file.name.match(types)) continue;
@@ -26,7 +27,7 @@ export default async function Calculate(
 
     const statModels = GetStatistics(parsedRows);
 
-    if (statModels === undefined || statModels.length === 0) return [];
+    if (!statModels || statModels.length === 0) return [];
 
     if (!sdMode) {
         Object.assign<StatModel[], StatModel[]>(newModels, globalStatModels);
@@ -55,37 +56,39 @@ export default async function Calculate(
     return newModels;
 }
 
-const getValueFromCell = (r: number, c: number, sheet: Sheet) =>
+const getValueFromCell = (row: number, column: number, sheet: Sheet) =>
     sheet[
         utils.encode_cell({
-            r: r,
-            c: c,
+            r: row,
+            c: column,
         })
     ];
 
-function Read(file: File): Promise<ReadModel[]> {
-    return new Promise((resolve) => {
+const getSampleType = (value: string) => {
+    switch (value) {
+        case "QC LV I":
+            return SampleType.Lvl1;
+        case "QC LV II":
+            return SampleType.Lvl2;
+
+        default:
+            return SampleType.Null;
+    }
+};
+
+const Read = (file: File) =>
+    new Promise<ReadModel[]>((resolve) => {
         const reader = new FileReader();
         reader.readAsBinaryString(file);
 
         reader.onload = () => {
             let models = [];
 
-            let date = moment(
-                String(file.name)
-                    .replace("Summary Report", "")
-                    .replace("-", "")
-                    .replace(".wiff", "")
-                    .replace(".xls", "")
-                    .replace("_", "/")
-                    .replace("_", "/")
-                    .trim(),
-                "DD/MM/YY"
-            )
-                .toDate()
-                .toUTCString();
+            let date = new Date().toUTCString();
 
-            date = date ? date : new Date().toUTCString();
+            const regexArr = dateCheck.exec(file.name);
+            if (regexArr)
+                date = moment(regexArr[0], "DD_MM_YY").toDate().toUTCString();
 
             const workbook = read(reader.result, {
                 type: "binary",
@@ -96,32 +99,45 @@ function Read(file: File): Promise<ReadModel[]> {
             const columnTitleRow = 2;
 
             const range = utils.decode_range(sheet["!ref"] || "");
-            for (let rowNum = range.s.r + 4; rowNum <= range.e.r; rowNum++) {
-                const sampleTypeCell = getValueFromCell(rowNum, 3, sheet);
+            const startRow = range.s.r;
+            const endRow = range.e.r;
+            const startColumn = range.s.c;
+            const endColumn = range.e.c;
+
+            for (
+                let currentRow = startRow + 4;
+                currentRow <= endRow;
+                currentRow++
+            ) {
+                const sampleTypeCell = getValueFromCell(currentRow, 3, sheet);
 
                 if (!sampleTypeCell) continue;
 
-                const failedTestsCell = getValueFromCell(rowNum, 5, sheet);
+                const sampleType = getSampleType(
+                    String(sampleTypeCell.v.trim()).toUpperCase()
+                );
 
-                const sampleType =
-                    sampleTypeCell.v.trim() === "QC Lv I"
-                        ? SampleType.Lvl1
-                        : sampleTypeCell.v.trim() === "QC LV II"
-                        ? SampleType.Lvl2
-                        : SampleType.Null;
-
+                const failedTestsCell = getValueFromCell(currentRow, 5, sheet);
                 const failedTests = String(failedTestsCell.v).split(",");
 
-                const testResults: { [x: string]: number } = {};
+                let testResults: { [x: string]: number } = {};
 
-                for (let col = range.s.c + 6; col <= range.e.c; col++) {
-                    const testValueCell = getValueFromCell(rowNum, col, sheet);
+                for (
+                    let currentColumn = startColumn + 6;
+                    currentColumn <= endColumn;
+                    currentColumn++
+                ) {
+                    const testValueCell = getValueFromCell(
+                        currentRow,
+                        currentColumn,
+                        sheet
+                    );
                     let testValue = parseFloat(testValueCell.v);
                     if (isNaN(testValue)) testValue = 0;
 
                     const testNameCell = getValueFromCell(
                         columnTitleRow,
-                        col,
+                        currentColumn,
                         sheet
                     );
                     const testName = String(testNameCell.v).trim();
@@ -143,4 +159,3 @@ function Read(file: File): Promise<ReadModel[]> {
             resolve(models);
         };
     });
-}
