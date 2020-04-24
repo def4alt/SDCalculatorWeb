@@ -61,7 +61,7 @@ const getReadModels = async (files: File[]) => {
         if (!file.name.match(types)) return [];
 
         await readSheet(file).then((parsed) =>
-            readModels.concat(parsed)
+            parsed.forEach((model) => readModels.push(model))
         );
     }
 
