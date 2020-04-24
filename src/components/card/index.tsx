@@ -8,6 +8,7 @@ import "../../styles/card/card.scss";
 interface CardProps {
     model: StatModel;
     width: number;
+    showSDCV: boolean;
 }
 
 const Card: React.FC<CardProps> = (props) => {
@@ -54,6 +55,14 @@ const Card: React.FC<CardProps> = (props) => {
         return "card";
     }, [hideFromPrint, hasWarning]);
 
+    const sd = useMemo(() =>
+        Math.floor(props.model.SD * 100) / 100,
+        [props.model.SD]);
+
+    const cv = useMemo(() =>
+        Math.floor((props.model.SD / props.model.Average[0]) * 100 * 100) / 100,
+        [props.model.Average]);
+
     return (
         <div
             className={cardState}
@@ -73,6 +82,9 @@ const Card: React.FC<CardProps> = (props) => {
             </div>
             <div className={inView ? "card__chart" : "card__chart_hidden"}>
                 <LineChart model={props.model} width={props.width}/>
+            </div>
+            <div className={props.showSDCV ? "card__footer" : "card__footer_hidden"}>
+                <p>SD {sd} CV {cv}</p>
             </div>
         </div>
     );
