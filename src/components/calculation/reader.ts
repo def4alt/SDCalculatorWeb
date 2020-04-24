@@ -2,7 +2,7 @@ import { Range, read, Sheet, utils, WorkSheet } from "xlsx";
 import moment from "moment";
 import CheckValues from "./westgard";
 import { ReadModel, SampleType, StatModel } from "../../types";
-import GetStatistics from "./statistics";
+import getStatistics from "./statistics";
 
 const types = /(\.xls|\.xlsx)$/i;
 const dateCheck = /\d{2}_\d{2}_\d{2}/i;
@@ -13,12 +13,11 @@ const Calculate = async (
     sdMode: boolean
 ) => {
     let newStatModels = <StatModel[]>[];
-    const readModels = getReadModels(files);
 
+    const readModels = await getReadModels(files);
     if (readModels.length === 0) return [];
 
-    const statModels = GetStatistics(readModels);
-
+    const statModels = await getStatistics(readModels);
     if (statModels.length === 0) return [];
 
     if (!sdMode)
@@ -56,18 +55,19 @@ const addAverage = (globalStatModels: StatModel[], statModels: StatModel[]) => {
     return newStatModels;
 };
 
-const getReadModels = (files: File[]) => {
+const getReadModels = async (files: File[]) => {
     let readModels = <ReadModel[]>[];
-    files.forEach(async file => {
-        if (!file.name.match(types)) return;
+    for (const file of files) {
+        if (!file.name.match(types)) return [];
 
         await readSheet(file).then((parsed) =>
-            parsed.forEach((model) => readModels.push(model))
+            readModels.concat(parsed)
         );
-    });
+    }
 
     return readModels;
 };
+
 
 const getValueFromCell = (row: number, column: number, sheet: Sheet) =>
     sheet[
@@ -139,15 +139,19 @@ const getResults = (sheet: WorkSheet, range: Range, currentRow: number) => {
 
 const getFailedTests = (sheet: WorkSheet, currentRow: number) => {
     const failedTestsCell = getValueFromCell(currentRow, 5, sheet);
+
+    if (!failedTestsCell) return [];
+
     return String(failedTestsCell.v).split(",");
 };
 
 const getSampleType = (sheet: WorkSheet, currentRow: number) => {
-    const sampleTypeCell = getValueFromCell(currentRow, 3, sheet);
+    const SAMPLE_TYPE_COLUMN = 3;
+    const sampleTypeCell = getValueFromCell(currentRow, SAMPLE_TYPE_COLUMN, sheet);
 
     if (!sampleTypeCell) return SampleType.Null;
 
-    switch (sampleTypeCell.v) {
+    switch (sampleTypeCell.v.toUpperCase()) {
         case "QC LV I":
             return SampleType.Lvl1;
         case "QC LV II":

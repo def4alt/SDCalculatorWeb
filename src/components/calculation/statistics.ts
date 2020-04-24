@@ -1,6 +1,6 @@
 import { SampleType, ReadModel } from "../../types";
 
-const GetStatistics = (models: Array<ReadModel>) => {
+const getStatistics = (models: Array<ReadModel>) => {
     const lvlOneRows = models.filter((t) => t.SampleType === SampleType.Lvl1);
     const lvlTwoRows = models.filter((t) => t.SampleType === SampleType.Lvl2);
 
@@ -86,4 +86,4 @@ const getNonFailedResults = (models: Array<ReadModel>, testName: string) =>
         .filter((t: ReadModel) => !t.FailedTests.includes(testName.trim()))
         .filter((t: ReadModel) => testName in t.TestResults);
 
-export default GetStatistics;
+export default getStatistics;
