@@ -28,7 +28,7 @@ module.exports = {
         }),
         new CheckerPlugin(),
         new ServiceWorkerWebpackPlugin({
-            entry: path.join(__dirname, 'src/serviceWorker.ts'),
+            entry: path.join(__dirname, "src/serviceWorker.ts"),
             filename: 'serviceWorker.ts'
         }),
         new HtmlWebpackPlugin({
