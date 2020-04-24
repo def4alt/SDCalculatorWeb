@@ -7,7 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
 
 module.exports = merge(common, {
     mode: "production",
@@ -28,10 +29,7 @@ module.exports = merge(common, {
                 removeComments: true
             }
         }),
-        new ServiceWorkerWebpackPlugin({
-            entry: path.join(__dirname, "src/serviceWorker.ts"),
-            filename: "serviceWorker.ts"
-        })
+        new WorkboxPlugin.GenerateSW()
     ],
     optimization: {
         minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()]

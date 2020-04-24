@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
+const { CheckerPlugin } = require("awesome-typescript-loader");
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -12,7 +13,7 @@ module.exports = {
             {
                 include: /src/,
                 test: /\.(ts|tsx)$/,
-                use: ["ts-loader"]
+                use: ["babel-loader", "awesome-typescript-loader"]
             },
             {
                 exclude: /node_modules/,
@@ -32,6 +33,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html")
-        })
+        }),
+        new CheckerPlugin()
     ]
 };
