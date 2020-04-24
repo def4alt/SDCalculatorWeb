@@ -10,7 +10,7 @@ module.exports = merge(common, {
     },
     devtool: "cheap-module-eval-source-map",
     plugins: [
-        new webpack.HotModuleReplacementPlugin(), // enable HMR globally
+        new webpack.HotModuleReplacementPlugin(), // enable HMR
     ],
     module: {
         rules: [
@@ -18,10 +18,11 @@ module.exports = merge(common, {
                 test: /\.(s*)css$/,
                 include: /src/,
                 use: ["style-loader", "css-loader", {
-                    loader: 'sass-loader',
+                    loader: "sass-loader",
                     options: {
-                        implementation: require('sass'),
-                    }}]
+                        implementation: require("sass")
+                    }
+                }]
             }
         ]
     }
