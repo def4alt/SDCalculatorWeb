@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
-const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -33,10 +32,6 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html")
-        }),
-        new ServiceWorkerWebpackPlugin({
-            entry: path.join(__dirname, "src/serviceWorker.ts"),
-            filename: "serviceWorker.ts"
         })
     ]
 };
