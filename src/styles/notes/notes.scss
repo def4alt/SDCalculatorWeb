@@ -1,23 +1,25 @@
 @import "../variables.scss";
 
-@import "./notes__form.scss";
-@import "./notes__input.scss";
-@import "./notes__label.scss";
-@import "./notes__submit.scss";
-@import "./notes__textarea.scss";
-@import "./notes__title.scss";
-@import "./notes__level.scss";
-@import "./notes__toggle.scss";
-@import "./notes__print-only.scss";
+@import "notes__form";
+@import "notes__input";
+@import "notes__label";
+@import "notes__submit";
+@import "notes__textarea";
+@import "notes__title";
+@import "notes__level";
+@import "notes__toggle";
+@import "notes__print-only";
+@import "notes__form_elevated";
 
 .notes {
-    margin-left: 15px;
-    width: 30rem;
+    width: 10rem;
 }
 
 @media screen and (max-width: 960px) {
     .notes {
         width: 90vw;
+        position: relative;
+        margin-left: 15px;
     }
 }
 

@@ -1,10 +1,4 @@
-import React, {
-    useContext,
-    useEffect,
-    useReducer,
-    Reducer,
-    useRef,
-} from "react";
+import React, { Reducer, useContext, useEffect, useReducer, useRef } from "react";
 import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
@@ -45,14 +39,13 @@ const reducer: Reducer<NotesState, Action> = (state, action) => {
 };
 
 const Notes: React.FC<NotesProps> = (props) => {
-    const [notes, dispatch] = useReducer<
-        Reducer<NotesState, Action>,
-        NotesState
-    >(reducer, {}, () => {
+    const [notes, dispatch] = useReducer<Reducer<NotesState, Action>,
+        NotesState>(reducer, {}, () => {
         return { materialLot: String(props.lot) } as NotesState;
     });
 
     const notesRef = useRef<HTMLFormElement | null>(null);
+    const floatingNotesRef = useRef<HTMLFormElement | null>(null);
 
     const firebase = useContext(FirebaseContext);
     const user = useContext(AuthUserContext);
@@ -103,7 +96,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     .doc(String(props.lot))
                     .set({
                         models: snapshot.data()?.models,
-                        notes,
+                        notes
                     });
             });
     };
@@ -112,11 +105,15 @@ const Notes: React.FC<NotesProps> = (props) => {
         <div className="notes">
             <button
                 className="notes__toggle button_icon"
-                onClick={() => toggleMenu(notesRef, "notes__form_expanded")}
+                onClick={() => {
+                    toggleMenu(notesRef, "notes__form_expanded");
+                    toggleMenu(floatingNotesRef, "notes__form_expanded");
+                }
+                }
             >
-                <GoNote />
+                <GoNote/>
             </button>
-            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
+            <form className="notes__form notes__form_elevated" ref={floatingNotesRef}>
                 <p className="notes__title">{localization.methodName}</p>
                 <input
                     className="notes__input"
@@ -125,23 +122,11 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="text"
                     onChange={(e) =>
                         dispatch({
-                            payload: { methodName: e.currentTarget.value },
+                            payload: { methodName: e.currentTarget.value }
                         })
                     }
                 />
 
-                <p className="notes__title">{localization.operatorName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.operatorName}
-                    name="operatorName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { operatorName: e.currentTarget.value },
-                        })
-                    }
-                />
 
                 <p className="notes__title">{localization.foundingDate}</p>
                 <input
@@ -151,11 +136,11 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="date"
                     onChange={(e) =>
                         dispatch({
-                            payload: { foundingDate: e.currentTarget.value },
+                            payload: { foundingDate: e.currentTarget.value }
                         })
                     }
                 />
-                <br />
+                <br/>
 
                 <p className="notes__title">{localization.controlMaterial}</p>
                 <div className="notes__level">
@@ -168,8 +153,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialName: e.currentTarget.value,
-                                },
+                                    materialName: e.currentTarget.value
+                                }
                             })
                         }
                     />
@@ -184,8 +169,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialManufacturer: e.currentTarget.value,
-                                },
+                                    materialManufacturer: e.currentTarget.value
+                                }
                             })
                         }
                     />
@@ -197,7 +182,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                         type="text"
                         onChange={(e) =>
                             dispatch({
-                                payload: { materialLot: e.currentTarget.value },
+                                payload: { materialLot: e.currentTarget.value }
                             })
                         }
                     />
@@ -212,8 +197,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialExpDate: e.currentTarget.value,
-                                },
+                                    materialExpDate: e.currentTarget.value
+                                }
                             })
                         }
                     />
@@ -226,8 +211,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialLvl1: e.currentTarget.value,
-                                },
+                                    materialLvl1: e.currentTarget.value
+                                }
                             })
                         }
                     />
@@ -240,14 +225,28 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialLvl2: e.currentTarget.value,
-                                },
+                                    materialLvl2: e.currentTarget.value
+                                }
                             })
                         }
                     />
                 </div>
+            </form>
+            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
 
-                <br />
+                <p className="notes__title">{localization.operatorName}</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.operatorName}
+                    name="operatorName"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { operatorName: e.currentTarget.value }
+                        })
+                    }
+                />
+
                 <p className="notes__title">{localization.machineName}</p>
                 <input
                     className="notes__input"
@@ -256,17 +255,22 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="text"
                     onChange={(e) =>
                         dispatch({
-                            payload: { machineName: e.currentTarget.value },
+                            payload: { machineName: e.currentTarget.value }
                         })
                     }
                 />
-                <br />
-                <br />
-                <br />
+
+
+                <br/>
+
+                <br/>
+                <br/>
+                <br/>
                 <button className="button notes__submit">
                     {localization.submit}
                 </button>
             </form>
+
         </div>
     );
 };

@@ -1,5 +1,4 @@
 .notes__form {
-    margin-top: 20px;
     border: 1px solid rgba($black, 0.2);
     border-radius: 5px;
     position: relative;
@@ -19,8 +18,18 @@
 @media all and (max-width: 750px) {
     .notes__form {
         width: 21rem;
+        border-top: none;
+    }
+
+}
+
+@media screen and (max-width: 1200px) {
+    .notes__form {
+        border-top: none;
+        border-radius: 0 0 5px 5px;
     }
 }
+
 
 @media print {
     .notes__form {
