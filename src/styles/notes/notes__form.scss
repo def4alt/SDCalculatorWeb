@@ -12,7 +12,8 @@
 }
 
 .notes__form_expanded {
-    display: block;
+    display: none;
+    border: none;
 }
 
 @media all and (max-width: 750px) {
