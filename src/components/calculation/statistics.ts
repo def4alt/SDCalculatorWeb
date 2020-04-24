@@ -1,4 +1,4 @@
-import { SampleType, ReadModel } from "../../types";
+import { ReadModel, SampleType, StatModel } from "../../types";
 
 const getStatistics = (models: Array<ReadModel>) => {
     const lvlOneRows = models.filter((t) => t.SampleType === SampleType.Lvl1);
@@ -30,26 +30,30 @@ const getStatistics = (models: Array<ReadModel>) => {
     return statisticsModels;
 };
 
+const getDate = (lvlRow: ReadModel) =>
+    lvlRow ? lvlRow.Date[0] : new Date().toUTCString();
+
+
 const getModel = (
-    lvlRows: Array<ReadModel>,
+    lvlRows: ReadModel[],
     testName: string,
     sampleType: SampleType
 ) => {
     let average = getAverageFor(lvlRows, testName);
     if (isNaN(average)) average = 0;
+
     let standardDeviation = getStandardDeviation(lvlRows, testName);
     if (isNaN(standardDeviation)) standardDeviation = 0;
 
-    let date = new Date().toUTCString();
-    if (lvlRows[0]) date = lvlRows[0].Date[0];
+    const date = getDate(lvlRows[0]);
 
-    return {
+    return <StatModel>{
         Average: [average],
         SD: standardDeviation,
         TestName: testName.trim(),
         SampleType: sampleType,
         Date: [date],
-        Warnings: [""],
+        Warnings: [""]
     };
 };
 

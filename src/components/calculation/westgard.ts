@@ -14,19 +14,19 @@ export default function CheckValues(averageValues: number[], SD: number) {
     return " ";
 }
 
-const isValueExceedsPlus = (value: number, averageValues: number[], SD: number) => {
+const isValueExceedsPlus2SD = (value: number, averageValues: number[], SD: number) => {
     return value > averageValues[0] + 2 * SD;
 };
 
-const isValueExceedsMinus = (value: number, averageValues: number[], SD: number) => {
+const isValueExceedsMinus2SD = (value: number, averageValues: number[], SD: number) => {
     return value < averageValues[0] - 2 * SD;
 };
 
 function Rule22S(index: number, averageValues: number[], SD: number) {
-    return (isValueExceedsPlus(averageValues[index], averageValues, SD) &&
-        isValueExceedsPlus(averageValues[index + 1], averageValues, SD)) ||
-        (isValueExceedsMinus(averageValues[index], averageValues, SD) &&
-            isValueExceedsMinus(averageValues[index + 1], averageValues, SD));
+    return (isValueExceedsPlus2SD(averageValues[index], averageValues, SD) &&
+        isValueExceedsPlus2SD(averageValues[index + 1], averageValues, SD)) ||
+        (isValueExceedsMinus2SD(averageValues[index], averageValues, SD) &&
+            isValueExceedsMinus2SD(averageValues[index + 1], averageValues, SD));
 }
 
 function Rule13S(index: number, averageValues: number[], SD: number) {
@@ -35,10 +35,10 @@ function Rule13S(index: number, averageValues: number[], SD: number) {
 }
 
 function RuleR4S(index: number, averageValues: number[], SD: number) {
-    return (isValueExceedsPlus(averageValues[index], averageValues, SD) &&
-        isValueExceedsMinus(averageValues[index + 1], averageValues, SD)) ||
-        (isValueExceedsMinus(averageValues[index], averageValues, SD) &&
-            isValueExceedsPlus(averageValues[index + 1], averageValues, SD));
+    return (isValueExceedsPlus2SD(averageValues[index], averageValues, SD) &&
+        isValueExceedsMinus2SD(averageValues[index + 1], averageValues, SD)) ||
+        (isValueExceedsMinus2SD(averageValues[index], averageValues, SD) &&
+            isValueExceedsPlus2SD(averageValues[index + 1], averageValues, SD));
 }
 
 function Rule8X(index: number, averageValues: number[]) {

@@ -1,7 +1,8 @@
 const path = require("path");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const Dotenv = require("dotenv-webpack");
+const DotEnv = require("dotenv-webpack");
+const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -22,10 +23,14 @@ module.exports = {
         ]
     },
     plugins: [
-        new Dotenv({
+        new DotEnv({
             path: "./.env"
         }),
         new CheckerPlugin(),
+        new ServiceWorkerWebpackPlugin({
+            entry: path.join(__dirname, 'src/serviceWorker.ts'),
+            filename: 'serviceWorker.ts'
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html")
         })
