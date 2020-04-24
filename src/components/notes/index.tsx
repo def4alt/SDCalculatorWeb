@@ -17,8 +17,7 @@ interface NotesState {
     methodName?: string;
     operatorName?: string;
     foundingDate?: string;
-    materialName?: string;
-    materialManufacturer?: string;
+    materialNameAndManufacturer?: string;
     materialLot?: string;
     materialExpDate?: string;
     materialLvl1?: string;
@@ -128,6 +127,33 @@ const Notes: React.FC<NotesProps> = (props) => {
                 />
 
 
+                <p className="notes__title">{localization.operatorName}</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.operatorName}
+                    name="operatorName"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { operatorName: e.currentTarget.value }
+                        })
+                    }
+                />
+
+                <p className="notes__title">{localization.machineName}</p>
+                <input
+                    className="notes__input"
+                    defaultValue={notes.machineName}
+                    name="machineName"
+                    type="text"
+                    onChange={(e) =>
+                        dispatch({
+                            payload: { machineName: e.currentTarget.value }
+                        })
+                    }
+                />
+
+
                 <p className="notes__title">{localization.foundingDate}</p>
                 <input
                     className="notes__input"
@@ -144,45 +170,17 @@ const Notes: React.FC<NotesProps> = (props) => {
 
                 <p className="notes__title">{localization.controlMaterial}</p>
                 <div className="notes__level">
-                    <p className="notes__label">{localization.materialName}</p>
+                    <p className="notes__label">{localization.materialName} / {localization.materialManufacturer}</p>
                     <input
                         className="notes__input"
-                        defaultValue={notes.materialName}
-                        name="materialName"
+                        defaultValue={notes.materialNameAndManufacturer}
+                        name="materialNameAndManufacturer"
                         type="text"
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialName: e.currentTarget.value
+                                    materialNameAndManufacturer: e.currentTarget.value
                                 }
-                            })
-                        }
-                    />
-                    <p className="notes__label">
-                        {localization.materialManufacturer}
-                    </p>
-                    <input
-                        className="notes__input"
-                        defaultValue={notes.materialManufacturer}
-                        name="materialManufacturer"
-                        type="text"
-                        onChange={(e) =>
-                            dispatch({
-                                payload: {
-                                    materialManufacturer: e.currentTarget.value
-                                }
-                            })
-                        }
-                    />
-                    <p className="notes__label">{localization.materialLot}</p>
-                    <input
-                        className="notes__input"
-                        defaultValue={notes.materialLot}
-                        name="materialLot"
-                        type="text"
-                        onChange={(e) =>
-                            dispatch({
-                                payload: { materialLot: e.currentTarget.value }
                             })
                         }
                     />
@@ -193,7 +191,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                         className="notes__input"
                         defaultValue={notes.materialExpDate}
                         name="materialExpDate"
-                        type="text"
+                        type="date"
                         onChange={(e) =>
                             dispatch({
                                 payload: {
@@ -231,44 +229,15 @@ const Notes: React.FC<NotesProps> = (props) => {
                         }
                     />
                 </div>
-            </form>
-            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
 
-                <p className="notes__title">{localization.operatorName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.operatorName}
-                    name="operatorName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { operatorName: e.currentTarget.value }
-                        })
-                    }
-                />
-
-                <p className="notes__title">{localization.machineName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.machineName}
-                    name="machineName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { machineName: e.currentTarget.value }
-                        })
-                    }
-                />
-
-
-                <br/>
-
-                <br/>
                 <br/>
                 <br/>
                 <button className="button notes__submit">
                     {localization.submit}
                 </button>
+            </form>
+            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
+
             </form>
 
         </div>
