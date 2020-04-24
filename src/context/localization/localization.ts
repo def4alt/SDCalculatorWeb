@@ -35,6 +35,8 @@ export interface localizationTypeUnknown extends LocalizedStringsMethods {
     reset: string;
     username: string;
     passwordConfirm: string;
+    hide: string;
+    show: string;
 }
 
 const localization: localizationTypeUnknown = new LocalizedStrings({
@@ -73,6 +75,8 @@ const localization: localizationTypeUnknown = new LocalizedStrings({
         reset: "Reset",
         username: "Username",
         passwordConfirm: "Confirm password",
+        hide: "Hide",
+        show: "Show"
     },
     ru: {
         accountSettings: "Аккаунт",
@@ -109,6 +113,8 @@ const localization: localizationTypeUnknown = new LocalizedStrings({
         reset: "Восстановить",
         username: "Логин",
         passwordConfirm: "Подтвердите пароль",
+        hide: "Спрятать",
+        show: "Показать"
     },
     uk: {
         accountSettings: "Аккаунт",
@@ -145,6 +151,8 @@ const localization: localizationTypeUnknown = new LocalizedStrings({
         reset: "Скинути",
         username: "Логін",
         passwordConfirm: "Підтвердити пароль",
+        hide: "Сховати",
+        show: "Показати"
     },
 });
 

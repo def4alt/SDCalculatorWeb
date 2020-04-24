@@ -1,19 +1,22 @@
-.cards-list {
+@import "card-list__header";
+
+.card-list {
     display: flex;
     margin-top: 15vh;
     flex-wrap: wrap;
     width: 100%;
+    position: relative;
     justify-content: space-around;
 }
 
 @media all and (max-width: 750px) {
-    .cards-list {
+    .card-list {
         flex-direction: column;
     }
 }
 
 @media print {
-    .cards-list {
+    .card-list {
         position: absolute;
         flex-direction: row;
         margin-top: 0;

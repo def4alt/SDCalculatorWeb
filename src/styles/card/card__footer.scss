@@ -1,0 +1,16 @@
+.card__footer {
+    position: absolute;
+    height: 3rem;
+    bottom: 0;
+    left: 20px;
+    font-size: 14px;
+    color: rgba($black, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 300;
+}
+
+.card__footer_hidden {
+    display: none;
+}

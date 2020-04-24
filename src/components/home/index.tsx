@@ -9,7 +9,7 @@ import "../../styles/component/component.scss";
 import "../../styles/button/button.scss";
 
 const Calculation = React.lazy(() => import("../calculation"));
-const CardsList = React.lazy(() => import("../cards_list"));
+const CardsList = React.lazy(() => import("../card_list"));
 
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
