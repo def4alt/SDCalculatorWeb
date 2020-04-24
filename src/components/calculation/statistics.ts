@@ -12,17 +12,17 @@ const GetStatistics = (models: Array<ReadModel>) => {
 
     const statisticsModels = [];
     for (let i = 0; i < testResultsLength; i++) {
-        const testName = Object.keys(lvlOneRows[0].TestResults)[i];
+        const testTitle = Object.keys(lvlOneRows[0].TestResults)[i];
 
-        if (!testName) continue;
+        if (!testTitle) continue;
 
         if (lvlOneRows) {
-            const modelOne = GetModel(lvlOneRows, testName, SampleType.Lvl1);
+            const modelOne = getModel(lvlOneRows, testTitle, SampleType.Lvl1);
             if (modelOne) statisticsModels.push(modelOne);
         }
 
         if (lvlTwoRows) {
-            const modelTwo = GetModel(lvlTwoRows, testName, SampleType.Lvl2);
+            const modelTwo = getModel(lvlTwoRows, testTitle, SampleType.Lvl2);
             if (modelTwo) statisticsModels.push(modelTwo);
         }
     }
@@ -30,14 +30,14 @@ const GetStatistics = (models: Array<ReadModel>) => {
     return statisticsModels;
 };
 
-const GetModel = (
+const getModel = (
     lvlRows: Array<ReadModel>,
     testName: string,
     sampleType: SampleType
 ) => {
-    let average = GetAverageFor(lvlRows, testName);
+    let average = getAverageFor(lvlRows, testName);
     if (isNaN(average)) average = 0;
-    let standardDeviation = GetStandardDeviation(lvlRows, testName);
+    let standardDeviation = getStandardDeviation(lvlRows, testName);
     if (isNaN(standardDeviation)) standardDeviation = 0;
 
     let date = new Date().toUTCString();
@@ -53,8 +53,8 @@ const GetModel = (
     };
 };
 
-const GetAverageFor = (models: Array<ReadModel>, testName: string) => {
-    const nonFailedResults = GetNonFailedResults(models, testName).map(
+const getAverageFor = (models: Array<ReadModel>, testName: string) => {
+    const nonFailedResults = getNonFailedResults(models, testName).map(
         (t) => t.TestResults[testName]
     );
 
@@ -64,12 +64,12 @@ const GetAverageFor = (models: Array<ReadModel>, testName: string) => {
     );
 };
 
-const GetStandardDeviation = (models: Array<ReadModel>, testName: string) => {
-    const nonFailedResults = GetNonFailedResults(models, testName).map(
+const getStandardDeviation = (models: Array<ReadModel>, testName: string) => {
+    const nonFailedResults = getNonFailedResults(models, testName).map(
         (t) => t.TestResults[testName]
     );
 
-    const average = GetAverageFor(models, testName);
+    const average = getAverageFor(models, testName);
 
     const nonFailedResultsLength = nonFailedResults.length;
     const sqSum = nonFailedResults.reduce(
@@ -81,7 +81,7 @@ const GetStandardDeviation = (models: Array<ReadModel>, testName: string) => {
     return Math.sqrt(sqSum);
 };
 
-const GetNonFailedResults = (models: Array<ReadModel>, testName: string) =>
+const getNonFailedResults = (models: Array<ReadModel>, testName: string) =>
     models
         .filter((t: ReadModel) => !t.FailedTests.includes(testName.trim()))
         .filter((t: ReadModel) => testName in t.TestResults);

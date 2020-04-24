@@ -1,71 +1,153 @@
-import { Sheet, read, utils } from "xlsx";
+import { Range, read, Sheet, utils, WorkSheet } from "xlsx";
 import moment from "moment";
 import CheckValues from "./westgard";
-import { StatModel, ReadModel, SampleType } from "../../types";
+import { ReadModel, SampleType, StatModel } from "../../types";
 import GetStatistics from "./statistics";
 
 const types = /(\.xls|\.xlsx)$/i;
 const dateCheck = /\d{2}_\d{2}_\d{2}/i;
 
-export default async function Calculate(
+const Calculate = async (
     files: File[],
     globalStatModels: StatModel[],
     sdMode: boolean
-): Promise<StatModel[]> {
-    let newModels: StatModel[] = [];
-    let parsedRows: ReadModel[] = [];
+) => {
+    let newStatModels = <StatModel[]>[];
+    const readModels = getReadModels(files);
 
-    for (const file of files) {
-        if (!file.name.match(types)) continue;
+    if (readModels.length === 0) return [];
 
-        await Read(file).then((parsed) =>
-            parsed.forEach((model) => parsedRows.push(model))
+    const statModels = GetStatistics(readModels);
+
+    if (statModels.length === 0) return [];
+
+    if (!sdMode)
+        newStatModels = addAverage(globalStatModels, statModels);
+    else newStatModels = statModels;
+
+    return newStatModels;
+};
+
+const addAverage = (globalStatModels: StatModel[], statModels: StatModel[]) => {
+    let newStatModels = <StatModel[]>[];
+    Object.assign<StatModel[], StatModel[]>(newStatModels, globalStatModels);
+
+    statModels.forEach((model) => {
+        let newModel = newStatModels.filter(
+            (t) =>
+                t.TestName === model.TestName &&
+                t.SampleType === model.SampleType
+        )[0];
+
+        if (!newModel) return;
+
+        newModel.Average.push(model.Average[0]);
+        newModel.Date.push(model.Date[0]);
+
+        const warning = CheckValues(newModel.Average, newModel.SD);
+
+        newModel.Warnings.push(
+            warning !== newModel.Warnings[newModel.Warnings.length - 1]
+                ? warning
+                : " "
         );
-    }
+    });
 
-    if (parsedRows.length === 0) return [];
+    return newStatModels;
+};
 
-    const statModels = GetStatistics(parsedRows);
+const getReadModels = (files: File[]) => {
+    let readModels = <ReadModel[]>[];
+    files.forEach(async file => {
+        if (!file.name.match(types)) return;
 
-    if (!statModels || statModels.length === 0) return [];
+        await readSheet(file).then((parsed) =>
+            parsed.forEach((model) => readModels.push(model))
+        );
+    });
 
-    if (!sdMode) {
-        Object.assign<StatModel[], StatModel[]>(newModels, globalStatModels);
-        statModels.forEach((model) => {
-            let newModel = newModels.filter(
-                (t) =>
-                    t.TestName === model.TestName &&
-                    t.SampleType === model.SampleType
-            )[0];
-
-            if (!newModel) return;
-
-            newModel.Average.push(model.Average[0]);
-            newModel.Date.push(model.Date[0]);
-
-            const warning = CheckValues(newModel.Average, newModel.SD);
-
-            newModel.Warnings.push(
-                warning !== newModel.Warnings[newModel.Warnings.length - 1]
-                    ? warning
-                    : " "
-            );
-        });
-    } else newModels = statModels;
-
-    return newModels;
-}
+    return readModels;
+};
 
 const getValueFromCell = (row: number, column: number, sheet: Sheet) =>
     sheet[
         utils.encode_cell({
             r: row,
-            c: column,
+            c: column
         })
-    ];
+        ];
 
-const getSampleType = (value: string) => {
-    switch (value) {
+const getDate = (fileName: string) => {
+    let date = new Date().toUTCString();
+
+    const regexArr = dateCheck.exec(fileName);
+    if (regexArr)
+        date = moment(regexArr[0], "DD_MM_YY").toDate().toUTCString();
+
+    return date;
+};
+
+const getTestTitle = (sheet: WorkSheet, currentColumn: number) => {
+    const columnTitleRow = 2;
+    const testTitleCell = getValueFromCell(
+        columnTitleRow,
+        currentColumn,
+        sheet
+    );
+    const testTitle = String(testTitleCell.v).trim();
+
+    if (testTitle.includes("/"))
+        return "";
+
+    return testTitle;
+};
+
+const getTestValue = (sheet: WorkSheet, currentRow: number, currentColumn: number) => {
+    const testValueCell = getValueFromCell(
+        currentRow,
+        currentColumn,
+        sheet
+    );
+    let testValue = parseFloat(testValueCell.v);
+    if (isNaN(testValue)) testValue = 0;
+
+    return testValue;
+};
+
+const getResults = (sheet: WorkSheet, range: Range, currentRow: number) => {
+    const VALUE_COLUMN = 6;
+    const startColumn = range.s.c + VALUE_COLUMN;
+    const endColumn = range.e.c;
+    let testResults = <{ [x: string]: number }>{};
+
+    for (
+        let currentColumn = startColumn;
+        currentColumn <= endColumn;
+        currentColumn++
+    ) {
+        const testTitle = getTestTitle(sheet, currentColumn);
+        if (testTitle == "") continue;
+
+        const testValue = getTestValue(sheet, currentRow, currentColumn);
+
+        testResults[testTitle] =
+            Math.round(testValue * 100) / 100;
+    }
+
+    return testResults;
+};
+
+const getFailedTests = (sheet: WorkSheet, currentRow: number) => {
+    const failedTestsCell = getValueFromCell(currentRow, 5, sheet);
+    return String(failedTestsCell.v).split(",");
+};
+
+const getSampleType = (sheet: WorkSheet, currentRow: number) => {
+    const sampleTypeCell = getValueFromCell(currentRow, 3, sheet);
+
+    if (!sampleTypeCell) return SampleType.Null;
+
+    switch (sampleTypeCell.v) {
         case "QC LV I":
             return SampleType.Lvl1;
         case "QC LV II":
@@ -76,86 +158,51 @@ const getSampleType = (value: string) => {
     }
 };
 
-const Read = (file: File) =>
-    new Promise<ReadModel[]>((resolve) => {
+const getModel = (sheet: WorkSheet, currentRow: number, sheetRange: Range, fileName: string) => {
+    let model = <ReadModel>{};
+
+    model.Date = [getDate(fileName)];
+    model.FailedTests = getFailedTests(sheet, currentRow);
+    model.SampleType = getSampleType(sheet, currentRow);
+    model.TestResults = getResults(sheet, sheetRange, currentRow);
+
+    return model;
+};
+
+const getModels = (sheet: WorkSheet, fileName: string) => {
+    const sheetRange = utils.decode_range(sheet["!ref"] || "");
+    const VALUE_ROW = 4;
+    const startRow = sheetRange.s.r + VALUE_ROW;
+    const endRow = sheetRange.e.r;
+
+    let models = <ReadModel[]>[];
+
+    for (
+        let currentRow = startRow;
+        currentRow <= endRow;
+        currentRow++
+    )
+        models.push(getModel(sheet, currentRow, sheetRange, fileName));
+
+    return models;
+};
+
+const readSheet = (file: File) => {
+    return new Promise<ReadModel[]>((resolve) => {
         const reader = new FileReader();
         reader.readAsBinaryString(file);
 
         reader.onload = () => {
-            let models = [];
-
-            let date = new Date().toUTCString();
-
-            const regexArr = dateCheck.exec(file.name);
-            if (regexArr)
-                date = moment(regexArr[0], "DD_MM_YY").toDate().toUTCString();
-
             const workbook = read(reader.result, {
-                type: "binary",
+                type: "binary"
             });
 
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-            const columnTitleRow = 2;
-
-            const range = utils.decode_range(sheet["!ref"] || "");
-            const startRow = range.s.r;
-            const endRow = range.e.r;
-            const startColumn = range.s.c;
-            const endColumn = range.e.c;
-
-            for (
-                let currentRow = startRow + 4;
-                currentRow <= endRow;
-                currentRow++
-            ) {
-                const sampleTypeCell = getValueFromCell(currentRow, 3, sheet);
-
-                if (!sampleTypeCell) continue;
-
-                const sampleType = getSampleType(
-                    String(sampleTypeCell.v.trim()).toUpperCase()
-                );
-
-                const failedTestsCell = getValueFromCell(currentRow, 5, sheet);
-                const failedTests = String(failedTestsCell.v).split(",");
-
-                let testResults: { [x: string]: number } = {};
-
-                for (
-                    let currentColumn = startColumn + 6;
-                    currentColumn <= endColumn;
-                    currentColumn++
-                ) {
-                    const testValueCell = getValueFromCell(
-                        currentRow,
-                        currentColumn,
-                        sheet
-                    );
-                    let testValue = parseFloat(testValueCell.v);
-                    if (isNaN(testValue)) testValue = 0;
-
-                    const testNameCell = getValueFromCell(
-                        columnTitleRow,
-                        currentColumn,
-                        sheet
-                    );
-                    const testName = String(testNameCell.v).trim();
-
-                    if (!testName.includes("/"))
-                        testResults[testName] =
-                            Math.round(testValue * 100) / 100;
-                }
-                const model = {
-                    SampleType: sampleType,
-                    FailedTests: failedTests,
-                    TestResults: testResults,
-                    Date: [date],
-                };
-
-                models.push(model);
-            }
-
-            resolve(models);
+            resolve(getModels(sheet, file.name));
         };
     });
+};
+
+
+export default Calculate;
