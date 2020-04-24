@@ -1,0 +1,32 @@
+
+.notes__form_elevated {
+    top: 25px;
+    width: 15rem;
+    right: 10rem;
+    position: absolute;
+    border: none;
+    display: block;
+}
+
+@media screen and (max-width: 1200px) {
+    .notes__form_elevated {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 30rem;
+        display: none;
+        border: 1px solid rgba($black, 0.2);
+        border-bottom: none;
+        border-radius: 5px 5px 0 0;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .notes__form_elevated {
+        width: 21rem;
+    }
+}
+
+.notes__form_expanded {
+    display: block;
+}
