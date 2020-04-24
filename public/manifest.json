@@ -1,6 +1,9 @@
 {
     "short_name": "SDCalculator",
     "name": "SDCalculator on Web",
+    "icons": {
+
+    },
     "start_url": ".",
     "display": "standalone",
     "theme_color": "#000000",
