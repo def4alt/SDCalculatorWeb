@@ -47,6 +47,7 @@ module.exports = {
         new WebpackPwaManifest({
             short_name: "SDCalculator",
             name: "SDCalculator on Web",
+            inject: true,
             icons: [
                 {
                     src: path.resolve(__dirname, "public", "favicon.ico"),
@@ -54,7 +55,12 @@ module.exports = {
                 },
                 {
                     src: path.resolve(__dirname, "public", "logo192.png"),
-                    sizes: "192x192"
+                    size: "192x192",
+                    ios: true
+                },
+                {
+                    src: path.resolve(__dirname, "public", "logo512.png"),
+                    size: "512x512"
                 }
             ],
             start_url: ".",
