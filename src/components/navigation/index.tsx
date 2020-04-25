@@ -1,7 +1,7 @@
-import React, { useRef, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import * as ROUTES from "../../routes";
-import { withRouter, __RouterContext } from "react-router";
+import { __RouterContext, withRouter } from "react-router";
 import { FirebaseContext } from "../../context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
 import { AuthUserContext } from "../../context/session";
@@ -42,11 +42,12 @@ const Navigation: React.FC = (_) => {
             <div className="nav">
                 <button
                     className="nav__menu-button"
+                    aria-label="Menu toggle"
                     onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
-                    <p></p>
-                    <p></p>
-                    <p></p>
+                    <p/>
+                    <p/>
+                    <p/>
                 </button>
                 <button
                     className="nav__logo"
@@ -74,11 +75,12 @@ const Navigation: React.FC = (_) => {
                     ) : (
                         <button
                             className="nav__sign-in"
+                            aria-label="Sign in"
                             onClick={() => {
                                 router.history.push(ROUTES.SIGN_IN);
                             }}
                         >
-                            <FaSignInAlt />
+                            <FaSignInAlt/>
                         </button>
                     )
                 ) : null}

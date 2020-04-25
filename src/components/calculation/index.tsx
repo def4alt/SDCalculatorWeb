@@ -101,11 +101,12 @@ const Calculation: React.FC<CalculationProps> = (props) => {
                             <input
                                 type="checkbox"
                                 className="toggle-button__checkbox"
+                                aria-label="Mode toggle"
                                 checked={sdMode}
                                 onChange={() => setSdMode(!sdMode)}
                             />
-                            <div className="toggle-button__knobs"></div>
-                            <div className="toggle-button__layer"></div>
+                            <div className="toggle-button__knobs"/>
+                            <div className="toggle-button__layer"/>
                         </div>
                     </div>
                 </div>

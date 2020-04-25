@@ -125,6 +125,7 @@ const Lot: React.FC<LotProps> = (props) => {
                 ) : (
                     <button
                         className="edit__add"
+                        aria-label="Add lot"
                         onClick={() => setIsAdding(true)}
                     >
                         <FiPlus />
