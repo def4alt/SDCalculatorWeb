@@ -2,7 +2,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
 const { CheckerPlugin } = require("awesome-typescript-loader");
-const ManifestPlugin = require("webpack-manifest-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 
 module.exports = {
@@ -43,7 +42,6 @@ module.exports = {
             favicon: path.resolve(__dirname, "public", "favicon.ico")
         }),
         new CheckerPlugin(),
-        new ManifestPlugin(),
         new WebpackPwaManifest({
             short_name: "SDCalculator",
             name: "SDCalculator on Web",
