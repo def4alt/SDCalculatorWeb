@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const ManifestPlugin = require("webpack-manifest-plugin");
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -42,27 +43,24 @@ module.exports = {
             favicon: path.resolve(__dirname, "public", "favicon.ico")
         }),
         new CheckerPlugin(),
-        new ManifestPlugin({
-            seed: {
-                "short_name": "SDCalculator",
-                "name": "SDCalculator on Web",
-                "icons": [
-                    {
-                        "src": "favicon.ico",
-                        "sizes": "64x64 32x32 24x24 16x16",
-                        "type": "image/x-icon"
-                    },
-                    {
-                        "src": "logo192.png",
-                        "type": "image/png",
-                        "sizes": "192x192"
-                    }
-                ],
-                "start_url": ".",
-                "display": "standalone",
-                "theme_color": "#000000",
-                "background_color": "#ffffff"
-            }
+        new ManifestPlugin(),
+        new WebpackPwaManifest({
+            short_name: "SDCalculator",
+            name: "SDCalculator on Web",
+            icons: [
+                {
+                    src: path.resolve(__dirname, "public", "favicon.ico"),
+                    sizes: [64, 32, 24, 16]
+                },
+                {
+                    src: path.resolve(__dirname, "public", "logo192.png"),
+                    sizes: "192x192"
+                }
+            ],
+            start_url: ".",
+            display: "standalone",
+            theme_color: "#000000",
+            background_color: "#ffffff"
         })
     ]
 };
