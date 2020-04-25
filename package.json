@@ -66,6 +66,7 @@
     "webpack-dev-server": "^3.10.3",
     "webpack-manifest-plugin": "^2.2.0",
     "webpack-merge": "^4.2.2",
+    "webpack-pwa-manifest": "^4.2.0",
     "workbox-webpack-plugin": "^5.1.3"
   }
 }
