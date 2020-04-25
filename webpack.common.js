@@ -4,6 +4,7 @@ const DotEnv = require("dotenv-webpack");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
+const RobotsPlugin = require("@tanepiper/robots-webpack-plugin")
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
@@ -43,10 +44,12 @@ module.exports = {
             favicon: path.resolve(__dirname, "public", "favicon.ico")
         }),
         new CheckerPlugin(),
+        new RobotsPlugin(),
         new ManifestPlugin(),
         new WebpackPwaManifest({
             short_name: "SDCalculator",
             name: "SDCalculator on Web",
+            ios: true,
             inject: true,
             icons: [
                 {
@@ -55,7 +58,7 @@ module.exports = {
                 },
                 {
                     src: path.resolve(__dirname, "public", "logo192.png"),
-                    size: "192x192",
+                    sizes: [192, 180],
                     ios: true
                 },
                 {
