@@ -1,21 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import Firebase, { FirebaseContext } from "./context/firebase";
 import { CookiesProvider } from "react-cookie";
-import { BrowserRouter as Router } from "react-router-dom";
+import App from "./app";
 
 import "./index.scss";
 
 ReactDOM.render(
     <React.StrictMode>
-        <FirebaseContext.Provider value={new Firebase()}>
-            <CookiesProvider>
-                <Router>
-                    <App />
-                </Router>
-            </CookiesProvider>
-        </FirebaseContext.Provider>
+        <CookiesProvider>
+            <App />
+        </CookiesProvider>
     </React.StrictMode>,
     document.getElementById("root")
 );

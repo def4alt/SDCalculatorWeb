@@ -1,93 +1,88 @@
-import { ReadModel, SampleType, StatModel } from "../../types";
+import { InvalidArgumentError, ReadModel, SampleType, StatModel } from "../../types";
 
-const getStatistics = (models: Array<ReadModel>) => {
-    const lvlOneRows = models.filter((t) => t.SampleType === SampleType.Lvl1);
-    const lvlTwoRows = models.filter((t) => t.SampleType === SampleType.Lvl2);
-
-    const row = lvlOneRows[0];
+const getStatModels = (models: Array<ReadModel>): StatModel[] => {
+    const validModels = models.filter(t => t.SampleType != SampleType.Null);
+    const row = validModels[0];
 
     if (!row) return [];
 
     const testResultsLength = Object.keys(row.TestResults).length;
 
-    const statisticsModels = [];
+    const statisticsModels: StatModel[] = [];
     for (let i = 0; i < testResultsLength; i++) {
-        const testTitle = Object.keys(lvlOneRows[0].TestResults)[i];
+        const testName = Object.keys(validModels[0].TestResults)[i];
 
-        if (!testTitle) continue;
+        if (!testName) continue;
 
-        if (lvlOneRows) {
-            const modelOne = getModel(lvlOneRows, testTitle, SampleType.Lvl1);
-            if (modelOne) statisticsModels.push(modelOne);
+        try {
+            const model = getModel(validModels, testName, SampleType.Lvl1);
+            statisticsModels.push(model);
         }
+        catch (e){ }
 
-        if (lvlTwoRows) {
-            const modelTwo = getModel(lvlTwoRows, testTitle, SampleType.Lvl2);
-            if (modelTwo) statisticsModels.push(modelTwo);
+        try {
+            const model = getModel(validModels, testName, SampleType.Lvl2);
+            statisticsModels.push(model);
         }
+        catch (e) { }
     }
 
     return statisticsModels;
 };
 
-const getDate = (lvlRow: ReadModel) =>
-    lvlRow ? lvlRow.Date[0] : new Date().toUTCString();
-
-
 const getModel = (
-    lvlRows: ReadModel[],
+    readModels: ReadModel[],
     testName: string,
     sampleType: SampleType
-) => {
-    let average = getAverageFor(lvlRows, testName);
-    if (isNaN(average)) average = 0;
+): StatModel =>  {
+    if (readModels.length === 0)
+        throw new InvalidArgumentError("Read Models length is 0");
 
-    let standardDeviation = getStandardDeviation(lvlRows, testName);
-    if (isNaN(standardDeviation)) standardDeviation = 0;
+    const levelModels = readModels.filter(t => t.SampleType === sampleType);
+    const nonFailedResults = getNonFailedResults(levelModels, testName).map(
+        (t) => t.TestResults[testName]
+    );
 
-    const date = getDate(lvlRows[0]);
+    if (nonFailedResults.length === 0)
+        throw new InvalidArgumentError("Non Failed Results length is 0");
 
     return <StatModel>{
-        Average: [average],
-        SD: standardDeviation,
+        Average: [getAverageFor(nonFailedResults)],
+        SD: getStandardDeviation(nonFailedResults),
         TestName: testName.trim(),
         SampleType: sampleType,
-        Date: [date],
-        Warnings: [""]
+        Date: [levelModels[0].Date[0]],
+        Warnings: [" "]
     };
 };
 
-const getAverageFor = (models: Array<ReadModel>, testName: string) => {
-    const nonFailedResults = getNonFailedResults(models, testName).map(
-        (t) => t.TestResults[testName]
-    );
+const getAverageFor = (numbers: Array<number>): number => {
+    if (numbers.length === 0) return 0;
 
     return (
-        nonFailedResults.reduce((s1, s2) => s1 + s2, 0.0) /
-        nonFailedResults.length
+        numbers.reduce((s1, s2) => s1 + s2, 0.0) /
+        numbers.length
     );
 };
 
-const getStandardDeviation = (models: Array<ReadModel>, testName: string) => {
-    const nonFailedResults = getNonFailedResults(models, testName).map(
-        (t) => t.TestResults[testName]
-    );
+const getStandardDeviation = (numbers: Array<number>): number => {
+    if (numbers.length === 0) return 0;
 
-    const average = getAverageFor(models, testName);
+    const average = getAverageFor(numbers);
 
-    const nonFailedResultsLength = nonFailedResults.length;
-    const sqSum = nonFailedResults.reduce(
+    const sqSum = numbers.reduce(
         (s1, s2) =>
-            s1 + ((s2 - average) * (s2 - average)) / nonFailedResultsLength,
+            s1 + ((s2 - average) * (s2 - average)) / numbers.length,
         0
     );
 
     return Math.sqrt(sqSum);
 };
 
-const getNonFailedResults = (models: Array<ReadModel>, testName: string) =>
+const getNonFailedResults = (models: ReadModel[], testName: string): ReadModel[] =>
     models
         .filter((t: ReadModel) => !t.FailedTests.includes(testName.trim()))
         .filter((t: ReadModel) => testName in t.TestResults);
 
-export default getStatistics;
+export default getStatModels;
+export { getModel, getAverageFor, getStandardDeviation, getNonFailedResults };

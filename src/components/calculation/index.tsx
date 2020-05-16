@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import Calculate from "./reader";
+import readerCalculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot/indes";
 
@@ -46,7 +46,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
-        await Calculate(files, models, sdMode).then((models) => {
+        await readerCalculate(files, models, sdMode).then((models) => {
             props.callback(lot, models);
             setModels(models);
 

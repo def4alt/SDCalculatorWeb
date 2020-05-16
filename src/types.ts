@@ -1,10 +1,12 @@
+import { CellObject } from "xlsx";
+
 export enum SampleType {
     Null = 0,
     Lvl1 = 1,
     Lvl2 = 2
 }
 
-interface Dictionary<T> {
+export interface Dictionary<T> {
     [x: string]: T;
 }
 
@@ -24,7 +26,46 @@ export type StatModel = {
     Warnings: Array<string>;
 };
 
-export type BackupModel = {
-    Lot: string;
-    StatModels: StatModel[];
-};
+export interface VerifiedCellObject extends CellObject {
+    v: string | number | boolean | Date
+}
+
+export class CalculationError implements Error {
+    message: string;
+    name: string;
+
+    constructor(message: string = "", name: string = "") {
+        this.message = message;
+        this.name = name;
+    }
+}
+
+export class InvalidArgumentError implements Error {
+    message: string;
+    name: string;
+
+    constructor(message: string = "", name: string = "") {
+        this.message = message;
+        this.name = name;
+    }
+}
+
+export class XlsxFailedToGetCellError implements Error {
+    message: string;
+    name: string
+
+    constructor(message: string = "", name: string = "") {
+        this.message = message;
+        this.name = name;
+    }
+}
+
+export class FailedToParseError implements Error {
+    message: string;
+    name: string;
+
+    constructor(message: string = "", name: string = "") {
+        this.message = message;
+        this.name = name;
+    }
+}
