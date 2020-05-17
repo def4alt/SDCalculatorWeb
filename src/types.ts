@@ -1,5 +1,3 @@
-import { CellObject } from "xlsx";
-
 export enum SampleType {
     Null = 0,
     Lvl1 = 1,
@@ -25,10 +23,6 @@ export type StatModel = {
     Date: Array<string>;
     Warnings: Array<string>;
 };
-
-export interface VerifiedCellObject extends CellObject {
-    v: string | number | boolean | Date
-}
 
 export class CalculationError implements Error {
     message: string;

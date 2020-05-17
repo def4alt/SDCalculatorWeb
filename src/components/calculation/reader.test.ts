@@ -8,7 +8,7 @@ import {
     getWarning, getModel, getModels
 } from "./reader";
 import { CellObject, Sheet, utils } from "xlsx";
-import { FailedToParseError, SampleType, StatModel, XlsxFailedToGetCellError } from "../../types";
+import { SampleType, StatModel } from "../../types";
 import moment from "moment";
 
 
@@ -21,10 +21,10 @@ const sheet: Sheet = {
 
 test("Get Value From Cell", () => {
     const value = getValueFromCell(0, 0, sheet);
-    expect(value.v).toBe(1);
+    if (value.isOk())
+    expect(value.value).toBe(1);
 
-    expect(() => getValueFromCell(0, 1, sheet))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getValueFromCell(0, 1, sheet).isErr()).toBeTruthy();
 });
 
 test("Get Warning", () => {
@@ -94,24 +94,20 @@ test("Append New Models", () => {
 test("Get Test Value", () => {
     const value = getTestValue(sheet, 0, 0);
 
-    expect(value).toBe(1);
+    if (value.isOk())
+    expect(value.value).toBe(1);
 
-    expect(() => getTestValue(sheet, 1, 0))
-        .toThrowError(FailedToParseError);
+    expect(getTestValue(sheet, 1, 0).isErr()).toBeTruthy();
 
-    expect(() => getTestValue(sheet, 0, 1))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getTestValue(sheet, 0, 1).isErr()).toBeTruthy();
 })
 
 test("Get Test Title", () => {
-    const value1 = getTestTitle(sheet, 1, 0);
-    expect(value1).toBe("string");
+    expect(getTestTitle(sheet, 1, 0)).toBe("string");
 
-    const value2 = getTestTitle(sheet, 2, 0);
-    expect(value2).toBe("");
+    expect(getTestTitle(sheet, 2, 0)).toBe("");
 
-    expect(() => getTestTitle(sheet, 0, 1))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getTestTitle(sheet, 0, 1)).toBe("");
 })
 
 test("Get Results", () => {
@@ -126,12 +122,9 @@ test("Get Results", () => {
 
     expect(result1["Test"]).toBe(2);
 
-    expect(() => getTestResults(sheet1, range1, 4))
-        .toThrowError(XlsxFailedToGetCellError);
-
     const sheet2: Sheet = {};
     const range2 = utils.decode_range(sheet2["!ref"] || "");
-    const result2 = getTestResults(sheet2, range2, 0);
+    const result2 = getTestResults(sheet2, range2, 5);
     expect(result2).toBeTruthy();
 });
 
@@ -145,11 +138,12 @@ test("Get Sample Type", () => {
     const sampleType1 = getSampleType(sheet, 0);
     const sampleType2 = getSampleType(sheet, 1);
 
-    expect(sampleType1).toBe(SampleType.Lvl1);
-    expect(sampleType2).toBe(SampleType.Lvl2);
+    if (sampleType1.isOk())
+    expect(sampleType1.value).toBe(SampleType.Lvl1);
+    if (sampleType2.isOk())
+    expect(sampleType2.value).toBe(SampleType.Lvl2);
 
-    expect(() => getSampleType(sheet, 2))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getSampleType(sheet, 2).isErr).toBeTruthy();
 })
 
 test("Get Failed Tests", () => {
@@ -159,22 +153,18 @@ test("Get Failed Tests", () => {
         "!ref": "A1:F2"
     }
 
-    const failedTest1 = getFailedTests(sheet, 0);
-    const failedTest2 = getFailedTests(sheet, 1);
+    expect(getFailedTests(sheet, 0).length).toBe(3);
+    expect(getFailedTests(sheet, 1).length).toBe(1);
 
-    expect(failedTest1.length).toBe(3);
-    expect(failedTest2.length).toBe(1);
-
-    expect(() => getFailedTests(sheet, 2))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getFailedTests(sheet, 2).length).toBe(0);
 })
 
 test("Get Date", () => {
-    const date1 = getDate("sdgsgsd20_10_12sdfsdfhsdfh");
-    expect(date1).toBe(moment("20_10_12", "DD_MM_YY").toDate().toUTCString());
+    expect(getDate("sdgsgsd20_10_12sdfsdfhsdfh"))
+        .toBe(moment("20_10_12", "DD_MM_YY").toDate().toUTCString());
 
-    const date2 = getDate("12_dfsd09_dss21");
-    expect(date2).toBe(new Date().toUTCString());
+    expect(getDate("12_dfsd09_dss21"))
+        .toBe(new Date().toUTCString());
 })
 
 const modelSheet: Sheet = {
@@ -198,8 +188,7 @@ test("Get Model", () => {
     expect(model.TestResults["Test"]).toBe(1);
     expect(model.TestResults["Failed Test"]).toBe(0);
 
-    expect(() => getModel(modelSheet, 5, range, "File"))
-        .toThrowError(XlsxFailedToGetCellError);
+    expect(getModel(modelSheet, 5, range, "File")).toBeTruthy();
 })
 
 test("Get Models", () => {

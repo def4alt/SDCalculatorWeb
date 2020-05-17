@@ -46,14 +46,15 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
-        await readerCalculate(files, models, sdMode).then((models) => {
-            props.callback(lot, models);
-            setModels(models);
+        await readerCalculate(files, models, sdMode).then((modelsResult) => {
+            if (modelsResult.isErr()) { console.log(`Calculation Error: ${modelsResult.error.message}`); return; }
+            props.callback(lot, modelsResult.value);
+            setModels(modelsResult.value);
 
             if (!user || !firebase) return;
 
             firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
-                models: models,
+                models: modelsResult,
                 notes: {},
             });
         });
