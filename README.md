@@ -1,2 +1,2 @@
-# SDCalculator
-sdcalculus.web.app
+# SDCalculator [link](https://sdcalculus.web.app/)
+
