@@ -53,6 +53,6 @@ jobs:
       env:
         FIREBASE_DEPLOY_TOKEN: ${{ secrets.FIREBASE_DEPLOY_TOKEN }}
       run: |
-        npm install -g firebase-tools
+        npm install firebase-tools
         firebase use --token $FIREBASE_DEPLOY_TOKEN sdcalculus
         firebase deploy --token $FIREBASE_DEPLOY_TOKEN -m "Pipeline $GITHUB_WORKFLOW, build $GITHUB_RUN_ID"
