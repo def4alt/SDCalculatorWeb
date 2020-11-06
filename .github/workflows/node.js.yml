@@ -47,10 +47,20 @@ jobs:
             dist/*
             firebase.json
             .firebaserc
-    - name: Publish
-      env:
-        FIREBASE_DEPLOY_KEY: ${{ secrets.FIREBASE_DEPLOY_KEY }}
-      run: |
-        npm install -g firebase-tools
-        firebase use --token $FIREBASE_DEPLOY_TOKEN sdcalculus
-        firebase deploy --token $FIREBASE_DEPLOY_TOKEN -m "Pipeline $GITHUB_WORKFLOW, build $GITHUB_RUN_ID"
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: build
+      - uses: actions/setup-node@v2.1.2
+      - name: Publish to Firebase
+        shell: bash
+        env:
+          FIREBASE_DEPLOY_KEY: ${{ secrets.FIREBASE_DEPLOY_KEY }}
+        run: |
+          npm install -g firebase-tools
+          firebase use --token $FIREBASE_DEPLOY_TOKEN sdcalculus
+          firebase deploy --token $FIREBASE_DEPLOY_TOKEN -m "Pipeline $GITHUB_WORKFLOW, build $GITHUB_RUN_ID"
