@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+    - uses: actions/setup-node@v2.1.2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install Dependencies
@@ -46,8 +46,14 @@ jobs:
         echo "FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env
         echo "FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env
         npm run build
+    - uses: actions/upload-artifact@v2
+      with:
+          name: build
+          path: |
+            dist/*
+            firebase.json
+            .firebaserc
     - name: Publish
-      shell: bash
       env:
         FIREBASE_DEPLOY_KEY: ${{ secrets.FIREBASE_DEPLOY_KEY }}
       run: |
