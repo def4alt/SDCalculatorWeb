@@ -68,6 +68,7 @@
         "sass": "^1.26.5",
         "sass-loader": "^8.0.2",
         "terser-webpack-plugin": "^2.3.6",
+        "webpack": "^4.44.2",
         "webpack-cli": "^3.3.12",
         "webpack-manifest-plugin": "^2.2.0",
         "webpack-merge": "^4.2.2",
