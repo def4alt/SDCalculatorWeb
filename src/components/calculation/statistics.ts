@@ -1,7 +1,7 @@
 import { InvalidArgumentError, ReadModel, SampleType, StatModel } from "../../types";
 
 const getStatModels = (models: Array<ReadModel>): StatModel[] => {
-    const validModels = models.filter(t => t.SampleType != SampleType.Null);
+    const validModels = models.filter(t => t.SampleType !== SampleType.Null);
     const row = validModels[0];
 
     if (!row) return [];
@@ -46,14 +46,14 @@ const getModel = (
     if (nonFailedResults.length === 0)
         throw new InvalidArgumentError("Non Failed Results length is 0");
 
-    return <StatModel>{
+    return {
         Average: [getAverageFor(nonFailedResults)],
         SD: getStandardDeviation(nonFailedResults),
         TestName: testName.trim(),
         SampleType: sampleType,
         Date: [levelModels[0].Date[0]],
         Warnings: [" "]
-    };
+    } as StatModel;
 };
 
 const getAverageFor = (numbers: Array<number>): number => {

@@ -30,7 +30,7 @@ class Firebase {
         this.db = app.firestore();
     }
 
-    doCreateUserWithEmailAndPassword = (email: string, password: string) =>
+    createUserWithEmailAndPassword = (email: string, password: string) =>
         this.auth
             .createUserWithEmailAndPassword(email, password)
             .then((user) => {
@@ -43,18 +43,18 @@ class Firebase {
                 return user;
             });
 
-    doSignInWithEmailAndPassword = (email: string, password: string) =>
+    signInWithEmailAndPassword = (email: string, password: string) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignInWithGoogle = () => this.auth.signInWithPopup(this.glProvider);
-    doSignInWithFacebook = () => this.auth.signInWithPopup(this.fbProvider);
+    signInWithGoogle = () => this.auth.signInWithPopup(this.glProvider);
+    signInWithFacebook = () => this.auth.signInWithPopup(this.fbProvider);
 
-    doSignOut = () => this.auth.signOut();
+    signOut = () => this.auth.signOut();
 
-    doPasswordReset = (email: string) =>
+    resetPassword = (email: string) =>
         this.auth.sendPasswordResetEmail(email);
 
-    doPasswordUpdate = (password: string) =>
+    updatePassword = (password: string) =>
         this.auth.currentUser &&  this.auth.currentUser.updatePassword(password);
 
     user = (uid: string) => this.db.collection("users").doc(uid);

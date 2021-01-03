@@ -25,7 +25,7 @@ export const getValueFromCell = (row: number, column: number, sheet: Sheet):
 
     const value = sheet[cellAddress];
 
-    if(!value || value.v == undefined)
+    if(!value || value.v === undefined)
         return err(new XlsxFailedToGetCellError(`Failed to get ${cellAddress} cell`,
             "getValueFromCell, reader.ts"));
 
@@ -43,7 +43,7 @@ const calculate = async (
             "readModels array is empty",
             "calculate, reader.ts"));
 
-    const statModels = await getStatModels(readModels);
+    const statModels = getStatModels(readModels);
     if (statModels.length === 0)
         return err(new CalculationError(
             "statModels array is empty",
@@ -54,7 +54,7 @@ const calculate = async (
 };
 
 export const getReadModels = async (files: File[]) => {
-    let readModels = <ReadModel[]>[];
+    let readModels: ReadModel[] = [];
 
     for (const file of files) {
         if (!file.name.match(types)) continue;
@@ -102,7 +102,7 @@ export const getModels = (sheet: WorkSheet, fileName: string) => {
 
 export const getModel = (sheet: Sheet, row: number, sheetRange: Range,
                          fileName: string) => {
-    let model = <ReadModel>{};
+    let model = {} as ReadModel;
 
     model.Date = [getDate(fileName)];
     model.FailedTests = getFailedTests(sheet, row);
@@ -158,7 +158,7 @@ export const getTestResults = (sheet: WorkSheet, range: Range, row: number) => {
     const VALUE_COLUMN = 6;
     const startColumn = range.s.c + VALUE_COLUMN;
     const endColumn = range.e.c;
-    let testResults = <Dictionary<number>>{};
+    let testResults = {} as Dictionary<number>;
 
     for (
         let currentColumn = startColumn;
@@ -167,7 +167,7 @@ export const getTestResults = (sheet: WorkSheet, range: Range, row: number) => {
     ) {
         const TITLE_ROW = 2;
         const testTitle = getTestTitle(sheet, TITLE_ROW, currentColumn);
-        if (testTitle == "") continue;
+        if (testTitle === "") continue;
 
         const testValueResult = getTestValue(sheet, row, currentColumn);
         if (testValueResult.isErr()) continue;

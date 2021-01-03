@@ -17,7 +17,7 @@ const PasswordForget: React.FC = (_) => {
         event.preventDefault();
 
         firebase
-            .doPasswordReset(email)
+            .resetPassword(email)
             .then(() => {
                 setEmail("");
                 setError("");

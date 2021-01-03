@@ -18,5 +18,9 @@
 @media print {
     .notes__input {
         width: calc(100% - 20px);
+        border: none;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
     }
 }

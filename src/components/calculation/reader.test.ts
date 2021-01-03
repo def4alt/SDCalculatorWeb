@@ -13,9 +13,9 @@ import moment from "moment";
 
 
 const sheet: Sheet = {
-    ["A1"]: <CellObject>{ v: 1 },
-    ["A2"]: <CellObject>{ v: "string " },
-    ["A3"]: <CellObject>{ v: "string/" },
+    "A1": { v: 1 } as CellObject,
+    "A2": { v: "string " } as CellObject,
+    "A3": { v: "string/" } as CellObject,
     '!ref': "A1:B3",
 }
 
@@ -28,11 +28,11 @@ test("Get Value From Cell", () => {
 });
 
 test("Get Warning", () => {
-    let model = <StatModel>{
+    let model = {
         Average: [0, 0],
         SD: 1,
         Warnings: [" "]
-    }
+    } as StatModel
 
     let warning = getWarning(model);
     expect(warning).toBe(" ");
@@ -47,18 +47,18 @@ test("Get Warning", () => {
 });
 
 test("Append Statistics Model", () => {
-    const model = <StatModel>{
+    const model = {
         Average: [0],
         Date: [""],
         SD: 5,
         Warnings: [" "]
-    }
-    const model2 = <StatModel>{
+    } as StatModel;
+    const model2 = {
         Average: [16],
         Date: [""],
         SD: 2,
         Warnings: [" "]
-    }
+    } as StatModel;
     const result = appendStatModel(model, model2);
 
     expect(result.Average.length).toBe(2);
@@ -67,22 +67,22 @@ test("Append Statistics Model", () => {
 })
 
 test("Append New Models", () => {
-    const model1 = <StatModel>{
+    const model1 = {
         Average: [0],
         TestName: "Test",
         SD: 1,
         Warnings: [" "],
         Date: [""],
         SampleType: SampleType.Lvl1
-    }
-    const model2 = <StatModel>{
+    } as StatModel;
+    const model2 = {
         Average: [4],
         TestName: "Test",
         SD: 4,
         Warnings: [" "],
         Date: [" "],
         SampleType: SampleType.Lvl1
-    }
+    } as StatModel;
 
     const models = appendNewModels([model1], [model2]);
 
@@ -112,8 +112,8 @@ test("Get Test Title", () => {
 
 test("Get Results", () => {
     const sheet1: Sheet = {
-        ["G3"]: <CellObject>{ v:"Test" },
-        ["G4"]: <CellObject>{ v: 2 },
+        "G3": { v:"Test" } as CellObject,
+        "G4": { v: 2 } as CellObject,
         "!ref": "A1:G4",
     }
 
@@ -130,8 +130,8 @@ test("Get Results", () => {
 
 test("Get Sample Type", () => {
     const sheet: Sheet = {
-        ["D1"]: <CellObject>{ v: "QC LV I" },
-        ["D2"]: <CellObject>{ v: "qC lV Ii"},
+        "D1": { v: "QC LV I" } as CellObject,
+        "D2": { v: "qC lV Ii"} as CellObject,
         "!ref": "A1:D2"
     }
 
@@ -148,8 +148,8 @@ test("Get Sample Type", () => {
 
 test("Get Failed Tests", () => {
     const sheet: Sheet = {
-        ["F1"]: <CellObject>{ v: "Test,Test2,Test3" },
-        ["F2"]: <CellObject>{ v: "" },
+        "F1": { v: "Test,Test2,Test3" } as CellObject,
+        "F2": { v: "" } as CellObject,
         "!ref": "A1:F2"
     }
 
@@ -168,12 +168,12 @@ test("Get Date", () => {
 })
 
 const modelSheet: Sheet = {
-    ["F5"]: <CellObject>{ v: "Failed Test" },
-    ["G3"]: <CellObject>{ v: "Test" },
-    ["H3"]: <CellObject>{ v: "Failed Test" },
-    ["G5"]: <CellObject>{ v: 1 },
-    ["H5"]: <CellObject>{ v: 0 },
-    ["D5"]: <CellObject>{ v: "QC lV II" },
+    "F5": { v: "Failed Test" } as CellObject,
+    "G3": { v: "Test" } as CellObject,
+    "H3": { v: "Failed Test" } as CellObject,
+    "G5": { v: 1 } as CellObject,
+    "H5": { v: 0 } as CellObject,
+    "D5": { v: "QC lV II" } as CellObject,
     "!ref": "A1:H5"
 }
 
