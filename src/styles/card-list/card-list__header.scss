@@ -4,3 +4,9 @@
     justify-content: space-around;
     height: 5rem;
 }
+
+@media print {
+    .card-list__header {
+        display: none;
+    }
+}

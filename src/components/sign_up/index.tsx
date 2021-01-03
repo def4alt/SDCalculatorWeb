@@ -23,7 +23,7 @@ const SignUp: React.FunctionComponent = (_) => {
         event.preventDefault();
 
         firebase
-            .doCreateUserWithEmailAndPassword(email, password)
+            .createUserWithEmailAndPassword(email, password)
             .then((authUser) => {
                 return (
                     authUser.user &&

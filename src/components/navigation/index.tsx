@@ -122,7 +122,7 @@ const Navigation: React.FC = (_) => {
                     className="nav__link"
                     onClick={() => {
                         if (!firebase) return;
-                        firebase.doSignOut();
+                        firebase.signOut();
                         toggleMenu(
                             accountMenuRef,
                             "nav__account-menu_expanded"

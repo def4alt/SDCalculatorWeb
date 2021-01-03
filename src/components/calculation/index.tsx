@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import Calculate from "./reader";
+import readerCalculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot/indes";
 
@@ -21,7 +21,7 @@ interface CalculationProps {
 
 // TODO: Add other calculation types
 
-const Calculation: React.FC<CalculationProps> = (props) => {
+const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     const localization = useContext(LocalizationContext).localization;
 
     const [lot, setLot] = useState<number>(0);
@@ -46,14 +46,15 @@ const Calculation: React.FC<CalculationProps> = (props) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
-        await Calculate(files, models, sdMode).then((models) => {
-            props.callback(lot, models);
-            setModels(models);
+        await readerCalculate(files, models, sdMode).then((modelsResult) => {
+            if (modelsResult.isErr()) { console.log(`Calculation Error: ${modelsResult.error.message}`); return; }
+            props.callback(lot, modelsResult.value);
+            setModels(modelsResult.value);
 
             if (!user || !firebase) return;
 
             firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
-                models: models,
+                models: modelsResult,
                 notes: {},
             });
         });
@@ -69,7 +70,7 @@ const Calculation: React.FC<CalculationProps> = (props) => {
             .collection("lots")
             .doc(String(lot))
             .get()
-            .then((snapshot) => {
+            .then((snapshot: any) => {
                 if (snapshot.data()) {
                     setModels(snapshot.data()?.models);
                     props.callback(lot, snapshot.data()?.models);

@@ -21,19 +21,19 @@ const SignIn: React.FunctionComponent = (_) => {
 
     const signInWithGoogle = () => {
         firebase
-            .doSignInWithGoogle()
+            .signInWithGoogle()
             .then(() => router.history.push(ROUTES.HOME));
     };
     const signInWithFacebook = () => {
         firebase
-            .doSignInWithFacebook()
+            .signInWithFacebook()
             .then(() => router.history.push(ROUTES.HOME));
     };
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         firebase
-            .doSignInWithEmailAndPassword(email, password)
+            .signInWithEmailAndPassword(email, password)
             .then(() => {
                 router.history.push(ROUTES.HOME);
             })

@@ -38,8 +38,8 @@ const Home: React.FC = (_) => {
                         content={() => printRef.current}
                     />
                     <Suspense fallback={<Loading />}>
-                        <Notes lot={lot} />
                         <div ref={printRef}>
+                            <Notes lot={lot} />
                             <CardsList models={models} />
                         </div>
                     </Suspense>
