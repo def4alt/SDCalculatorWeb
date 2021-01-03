@@ -19,6 +19,8 @@ class Firebase {
     glProvider: firebase.auth.AuthProvider;
 
     constructor() {
+        app.initializeApp(firebaseConfig);
+
         this.auth = app.auth();
 
         this.fbProvider = new app.auth.FacebookAuthProvider();
