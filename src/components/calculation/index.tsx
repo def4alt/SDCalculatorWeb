@@ -90,7 +90,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
     return (
         <div className="component calculation">
-            <div className="component__element">
+            <div>
                 <Lot callback={lotCallback} />
             </div>
 
@@ -140,7 +140,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
             <div className="component__element">
                 <button
-                    className="button"
+                    className={"button " + (sdMode ? "" : "button__green")}
                     onClick={() => calculate(files, sdMode)}
                 >
                     {sdMode

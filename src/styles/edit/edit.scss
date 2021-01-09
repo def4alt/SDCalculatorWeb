@@ -21,3 +21,11 @@
 
     flex-direction: column;
 }
+
+@media all and (min-width: 1360px) {
+    .edit {
+        position: absolute;
+        top: calc(50vh - 9.5rem);
+        left: calc(50vw - 36rem);
+    }
+}

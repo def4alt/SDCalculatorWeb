@@ -2,6 +2,14 @@
 
 .calculation {
     margin-left: calc(50vw - 10rem);
-    margin-top: 15vh;
+    margin-top: calc(50vh - 15rem);
     display: block;
+}
+
+@media all and (max-width: 1360px) {
+    .calculation {
+        margin-left: calc(50vw - 10rem);
+        margin-top: 15vh;
+        display: block;
+    }
 }

@@ -4,3 +4,11 @@
     width: 9rem;
     margin-left: 1rem;
 }
+
+@media all and (min-width: 1360px) {
+    .lot__view {
+        position: absolute;
+        top: calc(50vh - 11rem);
+        left: calc(50vw - 36rem);
+    }
+}
