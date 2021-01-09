@@ -6,7 +6,7 @@
     top: 4vw;
     font-size: 60px;
     line-height: 65px;
-    background-color: $white;
+    background-color: transparent;
     border: none;
     font-weight: 600;
     color: $blue;
@@ -17,7 +17,7 @@
     outline: none;
 }
 
-@media all and (max-width: 1360px) {
+@media all and (max-width: 1300px) {
     .nav__logo {
         position: absolute;
         padding: 0;
@@ -26,7 +26,7 @@
         top: 5vw;
         font-size: 28px;
         line-height: 65px;
-        background-color: $white;
+        background-color: transparent;
         border: none;
         font-weight: 600;
         color: $blue;
