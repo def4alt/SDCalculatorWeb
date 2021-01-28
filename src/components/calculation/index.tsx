@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 
 import readerCalculate from "./reader";
 import { StatModel } from "../../types";
-import Lot from "../lot/indes";
+import Lot from "../lot";
 
 import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
@@ -46,6 +46,8 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
+ 
+
         await readerCalculate(files, models, sdMode).then((modelsResult) => {
             if (modelsResult.isErr()) { console.log(`Calculation Error: ${modelsResult.error.message}`); return; }
             props.callback(lot, modelsResult.value);
@@ -54,9 +56,9 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
             if (!user || !firebase) return;
 
             firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
-                models: modelsResult,
+                models: modelsResult.value,
                 notes: {},
-            });
+            } as firebase.firestore.DocumentData);
         });
     };
 

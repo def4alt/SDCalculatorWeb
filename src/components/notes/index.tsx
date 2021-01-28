@@ -83,6 +83,7 @@ const Notes: React.FC<NotesProps> = (props) => {
 
         if (!user || !firebase) return;
 
+
         firebase
             .backup(user.uid)
             .collection("lots")
