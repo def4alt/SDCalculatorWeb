@@ -113,7 +113,7 @@ const Notes: React.FC<NotesProps> = (props) => {
             >
                 <GoNote/>
             </button>
-            <form className="notes__form notes__form_elevated" ref={floatingNotesRef}>
+            <form className="notes__form notes__form_elevated" ref={floatingNotesRef} onSubmit={onSubmit}>
                 <p className="notes__title">{localization.methodName}</p>
                 <input
                     className="notes__input"
