@@ -29,7 +29,7 @@ const Lot: React.FC<LotProps> = (props) => {
         );
 
         return () => unsubscribe();
-    }, [firebase]);
+    }, [firebase, firebase?.user]);
 
     const authStateChangeHandler = (user: firebase.User | null) => {
         if (!user || !firebase) {
@@ -77,7 +77,7 @@ const Lot: React.FC<LotProps> = (props) => {
     const addLot = (lot: number) => {
         if (isNaN(lot)) return;
         setLotList(lotList.concat(lot));
-        setLot(lot);
+        selectLot(lot);
     };
 
     let tempLot = "";

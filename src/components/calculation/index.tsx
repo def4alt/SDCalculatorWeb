@@ -49,7 +49,9 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     const calculate = async (files: File[], sdMode: boolean) => {
         await readerCalculate(files, models, sdMode).then((modelsResult) => {
             if (modelsResult.isErr()) {
-                console.log(`Calculation Error: ${modelsResult.error.message}`);
+                console.error(
+                    `Calculation Error: ${modelsResult.error.message}`
+                );
                 return;
             }
             props.callback(lot, modelsResult.value);
