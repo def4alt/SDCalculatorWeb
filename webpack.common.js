@@ -6,7 +6,7 @@ const { CheckerPlugin } = require("awesome-typescript-loader");
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
     resolve: {
-        extensions: [".ts", ".tsx", ".json", ".js", ".jsx"]
+        extensions: [".ts", ".tsx", ".json", ".js", ".jsx"],
     },
     module: {
         rules: [
@@ -14,28 +14,34 @@ module.exports = {
                 include: /src/,
                 test: /\.(ts|tsx)$/,
                 exclude: /\.test$/,
-                use: ["babel-loader", "awesome-typescript-loader"]
+                use: ["babel-loader", "awesome-typescript-loader"],
             },
             {
                 exclude: /node_modules/,
                 test: /\.(jpeg|png|svg)$/i,
-                loader: "file-loader"
+                loader: "file-loader",
             },
             {
                 exclude: /node_modules/,
                 test: /\.html$/i,
-                loader: "html-loader"
-            }
-        ]
+                loader: "html-loader",
+            },
+        ],
     },
     plugins: [
         new DotEnv({
-            path: "./.env"
+            path: "./.env",
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "public", "index.html"),
-            favicon: path.resolve(__dirname, "public", "favicon.ico")
+            favicon: path.resolve(__dirname, "public", "favicon.ico"),
+            minify: {
+                removeAttributeQuotes: true,
+                collapseWhitespace: true,
+                removeComments: true,
+            },
+            inject: true,
         }),
-        new CheckerPlugin()
-    ]
+        new CheckerPlugin(),
+    ],
 };
