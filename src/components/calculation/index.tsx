@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import readerCalculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "../lot";
+import firebase from "firebase";
 
 import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
@@ -46,19 +47,24 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     };
 
     const calculate = async (files: File[], sdMode: boolean) => {
- 
-
         await readerCalculate(files, models, sdMode).then((modelsResult) => {
-            if (modelsResult.isErr()) { console.log(`Calculation Error: ${modelsResult.error.message}`); return; }
+            if (modelsResult.isErr()) {
+                console.log(`Calculation Error: ${modelsResult.error.message}`);
+                return;
+            }
             props.callback(lot, modelsResult.value);
             setModels(modelsResult.value);
 
             if (!user || !firebase) return;
 
-            firebase.backup(user.uid).collection("lots").doc(String(lot)).set({
-                models: modelsResult.value,
-                notes: {},
-            } as firebase.firestore.DocumentData);
+            firebase
+                .backup(user.uid)
+                .collection("lots")
+                .doc(String(lot))
+                .set({
+                    models: modelsResult.value,
+                    notes: {},
+                } as firebase.firestore.DocumentData);
         });
     };
 
@@ -108,8 +114,8 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                                 checked={sdMode}
                                 onChange={() => setSdMode(!sdMode)}
                             />
-                            <div className="toggle-button__knobs"/>
-                            <div className="toggle-button__layer"/>
+                            <div className="toggle-button__knobs" />
+                            <div className="toggle-button__layer" />
                         </div>
                     </div>
                 </div>

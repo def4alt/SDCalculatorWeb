@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { withAuthorization, AuthUserContext } from "../../context/session";
-import { User } from "firebase";
+import firebase from "firebase";
 import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/component/component.scss";
@@ -11,7 +11,7 @@ import "../../styles/button/button.scss";
 // TODO: Add email change
 // TODO: Add username change
 const Account: React.FC = (_) => {
-    const user = useContext(AuthUserContext) as User;
+    const user = useContext(AuthUserContext) as firebase.User;
     const localization = useContext(LocalizationContext).localization;
 
     const [avatar, setAvatar] = useState<string>(user.photoURL as string);

@@ -3,7 +3,7 @@ import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
-import { User } from "firebase";
+import firebase from "firebase";
 
 import "../../styles/lot/lot.scss";
 import "../../styles/edit/edit.scss";
@@ -31,7 +31,7 @@ const Lot: React.FC<LotProps> = (props) => {
         return () => unsubscribe();
     }, [firebase]);
 
-    const authStateChangeHandler = (user: User | null) => {
+    const authStateChangeHandler = (user: firebase.User | null) => {
         if (!user || !firebase) {
             setLotList([]);
             setLot(0);

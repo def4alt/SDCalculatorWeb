@@ -1,4 +1,4 @@
-const merge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const common = require("./webpack.common");
 const webpack = require("webpack");
 const WorkboxPlugin = require("workbox-webpack-plugin");
@@ -9,9 +9,10 @@ module.exports = merge(common, {
     mode: "development",
     devServer: {
         historyApiFallback: true,
-        hot: true // enable HMR on the server
+        hot: true,
+        open: true,
     },
-    devtool: "cheap-module-eval-source-map",
+    devtool: "eval-cheap-module-source-map",
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR
         new WebpackPwaManifest({
@@ -22,37 +23,41 @@ module.exports = merge(common, {
             icons: [
                 {
                     src: path.resolve(__dirname, "public", "favicon.ico"),
-                    sizes: [64, 32, 24, 16]
+                    sizes: [64, 32, 24, 16],
                 },
                 {
                     src: path.resolve(__dirname, "public", "logo192.png"),
                     sizes: [192, 180],
-                    ios: true
+                    ios: true,
                 },
                 {
                     src: path.resolve(__dirname, "public", "logo512.png"),
-                    size: "512x512"
-                }
+                    size: "512x512",
+                },
             ],
             start_url: ".",
             display: "standalone",
             theme_color: "#000000",
-            background_color: "#ffffff"
+            background_color: "#ffffff",
         }),
-        new WorkboxPlugin.GenerateSW()
+        new WorkboxPlugin.GenerateSW(),
     ],
     module: {
         rules: [
             {
                 test: /\.(s*)css$/,
                 include: /src/,
-                use: ["style-loader", "css-loader", {
-                    loader: "sass-loader",
-                    options: {
-                        implementation: require("sass")
-                    }
-                }]
-            }
-        ]
-    }
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            implementation: require("sass"),
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 });
