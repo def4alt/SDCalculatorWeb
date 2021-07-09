@@ -45,9 +45,9 @@ const Navigation: React.FC = (_) => {
                     aria-label="Menu toggle"
                     onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
-                    <p/>
-                    <p/>
-                    <p/>
+                    <p />
+                    <p />
+                    <p />
                 </button>
                 <button
                     className="nav__logo"
@@ -68,7 +68,7 @@ const Navigation: React.FC = (_) => {
                         >
                             <img
                                 src={avatar}
-                                className="avatar avatar_small avatar_rounded"
+                                className="avatar avatar_rounded"
                                 alt="avatar"
                             />
                         </button>
@@ -80,7 +80,7 @@ const Navigation: React.FC = (_) => {
                                 router.history.push(ROUTES.SIGN_IN);
                             }}
                         >
-                            <FaSignInAlt/>
+                            <FaSignInAlt />
                         </button>
                     )
                 ) : null}

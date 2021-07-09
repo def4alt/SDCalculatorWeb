@@ -1,23 +1,22 @@
 .nav__menu-button {
-    left: 20px;
-    width: 2rem;
-    height: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     background-color: $white;
-    border: $white;
+    border: none;
     outline: none;
-    position: absolute;
+    display: flex;
+    align-self: center;
     flex-flow: column;
     justify-content: space-evenly;
-    display: flex;
     align-items: center;
-    p {
-        width: 1.5rem;
-        margin-top: 0px;
-        margin-left: 0;
-        margin-bottom: 0px;
-        height: 2px;
 
-        background: #595f71;
+    p {
+        width: 1.8rem;
+        margin-top: 0;
+        margin-left: 0;
+        margin-bottom: 0;
+        height: 2px;
+        background: rgba($black, 0.45);
     }
 }
 
@@ -25,4 +24,8 @@
     background-color: rgba($black, 0.1);
     outline: none;
     cursor: pointer;
+
+    p {
+        background: rgba($black, 0.55);
+    }
 }

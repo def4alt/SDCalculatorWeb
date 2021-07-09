@@ -1,14 +1,11 @@
 .nav__avatar {
-    right: 25px;
     z-index: 22;
-    top: 0;
-    margin: 0;
-    position: absolute;
-    border-radius: 50%;
     border: none;
     width: 2.5rem;
-    height: 2.5rem;
     padding: 0;
+    height: 2.5rem;
+    display: block;
+    background-color: transparent;
 }
 
 .nav__avatar:hover {
