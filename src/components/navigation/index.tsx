@@ -38,7 +38,7 @@ const Navigation: React.FC = (_) => {
     };
 
     return (
-        <div>
+        <>
             <div className="nav">
                 <button
                     className="nav__menu-button"
@@ -132,7 +132,7 @@ const Navigation: React.FC = (_) => {
                     {localization.signOut}
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 
