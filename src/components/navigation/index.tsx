@@ -55,35 +55,33 @@ const Navigation: React.FC = (_) => {
                 >
                     SDCalculator
                 </button>
-                {router.location.pathname !== ROUTES.ACCOUNT ? (
-                    user ? (
-                        <button
-                            className="nav__avatar"
-                            onClick={() =>
-                                toggleMenu(
-                                    accountMenuRef,
-                                    "nav__account-menu_expanded"
-                                )
-                            }
-                        >
-                            <img
-                                src={avatar}
-                                className="avatar avatar_rounded"
-                                alt="avatar"
-                            />
-                        </button>
-                    ) : (
-                        <button
-                            className="nav__sign-in"
-                            aria-label="Sign in"
-                            onClick={() => {
-                                router.history.push(ROUTES.SIGN_IN);
-                            }}
-                        >
-                            <FaSignInAlt />
-                        </button>
-                    )
-                ) : null}
+                {user ? (
+                    <button
+                        className="nav__avatar"
+                        onClick={() =>
+                            toggleMenu(
+                                accountMenuRef,
+                                "nav__account-menu_expanded"
+                            )
+                        }
+                    >
+                        <img
+                            src={avatar}
+                            className="avatar avatar_rounded"
+                            alt="avatar"
+                        />
+                    </button>
+                ) : (
+                    <button
+                        className="nav__sign-in"
+                        aria-label="Sign in"
+                        onClick={() => {
+                            router.history.push(ROUTES.SIGN_IN);
+                        }}
+                    >
+                        <FaSignInAlt />
+                    </button>
+                )}
             </div>
             <div className="nav__menu" ref={menuRef}>
                 <button
