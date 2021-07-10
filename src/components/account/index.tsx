@@ -38,7 +38,7 @@ const Account: React.FC = (_) => {
         <div className="component component_centered">
             <div className="component__element">
                 <img
-                    className="avatar avatar_big avatar_squared"
+                    className="avatar avatar_squared"
                     src={avatar}
                     alt="avatar"
                 />
