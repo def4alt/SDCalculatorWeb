@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { LocalizationContext } from "../../context/localization";
 
-import "../../styles/component/component.scss";
 import "../../styles/button/button.scss";
 
 // TODO: Calculation type selection
@@ -9,8 +8,8 @@ const Settings: React.FC = (_) => {
     const localization = useContext(LocalizationContext);
 
     return (
-        <div className="component component_centered">
-            <div className="component__element component__element_centered">
+        <div>
+            <div>
                 {localization.localization.language}:
                 <button
                     className="button_link"

@@ -1,11 +1,16 @@
-import React, { Reducer, useContext, useEffect, useReducer, useRef } from "react";
+import React, {
+    Reducer,
+    useContext,
+    useEffect,
+    useReducer,
+    useRef,
+} from "react";
 import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { GoNote } from "react-icons/go";
 import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/notes/notes.scss";
-import "../../styles/component/component.scss";
 import "../../styles/button/button.scss";
 import "../../styles/header/header.scss";
 
@@ -38,8 +43,10 @@ const reducer: Reducer<NotesState, Action> = (state, action) => {
 };
 
 const Notes: React.FC<NotesProps> = (props) => {
-    const [notes, dispatch] = useReducer<Reducer<NotesState, Action>,
-        NotesState>(reducer, {}, () => {
+    const [notes, dispatch] = useReducer<
+        Reducer<NotesState, Action>,
+        NotesState
+    >(reducer, {}, () => {
         return { materialLot: String(props.lot) } as NotesState;
     });
 
@@ -83,7 +90,6 @@ const Notes: React.FC<NotesProps> = (props) => {
 
         if (!user || !firebase) return;
 
-
         firebase
             .backup(user.uid)
             .collection("lots")
@@ -96,7 +102,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     .doc(String(props.lot))
                     .set({
                         models: snapshot.data()?.models,
-                        notes
+                        notes,
                     });
             });
     };
@@ -108,12 +114,15 @@ const Notes: React.FC<NotesProps> = (props) => {
                 onClick={() => {
                     toggleMenu(notesRef, "notes__form_expanded");
                     toggleMenu(floatingNotesRef, "notes__form_expanded");
-                }
-                }
+                }}
             >
-                <GoNote/>
+                <GoNote />
             </button>
-            <form className="notes__form notes__form_elevated" ref={floatingNotesRef} onSubmit={onSubmit}>
+            <form
+                className="notes__form notes__form_elevated"
+                ref={floatingNotesRef}
+                onSubmit={onSubmit}
+            >
                 <p className="notes__title">{localization.methodName}</p>
                 <input
                     className="notes__input"
@@ -122,11 +131,10 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="text"
                     onChange={(e) =>
                         dispatch({
-                            payload: { methodName: e.currentTarget.value }
+                            payload: { methodName: e.currentTarget.value },
                         })
                     }
                 />
-
 
                 <p className="notes__title">{localization.operatorName}</p>
                 <input
@@ -136,7 +144,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="text"
                     onChange={(e) =>
                         dispatch({
-                            payload: { operatorName: e.currentTarget.value }
+                            payload: { operatorName: e.currentTarget.value },
                         })
                     }
                 />
@@ -149,11 +157,10 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="text"
                     onChange={(e) =>
                         dispatch({
-                            payload: { machineName: e.currentTarget.value }
+                            payload: { machineName: e.currentTarget.value },
                         })
                     }
                 />
-
 
                 <p className="notes__title">{localization.foundingDate}</p>
                 <input
@@ -163,15 +170,18 @@ const Notes: React.FC<NotesProps> = (props) => {
                     type="date"
                     onChange={(e) =>
                         dispatch({
-                            payload: { foundingDate: e.currentTarget.value }
+                            payload: { foundingDate: e.currentTarget.value },
                         })
                     }
                 />
-                <br/>
+                <br />
 
                 <p className="notes__title">{localization.controlMaterial}</p>
                 <div className="notes__level">
-                    <p className="notes__label">{localization.materialName} / {localization.materialManufacturer}</p>
+                    <p className="notes__label">
+                        {localization.materialName} /{" "}
+                        {localization.materialManufacturer}
+                    </p>
                     <input
                         className="notes__input"
                         defaultValue={notes.materialNameAndManufacturer}
@@ -180,8 +190,9 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialNameAndManufacturer: e.currentTarget.value
-                                }
+                                    materialNameAndManufacturer:
+                                        e.currentTarget.value,
+                                },
                             })
                         }
                     />
@@ -196,8 +207,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialExpDate: e.currentTarget.value
-                                }
+                                    materialExpDate: e.currentTarget.value,
+                                },
                             })
                         }
                     />
@@ -210,8 +221,8 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialLvl1: e.currentTarget.value
-                                }
+                                    materialLvl1: e.currentTarget.value,
+                                },
                             })
                         }
                     />
@@ -224,23 +235,24 @@ const Notes: React.FC<NotesProps> = (props) => {
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialLvl2: e.currentTarget.value
-                                }
+                                    materialLvl2: e.currentTarget.value,
+                                },
                             })
                         }
                     />
                 </div>
 
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <button className="button notes__submit">
                     {localization.submit}
                 </button>
             </form>
-            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
-
-            </form>
-
+            <form
+                className="notes__form"
+                ref={notesRef}
+                onSubmit={onSubmit}
+            ></form>
         </div>
     );
 };

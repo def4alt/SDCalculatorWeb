@@ -6,7 +6,6 @@ import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/form/form.scss";
 import "../../styles/button/button.scss";
-import "../../styles/component/component.scss";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -94,11 +93,7 @@ const SignUp: React.FunctionComponent = (_) => {
                     type="password"
                 />
             </div>
-            <button
-                disabled={isInvalid}
-                className="component__element button"
-                type="submit"
-            >
+            <button disabled={isInvalid} className="button" type="submit">
                 {localization.signUp}
             </button>
 

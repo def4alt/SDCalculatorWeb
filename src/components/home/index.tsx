@@ -5,7 +5,6 @@ import Notes from "../notes";
 import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
-import "../../styles/component/component.scss";
 import "../../styles/button/button.scss";
 
 const Calculation = React.lazy(() => import("../calculation"));
@@ -22,7 +21,7 @@ const Home: React.FC = (_) => {
     };
 
     return (
-        <div className="component">
+        <div className="home">
             <Suspense fallback={<Loading />}>
                 <Calculation callback={modelsCallback} />
             </Suspense>
@@ -31,7 +30,7 @@ const Home: React.FC = (_) => {
                 <>
                     <ReactToPrint
                         trigger={() => (
-                            <button className="component__element_margined button_icon">
+                            <button className="button_icon">
                                 <MdPrint />
                             </button>
                         )}

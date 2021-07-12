@@ -3,7 +3,6 @@ import { withAuthorization, AuthUserContext } from "../../context/session";
 import firebase from "firebase";
 import { LocalizationContext } from "../../context/localization";
 
-import "../../styles/component/component.scss";
 import "../../styles/avatar/avatar.scss";
 import "../../styles/button/button.scss";
 
@@ -35,15 +34,15 @@ const Account: React.FC = (_) => {
     };
 
     return (
-        <div className="component component_centered">
-            <div className="component__element">
+        <div>
+            <div>
                 <img
                     className="avatar avatar_squared"
                     src={avatar}
                     alt="avatar"
                 />
             </div>
-            <div className="component__element component__element_centered">
+            <div>
                 <label className="file-browser">
                     <input
                         type="file"

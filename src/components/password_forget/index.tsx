@@ -4,7 +4,6 @@ import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/form/form.scss";
 import "../../styles/button/button.scss";
-import "../../styles/component/component.scss";
 
 const PasswordForget: React.FC = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -43,11 +42,7 @@ const PasswordForget: React.FC = (_) => {
                     placeholder="example@example.com"
                 />
             </div>
-            <button
-                className="component__element button"
-                disabled={isInvalid}
-                type="submit"
-            >
+            <button className="button" disabled={isInvalid} type="submit">
                 {localization.reset}
             </button>
             <p className="form__error">{<p>{error}</p>}</p>

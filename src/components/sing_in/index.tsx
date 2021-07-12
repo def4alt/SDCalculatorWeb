@@ -8,7 +8,6 @@ import { LocalizationContext } from "../../context/localization";
 import "../../styles/form/form.scss";
 import "../../styles/form/form__oauth/form__oauth.scss";
 import "../../styles/button/button.scss";
-import "../../styles/component/component.scss";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -87,23 +86,19 @@ const SignIn: React.FunctionComponent = (_) => {
                 </div>
 
                 <button
-                    className="component__element button_link"
+                    className="button_link"
                     onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
                 >
                     {localization.forgotPassword}
                 </button>
                 <button
-                    className="component__element button_link"
+                    className="button_link"
                     onClick={() => router.history.push(ROUTES.SIGN_UP)}
                 >
                     {localization.signUp}
                 </button>
 
-                <button
-                    disabled={isInvalid}
-                    className="component__element button"
-                    type="submit"
-                >
+                <button disabled={isInvalid} className="button" type="submit">
                     {localization.signIn}
                 </button>
 

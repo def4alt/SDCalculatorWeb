@@ -9,10 +9,8 @@ import { FirebaseContext } from "../../context/firebase";
 import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
 
-import "../../styles/component/component.scss";
 import "../../styles/toggle-button/toggle-button.scss";
 import "../../styles/file-browser/file-browser.scss";
-import "../../styles/calculation/calculation.scss";
 import "../../styles/avatar/avatar.scss";
 import "../../styles/button/button.scss";
 
@@ -99,12 +97,10 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
             : localization.selectFiles + "...";
 
     return (
-        <div className="component calculation">
-            <div>
-                <Lot callback={lotCallback} />
-            </div>
+        <div className="calculation">
+            <Lot callback={lotCallback} />
 
-            <div className="component__element component__element_centered">
+            <div>
                 <p className="toggle-button__text">{localization.addAverage}</p>
                 <div className="toggle-button">
                     <div className="toggle-button__cover">
@@ -126,7 +122,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </p>
             </div>
 
-            <div className="component__element">
+            <div>
                 <p>{localization.selectFiles}:</p>
 
                 <label className="file-browser">
@@ -148,7 +144,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </label>
             </div>
 
-            <div className="component__element">
+            <div>
                 <button
                     className={"button " + (sdMode ? "" : "button__green")}
                     onClick={() => calculate(files, sdMode)}
