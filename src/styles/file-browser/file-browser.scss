@@ -8,9 +8,9 @@
     display: inline-block;
     cursor: pointer;
     height: 46px;
+    width: inherit;
 
     input {
-        max-width: 18rem;
         margin: 0;
         filter: alpha(opacity=0);
         opacity: 0;

@@ -82,10 +82,9 @@ const Lot: React.FC<LotProps> = (props) => {
 
     let tempLot = "";
     return (
-        <>
-            <div className="lot__view">
-                {localization.lots}{" "}
-                <span className="lot__view_gray">#{lot}</span>
+        <div className="calculation__lot">
+            <div className="calculation__lot-view">
+                {localization.lots} <span className="text_gray">#{lot}</span>
             </div>
             <div className="edit">
                 {lotList.map((lot, i) => (
@@ -132,7 +131,7 @@ const Lot: React.FC<LotProps> = (props) => {
                     </button>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

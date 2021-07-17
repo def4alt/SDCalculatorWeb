@@ -1,15 +1,15 @@
 @import "../variables.scss";
 
-.calculation {
-    margin-left: calc(50vw - 10rem);
-    margin-top: calc(50vh - 12rem);
-    display: block;
-}
+@import "calculation__mode-select.scss";
+@import "calculation__file-select.scss";
+@import "calculation__submit.scss";
+@import "calculation__lot-view.scss";
 
-@media all and (max-width: 950) {
-    .calculation {
-        margin-left: calc(50vw - 10rem);
-        margin-top: 15vh;
-        display: block;
-    }
+.calculation {
+    display: flex;
+    flex-flow: column;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 3.5rem);
 }

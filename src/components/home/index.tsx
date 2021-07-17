@@ -6,6 +6,7 @@ import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
 import "../../styles/button/button.scss";
+import "../../styles/home/home.scss";
 
 const Calculation = React.lazy(() => import("../calculation"));
 const CardsList = React.lazy(() => import("../card_list"));

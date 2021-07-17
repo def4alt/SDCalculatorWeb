@@ -9,13 +9,15 @@
 .edit {
     margin-top: 5px;
     display: flex;
-    height: 9.5rem;
+    height: 10rem;
     flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
     border-color: rgba($black, 0.2);
-    width: 19rem;
+    width: 20rem;
     overflow: auto;
     overflow-y: hidden;
 

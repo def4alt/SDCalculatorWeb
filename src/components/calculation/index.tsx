@@ -10,6 +10,7 @@ import { AuthUserContext } from "../../context/session";
 import { LocalizationContext } from "../../context/localization";
 
 import "../../styles/toggle-button/toggle-button.scss";
+import "../../styles/calculation/calculation.scss";
 import "../../styles/file-browser/file-browser.scss";
 import "../../styles/avatar/avatar.scss";
 import "../../styles/button/button.scss";
@@ -100,7 +101,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
         <div className="calculation">
             <Lot callback={lotCallback} />
 
-            <div>
+            <div className="calculation__mode-select">
                 <p className="toggle-button__text">{localization.addAverage}</p>
                 <div className="toggle-button">
                     <div className="toggle-button__cover">
@@ -122,7 +123,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </p>
             </div>
 
-            <div>
+            <div className="calculation__file-select">
                 <p>{localization.selectFiles}:</p>
 
                 <label className="file-browser">
@@ -144,7 +145,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </label>
             </div>
 
-            <div>
+            <div className="calculation__submit">
                 <button
                     className={"button " + (sdMode ? "" : "button__green")}
                     onClick={() => calculate(files, sdMode)}
