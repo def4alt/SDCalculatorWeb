@@ -12,6 +12,8 @@
 
     input {
         margin: 0;
+        width: inherit;
+        height: inherit;
         filter: alpha(opacity=0);
         opacity: 0;
     }

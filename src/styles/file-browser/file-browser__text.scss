@@ -9,7 +9,7 @@
     white-space: nowrap;
     padding: 0.5rem 1rem;
     line-height: 1.5;
-    color: #555;
+    color: rgba($black, 0.6);
     background-color: $white;
     border: 0.075rem solid #ddd;
     border-radius: 0.25rem;
@@ -30,7 +30,7 @@
     height: 27px;
     padding: 0.5rem 1rem;
     line-height: 1.5;
-    color: #555;
+    color: rgba($black, 0.65);
     background-color: #eee;
     border: 0.075rem solid #ddd;
     border-radius: 0 0.25rem 0.25rem 0;

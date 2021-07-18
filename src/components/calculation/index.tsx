@@ -124,8 +124,6 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
             </div>
 
             <div className="calculation__file-select">
-                <p>{localization.selectFiles}:</p>
-
                 <label className="file-browser">
                     <input
                         type="file"
