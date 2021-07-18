@@ -7,21 +7,19 @@
 @import "./edit__select.scss";
 
 .edit {
-    margin-top: 5px;
-    display: flex;
-    height: 10rem;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
     align-items: center;
+    height: 10.5rem;
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
     border-color: rgba($black, 0.2);
     width: 20rem;
     overflow: auto;
-    overflow-y: hidden;
-
-    flex-direction: column;
+    overflow-x: hidden;
 }
 
 @media all and (min-width: 1360px) {

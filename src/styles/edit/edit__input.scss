@@ -5,12 +5,13 @@
     margin: 5px;
     align-items: center;
     justify-content: space-around;
+    justify-self: center;
 
     input {
         width: 5rem;
         height: 2rem;
         padding-left: 5px;
-        font-size: 16px;
+        font-size: 20px;
         border-radius: 5px;
         border-style: solid;
         border-color: rgba($black, 0.2);

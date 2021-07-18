@@ -2,11 +2,11 @@
     width: 8rem;
     height: 2.5rem;
     text-align: left;
-    // margin-top: 7.5px;
-    // margin-left: 10px;
-    margin: 5px;
+    margin: 0.5rem;
     border-radius: 5px;
     border: 1px solid rgba($black, 0.2);
+    overflow: hidden;
+    justify-self: center;
     display: flex;
     justify-content: space-between;
     align-items: center;
