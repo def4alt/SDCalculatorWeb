@@ -1,13 +1,13 @@
+@use "styles/base";
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-@import "styles/variables.scss";
 
 .root {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: $font-size;
+    font-size: base.$font-size;
 }
 
 .text_gray {
-    color: rgba($black, 0.7);
+    color: rgba(base.$black, 0.7);
 }

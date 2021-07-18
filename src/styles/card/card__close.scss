@@ -1,8 +1,8 @@
 .card__close {
-    background-color: $white;
+    background-color: base.$white;
     border: none;
     font-size: 22px;
-    color: rgba($black, 0.7);
+    color: rgba(base.$black, 0.7);
     position: absolute;
     align-items: center;
     right: 22px;
@@ -12,7 +12,7 @@
 
 .card__close:hover {
     cursor: pointer;
-    color: rgba($black, 0.5);
+    color: rgba(base.$black, 0.5);
 }
 
 @media print {

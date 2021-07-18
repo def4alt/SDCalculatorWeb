@@ -14,7 +14,7 @@
         font-size: 20px;
         border-radius: 5px;
         border-style: solid;
-        border-color: rgba($black, 0.2);
+        border-color: rgba(base.$black, 0.2);
         border-width: 1px;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
@@ -24,7 +24,7 @@
     button {
         border: none;
         font-size: 18px;
-        background-color: $white;
+        background-color: base.$white;
     }
 
     button:hover {

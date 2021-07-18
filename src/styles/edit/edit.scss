@@ -1,4 +1,4 @@
-@import "../variables.scss";
+@use "../base";
 
 @import "./edit__add.scss";
 @import "./edit__cell.scss";
@@ -16,7 +16,7 @@
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
-    border-color: rgba($black, 0.2);
+    border-color: rgba(base.$black, 0.2);
     width: 20rem;
     overflow: auto;
     overflow-x: hidden;

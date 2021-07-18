@@ -9,11 +9,11 @@
     white-space: nowrap;
     padding: 0.5rem 1rem;
     line-height: 1.5;
-    color: rgba($black, 0.6);
-    background-color: $white;
+    color: rgba(base.$black, 0.6);
+    background-color: base.$white;
     border: 0.075rem solid #ddd;
     border-radius: 0.25rem;
-    box-shadow: inset 0 0.2rem 0.4rem rgba($black, 0.05);
+    box-shadow: inset 0 0.2rem 0.4rem rgba(base.$black, 0.05);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -30,7 +30,7 @@
     height: 27px;
     padding: 0.5rem 1rem;
     line-height: 1.5;
-    color: rgba($black, 0.65);
+    color: rgba(base.$black, 0.65);
     background-color: #eee;
     border: 0.075rem solid #ddd;
     border-radius: 0 0.25rem 0.25rem 0;

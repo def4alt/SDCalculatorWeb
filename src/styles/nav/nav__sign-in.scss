@@ -1,5 +1,5 @@
 .nav__sign-in {
-    background-color: $white;
+    background-color: base.$white;
     outline: none;
     display: flex;
     align-items: center;
@@ -10,11 +10,11 @@
     border: 0;
     font-size: 2rem;
     text-decoration: none;
-    color: rgba($black, 0.4);
+    color: rgba(base.$black, 0.4);
 }
 
 .nav__sign-in:hover {
-    color: rgba($black, 0.5);
+    color: rgba(base.$black, 0.5);
     cursor: pointer;
-    background-color: rgba($black, 0.1);
+    background-color: rgba(base.$black, 0.1);
 }
