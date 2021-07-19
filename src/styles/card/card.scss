@@ -16,7 +16,7 @@
     @include base.for-print {
         margin-top: 2.5vh;
         margin-bottom: 2.5vh;
-        height: 45.13vh;
+        height: calc(45vh - 2px);
         border: 1px solid rgba(base.$black, 0.2);
         background: base.$white;
         box-shadow: none;
