@@ -1,8 +1,5 @@
-/// <reference path="../../react-vis.d.ts"/>
-
 import React, { useMemo } from "react";
 import { StatModel } from "../../types";
-import { LineMarkSeries, LineSeries, XAxis, XYPlot, YAxis } from "react-vis";
 import moment from "moment";
 
 import "Styles/line-chart/line-chart.scss";
