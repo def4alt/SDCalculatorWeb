@@ -1,7 +1,0 @@
-.notes__print-only {
-    display: none;
-
-    @include base.for-print {
-        display: block;
-    }
-}

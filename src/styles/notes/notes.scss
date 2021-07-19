@@ -2,25 +2,24 @@
 @import "notes__input";
 @import "notes__label";
 @import "notes__submit";
-@import "notes__textarea";
 @import "notes__title";
 @import "notes__level";
 @import "notes__toggle";
-@import "notes__print-only";
-@import "notes__form_elevated";
 
 .notes {
     width: 10rem;
+    margin: 0;
+    display: block;
 
     @include base.for-desktop-down {
-        width: 90vw;
+        width: calc(100% - 10px);
+        max-width: 30rem;
         position: relative;
-        margin-left: 15px;
+        margin-left: 5px;
     }
 
     @include base.for-print {
         width: 80vw;
         height: 80vh;
-        display: block;
     }
 }

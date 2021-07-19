@@ -51,7 +51,6 @@ const Notes: React.FC<NotesProps> = (props) => {
     });
 
     const notesRef = useRef<HTMLFormElement | null>(null);
-    const floatingNotesRef = useRef<HTMLFormElement | null>(null);
 
     const firebase = useContext(FirebaseContext);
     const user = useContext(AuthUserContext);
@@ -73,6 +72,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                 dispatch({ payload: notes });
             });
     }, [firebase, props.lot, user]);
+
     const toggleMenu = (
         ref: React.RefObject<HTMLElement>,
         className: string
@@ -113,133 +113,144 @@ const Notes: React.FC<NotesProps> = (props) => {
                 className="notes__toggle button_icon"
                 onClick={() => {
                     toggleMenu(notesRef, "notes__form_expanded");
-                    toggleMenu(floatingNotesRef, "notes__form_expanded");
                 }}
             >
                 <GoNote />
             </button>
-            <form
-                className="notes__form notes__form_elevated"
-                ref={floatingNotesRef}
-                onSubmit={onSubmit}
-            >
-                <p className="notes__title">{localization.methodName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.methodName}
-                    name="methodName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { methodName: e.currentTarget.value },
-                        })
-                    }
-                />
-
-                <p className="notes__title">{localization.operatorName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.operatorName}
-                    name="operatorName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { operatorName: e.currentTarget.value },
-                        })
-                    }
-                />
-
-                <p className="notes__title">{localization.machineName}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.machineName}
-                    name="machineName"
-                    type="text"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { machineName: e.currentTarget.value },
-                        })
-                    }
-                />
-
-                <p className="notes__title">{localization.foundingDate}</p>
-                <input
-                    className="notes__input"
-                    defaultValue={notes.foundingDate}
-                    name="foundingDate"
-                    type="date"
-                    onChange={(e) =>
-                        dispatch({
-                            payload: { foundingDate: e.currentTarget.value },
-                        })
-                    }
-                />
-                <br />
-
-                <p className="notes__title">{localization.controlMaterial}</p>
-                <div className="notes__level">
-                    <p className="notes__label">
-                        {localization.materialName} /{" "}
-                        {localization.materialManufacturer}
-                    </p>
+            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
+                <label className="notes__label">
+                    {localization.methodName}
                     <input
                         className="notes__input"
-                        defaultValue={notes.materialNameAndManufacturer}
-                        name="materialNameAndManufacturer"
+                        defaultValue={notes.methodName}
+                        name="methodName"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: { methodName: e.currentTarget.value },
+                            })
+                        }
+                    />
+                </label>
+
+                <label className="notes__label">
+                    {localization.operatorName}
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.operatorName}
+                        name="operatorName"
                         type="text"
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialNameAndManufacturer:
-                                        e.currentTarget.value,
+                                    operatorName: e.currentTarget.value,
                                 },
                             })
                         }
                     />
-                    <p className="notes__label">
-                        {localization.materialExpDate}
-                    </p>
+                </label>
+
+                <label className="notes__label">
+                    {localization.machineName}
                     <input
                         className="notes__input"
-                        defaultValue={notes.materialExpDate}
-                        name="materialExpDate"
+                        defaultValue={notes.machineName}
+                        name="machineName"
+                        type="text"
+                        onChange={(e) =>
+                            dispatch({
+                                payload: { machineName: e.currentTarget.value },
+                            })
+                        }
+                    />
+                </label>
+                <label className="notes__label">
+                    {localization.foundingDate}
+                    <input
+                        className="notes__input"
+                        defaultValue={notes.foundingDate}
+                        name="foundingDate"
                         type="date"
                         onChange={(e) =>
                             dispatch({
                                 payload: {
-                                    materialExpDate: e.currentTarget.value,
+                                    foundingDate: e.currentTarget.value,
                                 },
                             })
                         }
                     />
-                    <p className="notes__label">{localization.materialLvl1}</p>
-                    <input
-                        className="notes__input"
-                        defaultValue={notes.materialLvl1}
-                        name="materialLvl1"
-                        type="text"
-                        onChange={(e) =>
-                            dispatch({
-                                payload: {
-                                    materialLvl1: e.currentTarget.value,
-                                },
-                            })
-                        }
-                    />
-                    <p className="notes__label">{localization.materialLvl2}</p>
-                    <input
-                        className="notes__input"
-                        defaultValue={notes.materialLvl2}
-                        name="materialLvl2"
-                        type="text"
-                        onChange={(e) =>
-                            dispatch({
-                                payload: {
-                                    materialLvl2: e.currentTarget.value,
-                                },
-                            })
-                        }
-                    />
+                </label>
+                <br />
+
+                <p className="notes__title">{localization.controlMaterial}</p>
+                <div className="notes__level">
+                    <label className="notes__label">
+                        {localization.materialName} /{" "}
+                        {localization.materialManufacturer}
+                        <input
+                            className="notes__input"
+                            defaultValue={notes.materialNameAndManufacturer}
+                            name="materialNameAndManufacturer"
+                            type="text"
+                            onChange={(e) =>
+                                dispatch({
+                                    payload: {
+                                        materialNameAndManufacturer:
+                                            e.currentTarget.value,
+                                    },
+                                })
+                            }
+                        />
+                    </label>
+                    <label className="notes__label">
+                        {localization.materialExpDate}
+
+                        <input
+                            className="notes__input"
+                            defaultValue={notes.materialExpDate}
+                            name="materialExpDate"
+                            type="date"
+                            onChange={(e) =>
+                                dispatch({
+                                    payload: {
+                                        materialExpDate: e.currentTarget.value,
+                                    },
+                                })
+                            }
+                        />
+                    </label>
+                    <label className="notes__label">
+                        {localization.materialLvl1}
+                        <input
+                            className="notes__input"
+                            defaultValue={notes.materialLvl1}
+                            name="materialLvl1"
+                            type="text"
+                            onChange={(e) =>
+                                dispatch({
+                                    payload: {
+                                        materialLvl1: e.currentTarget.value,
+                                    },
+                                })
+                            }
+                        />
+                    </label>
+                    <label className="notes__label">
+                        {localization.materialLvl2}
+                        <input
+                            className="notes__input"
+                            defaultValue={notes.materialLvl2}
+                            name="materialLvl2"
+                            type="text"
+                            onChange={(e) =>
+                                dispatch({
+                                    payload: {
+                                        materialLvl2: e.currentTarget.value,
+                                    },
+                                })
+                            }
+                        />
+                    </label>
                 </div>
 
                 <br />
@@ -248,11 +259,6 @@ const Notes: React.FC<NotesProps> = (props) => {
                     {localization.submit}
                 </button>
             </form>
-            <form
-                className="notes__form"
-                ref={notesRef}
-                onSubmit={onSubmit}
-            ></form>
         </div>
     );
 };

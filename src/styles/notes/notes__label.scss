@@ -1,5 +1,5 @@
 .notes__label {
-    color: rgba(base.$black, 0.8);
-    margin: 15px 15px 5px;
-    width: 22rem;
+    display: inline-block;
+    margin: 10px;
+    width: calc(100% - 20px);
 }

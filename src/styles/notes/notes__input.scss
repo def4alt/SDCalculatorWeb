@@ -1,11 +1,9 @@
 .notes__input {
-    margin-left: 10px;
+    margin-top: 10px;
     border-radius: 5px;
     border: 1px solid rgba(base.$black, 0.3);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    width: 22rem;
-    padding-left: 5px;
+    padding: 5px;
+    width: 100%;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -14,12 +12,7 @@
     font-weight: 400;
     font-size: 16px;
 
-    @include base.for-phone-only {
-        width: 15rem;
-    }
-
     @include base.for-print {
-        width: calc(100% - 20px);
         border: none;
         appearance: none;
         -moz-appearance: none;

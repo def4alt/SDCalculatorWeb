@@ -8,8 +8,8 @@ import { MdPrint } from "react-icons/md";
 import "Styles/button/button.scss";
 import "Styles/home/home.scss";
 
-const Calculation = React.lazy(() => import("../calculation"));
-const CardsList = React.lazy(() => import("../card_list"));
+const Calculation = React.lazy(() => import("Components/calculation"));
+const CardsList = React.lazy(() => import("Components/card_list"));
 
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
@@ -31,7 +31,7 @@ const Home: React.FC = (_) => {
                 <>
                     <ReactToPrint
                         trigger={() => (
-                            <button className="button_icon">
+                            <button className="button_print">
                                 <MdPrint />
                             </button>
                         )}

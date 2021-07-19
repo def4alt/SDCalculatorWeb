@@ -1,12 +1,13 @@
-.button_icon {
+.button_print {
     border-radius: 5px;
+    margin-left: 5px;
     border: none;
     color: rgba(base.$black, 0.4);
     background-color: base.$white;
     font-size: 46px;
 }
 
-.button_icon:hover {
+.button_print:hover {
     cursor: pointer;
     color: rgba(base.$black, 0.3);
 }

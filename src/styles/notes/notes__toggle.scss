@@ -1,5 +1,6 @@
 .notes__toggle {
     display: none;
+    margin: 0;
 
     @include base.for-print {
         display: none;

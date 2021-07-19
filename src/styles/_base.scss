@@ -41,7 +41,7 @@ $darkgrey: #2d3436;
 }
 
 @mixin for-desktop-down {
-    @media (max-width: 1200px) {
+    @media (max-width: 1200px), (max-height: 700px) {
         @content;
     }
 }
