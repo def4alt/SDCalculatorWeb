@@ -1,0 +1,9 @@
+@import "./account__avatar.scss";
+@import "./account__image-select.scss";
+
+.account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

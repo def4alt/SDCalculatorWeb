@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Firebase, { FirebaseContext } from "Context/firebase";
 import { LocalizationContext } from "Context/localization";
 
-import "Styles/form/form.scss";
+import "Styles/auth/auth.scss";
 import "Styles/button/button.scss";
 
 const PasswordForget: React.FC = (_) => {
@@ -31,8 +31,8 @@ const PasswordForget: React.FC = (_) => {
 
     let isInvalid = email === "";
     return (
-        <form onSubmit={onSubmit} className="form">
-            <div className="form__input">
+        <form onSubmit={onSubmit} className="auth">
+            <div className="auth__input">
                 <p>{localization.email}</p>
                 <input
                     name="email"
@@ -45,7 +45,7 @@ const PasswordForget: React.FC = (_) => {
             <button className="button" disabled={isInvalid} type="submit">
                 {localization.reset}
             </button>
-            <p className="form__error">{<p>{error}</p>}</p>
+            <p className="auth__error">{<p>{error}</p>}</p>
         </form>
     );
 };

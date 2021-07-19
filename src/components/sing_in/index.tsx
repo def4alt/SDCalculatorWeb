@@ -5,8 +5,8 @@ import Firebase, { FirebaseContext } from "Context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { LocalizationContext } from "Context/localization";
 
-import "Styles/form/form.scss";
-import "Styles/form/form__oauth/form__oauth.scss";
+import "Styles/auth/auth.scss";
+import "Styles/auth/auth__oauth/auth__oauth.scss";
 import "Styles/button/button.scss";
 
 const SignIn: React.FunctionComponent = (_) => {
@@ -49,23 +49,23 @@ const SignIn: React.FunctionComponent = (_) => {
 
     let isInvalid: boolean = email === "" && password === "";
     return (
-        <div className="form">
+        <div className="auth">
             <button
                 onClick={signInWithFacebook}
-                className="form__oauth form__oauth_fb"
+                className="auth__oauth auth__oauth_fb"
             >
                 <FaFacebookF className="icon" />
                 {localization.loginWith} Facebook
             </button>
             <button
                 onClick={signInWithGoogle}
-                className="form__oauth form__oauth_gl"
+                className="auth__oauth auth__oauth_gl"
             >
                 <FaGoogle className="icon" />
                 {localization.loginWith} Google
             </button>
             <form onSubmit={onSubmit}>
-                <div className="form__input">
+                <div className="auth__input">
                     <p>{localization.email}</p>
                     <input
                         name="email"
@@ -75,7 +75,7 @@ const SignIn: React.FunctionComponent = (_) => {
                     />
                 </div>
 
-                <div className="form__input">
+                <div className="auth__input">
                     <p>{localization.password}</p>
                     <input
                         name="password"
@@ -102,7 +102,7 @@ const SignIn: React.FunctionComponent = (_) => {
                     {localization.signIn}
                 </button>
 
-                <p className="form__error">{error}</p>
+                <p className="auth__error">{error}</p>
             </form>
         </div>
     );

@@ -5,6 +5,7 @@ import { LocalizationContext } from "Context/localization";
 
 import "Styles/avatar/avatar.scss";
 import "Styles/button/button.scss";
+import "Styles/account/account.scss";
 
 // TODO: Add password change
 // TODO: Add email change
@@ -34,26 +35,22 @@ const Account: React.FC = (_) => {
     };
 
     return (
-        <div>
-            <div>
-                <img
-                    className="avatar avatar_squared"
-                    src={avatar}
-                    alt="avatar"
+        <div className="account">
+            <img
+                className="account__avatar avatar avatar_squared"
+                src={avatar}
+                alt="avatar"
+            />
+            <label className="account__image-select file-browser">
+                <input
+                    type="file"
+                    aria-label="File browser"
+                    onChange={onAvatarChange}
                 />
-            </div>
-            <div>
-                <label className="file-browser">
-                    <input
-                        type="file"
-                        aria-label="File browser"
-                        onChange={onAvatarChange}
-                    />
-                    <span className="file-browser__text file-browser__text_minimal">
-                        {localization.uploadImage}
-                    </span>
-                </label>
-            </div>
+                <span className="file-browser__text_minimal">
+                    {localization.uploadImage}
+                </span>
+            </label>
         </div>
     );
 };

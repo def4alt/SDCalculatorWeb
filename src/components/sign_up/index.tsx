@@ -4,7 +4,7 @@ import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "Context/firebase";
 import { LocalizationContext } from "Context/localization";
 
-import "Styles/form/form.scss";
+import "Styles/auth/auth.scss";
 import "Styles/button/button.scss";
 
 const SignUp: React.FunctionComponent = (_) => {
@@ -57,8 +57,8 @@ const SignUp: React.FunctionComponent = (_) => {
         password !== passwordConfirm ||
         password === "";
     return (
-        <form onSubmit={onSubmit} className="form">
-            <div className="form__input">
+        <form onSubmit={onSubmit} className="auth">
+            <div className="auth__input">
                 <p>{localization.username}</p>
                 <input
                     name="username"
@@ -67,7 +67,7 @@ const SignUp: React.FunctionComponent = (_) => {
                     placeholder="def4alt"
                 />
             </div>
-            <div className="form__input">
+            <div className="auth__input">
                 <p>{localization.email}</p>
                 <input
                     name="email"
@@ -76,7 +76,7 @@ const SignUp: React.FunctionComponent = (_) => {
                     placeholder="example@example.com"
                 />
             </div>
-            <div className="form__input">
+            <div className="auth__input">
                 <p>{localization.password}</p>
                 <input
                     name="password"
@@ -85,7 +85,7 @@ const SignUp: React.FunctionComponent = (_) => {
                     placeholder="15%$vd09"
                 />
             </div>
-            <div className="form__input">
+            <div className="auth__input">
                 <p>{localization.passwordConfirm}</p>
                 <input
                     name="passwordConfirm"
@@ -97,7 +97,7 @@ const SignUp: React.FunctionComponent = (_) => {
                 {localization.signUp}
             </button>
 
-            <p className="form__error">{error}</p>
+            <p className="auth__error">{error}</p>
         </form>
     );
 };
