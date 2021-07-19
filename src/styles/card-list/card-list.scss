@@ -7,16 +7,12 @@
     width: 100%;
     position: relative;
     justify-content: space-around;
-}
 
-@media all and (max-width: 750px) {
-    .card-list {
+    @include base.for-phone-only {
         flex-direction: column;
     }
-}
 
-@media print {
-    .card-list {
+    @include base.for-print {
         position: absolute;
         flex-direction: row;
         margin-top: 0;

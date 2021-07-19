@@ -8,15 +8,13 @@
     right: 22px;
     top: 22px;
     padding: 0;
+
+    @include base.for-print {
+        display: none;
+    }
 }
 
 .card__close:hover {
     cursor: pointer;
     color: rgba(base.$black, 0.5);
-}
-
-@media print {
-    .card__close {
-        display: none;
-    }
 }

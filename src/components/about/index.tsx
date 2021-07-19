@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
 const About: React.FC = (_) => {
     const localization = useContext(LocalizationContext).localization;

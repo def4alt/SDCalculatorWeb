@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import { FirebaseContext } from "../../context/firebase";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { FirebaseContext } from "Context/firebase";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 import firebase from "firebase";
 
-import "../../styles/lot/lot.scss";
-import "../../styles/edit/edit.scss";
+import "Styles/lot/lot.scss";
+import "Styles/edit/edit.scss";
 
 interface LotProps {
     callback: (lot: number) => void;

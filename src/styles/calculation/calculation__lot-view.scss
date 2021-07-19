@@ -2,10 +2,8 @@
     text-align: start;
     font-size: base.$font-size;
     margin-left: 1rem;
-}
 
-@media all and (min-width: 1360px) {
-    .calculation__lot-view {
+    @include base.for-tablet-landscape-up {
         position: absolute;
         top: calc(50vh - 11rem);
         left: calc(50vw - 36rem);

@@ -1,5 +1,3 @@
-@use "../base";
-
 @import "./edit__add.scss";
 @import "./edit__cell.scss";
 @import "./edit__input.scss";
@@ -20,10 +18,8 @@
     width: 20rem;
     overflow: auto;
     overflow-x: hidden;
-}
 
-@media all and (min-width: 1360px) {
-    .edit {
+    @include base.for-tablet-landscape-up {
         position: absolute;
         top: calc(50vh - 9.5rem);
         left: calc(50vw - 36rem);

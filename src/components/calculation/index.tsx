@@ -2,18 +2,18 @@ import React, { useState, useContext } from "react";
 
 import readerCalculate from "./reader";
 import { StatModel } from "../../types";
-import Lot from "../lot";
+import Lot from "Components/lot";
 import firebase from "firebase";
 
-import { FirebaseContext } from "../../context/firebase";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { FirebaseContext } from "Context/firebase";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/toggle-button/toggle-button.scss";
-import "../../styles/calculation/calculation.scss";
-import "../../styles/file-browser/file-browser.scss";
-import "../../styles/avatar/avatar.scss";
-import "../../styles/button/button.scss";
+import "Styles/toggle-button/toggle-button.scss";
+import "Styles/calculation/calculation.scss";
+import "Styles/file-browser/file-browser.scss";
+import "Styles/avatar/avatar.scss";
+import "Styles/button/button.scss";
 
 interface CalculationProps {
     callback: (lot: number, models: StatModel[]) => void;

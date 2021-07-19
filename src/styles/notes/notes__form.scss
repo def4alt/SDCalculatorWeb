@@ -9,31 +9,29 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
 
-.notes__form_expanded {
-    display: none;
-    border: none;
-}
+    @include base.for-print {
+        width: 60vw;
+        height: calc(80vh - 40px);
+        display: block;
+        // height: 80vh;
+        // position: absolute;
+        // left: 20px;
+        // top: 0;
+    }
 
-@media all and (max-width: 750px) {
-    .notes__form {
+    @include base.for-tablet-landscape-down {
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+    }
+
+    @include base.for-phone-only {
         width: 21rem;
         border-top: none;
     }
 }
 
-@media screen and (max-width: 1200px) {
-    .notes__form {
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-    }
-}
-
-@media print {
-    .notes__form {
-        width: 60vw;
-        height: calc(80vh - 40px);
-        display: block;
-    }
+.notes__form_expanded {
+    display: none;
+    border: none;
 }

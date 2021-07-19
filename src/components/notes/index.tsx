@@ -5,14 +5,14 @@ import React, {
     useReducer,
     useRef,
 } from "react";
-import { FirebaseContext } from "../../context/firebase";
-import { AuthUserContext } from "../../context/session";
+import { FirebaseContext } from "Context/firebase";
+import { AuthUserContext } from "Context/session";
 import { GoNote } from "react-icons/go";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/notes/notes.scss";
-import "../../styles/button/button.scss";
-import "../../styles/header/header.scss";
+import "Styles/notes/notes.scss";
+import "Styles/button/button.scss";
+import "Styles/header/header.scss";
 
 interface NotesProps {
     lot: number;

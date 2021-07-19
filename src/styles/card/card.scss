@@ -1,10 +1,7 @@
-@use "../base";
-
 @import "card__chart.scss";
 @import "card__title.scss";
 @import "card__chart_hidden.scss";
 @import "card__close";
-@import "card_hidden";
 @import "card__header";
 @import "card__footer";
 
@@ -15,6 +12,15 @@
     border-radius: 20px;
     background: base.$white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px base.$white;
+
+    @include base.for-print {
+        margin-top: 2.5vh;
+        margin-bottom: 2.5vh;
+        height: 45.13vh;
+        border: 1px solid rgba(base.$black, 0.2);
+        background: base.$white;
+        box-shadow: none;
+    }
 }
 
 .card_red {
@@ -23,23 +29,8 @@
 
 .card_hidden {
     border: 2px dashed base.$yellow;
-}
 
-@media print {
-    .card {
-        margin-top: 2.5vh;
-        margin-bottom: 2.5vh;
-        height: 45.13vh;
-        border: 1px solid rgba(base.$black, 0.2);
-        background: base.$white;
-        box-shadow: none;
-    }
-
-    .card_red {
-        border: 1px solid base.$red;
-    }
-
-    .card_hidden {
+    @include base.for-print {
         display: none;
     }
 }

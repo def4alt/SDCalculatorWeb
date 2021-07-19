@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import { withAuthorization, AuthUserContext } from "../../context/session";
+import { withAuthorization, AuthUserContext } from "Context/session";
 import firebase from "firebase";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/avatar/avatar.scss";
-import "../../styles/button/button.scss";
+import "Styles/avatar/avatar.scss";
+import "Styles/button/button.scss";
 
 // TODO: Add password change
 // TODO: Add email change

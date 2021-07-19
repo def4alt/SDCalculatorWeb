@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/button/button.scss";
+import "Styles/button/button.scss";
 
 // TODO: Calculation type selection
 const Settings: React.FC = (_) => {

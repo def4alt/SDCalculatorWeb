@@ -1,12 +1,12 @@
 import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
-import Loading from "../loading";
-import Notes from "../notes";
+import Loading from "Components/loading";
+import Notes from "Components/notes";
 import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
-import "../../styles/button/button.scss";
-import "../../styles/home/home.scss";
+import "Styles/button/button.scss";
+import "Styles/home/home.scss";
 
 const Calculation = React.lazy(() => import("../calculation"));
 const CardsList = React.lazy(() => import("../card_list"));

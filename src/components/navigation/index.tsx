@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 
 import * as ROUTES from "../../routes";
 import { __RouterContext, withRouter } from "react-router";
-import { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "Context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/nav/nav.scss";
+import "Styles/nav/nav.scss";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);

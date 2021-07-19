@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { withRouter, RouterProps, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "Context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/form/form.scss";
-import "../../styles/form/form__oauth/form__oauth.scss";
-import "../../styles/button/button.scss";
+import "Styles/form/form.scss";
+import "Styles/form/form__oauth/form__oauth.scss";
+import "Styles/button/button.scss";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");

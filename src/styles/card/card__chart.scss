@@ -4,10 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-@media print {
-    .card__chart {
+    @include base.for-print {
         height: 300px;
     }
 }

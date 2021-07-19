@@ -5,10 +5,8 @@
     position: absolute;
     border: none;
     display: block;
-}
 
-@media screen and (max-width: 1200px) {
-    .notes__form_elevated {
+    @include base.for-tablet-landscape-down {
         position: relative;
         top: 0;
         right: 0;
@@ -16,10 +14,8 @@
         display: none;
         border: 1px solid rgba(base.$black, 0.2);
     }
-}
 
-@media screen and (max-width: 750px) {
-    .notes__form_elevated {
+    @include base.for-phone-only {
         width: 21rem;
     }
 }

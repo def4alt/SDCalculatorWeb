@@ -28,7 +28,17 @@ module.exports = merge(common, {
             {
                 test: /\.(s*)css$/,
                 include: /src/,
-                use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            implementation: require("sass"),
+                            additionalData: '@use "Styles/base";',
+                        },
+                    },
+                ],
             },
         ],
     },

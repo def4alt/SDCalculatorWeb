@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { withRouter, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { FirebaseContext } from "../../context/firebase";
-import { LocalizationContext } from "../../context/localization";
+import Firebase, { FirebaseContext } from "Context/firebase";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/form/form.scss";
-import "../../styles/button/button.scss";
+import "Styles/form/form.scss";
+import "Styles/button/button.scss";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");

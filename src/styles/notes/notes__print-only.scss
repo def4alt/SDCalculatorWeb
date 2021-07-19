@@ -1,9 +1,7 @@
 .notes__print-only {
     display: none;
-}
 
-@media print {
-    .notes__print-only {
+    @include base.for-print {
         display: block;
     }
 }

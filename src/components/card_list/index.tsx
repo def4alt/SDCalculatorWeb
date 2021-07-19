@@ -1,12 +1,18 @@
-import React, { Suspense, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+    Suspense,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import { StatModel } from "../../types";
-import Loading from "../loading";
-import { LocalizationContext } from "../../context/localization";
+import Loading from "Components/loading";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/card-list/card-list.scss";
-import "../../styles/button/button.scss";
+import "Styles/card-list/card-list.scss";
+import "Styles/button/button.scss";
 
-const Card = React.lazy(() => import("../card"));
+const Card = React.lazy(() => import("Components/card"));
 
 interface CardsListProps {
     models: StatModel[];
@@ -37,21 +43,21 @@ const CardsList: React.FC<CardsListProps> = (props) => {
 
     const cards = useMemo(() => {
         return props.models.map((model: StatModel, i: number) => (
-            <Card model={model} showSDCV={showSDCV} key={i} width={width}/>
+            <Card model={model} showSDCV={showSDCV} key={i} width={width} />
         ));
     }, [props.models, width, showSDCV]);
 
     return (
         <div className="card-list">
             <div className="card-list__header">
-                <button className="button_link"
-                        onClick={() => setShowSDCV(!showSDCV)}>{
-                            showSDCV ?
-                                localization.hide :
-                                localization.show} SD / CV
+                <button
+                    className="button_link"
+                    onClick={() => setShowSDCV(!showSDCV)}
+                >
+                    {showSDCV ? localization.hide : localization.show} SD / CV
                 </button>
             </div>
-            <Suspense fallback={<Loading/>}>{cards}</Suspense>
+            <Suspense fallback={<Loading />}>{cards}</Suspense>
         </div>
     );
 };

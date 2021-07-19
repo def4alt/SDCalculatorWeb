@@ -3,10 +3,8 @@
     display: flex;
     justify-content: space-around;
     height: 5rem;
-}
 
-@media print {
-    .card-list__header {
+    @include base.for-print {
         display: none;
     }
 }
