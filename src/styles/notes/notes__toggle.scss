@@ -5,7 +5,7 @@
         display: none;
     }
 
-    @include base.for-tablet-landscape-down {
+    @include base.for-desktop-down {
         display: block;
     }
 }

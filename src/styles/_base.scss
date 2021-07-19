@@ -29,13 +29,19 @@ $darkgrey: #2d3436;
 }
 
 @mixin for-tablet-landscape-down {
-    @media (min-width: 900px) {
+    @media (max-width: 900px) {
         @content;
     }
 }
 
 @mixin for-desktop-up {
     @media (min-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin for-desktop-down {
+    @media (max-width: 1200px) {
         @content;
     }
 }

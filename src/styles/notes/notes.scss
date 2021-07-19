@@ -12,7 +12,7 @@
 .notes {
     width: 10rem;
 
-    @include base.for-tablet-landscape-down {
+    @include base.for-desktop-down {
         width: 90vw;
         position: relative;
         margin-left: 15px;

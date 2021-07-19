@@ -11,6 +11,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @include base.for-phone-only {
+        width: 6rem;
+    }
 }
 
 .edit__add:hover {

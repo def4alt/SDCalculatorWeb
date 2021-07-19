@@ -1,12 +1,12 @@
 .notes__form_elevated {
-    top: 50px;
+    top: 4rem;
     width: 25rem;
     right: 1rem;
     position: absolute;
     border: none;
     display: block;
 
-    @include base.for-tablet-landscape-down {
+    @include base.for-desktop-down {
         position: relative;
         top: 0;
         right: 0;
@@ -16,7 +16,7 @@
     }
 
     @include base.for-phone-only {
-        width: 21rem;
+        width: 18rem;
     }
 }
 

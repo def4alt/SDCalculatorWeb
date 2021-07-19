@@ -20,7 +20,7 @@
         // top: 0;
     }
 
-    @include base.for-tablet-landscape-down {
+    @include base.for-desktop-down {
         border-top: none;
         border-radius: 0 0 5px 5px;
     }

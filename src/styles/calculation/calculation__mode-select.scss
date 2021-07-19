@@ -5,4 +5,8 @@
     justify-content: space-around;
     align-items: center;
     align-self: center;
+
+    @include base.for-phone-only {
+        width: 15rem;
+    }
 }

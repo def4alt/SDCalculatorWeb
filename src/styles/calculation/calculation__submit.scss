@@ -5,4 +5,8 @@
     button {
         width: inherit;
     }
+
+    @include base.for-phone-only {
+        width: 15rem;
+    }
 }

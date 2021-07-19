@@ -3,7 +3,7 @@
     font-size: base.$font-size;
     margin-left: 1rem;
 
-    @include base.for-tablet-landscape-up {
+    @include base.for-desktop-up {
         position: absolute;
         top: calc(50vh - 11rem);
         left: calc(50vw - 36rem);

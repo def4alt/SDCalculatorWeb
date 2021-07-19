@@ -1,4 +1,8 @@
 .calculation__file-select {
     width: 20rem;
     margin-top: 20px;
+
+    @include base.for-phone-only {
+        width: 15rem;
+    }
 }
