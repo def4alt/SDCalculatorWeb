@@ -6,16 +6,6 @@
     border: none;
     display: block;
 
-    @include base.for-print {
-        width: 60vw;
-        height: calc(80vh - 40px);
-        display: block;
-        // height: 80vh;
-        // position: absolute;
-        // left: 20px;
-        // top: 0;
-    }
-
     @include base.for-desktop-down {
         position: relative;
         padding-top: 20px;
