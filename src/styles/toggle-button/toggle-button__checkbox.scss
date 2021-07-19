@@ -22,9 +22,9 @@
     content: "";
     left: 42px;
 
-    background-color: rgba($blue, 1);
+    background-color: rgba(base.$blue, 1);
 }
 
 .toggle-button__checkbox:checked ~ .toggle-button__layer {
-    background-color: rgba($blue, 0.1);
+    background-color: rgba(base.$blue, 0.1);
 }

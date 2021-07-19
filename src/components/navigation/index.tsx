@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 
 import * as ROUTES from "../../routes";
 import { __RouterContext, withRouter } from "react-router";
-import { FirebaseContext } from "../../context/firebase";
+import { FirebaseContext } from "Context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/nav/nav.scss";
+import "Styles/nav/nav.scss";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -38,16 +38,16 @@ const Navigation: React.FC = (_) => {
     };
 
     return (
-        <div>
+        <>
             <div className="nav">
                 <button
                     className="nav__menu-button"
                     aria-label="Menu toggle"
                     onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
-                    <p/>
-                    <p/>
-                    <p/>
+                    <p />
+                    <p />
+                    <p />
                 </button>
                 <button
                     className="nav__logo"
@@ -55,35 +55,33 @@ const Navigation: React.FC = (_) => {
                 >
                     SDCalculator
                 </button>
-                {router.location.pathname !== ROUTES.ACCOUNT ? (
-                    user ? (
-                        <button
-                            className="nav__avatar"
-                            onClick={() =>
-                                toggleMenu(
-                                    accountMenuRef,
-                                    "nav__account-menu_expanded"
-                                )
-                            }
-                        >
-                            <img
-                                src={avatar}
-                                className="avatar avatar_small avatar_rounded"
-                                alt="avatar"
-                            />
-                        </button>
-                    ) : (
-                        <button
-                            className="nav__sign-in"
-                            aria-label="Sign in"
-                            onClick={() => {
-                                router.history.push(ROUTES.SIGN_IN);
-                            }}
-                        >
-                            <FaSignInAlt/>
-                        </button>
-                    )
-                ) : null}
+                {user ? (
+                    <button
+                        className="nav__avatar"
+                        onClick={() =>
+                            toggleMenu(
+                                accountMenuRef,
+                                "nav__account-menu_expanded"
+                            )
+                        }
+                    >
+                        <img
+                            src={avatar}
+                            className="avatar avatar_rounded"
+                            alt="avatar"
+                        />
+                    </button>
+                ) : (
+                    <button
+                        className="nav__sign-in"
+                        aria-label="Sign in"
+                        onClick={() => {
+                            router.history.push(ROUTES.SIGN_IN);
+                        }}
+                    >
+                        <FaSignInAlt />
+                    </button>
+                )}
             </div>
             <div className="nav__menu" ref={menuRef}>
                 <button
@@ -132,7 +130,7 @@ const Navigation: React.FC = (_) => {
                     {localization.signOut}
                 </button>
             </div>
-        </div>
+        </>
     );
 };
 

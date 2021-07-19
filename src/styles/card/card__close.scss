@@ -1,22 +1,20 @@
 .card__close {
-    background-color: $white;
+    background-color: base.$white;
     border: none;
     font-size: 22px;
-    color: rgba($black, 0.7);
+    color: rgba(base.$black, 0.7);
     position: absolute;
     align-items: center;
     right: 22px;
     top: 22px;
     padding: 0;
+
+    @include base.for-print {
+        display: none;
+    }
 }
 
 .card__close:hover {
     cursor: pointer;
-    color: rgba($black, 0.5);
-}
-
-@media print {
-    .card__close {
-        display: none;
-    }
+    color: rgba(base.$black, 0.5);
 }

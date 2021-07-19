@@ -1,11 +1,14 @@
 .nav__account-menu {
     overflow: hidden;
-    width: 20rem;
     position: absolute;
-    right: 10px;
+    right: 5px;
     top: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-end;
+    text-align: right;
     z-index: 21;
-    background-color: $white;
+    background-color: base.$white;
 
     button {
         display: none;

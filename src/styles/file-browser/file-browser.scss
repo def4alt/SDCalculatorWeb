@@ -1,5 +1,3 @@
-@import "../variables.scss";
-
 @import "./file-browser__text.scss";
 @import "./file-browser__text_minimal.scss";
 
@@ -8,11 +6,15 @@
     display: inline-block;
     cursor: pointer;
     height: 46px;
+    width: inherit;
 
     input {
-        max-width: 18rem;
         margin: 0;
+        width: inherit;
+        height: inherit;
         filter: alpha(opacity=0);
         opacity: 0;
+        z-index: -1;
+        position: absolute;
     }
 }

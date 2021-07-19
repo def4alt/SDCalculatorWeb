@@ -1,15 +1,12 @@
 .notes__toggle {
     display: none;
-}
+    margin: 0;
 
-@media print {
-    .notes__toggle {
+    @include base.for-print {
         display: none;
     }
-}
 
-@media screen and (max-width: 1200px) {
-    .notes__toggle {
+    @include base.for-desktop-down {
         display: block;
     }
 }

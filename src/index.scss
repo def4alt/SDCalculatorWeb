@@ -4,4 +4,9 @@
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: base.$font-size;
+}
+
+.text_gray {
+    color: rgba(base.$black, 0.7);
 }

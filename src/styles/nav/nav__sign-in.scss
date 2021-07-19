@@ -1,24 +1,20 @@
 .nav__sign-in {
-    right: 25px;
-    margin: 0;
-    background-color: $white;
-    border: $white;
+    background-color: base.$white;
     outline: none;
-    position: absolute;
-    display: block;
-    text-align: center;
-    font-style: normal;
-    font-weight: normal;
-    background-color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    width: 2.5rem;
+    height: 2.5rem;
     border: 0;
-    top: 0;
-    font-size: 25px;
+    font-size: 2rem;
     text-decoration: none;
-    font-weight: 100;
-    color: rgba($black, 0.3);
+    color: rgba(base.$black, 0.4);
 }
 
 .nav__sign-in:hover {
+    color: rgba(base.$black, 0.5);
     cursor: pointer;
-    color: rgba($black, 0.45);
+    background-color: rgba(base.$black, 0.1);
 }

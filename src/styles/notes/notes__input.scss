@@ -1,11 +1,9 @@
 .notes__input {
-    margin-left: 10px;
+    margin-top: 10px;
     border-radius: 5px;
-    border: 1px solid rgba($black, 0.3);
-    padding-top: 5px;
-    padding-bottom: 5px;
-    width: 22rem;
-    padding-left: 5px;
+    border: 1px solid rgba(base.$black, 0.3);
+    padding: 5px;
+    width: 100%;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -13,11 +11,8 @@
     overflow-wrap: normal;
     font-weight: 400;
     font-size: 16px;
-}
 
-@media print {
-    .notes__input {
-        width: calc(100% - 20px);
+    @include base.for-print {
         border: none;
         appearance: none;
         -moz-appearance: none;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import { FirebaseContext } from "../../context/firebase";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { FirebaseContext } from "Context/firebase";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 import firebase from "firebase";
 
-import "../../styles/lot/lot.scss";
-import "../../styles/edit/edit.scss";
+import "Styles/lot/lot.scss";
+import "Styles/edit/edit.scss";
 
 interface LotProps {
     callback: (lot: number) => void;
@@ -82,10 +82,9 @@ const Lot: React.FC<LotProps> = (props) => {
 
     let tempLot = "";
     return (
-        <>
-            <div className="lot__view">
-                {localization.lots}{" "}
-                <span className="lot__view_gray">#{lot}</span>
+        <div className="calculation__lot">
+            <div className="calculation__lot-view">
+                {localization.lots} <span className="text_gray">#{lot}</span>
             </div>
             <div className="edit">
                 {lotList.map((lot, i) => (
@@ -132,7 +131,7 @@ const Lot: React.FC<LotProps> = (props) => {
                     </button>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 

@@ -1,15 +1,15 @@
 import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
-import Loading from "../loading";
-import Notes from "../notes";
+import Loading from "Components/loading";
+import Notes from "Components/notes";
 import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
-import "../../styles/component/component.scss";
-import "../../styles/button/button.scss";
+import "Styles/button/button.scss";
+import "Styles/home/home.scss";
 
-const Calculation = React.lazy(() => import("../calculation"));
-const CardsList = React.lazy(() => import("../card_list"));
+const Calculation = React.lazy(() => import("Components/calculation"));
+const CardsList = React.lazy(() => import("Components/card_list"));
 
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
@@ -22,7 +22,7 @@ const Home: React.FC = (_) => {
     };
 
     return (
-        <div className="component">
+        <div className="home">
             <Suspense fallback={<Loading />}>
                 <Calculation callback={modelsCallback} />
             </Suspense>
@@ -31,7 +31,7 @@ const Home: React.FC = (_) => {
                 <>
                     <ReactToPrint
                         trigger={() => (
-                            <button className="component__element_margined button_icon">
+                            <button className="button_print">
                                 <MdPrint />
                             </button>
                         )}

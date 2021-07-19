@@ -1,16 +1,15 @@
-@import "../variables.scss";
-
 @import "./button_link.scss";
 @import "./button_icon.scss";
+@import "./button_print.scss";
 
 .button {
     height: 2.5rem;
-    font-size: $font-size;
+    font-size: base.$font-size;
     border-radius: 5px;
 
-    color: $white;
+    color: base.$white;
     border: 0;
-    background-color: $blue;
+    background-color: base.$blue;
 
     transition: all 0.25s ease-in-out;
     -moz-box-sizing: border-box;
@@ -23,10 +22,10 @@
 }
 
 .button__green {
-    background-color: $green;
+    background-color: base.$green;
 }
 
 .button:hover {
     cursor: pointer;
-    background-color: rgba($blue, 0.8);
+    background-color: rgba(base.$blue, 0.8);
 }

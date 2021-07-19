@@ -1,9 +1,9 @@
 .edit__remove {
-    background-color: $white;
+    background-color: base.$white;
     text-align: center;
     font-size: 20px;
     border: none;
-    margin-top: 4px;
+    margin-top: 0.5rem;
 }
 
 .edit__remove:hover {

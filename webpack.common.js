@@ -8,7 +8,12 @@ const WorkboxPlugin = require("workbox-webpack-plugin");
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
     resolve: {
-        extensions: [".ts", ".tsx", ".json", ".js", ".jsx"],
+        extensions: [".ts", ".tsx", ".json", ".js", ".jsx", ".scss"],
+        alias: {
+            Styles: path.resolve(__dirname, "src/styles/"),
+            Context: path.resolve(__dirname, "src/context/"),
+            Components: path.resolve(__dirname, "src/components/"),
+        },
     },
     module: {
         rules: [

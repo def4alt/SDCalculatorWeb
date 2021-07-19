@@ -2,21 +2,18 @@
 
 .card-list {
     display: flex;
+    gap: 5px;
     margin-top: 18vh;
     flex-wrap: wrap;
     width: 100%;
     position: relative;
     justify-content: space-around;
-}
 
-@media all and (max-width: 750px) {
-    .card-list {
+    @include base.for-tablet-landscape-down {
         flex-direction: column;
     }
-}
 
-@media print {
-    .card-list {
+    @include base.for-print {
         position: absolute;
         flex-direction: row;
         margin-top: 0;

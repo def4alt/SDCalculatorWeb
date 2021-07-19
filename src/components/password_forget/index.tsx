@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
-import Firebase, { FirebaseContext } from "../../context/firebase";
-import { LocalizationContext } from "../../context/localization";
+import Firebase, { FirebaseContext } from "Context/firebase";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/form/form.scss";
-import "../../styles/button/button.scss";
-import "../../styles/component/component.scss";
+import "Styles/auth/auth.scss";
+import "Styles/button/button.scss";
 
 const PasswordForget: React.FC = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -32,8 +31,8 @@ const PasswordForget: React.FC = (_) => {
 
     let isInvalid = email === "";
     return (
-        <form onSubmit={onSubmit} className="form">
-            <div className="form__input">
+        <form onSubmit={onSubmit} className="auth">
+            <div className="auth__input">
                 <p>{localization.email}</p>
                 <input
                     name="email"
@@ -43,14 +42,10 @@ const PasswordForget: React.FC = (_) => {
                     placeholder="example@example.com"
                 />
             </div>
-            <button
-                className="component__element button"
-                disabled={isInvalid}
-                type="submit"
-            >
+            <button className="button" disabled={isInvalid} type="submit">
                 {localization.reset}
             </button>
-            <p className="form__error">{<p>{error}</p>}</p>
+            <p className="auth__error">{<p>{error}</p>}</p>
         </form>
     );
 };

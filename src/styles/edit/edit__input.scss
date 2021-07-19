@@ -1,20 +1,20 @@
 .edit__input {
-    width: 9rem;
-    height: 2rem;
-    margin-top: 7.5px;
+    width: 8rem;
+    height: 2.5rem;
     display: flex;
-    margin-left: 5px;
+    margin: 5px;
     align-items: center;
     justify-content: space-around;
+    justify-self: center;
 
     input {
         width: 5rem;
         height: 2rem;
         padding-left: 5px;
-        font-size: 16px;
+        font-size: 20px;
         border-radius: 5px;
         border-style: solid;
-        border-color: rgba($black, 0.2);
+        border-color: rgba(base.$black, 0.2);
         border-width: 1px;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
@@ -24,7 +24,7 @@
     button {
         border: none;
         font-size: 18px;
-        background-color: $white;
+        background-color: base.$white;
     }
 
     button:hover {

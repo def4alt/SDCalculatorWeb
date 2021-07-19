@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { withAuthorization, AuthUserContext } from "../../context/session";
+import { withAuthorization, AuthUserContext } from "Context/session";
 import firebase from "firebase";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/component/component.scss";
-import "../../styles/avatar/avatar.scss";
-import "../../styles/button/button.scss";
+import "Styles/avatar/avatar.scss";
+import "Styles/button/button.scss";
+import "Styles/account/account.scss";
 
 // TODO: Add password change
 // TODO: Add email change
@@ -35,26 +35,22 @@ const Account: React.FC = (_) => {
     };
 
     return (
-        <div className="component component_centered">
-            <div className="component__element">
-                <img
-                    className="avatar avatar_big avatar_squared"
-                    src={avatar}
-                    alt="avatar"
+        <div className="account">
+            <img
+                className="account__avatar avatar avatar_squared"
+                src={avatar}
+                alt="avatar"
+            />
+            <label className="account__image-select file-browser">
+                <input
+                    type="file"
+                    aria-label="File browser"
+                    onChange={onAvatarChange}
                 />
-            </div>
-            <div className="component__element component__element_centered">
-                <label className="file-browser">
-                    <input
-                        type="file"
-                        aria-label="File browser"
-                        onChange={onAvatarChange}
-                    />
-                    <span className="file-browser__text file-browser__text_minimal">
-                        {localization.uploadImage}
-                    </span>
-                </label>
-            </div>
+                <span className="file-browser__text_minimal">
+                    {localization.uploadImage}
+                </span>
+            </label>
         </div>
     );
 };

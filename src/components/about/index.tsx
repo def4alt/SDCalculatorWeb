@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
-import { LocalizationContext } from "../../context/localization";
-
-import "../../styles/component/component.scss";
+import { LocalizationContext } from "Context/localization";
+import "Styles/about/about.scss";
 
 const About: React.FC = (_) => {
     const localization = useContext(LocalizationContext).localization;
 
     return (
-        <div className="component component_centered">
+        <div className="about">
             <p>{localization.madeFor} ChemoView™</p>
         </div>
     );

@@ -1,18 +1,19 @@
 .nav__link {
     float: left;
     width: inherit;
+    max-width: 20rem;
     border: none;
-    background-color: $white;
+    background-color: base.$white;
     text-decoration: none;
     display: block;
-    color: rgba($black, 0.5);
+    color: rgba(base.$black, 0.6);
     text-align: center;
     padding: 14px 16px;
-    font-size: $font-size;
+    font-size: base.$font-size;
 }
 
 .nav__link:hover {
-    background-color: $grey;
+    background-color: rgba(base.$black, 0.1);
     cursor: pointer;
-    color: $black;
+    color: rgba(base.$black, 0.7);
 }

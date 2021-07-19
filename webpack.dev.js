@@ -8,7 +8,6 @@ module.exports = merge(common, {
     devServer: {
         historyApiFallback: true,
         contentBase: path.resolve(__dirname, "./dist"),
-        open: true,
         compress: true,
         hot: true,
         port: 8080,
@@ -27,6 +26,7 @@ module.exports = merge(common, {
                         loader: "sass-loader",
                         options: {
                             implementation: require("sass"),
+                            additionalData: '@use "Styles/base";',
                         },
                     },
                 ],

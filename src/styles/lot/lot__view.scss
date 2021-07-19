@@ -1,12 +1,10 @@
 .lot__view {
     text-align: start;
-    font-size: $font-size;
+    font-size: base.$font-size;
     width: 9rem;
     margin-left: 1rem;
-}
 
-@media all and (min-width: 1360px) {
-    .lot__view {
+    @include base.for-tablet-landscape-up {
         position: absolute;
         top: calc(50vh - 11rem);
         left: calc(50vw - 36rem);

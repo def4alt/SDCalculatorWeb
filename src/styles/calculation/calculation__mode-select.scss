@@ -1,0 +1,12 @@
+.calculation__mode-select {
+    margin-top: 20px;
+    width: 20rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-self: center;
+
+    @include base.for-phone-only {
+        width: 15rem;
+    }
+}

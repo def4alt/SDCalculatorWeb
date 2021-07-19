@@ -1,41 +1,41 @@
 .notes__form {
-    border: 1px solid rgba($black, 0.2);
-    border-radius: 5px;
-    position: relative;
-    display: none;
-    width: 30rem;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.notes__form_expanded {
-    display: none;
+    top: 4rem;
+    width: 25rem;
+    right: 1rem;
+    position: absolute;
     border: none;
-}
+    display: block;
 
-@media all and (max-width: 750px) {
-    .notes__form {
-        width: 21rem;
-        border-top: none;
-    }
-
-}
-
-@media screen and (max-width: 1200px) {
-    .notes__form {
-        border-top: none;
-        border-radius: 0 0 5px 5px;
-    }
-}
-
-
-@media print {
-    .notes__form {
+    @include base.for-print {
         width: 60vw;
         height: calc(80vh - 40px);
         display: block;
+        // height: 80vh;
+        // position: absolute;
+        // left: 20px;
+        // top: 0;
     }
+
+    @include base.for-desktop-down {
+        position: relative;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        top: 0;
+        right: 0;
+        width: 100%;
+        display: none;
+        border: 1px solid rgba(base.$black, 0.2);
+        border-radius: 5px;
+    }
+
+    @include base.for-phone-only {
+        width: 100%;
+    }
+}
+
+.notes__form_expanded {
+    display: block;
 }

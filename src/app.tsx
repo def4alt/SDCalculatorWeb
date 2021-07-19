@@ -18,15 +18,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 const App: React.FC = (_) => (
     <Router>
         <div className="root">
-                <Navigation />
-                <Route exact path={ROUTES.HOME} component={Home} />
-                <Route path={ROUTES.ABOUT} component={About} />
-                <Route path={ROUTES.SIGN_UP} component={SignUp} />
-                <Route path={ROUTES.SIGN_IN} component={SignIn} />
-                <Route path={ROUTES.ACCOUNT} component={Account} />
-                <Route path={ROUTES.SETTINGS} component={Settings} />
-                <Route path={ROUTES.ADMIN} component={Admin} />
-                <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+            <Navigation />
+            <Route exact path={ROUTES.HOME} component={Home} />
+            <Route path={ROUTES.ABOUT} component={About} />
+            <Route path={ROUTES.SIGN_UP} component={SignUp} />
+            <Route path={ROUTES.SIGN_IN} component={SignIn} />
+            <Route path={ROUTES.ACCOUNT} component={Account} />
+            <Route path={ROUTES.SETTINGS} component={Settings} />
+            <Route path={ROUTES.ADMIN} component={Admin} />
+            <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
         </div>
     </Router>
 );

@@ -1,14 +1,12 @@
 .button_icon {
     border-radius: 5px;
     border: none;
-    color: rgba($black, 0.4);
-    margin-top: 20px;
-
-    background-color: $white;
+    color: rgba(base.$black, 0.4);
+    background-color: base.$white;
     font-size: 46px;
 }
 
 .button_icon:hover {
     cursor: pointer;
-    color: rgba($black, 0.3);
+    color: rgba(base.$black, 0.5);
 }

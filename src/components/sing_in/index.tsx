@@ -1,14 +1,13 @@
 import React, { useState, useContext } from "react";
 import { withRouter, RouterProps, __RouterContext } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { FirebaseContext } from "../../context/firebase";
+import Firebase, { FirebaseContext } from "Context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { LocalizationContext } from "../../context/localization";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/form/form.scss";
-import "../../styles/form/form__oauth/form__oauth.scss";
-import "../../styles/button/button.scss";
-import "../../styles/component/component.scss";
+import "Styles/auth/auth.scss";
+import "Styles/auth/auth__oauth/auth__oauth.scss";
+import "Styles/button/button.scss";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -50,23 +49,23 @@ const SignIn: React.FunctionComponent = (_) => {
 
     let isInvalid: boolean = email === "" && password === "";
     return (
-        <div className="form">
+        <div className="auth">
             <button
                 onClick={signInWithFacebook}
-                className="form__oauth form__oauth_fb"
+                className="auth__oauth auth__oauth_fb"
             >
                 <FaFacebookF className="icon" />
                 {localization.loginWith} Facebook
             </button>
             <button
                 onClick={signInWithGoogle}
-                className="form__oauth form__oauth_gl"
+                className="auth__oauth auth__oauth_gl"
             >
                 <FaGoogle className="icon" />
                 {localization.loginWith} Google
             </button>
             <form onSubmit={onSubmit}>
-                <div className="form__input">
+                <div className="auth__input">
                     <p>{localization.email}</p>
                     <input
                         name="email"
@@ -76,7 +75,7 @@ const SignIn: React.FunctionComponent = (_) => {
                     />
                 </div>
 
-                <div className="form__input">
+                <div className="auth__input">
                     <p>{localization.password}</p>
                     <input
                         name="password"
@@ -87,27 +86,23 @@ const SignIn: React.FunctionComponent = (_) => {
                 </div>
 
                 <button
-                    className="component__element button_link"
+                    className="button_link"
                     onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
                 >
                     {localization.forgotPassword}
                 </button>
                 <button
-                    className="component__element button_link"
+                    className="button_link"
                     onClick={() => router.history.push(ROUTES.SIGN_UP)}
                 >
                     {localization.signUp}
                 </button>
 
-                <button
-                    disabled={isInvalid}
-                    className="component__element button"
-                    type="submit"
-                >
+                <button disabled={isInvalid} className="button" type="submit">
                     {localization.signIn}
                 </button>
 
-                <p className="form__error">{error}</p>
+                <p className="auth__error">{error}</p>
             </form>
         </div>
     );

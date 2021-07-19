@@ -1,5 +1,3 @@
-@import "../variables.scss";
-
 @import "./nav__account-menu.scss";
 @import "./nav__account-menu_expanded.scss";
 @import "./nav__menu.scss";
@@ -11,11 +9,12 @@
 @import "./nav__sign-in.scss";
 
 .nav {
-    display: block;
+    display: flex;
     position: relative;
-    top: 0;
+    justify-content: space-between;
+    align-self: center;
+    flex-grow: 4;
+    gap: 10px;
     width: 100%;
-    margin-top: 22px;
-    margin-bottom: 20px;
     text-align: center;
 }

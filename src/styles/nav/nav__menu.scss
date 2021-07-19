@@ -1,9 +1,10 @@
 .nav__menu {
     overflow: hidden;
-    width: 20rem;
-    position: absolute;
     z-index: 10;
-    background-color: $white;
+    display: flex;
+    margin: 0;
+    flex-flow: column;
+    background-color: base.$white;
 
     button {
         display: none;

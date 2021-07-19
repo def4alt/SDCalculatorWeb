@@ -1,13 +1,12 @@
 .notes__submit {
     position: absolute;
+    margin-top: 10px;
     height: 2rem;
     bottom: 10px;
     right: 10px;
     z-index: 19;
-}
 
-@media print {
-    .notes__submit {
+    @include base.for-print {
         display: none;
     }
 }

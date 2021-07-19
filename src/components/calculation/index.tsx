@@ -2,19 +2,18 @@ import React, { useState, useContext } from "react";
 
 import readerCalculate from "./reader";
 import { StatModel } from "../../types";
-import Lot from "../lot";
+import Lot from "Components/lot";
 import firebase from "firebase";
 
-import { FirebaseContext } from "../../context/firebase";
-import { AuthUserContext } from "../../context/session";
-import { LocalizationContext } from "../../context/localization";
+import { FirebaseContext } from "Context/firebase";
+import { AuthUserContext } from "Context/session";
+import { LocalizationContext } from "Context/localization";
 
-import "../../styles/component/component.scss";
-import "../../styles/toggle-button/toggle-button.scss";
-import "../../styles/file-browser/file-browser.scss";
-import "../../styles/calculation/calculation.scss";
-import "../../styles/avatar/avatar.scss";
-import "../../styles/button/button.scss";
+import "Styles/toggle-button/toggle-button.scss";
+import "Styles/calculation/calculation.scss";
+import "Styles/file-browser/file-browser.scss";
+import "Styles/avatar/avatar.scss";
+import "Styles/button/button.scss";
 
 interface CalculationProps {
     callback: (lot: number, models: StatModel[]) => void;
@@ -99,12 +98,10 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
             : localization.selectFiles + "...";
 
     return (
-        <div className="component calculation">
-            <div>
-                <Lot callback={lotCallback} />
-            </div>
+        <div className="calculation">
+            <Lot callback={lotCallback} />
 
-            <div className="component__element component__element_centered">
+            <div className="calculation__mode-select">
                 <p className="toggle-button__text">{localization.addAverage}</p>
                 <div className="toggle-button">
                     <div className="toggle-button__cover">
@@ -126,9 +123,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </p>
             </div>
 
-            <div className="component__element">
-                <p>{localization.selectFiles}:</p>
-
+            <div className="calculation__file-select">
                 <label className="file-browser">
                     <input
                         type="file"
@@ -148,7 +143,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                 </label>
             </div>
 
-            <div className="component__element">
+            <div className="calculation__submit">
                 <button
                     className={"button " + (sdMode ? "" : "button__green")}
                     onClick={() => calculate(files, sdMode)}
