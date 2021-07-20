@@ -120,6 +120,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 <YAxis
                     fontWeight={100}
                     fontSize={12}
+                    type="number"
                     fill="#636e72"
                     width={100}
                     domain={[
