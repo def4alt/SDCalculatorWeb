@@ -100,6 +100,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 dataKey={dataKey}
                 type="monotone"
                 strokeDasharray="5 5"
+                xAxisId="datesAxis"
                 isAnimationActive={false}
                 stroke={color}
                 strokeWidth="2"
@@ -119,7 +120,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 <YAxis
                     fontWeight={100}
                     fontSize={12}
-                    display="inline-flex"
+                    type="number"
                     fill="#636e72"
                     width={100}
                     domain={[
@@ -137,7 +138,6 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 <XAxis
                     tickLine={false}
                     axisLine={false}
-                    xAxisId="warningsAxis"
                     dataKey="warning"
                     interval={0}
                     tick={<WarningAxisTick />}
@@ -145,6 +145,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 <XAxis
                     tickLine={false}
                     axisLine={false}
+                    xAxisId="datesAxis"
                     interval={0}
                     dataKey="date"
                     tick={<DateAxisTick />}
@@ -160,6 +161,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
                 <Line
                     isAnimationActive={false}
                     dataKey="currentAv"
+                    xAxisId="datesAxis"
                     strokeLinejoin="round"
                     strokeWidth="4"
                     stroke="#d63031"
