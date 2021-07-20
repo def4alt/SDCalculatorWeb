@@ -1,7 +1,6 @@
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import firebase from "firebase";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -13,16 +12,16 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 class Firebase {
-    auth: firebase.auth.Auth;
-    db: firebase.firestore.Firestore;
-    fbProvider: firebase.auth.AuthProvider;
-    glProvider: firebase.auth.AuthProvider;
+    auth: app.auth.Auth;
+    db: app.firestore.Firestore;
+    fbProvider: app.auth.AuthProvider;
+    glProvider: app.auth.AuthProvider;
 
     constructor() {
-        if (!firebase.apps.length) {
+        if (!app.apps.length) {
             app.initializeApp(firebaseConfig);
         } else {
-            firebase.app();
+            app.app();
         }
 
         this.auth = app.auth();
