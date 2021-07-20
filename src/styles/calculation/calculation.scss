@@ -10,8 +10,4 @@
     justify-content: center;
     align-items: center;
     height: calc(100vh - 3.5rem);
-
-    @include base.for-print {
-        display: none;
-    }
 }

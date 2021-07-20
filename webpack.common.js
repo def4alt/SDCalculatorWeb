@@ -1,13 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
+const { CheckerPlugin } = require("awesome-typescript-loader");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
     resolve: {
-        extensions: [".ts", ".tsx", ".json", ".js", ".jsx"],
+        extensions: [".ts", ".tsx", ".json", ".js", ".jsx", ".scss"],
         alias: {
             Styles: path.resolve(__dirname, "src/styles/"),
             Context: path.resolve(__dirname, "src/context/"),
@@ -20,7 +21,7 @@ module.exports = {
                 include: /src/,
                 test: /\.(ts|tsx)$/,
                 exclude: /\.test$/,
-                use: ["babel-loader", "ts-loader"],
+                use: ["babel-loader", "awesome-typescript-loader"],
             },
             {
                 exclude: /node_modules/,
@@ -74,5 +75,6 @@ module.exports = {
             background_color: "#ffffff",
         }),
         new WorkboxPlugin.GenerateSW(),
+        new CheckerPlugin(),
     ],
 };

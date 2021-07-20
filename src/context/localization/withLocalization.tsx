@@ -10,7 +10,7 @@ const withLocalization = <P extends object>(
     const WithLocalization: React.FC<P & ReactCookieProps> = (props) => {
         const setLocale = (code: string) => {
             localization.setLanguage(code);
-
+            
             if (!props.cookies) return;
             props.cookies.set("lang", code, { path: "/" });
         };

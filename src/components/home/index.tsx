@@ -2,6 +2,7 @@ import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
 import Loading from "Components/loading";
 import Notes from "Components/notes";
+import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
 import "Styles/button/button.scss";
@@ -13,6 +14,7 @@ const CardsList = React.lazy(() => import("Components/card_list"));
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
     const [lot, setLot] = useState<number>(0);
+    const printRef = useRef<HTMLDivElement>(null);
 
     const modelsCallback = (lot: number, models: StatModel[]) => {
         setModels(models);
@@ -26,16 +28,22 @@ const Home: React.FC = (_) => {
             </Suspense>
 
             {models.length > 0 && (
-                <Suspense fallback={<Loading />}>
-                    <button
-                        className="button_print"
-                        onClick={() => window.print()}
-                    >
-                        <MdPrint />
-                    </button>
-                    <Notes lot={lot} />
-                    <CardsList models={models} />
-                </Suspense>
+                <>
+                    <ReactToPrint
+                        trigger={() => (
+                            <button className="button_print">
+                                <MdPrint />
+                            </button>
+                        )}
+                        content={() => printRef.current}
+                    />
+                    <Suspense fallback={<Loading />}>
+                        <div ref={printRef}>
+                            <Notes lot={lot} />
+                            <CardsList models={models} />
+                        </div>
+                    </Suspense>
+                </>
             )}
         </div>
     );

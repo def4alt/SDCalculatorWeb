@@ -19,14 +19,33 @@ interface CardsListProps {
 }
 
 const CardsList: React.FC<CardsListProps> = (props) => {
+    const [width, setWidth] = useState<number>(0);
     const [showSDCV, setShowSDCV] = useState<boolean>(true);
     const localization = useContext(LocalizationContext).localization;
 
+    useEffect(() => {
+        window.addEventListener("resize", resizeHandler);
+        resizeHandler();
+
+        return () => window.removeEventListener("resize", resizeHandler);
+    });
+
+    const resizeHandler = () => {
+        const a4Width = 1123;
+        const width = window.innerWidth < a4Width ? window.innerWidth : a4Width;
+
+        setWidth(
+            250 + 100 * props.models[0].Average.length > width - 80
+                ? width - 80
+                : 250 + 100 * props.models[0].Average.length
+        );
+    };
+
     const cards = useMemo(() => {
         return props.models.map((model: StatModel, i: number) => (
-            <Card model={model} showSDCV={showSDCV} key={i} />
+            <Card model={model} showSDCV={showSDCV} key={i} width={width} />
         ));
-    }, [props.models, showSDCV]);
+    }, [props.models, width, showSDCV]);
 
     return (
         <div className="card-list">

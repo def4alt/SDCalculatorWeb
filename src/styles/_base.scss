@@ -23,7 +23,7 @@ $darkgrey: #2d3436;
 }
 
 @mixin for-tablet-landscape-up {
-    @media (min-width: 901px) {
+    @media (min-width: 900px) {
         @content;
     }
 }
@@ -35,7 +35,7 @@ $darkgrey: #2d3436;
 }
 
 @mixin for-desktop-up {
-    @media (min-width: 1201px) {
+    @media (min-width: 1200px) {
         @content;
     }
 }

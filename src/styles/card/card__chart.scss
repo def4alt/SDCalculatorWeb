@@ -4,4 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @include base.for-print {
+        height: 300px;
+    }
 }

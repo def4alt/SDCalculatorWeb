@@ -10,30 +10,13 @@
     margin: 30px auto;
     height: 22rem;
     border-radius: 20px;
-    min-width: 18rem;
-    max-width: 40rem;
     background: base.$white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px base.$white;
-
-    @include base.for-tablet-landscape-down {
-        width: calc(100% - 20px);
-    }
-
-    @include base.for-tablet-landscape-up {
-        width: 40vw;
-    }
-
-    @include base.for-big-desktop-up {
-        width: 20vw;
-    }
 
     @include base.for-print {
         margin-top: 2.5vh;
         margin-bottom: 2.5vh;
-        margin-right: 0.5vw;
-        margin-left: 0.5vw;
         height: calc(45vh - 2px);
-        width: 60vw !important;
         border: 1px solid rgba(base.$black, 0.2);
         background: base.$white;
         box-shadow: none;
