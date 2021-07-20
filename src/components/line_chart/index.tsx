@@ -1,13 +1,63 @@
-import React, { useMemo } from "react";
+import React, { FunctionComponent, useMemo } from "react";
 import { StatModel } from "../../types";
+import {
+    Line,
+    LineChart as ReLineChart,
+    ResponsiveContainer,
+    XAxis,
+    YAxis,
+} from "recharts";
 import moment from "moment";
 
 import "Styles/line-chart/line-chart.scss";
 
 interface LineChartProps {
     model: StatModel;
-    width: number;
 }
+
+const DateAxisTick: FunctionComponent<any> = (props: any) => {
+    const { x, y, payload } = props;
+
+    return (
+        <g transform={`translate(${x},${y})`}>
+            <text
+                x={0}
+                y={0}
+                dy={16}
+                textAnchor="end"
+                fill="#666"
+                fontSize={12}
+                fontWeight={100}
+                fontFamily="Roboto"
+                transform="rotate(-25)"
+            >
+                {payload.value}
+            </text>
+        </g>
+    );
+};
+
+const WarningAxisTick: FunctionComponent<any> = (props: any) => {
+    const { x, y, payload } = props;
+
+    return (
+        <g transform={`translate(${x},${y})`}>
+            <text
+                x={0}
+                y={0}
+                dy={32}
+                dx={14}
+                textAnchor="end"
+                fill="#d63031"
+                fontSize={16}
+                fontWeight={100}
+                fontFamily="Roboto"
+            >
+                {payload.value}
+            </text>
+        </g>
+    );
+};
 
 const yLabels = ["3SD", "2SD", "SD", "M", "SD", "2SD", "3SD"];
 
@@ -30,113 +80,92 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
     const data = useMemo(
         () =>
             [...Array(model.Average.length)].map((_, i) => ({
-                x: i,
-                y: model.Average[i],
+                avPlus3SD: model.Average[0] + 3 * model.SD,
+                avPlus2SD: model.Average[0] + 2 * model.SD,
+                avPlusSD: model.Average[0] + model.SD,
+                av: model.Average[0],
+                avMinusSD: model.Average[0] - model.SD,
+                avMinus2SD: model.Average[0] - 2 * model.SD,
+                avMinus3SD: model.Average[0] - 3 * model.SD,
+                currentAv: model.Average[i],
+                date: moment(model.Date[i]).format("DD/MM/YY").toLocaleString(),
+                warning: model.Warnings[i],
             })),
         [model.Average, model.Average.length]
     );
 
-    const Line = (value: number, color: string, repeat: number) => {
+    const LineTemplate = (dataKey: string, color: string) => {
         return (
-            <LineSeries
-                data={[...Array(repeat === 1 ? 2 : repeat)].map((_, i) => ({
-                    x: i,
-                    y: value,
-                }))}
-                style={{
-                    strokeLinejoin: "round",
-                    strokeWidth: 2,
-                }}
-                strokeStyle="dashed"
-                color={color}
+            <Line
+                dataKey={dataKey}
+                type="monotone"
+                strokeDasharray="5 5"
+                isAnimationActive={false}
+                stroke={color}
+                strokeWidth="2"
+                strokeLinejoin="round"
+                dot={false}
             />
         );
     };
 
-    const dateFormat = (index: number) => {
-        if (props.width < model.Date.length * 50 - 150)
-            if (index == 0 || model.Warnings[index].trim() != "")
-                return moment(model.Date[index])
-                    .format("DD/MM/YY")
-                    .toLocaleString();
-            else return "";
-        else
-            return moment(model.Date[index])
-                .format("DD/MM/YY")
-                .toLocaleString();
-    };
-
     return (
-        <XYPlot
-            margin={{ left: 90, right: 30, bottom: 50 }}
-            className="line-chart"
-            width={props.width}
-            height={250}
-        >
-            <YAxis
-                tickValues={yValues}
-                style={{
-                    display: "inline-flex",
-                    fontSize: 12,
-                    fontWeight: 100,
-                    text: { fill: "#636e72" },
-                }}
-                tickFormat={(v: number, i: number) =>
-                    Math.round(v * 100) / 100 + `, ${yLabels[i]}`
-                }
-            />
-
-            <XAxis
-                hideLine
-                orientation="bottom"
-                tickValues={[...Array(model.Average.length).keys()]}
-                style={{
-                    fontSize: 15,
-                    text: {
-                        stroke: "none",
-                        fill: "#c62828",
-                        fontWeight: 100,
-                    },
-                    line: {
-                        stroke: "none",
-                        fill: "#ffffff",
-                    },
-                }}
-                top={220}
-                tickFormat={(i: number) => model.Warnings[i]}
-            />
-            <XAxis
-                hideLine
-                tickValues={[...Array(model.Average.length).keys()]}
-                tickFormat={(i: number) => dateFormat(i)}
-                style={{
-                    ticks: {
-                        stroke: "none",
-                    },
-                    line: {
-                        stroke: "none",
-                        fill: "#ffffff",
-                    },
-                }}
-                tickLabelAngle={-20}
-            />
-
-            {Line(yValues[0], "#e84393", model.Average.length)}
-            {Line(yValues[1], "#00cec9", model.Average.length)}
-            {Line(yValues[2], "#ff7675", model.Average.length)}
-            {Line(yValues[3], "#6c5ce7", model.Average.length)}
-            {Line(yValues[4], "#ff7675", model.Average.length)}
-            {Line(yValues[5], "#00cec9", model.Average.length)}
-            {Line(yValues[6], "#e84393", model.Average.length)}
-            <LineMarkSeries
+        <ResponsiveContainer height={250} width="100%">
+            <ReLineChart
+                margin={{ top: 5, right: 30, left: 0, bottom: 30 }}
+                className="line-chart"
                 data={data}
-                style={{
-                    strokeLinejoin: "round",
-                    strokeWidth: 4,
-                }}
-                color="#d63031"
-            />
-        </XYPlot>
+            >
+                <YAxis
+                    fontWeight={100}
+                    fontSize={12}
+                    display="inline-flex"
+                    fill="#636e72"
+                    width={100}
+                    domain={[
+                        model.Average[0] - 3 * model.SD,
+                        model.Average[0] + 3 * model.SD,
+                    ]}
+                    tickFormatter={(v: number, i: number) =>
+                        `${Math.floor(v * 100) / 100}, ${yLabels[i]}`
+                    }
+                    tickCount={7}
+                    ticks={yValues}
+                    interval={0}
+                />
+
+                <XAxis
+                    tickLine={false}
+                    axisLine={false}
+                    xAxisId="warningsAxis"
+                    dataKey="warning"
+                    interval={0}
+                    tick={<WarningAxisTick />}
+                />
+                <XAxis
+                    tickLine={false}
+                    axisLine={false}
+                    interval={0}
+                    dataKey="date"
+                    tick={<DateAxisTick />}
+                />
+
+                {LineTemplate("avPlus3SD", "#e84393")}
+                {LineTemplate("avPlus2SD", "#00cec9")}
+                {LineTemplate("avPlusSD", "#ff7675")}
+                {LineTemplate("av", "#6c5ce7")}
+                {LineTemplate("avMinusSD", "#ff7675")}
+                {LineTemplate("avMinus2SD", "#00cec9")}
+                {LineTemplate("avMinus3SD", "#e84393")}
+                <Line
+                    isAnimationActive={false}
+                    dataKey="currentAv"
+                    strokeLinejoin="round"
+                    strokeWidth="4"
+                    stroke="#d63031"
+                />
+            </ReLineChart>
+        </ResponsiveContainer>
     );
 };
 

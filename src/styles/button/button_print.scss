@@ -5,6 +5,10 @@
     color: rgba(base.$black, 0.4);
     background-color: base.$white;
     font-size: 46px;
+
+    @include base.for-print {
+        display: none;
+    }
 }
 
 .button_print:hover {

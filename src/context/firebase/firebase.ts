@@ -19,7 +19,11 @@ class Firebase {
     glProvider: firebase.auth.AuthProvider;
 
     constructor() {
-        app.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            app.initializeApp(firebaseConfig);
+        } else {
+            firebase.app();
+        }
 
         this.auth = app.auth();
 
@@ -51,11 +55,10 @@ class Firebase {
 
     signOut = () => this.auth.signOut();
 
-    resetPassword = (email: string) =>
-        this.auth.sendPasswordResetEmail(email);
+    resetPassword = (email: string) => this.auth.sendPasswordResetEmail(email);
 
     updatePassword = (password: string) =>
-        this.auth.currentUser &&  this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser && this.auth.currentUser.updatePassword(password);
 
     user = (uid: string) => this.db.collection("users").doc(uid);
 

@@ -17,4 +17,8 @@
     gap: 10px;
     width: 100%;
     text-align: center;
+
+    @include base.for-print {
+        display: none;
+    }
 }

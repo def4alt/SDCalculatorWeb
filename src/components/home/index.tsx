@@ -28,22 +28,16 @@ const Home: React.FC = (_) => {
             </Suspense>
 
             {models.length > 0 && (
-                <>
-                    <ReactToPrint
-                        trigger={() => (
-                            <button className="button_print">
-                                <MdPrint />
-                            </button>
-                        )}
-                        content={() => printRef.current}
-                    />
-                    <Suspense fallback={<Loading />}>
-                        <div ref={printRef}>
-                            <Notes lot={lot} />
-                            <CardsList models={models} />
-                        </div>
-                    </Suspense>
-                </>
+                <Suspense fallback={<Loading />}>
+                    <button
+                        className="button_print"
+                        onClick={() => window.print()}
+                    >
+                        <MdPrint />
+                    </button>
+                    <Notes lot={lot} />
+                    <CardsList models={models} />
+                </Suspense>
             )}
         </div>
     );
