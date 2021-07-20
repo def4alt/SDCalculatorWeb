@@ -2,7 +2,6 @@ import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
 import Loading from "Components/loading";
 import Notes from "Components/notes";
-import ReactToPrint from "react-to-print";
 import { MdPrint } from "react-icons/md";
 
 import "Styles/button/button.scss";
