@@ -1,7 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const DotEnv = require("dotenv-webpack");
-const { CheckerPlugin } = require("awesome-typescript-loader");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
@@ -21,7 +20,7 @@ module.exports = {
                 include: /src/,
                 test: /\.(ts|tsx)$/,
                 exclude: /\.test$/,
-                use: ["babel-loader", "awesome-typescript-loader"],
+                use: ["babel-loader", "ts-loader"],
             },
             {
                 exclude: /node_modules/,
@@ -71,10 +70,9 @@ module.exports = {
             ],
             start_url: ".",
             display: "standalone",
-            theme_color: "#000000",
+            theme_color: "#0984e3",
             background_color: "#ffffff",
         }),
         new WorkboxPlugin.GenerateSW(),
-        new CheckerPlugin(),
     ],
 };
