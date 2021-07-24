@@ -14,10 +14,11 @@
     }
 
     @include base.for-print {
-        position: absolute;
         flex-direction: row;
-        margin-top: 0;
-        gap: 0;
-        top: 100vh;
+        margin: 0;
+        gap: 0 !important;
+        box-sizing: border-box !important;
+        -webkit-box-sizing: border-box !important;
+        -moz-box-sizing: border-box !important;
     }
 }

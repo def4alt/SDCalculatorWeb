@@ -20,28 +20,19 @@
 
     @include base.for-print {
         width: 80vw;
-        height: 80vh;
+        height: 100vh !important;
         display: block;
-        position: absolute;
+        position: relative;
+        top: 0;
+        margin: 0;
+        font-size: 14px;
+        box-sizing: border-box !important;
+        -webkit-box-sizing: border-box !important;
+        -moz-box-sizing: border-box !important;
     }
 }
 
 @include base.for-print {
-    .notes__form {
-        width: 60vw;
-        height: calc(80vh - 40px);
-        display: block;
-        height: 80vh;
-        position: absolute;
-        left: 20px;
-        border: none;
-        top: 0;
-    }
-
-    .notes__toggle {
-        display: none;
-    }
-
     input[type="date"]::-webkit-inner-spin-button,
     input[type="date"]::-webkit-calendar-picker-indicator {
         display: none;
