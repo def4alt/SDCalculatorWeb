@@ -3,19 +3,26 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#0984e3" />
-        <meta name="description" content="SDCalculator on Web" />
+        <link rel="manifest" href="./manifest.webmanifest" />
         <title>SDCalculator</title>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
         <script>
-            // Check that service workers are supported
             if ("serviceWorker" in navigator) {
-                // Use the window load event to keep the page load performant
                 window.addEventListener("load", () => {
-                    navigator.serviceWorker.register("/service-worker.js");
+                    navigator.serviceWorker
+                        .register("/service-worker.js")
+                        .then((registration) => {
+                            console.log("SW registered: ", registration);
+                        })
+                        .catch((registrationError) => {
+                            console.log(
+                                "SW registration failed: ",
+                                registrationError
+                            );
+                        });
                 });
             }
         </script>

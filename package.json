@@ -58,6 +58,7 @@
         "awesome-typescript-loader": "*",
         "babel-loader": "^8.2.2",
         "clean-webpack-plugin": "^4.0.0-alpha.0",
+        "copy-webpack-plugin": "^9.0.1",
         "css-loader": "^6.2.0",
         "css-minimizer-webpack-plugin": "*",
         "dotenv-webpack": "*",
@@ -70,13 +71,11 @@
         "sass-loader": "*",
         "style-loader": "^3.2.1",
         "terser-webpack-plugin": "*",
-        "ts-loader": "^9.2.3",
-        "webpack": "^5.45.1",
+        "ts-loader": "^9.2.4",
+        "webpack": "^5.46.0",
         "webpack-cli": "*",
         "webpack-dev-server": "^3.11.2",
-        "webpack-manifest-plugin": "*",
         "webpack-merge": "*",
-        "webpack-pwa-manifest": "*",
         "workbox-webpack-plugin": "*"
     }
 }
