@@ -13,7 +13,6 @@ const CardsList = React.lazy(() => import("Components/card_list"));
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
     const [lot, setLot] = useState<number>(0);
-    const printRef = useRef<HTMLDivElement>(null);
 
     const modelsCallback = (lot: number, models: StatModel[]) => {
         setModels(models);
