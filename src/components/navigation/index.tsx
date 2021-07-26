@@ -8,6 +8,7 @@ import { AuthUserContext } from "Context/session";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/nav/nav.scss";
+import Loading from "Components/loading";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -56,21 +57,25 @@ const Navigation: React.FC = (_) => {
                     SDCalculator
                 </button>
                 {user ? (
-                    <button
-                        className="nav__avatar"
-                        onClick={() =>
-                            toggleMenu(
-                                accountMenuRef,
-                                "nav__account-menu_expanded"
-                            )
-                        }
-                    >
-                        <img
-                            src={avatar}
-                            className="avatar avatar_rounded"
-                            alt="avatar"
-                        />
-                    </button>
+                    avatar ? (
+                        <button
+                            className="nav__avatar"
+                            onClick={() =>
+                                toggleMenu(
+                                    accountMenuRef,
+                                    "nav__account-menu_expanded"
+                                )
+                            }
+                        >
+                            <img
+                                src={avatar}
+                                className="avatar avatar_rounded"
+                                alt="avatar"
+                            />
+                        </button>
+                    ) : (
+                        <Loading />
+                    )
                 ) : (
                     <button
                         className="nav__sign-in"

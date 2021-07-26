@@ -8,12 +8,14 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Loading from "Components/loading";
 
 const About = lazy(() => import("Components/about"));
-const Home = lazy(() => import("Components/home"));
+const Home = lazy(() => import(/* webpackPreload: true */ "Components/home"));
 const Admin = lazy(() => import("Components/admin"));
 const SignUp = lazy(() => import("Components/sign_up"));
 const SignIn = lazy(() => import("Components/sign_in"));
 const Account = lazy(() => import("Components/account"));
-const Navigation = lazy(() => import("Components/navigation"));
+const Navigation = lazy(
+    () => import(/* webpackPreload: true */ "Components/navigation")
+);
 const Settings = lazy(() => import("Components/settings"));
 const PasswordForget = lazy(() => import("Components/password_forget"));
 

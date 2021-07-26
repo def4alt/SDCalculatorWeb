@@ -19,7 +19,23 @@ module.exports = merge(common, {
         new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
     ],
     optimization: {
-        minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+            new TerserPlugin({
+                parallel: true,
+            }),
+        ],
+        moduleIds: "deterministic",
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendors",
+                    chunks: "all",
+                },
+            },
+        },
     },
     devtool: "source-map",
     module: {

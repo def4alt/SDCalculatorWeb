@@ -22,13 +22,13 @@
         "react-router-dom": "*",
         "react-vis": "*",
         "typescript": "*",
+        "webpack-bundle-analyzer": "^4.4.2",
         "xlsx": "*"
     },
     "scripts": {
         "start": "npx webpack serve --mode development --config webpack.dev.js",
         "build": "webpack --mode production --config webpack.prod.js",
-        "test": "react-scripts test",
-        "update:packages": "node wipe-dependencies.js && rm -rf node_modules && npm update --save-dev && npm update --save"
+        "test": "react-scripts test"
     },
     "eslintConfig": {
         "extends": "react-app"
