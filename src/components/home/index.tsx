@@ -1,14 +1,17 @@
 import React, { Suspense, useState, useRef } from "react";
 import { StatModel } from "../../types";
-import Loading from "Components/loading";
 import Notes from "Components/notes";
 import { MdPrint } from "react-icons/md";
 
 import "Styles/button/button.scss";
 import "Styles/home/home.scss";
 
-const Calculation = React.lazy(() => import("Components/calculation"));
-const CardsList = React.lazy(() => import("Components/card_list"));
+const Calculation = React.lazy(
+    () => import(/* webpackPreload: true */ "Components/calculation")
+);
+const CardsList = React.lazy(
+    () => import(/* webpackPrefetch: true */ "Components/card_list")
+);
 
 const Home: React.FC = (_) => {
     const [models, setModels] = useState<StatModel[]>([]);
@@ -21,12 +24,10 @@ const Home: React.FC = (_) => {
 
     return (
         <div className="home">
-            <Suspense fallback={<Loading />}>
-                <Calculation callback={modelsCallback} />
-            </Suspense>
+            <Calculation callback={modelsCallback} />
 
             {models.length > 0 && (
-                <Suspense fallback={<Loading />}>
+                <>
                     <button
                         className="button_print"
                         onClick={() => window.print()}
@@ -35,7 +36,7 @@ const Home: React.FC = (_) => {
                     </button>
                     <Notes lot={lot} />
                     <CardsList models={models} />
-                </Suspense>
+                </>
             )}
         </div>
     );

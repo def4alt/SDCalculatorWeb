@@ -9,28 +9,35 @@ import {
     ReadModel,
     SampleType,
     StatModel,
-    XlsxFailedToGetCellError
+    XlsxFailedToGetCellError,
 } from "../../types";
 import getStatModels from "./statistics";
 
 const types = /(\.xls|\.xlsx)$/i;
 const dateCheck = /\d{2}_\d{2}_\d{2}/i;
 
-export const getValueFromCell = (row: number, column: number, sheet: Sheet):
-    Result<string | boolean | Date | number, XlsxFailedToGetCellError> => {
+export const getValueFromCell = (
+    row: number,
+    column: number,
+    sheet: Sheet
+): Result<string | boolean | Date | number, XlsxFailedToGetCellError> => {
     const cellAddress = utils.encode_cell({
         r: row,
-        c: column
+        c: column,
     });
 
     const value = sheet[cellAddress];
 
-    if(!value || value.v === undefined)
-        return err(new XlsxFailedToGetCellError(`Failed to get ${cellAddress} cell`,
-            "getValueFromCell, reader.ts"));
+    if (!value || value.v === undefined)
+        return err(
+            new XlsxFailedToGetCellError(
+                `Failed to get ${cellAddress} cell`,
+                "getValueFromCell, reader.ts"
+            )
+        );
 
     return ok(value.v);
-}
+};
 
 const calculate = async (
     files: File[],
@@ -39,15 +46,21 @@ const calculate = async (
 ): Promise<Result<StatModel[], CalculationError>> => {
     const readModels = await getReadModels(files);
     if (readModels.length === 0)
-        return err(new CalculationError(
-            "readModels array is empty",
-            "calculate, reader.ts"));
+        return err(
+            new CalculationError(
+                "readModels array is empty",
+                "calculate, reader.ts"
+            )
+        );
 
     const statModels = getStatModels(readModels);
     if (statModels.length === 0)
-        return err(new CalculationError(
-            "statModels array is empty",
-            "calculate, reader.ts"));
+        return err(
+            new CalculationError(
+                "statModels array is empty",
+                "calculate, reader.ts"
+            )
+        );
 
     if (sdMode) return ok(statModels);
     else return ok(appendNewModels(previousStatModels, statModels));
@@ -67,20 +80,21 @@ export const getReadModels = async (files: File[]) => {
     return readModels;
 };
 
-export const readFile = (file: File) => new Promise<ReadModel[]>((resolve) => {
-    const reader = new FileReader();
-    reader.readAsBinaryString(file);
+export const readFile = (file: File) =>
+    new Promise<ReadModel[]>((resolve) => {
+        const reader = new FileReader();
+        reader.readAsBinaryString(file);
 
-    reader.onload = () => {
-        const workbook = read(reader.result, {
-            type: "binary"
-        });
+        reader.onload = () => {
+            const workbook = read(reader.result, {
+                type: "binary",
+            });
 
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        resolve(getModels(sheet, file.name));
-    };
-});
+            resolve(getModels(sheet, file.name));
+        };
+    });
 
 export const getModels = (sheet: WorkSheet, fileName: string) => {
     const sheetRange = utils.decode_range(sheet["!ref"] || "");
@@ -90,18 +104,18 @@ export const getModels = (sheet: WorkSheet, fileName: string) => {
 
     let models: ReadModel[] = [];
 
-    for (
-        let currentRow = startRow;
-        currentRow <= endRow;
-        currentRow++
-    )
+    for (let currentRow = startRow; currentRow <= endRow; currentRow++)
         models.push(getModel(sheet, currentRow, sheetRange, fileName));
 
     return models;
 };
 
-export const getModel = (sheet: Sheet, row: number, sheetRange: Range,
-                         fileName: string) => {
+export const getModel = (
+    sheet: Sheet,
+    row: number,
+    sheetRange: Range,
+    fileName: string
+) => {
     let model = {} as ReadModel;
 
     model.Date = [getDate(fileName)];
@@ -116,8 +130,7 @@ export const getModel = (sheet: Sheet, row: number, sheetRange: Range,
 export const getDate = (fileName: string): string => {
     const regexArr = dateCheck.exec(fileName);
 
-    if (!regexArr)
-        return new Date().toUTCString();
+    if (!regexArr) return new Date().toUTCString();
 
     const dateString = regexArr[0];
 
@@ -133,13 +146,20 @@ export const getFailedTests = (sheet: WorkSheet, row: number) => {
     return (failedTestsCell.value as string).split(",");
 };
 
-export const getSampleType = (sheet: WorkSheet, row: number):
-    Result<SampleType, FailedToParseError> => {
+export const getSampleType = (
+    sheet: WorkSheet,
+    row: number
+): Result<SampleType, FailedToParseError> => {
     const SAMPLE_TYPE_COLUMN = 3;
     const sampleTypeCell = getValueFromCell(row, SAMPLE_TYPE_COLUMN, sheet);
 
-    if (sampleTypeCell.isErr()) return err(new FailedToParseError(`Failed to parse undefined to SampleType`,
-        "getSampleType, reader.ts"));
+    if (sampleTypeCell.isErr())
+        return err(
+            new FailedToParseError(
+                `Failed to parse undefined to SampleType`,
+                "getSampleType, reader.ts"
+            )
+        );
 
     switch ((sampleTypeCell.value as string).toUpperCase()) {
         case "QC LV I":
@@ -148,9 +168,12 @@ export const getSampleType = (sheet: WorkSheet, row: number):
             return ok(SampleType.Lvl2);
 
         default:
-            return err(new FailedToParseError(
-                `Failed to parse ${sampleTypeCell.value} to SampleType`,
-                "getSampleType, reader.ts"));
+            return err(
+                new FailedToParseError(
+                    `Failed to parse ${sampleTypeCell.value} to SampleType`,
+                    "getSampleType, reader.ts"
+                )
+            );
     }
 };
 
@@ -172,53 +195,58 @@ export const getTestResults = (sheet: WorkSheet, range: Range, row: number) => {
         const testValueResult = getTestValue(sheet, row, currentColumn);
         if (testValueResult.isErr()) continue;
 
-        testResults[testTitle] =
-            Math.round(testValueResult.value * 100) / 100;
+        testResults[testTitle] = Math.round(testValueResult.value * 100) / 100;
     }
 
     return testResults;
 };
 
-export const getTestTitle = (sheet: WorkSheet, row: number, column: number): string => {
-    const testTitleCell = getValueFromCell(
-        row,
-        column,
-        sheet
-    );
+export const getTestTitle = (
+    sheet: WorkSheet,
+    row: number,
+    column: number
+): string => {
+    const testTitleCell = getValueFromCell(row, column, sheet);
 
     if (testTitleCell.isErr()) return "";
 
     const testTitle = (testTitleCell.value as string).trim();
 
-    if (testTitle.includes("/"))
-        return "";
+    if (testTitle.includes("/")) return "";
 
     return testTitle;
 };
 
-
-export const getTestValue = (sheet: WorkSheet, row: number,
-                             column: number): Result<number, FailedToParseError> => {
-    const testValueCell = getValueFromCell(
-        row,
-        column,
-        sheet
-    );
+export const getTestValue = (
+    sheet: WorkSheet,
+    row: number,
+    column: number
+): Result<number, FailedToParseError> => {
+    const testValueCell = getValueFromCell(row, column, sheet);
     if (testValueCell.isErr())
-        return err(new FailedToParseError(
-            `Failed to parse undefined to number`,
-            "getTestValue, reader.ts"))
+        return err(
+            new FailedToParseError(
+                `Failed to parse undefined to number`,
+                "getTestValue, reader.ts"
+            )
+        );
 
     const testValue = testValueCell.value as number;
     if (isNaN(testValue))
-        return err(new FailedToParseError(
-            `Failed to parse ${testValueCell.value} to number`,
-            "getTestValue, reader.ts"));
+        return err(
+            new FailedToParseError(
+                `Failed to parse ${testValueCell.value} to number`,
+                "getTestValue, reader.ts"
+            )
+        );
 
     return ok(testValue);
 };
 
-export const appendNewModels = (previousModels: StatModel[], models: StatModel[]) => {
+export const appendNewModels = (
+    previousModels: StatModel[],
+    models: StatModel[]
+) => {
     let newStatModels: StatModel[] = [];
     Object.assign(newStatModels, previousModels);
 
@@ -237,13 +265,16 @@ export const appendNewModels = (previousModels: StatModel[], models: StatModel[]
     return newStatModels;
 };
 
-export const appendStatModel = (previousModel: StatModel, model: StatModel): StatModel => {
+export const appendStatModel = (
+    previousModel: StatModel,
+    model: StatModel
+): StatModel => {
     previousModel.Average.push(model.Average[0]);
     previousModel.Date.push(model.Date[0]);
     previousModel.Warnings.push(getWarning(previousModel));
 
     return previousModel;
-}
+};
 
 export const getWarning = (model: StatModel) => {
     const westgard = new Westgard();
@@ -251,10 +282,9 @@ export const getWarning = (model: StatModel) => {
 
     const previousWarning = model.Warnings[model.Warnings.length - 1];
 
-    if (warning !== previousWarning)
-        return warning;
+    if (warning !== previousWarning) return warning;
 
     return " ";
-}
+};
 
 export default calculate;
