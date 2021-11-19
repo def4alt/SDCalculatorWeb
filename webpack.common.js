@@ -56,12 +56,15 @@ module.exports = {
             },
             inject: true,
         }),
-        new GenerateSW(),
         new CopyWebpackPlugin({
             patterns: [
                 { from: "public/logo192.png", to: "assets/logo192.png" },
                 { from: "public/logo512.png", to: "assets/logo512.png" },
             ],
         }),
+        new GenerateSW({
+            clientsClaim: true,
+            skipWaiting: true,
+          }),
     ],
 };

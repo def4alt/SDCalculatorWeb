@@ -20,6 +20,9 @@ class Firebase {
     constructor() {
         if (!app.apps.length) {
             app.initializeApp(firebaseConfig);
+            app.firestore()
+                .enablePersistence({ synchronizeTabs: true })
+                .catch((err) => console.log(err));
         } else {
             app.app();
         }
@@ -29,6 +32,7 @@ class Firebase {
         this.fbProvider = new app.auth.FacebookAuthProvider();
         this.glProvider = new app.auth.GoogleAuthProvider();
         this.auth.useDeviceLanguage();
+
 
         this.db = app.firestore();
     }
