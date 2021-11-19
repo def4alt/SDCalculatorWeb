@@ -7,6 +7,10 @@
                     {
                         "key": "Cache-Control",
                         "value": "no-cache"
+                    },
+                    {
+                        "key": "Content-Type",
+                        "value": "application/javascript; charset=UTF-8"
                     }
                 ]
             }
@@ -14,10 +18,10 @@
         "public": "public",
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
-          {
-            "source": "**",
-            "destination": "/index.html"
-          }
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
         ]
     },
     "firestore": {
