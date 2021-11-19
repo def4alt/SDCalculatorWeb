@@ -7,13 +7,11 @@ module.exports = merge(common, {
     mode: "development",
     devServer: {
         historyApiFallback: true,
-        contentBase: path.resolve(__dirname, "./dist"),
         compress: true,
         hot: true,
         port: 8080,
     },
     devtool: "eval-cheap-module-source-map",
-    plugins: [new webpack.HotModuleReplacementPlugin()],
     module: {
         rules: [
             {

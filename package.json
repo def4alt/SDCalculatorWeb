@@ -71,7 +71,7 @@
         "terser-webpack-plugin": "*",
         "ts-loader": "^9.2.6",
         "webpack": "^5.61.0",
-        "webpack-cli": "*",
+        "webpack-cli": "^4.9.1",
         "webpack-dev-server": "^4.4.0",
         "webpack-merge": "*",
         "workbox-webpack-plugin": "*"
