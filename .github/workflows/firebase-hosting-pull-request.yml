@@ -16,7 +16,7 @@ jobs:
       FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
     steps:
-      - uses: actions/checkout@v2shell:bash
+      - uses: actions/checkout@v2
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install # will run `yarn install` command
