@@ -111,6 +111,7 @@ const LineChart: React.FunctionComponent<LineChartProps> = (props) => {
             <XAxis
                 hideLine
                 tickValues={[...Array(model.Average.length).keys()]}
+                tickTotal={[...Array(model.Average.length).keys()].length}
                 tickFormat={(i: number) => dateFormat(i)}
                 style={{
                     ticks: {
