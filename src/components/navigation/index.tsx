@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import * as ROUTES from "../../routes";
-import { __RouterContext, withRouter } from "react-router";
 import { FirebaseContext } from "Context/firebase";
 import { FaSignInAlt } from "react-icons/fa";
 import { AuthUserContext } from "Context/session";
@@ -9,6 +8,7 @@ import { LocalizationContext } from "Context/localization";
 
 import "Styles/nav/nav.scss";
 import Loading from "Components/loading";
+import { Link } from "react-router-dom";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
@@ -16,7 +16,6 @@ const Navigation: React.FC = (_) => {
 
     const firebase = useContext(FirebaseContext);
     const user = useContext(AuthUserContext);
-    const router = useContext(__RouterContext);
     const localization = useContext(LocalizationContext).localization;
 
     const [avatar, setAvatar] = useState<string>("");
@@ -50,12 +49,9 @@ const Navigation: React.FC = (_) => {
                     <p />
                     <p />
                 </button>
-                <button
-                    className="nav__logo"
-                    onClick={() => router.history.push(ROUTES.HOME)}
-                >
+                <Link className="nav__logo" to={ROUTES.HOME}>
                     SDCalculator
-                </button>
+                </Link>
                 {user ? (
                     avatar ? (
                         <button
@@ -77,50 +73,41 @@ const Navigation: React.FC = (_) => {
                         <Loading />
                     )
                 ) : (
-                    <button
+                    <Link
                         className="nav__sign-in"
                         aria-label="Sign in"
-                        onClick={() => {
-                            router.history.push(ROUTES.SIGN_IN);
-                        }}
+                        to={ROUTES.SIGN_IN}
                     >
                         <FaSignInAlt />
-                    </button>
+                    </Link>
                 )}
             </div>
             <div className="nav__menu" ref={menuRef}>
-                <button
+                <Link
                     className="nav__link"
-                    onClick={() => {
-                        toggleMenu(menuRef, "nav__menu_expanded");
-                        router.history.push(ROUTES.SETTINGS);
-                    }}
+                    to={ROUTES.SETTINGS}
+                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
                     {localization.preferences}
-                </button>
-                <button
+                </Link>
+                <Link
                     className="nav__link"
-                    onClick={() => {
-                        toggleMenu(menuRef, "nav__menu_expanded");
-                        router.history.push(ROUTES.ABOUT);
-                    }}
+                    to={ROUTES.ABOUT}
+                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
                     {localization.about}
-                </button>
+                </Link>
             </div>
             <div className="nav__account-menu" ref={accountMenuRef}>
-                <button
+                <Link
                     className="nav__link"
-                    onClick={() => {
-                        toggleMenu(
-                            accountMenuRef,
-                            "nav__account-menu_expanded"
-                        );
-                        router.history.push(ROUTES.ACCOUNT);
-                    }}
+                    to={ROUTES.ACCOUNT}
+                    onClick={() =>
+                        toggleMenu(accountMenuRef, "nav__account-menu_expanded")
+                    }
                 >
                     {localization.accountSettings}
-                </button>
+                </Link>
                 <button
                     className="nav__link"
                     onClick={() => {
@@ -139,4 +126,4 @@ const Navigation: React.FC = (_) => {
     );
 };
 
-export default withRouter(Navigation);
+export default Navigation;

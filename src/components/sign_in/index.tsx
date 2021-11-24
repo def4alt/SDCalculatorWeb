@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { withRouter, RouterProps, __RouterContext } from "react-router";
+import { useNavigate } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "Context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
@@ -14,19 +14,19 @@ const SignIn: React.FunctionComponent = (_) => {
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
 
+    const navigate = useNavigate();
     const firebase = useContext(FirebaseContext) as Firebase;
-    const router = useContext(__RouterContext) as RouterProps;
     const localization = useContext(LocalizationContext).localization;
 
     const signInWithGoogle = () => {
         firebase
             .signInWithGoogle()
-            .then(() => router.history.push(ROUTES.HOME));
+            .then(() => navigate(ROUTES.HOME));
     };
     const signInWithFacebook = () => {
         firebase
             .signInWithFacebook()
-            .then(() => router.history.push(ROUTES.HOME));
+            .then(() => navigate(ROUTES.HOME));
     };
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +34,7 @@ const SignIn: React.FunctionComponent = (_) => {
         firebase
             .signInWithEmailAndPassword(email, password)
             .then(() => {
-                router.history.push(ROUTES.HOME);
+                navigate(ROUTES.HOME);
             })
             .catch((error) => {
                 setError(error.message);
@@ -87,13 +87,13 @@ const SignIn: React.FunctionComponent = (_) => {
 
                 <button
                     className="button_link"
-                    onClick={() => router.history.push(ROUTES.PASSWORD_FORGET)}
+                    onClick={() => navigate(ROUTES.PASSWORD_FORGET)}
                 >
                     {localization.forgotPassword}
                 </button>
                 <button
                     className="button_link"
-                    onClick={() => router.history.push(ROUTES.SIGN_UP)}
+                    onClick={() => navigate(ROUTES.SIGN_UP)}
                 >
                     {localization.signUp}
                 </button>
@@ -108,4 +108,4 @@ const SignIn: React.FunctionComponent = (_) => {
     );
 };
 
-export default withRouter(SignIn);
+export default SignIn;

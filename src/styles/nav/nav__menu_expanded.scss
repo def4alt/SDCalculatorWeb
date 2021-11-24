@@ -1,6 +1,7 @@
 .nav__menu_expanded {
     position: absolute;
     top: 3.5rem;
+    display: flex;
     left: 0;
 
     button {
@@ -8,6 +9,13 @@
         float: none;
         width: 100%;
         display: block;
+        text-align: left;
+    }
+
+    a {
+        margin-left: 0.5rem;
+        float: none;
+        width: 100%;
         text-align: left;
     }
 

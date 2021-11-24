@@ -1,7 +1,7 @@
 .nav__menu {
     overflow: hidden;
     z-index: 10;
-    display: flex;
+    display: none;
     margin: 0;
     flex-flow: column;
     background-color: base.$white;

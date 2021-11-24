@@ -9,10 +9,12 @@ import { FirebaseContext } from "Context/firebase";
 import { AuthUserContext } from "Context/session";
 import { GoNote } from "react-icons/go";
 import { LocalizationContext } from "Context/localization";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import "Styles/notes/notes.scss";
 import "Styles/button/button.scss";
 import "Styles/header/header.scss";
+import { stringify } from "@firebase/util";
 
 interface NotesProps {
     lot: number;
@@ -59,18 +61,20 @@ const Notes: React.FC<NotesProps> = (props) => {
     useEffect(() => {
         if (!user || !firebase) return;
 
-        firebase
-            .backup(user.uid)
-            .collection("lots")
-            .doc(String(props.lot))
-            .get()
-            .then((snapshot) => {
-                const notes = snapshot.data()?.notes as NotesState;
+        const backupReference = doc(
+            firebase.db,
+            "backup",
+            user.uid,
+            "lots",
+            String(props.lot)
+        );
+        getDoc(backupReference).then((snapshot) => {
+            const notes = snapshot.data()?.notes as NotesState;
 
-                if (!notes) return;
+            if (!notes) return;
 
-                dispatch({ payload: notes });
-            });
+            dispatch({ payload: notes });
+        });
     }, [firebase, props.lot, user]);
 
     const toggleMenu = (
@@ -90,21 +94,21 @@ const Notes: React.FC<NotesProps> = (props) => {
 
         if (!user || !firebase) return;
 
-        firebase
-            .backup(user.uid)
-            .collection("lots")
-            .doc(String(props.lot))
-            .get()
-            .then((snapshot) => {
-                firebase
-                    .backup(user.uid)
-                    .collection("lots")
-                    .doc(String(props.lot))
-                    .set({
-                        models: snapshot.data()?.models,
-                        notes,
-                    });
+        const backupReference = doc(
+            firebase.db,
+            "backups",
+            user.uid,
+            "lots",
+            String(props.lot)
+        );
+
+        getDoc(backupReference).then((snapshot) => {
+            setDoc(backupReference, {
+                models: snapshot.data()?.models,
+                notes,
             });
+        });
+
     };
 
     return (

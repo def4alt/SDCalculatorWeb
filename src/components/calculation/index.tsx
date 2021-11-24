@@ -3,11 +3,11 @@ import React, { useState, useContext } from "react";
 import readerCalculate from "./reader";
 import { StatModel } from "../../types";
 import Lot from "Components/lot";
-import firebase from "firebase";
 
 import { FirebaseContext } from "Context/firebase";
 import { AuthUserContext } from "Context/session";
 import { LocalizationContext } from "Context/localization";
+import { doc, getDoc, setDoc } from "@firebase/firestore";
 
 import "Styles/toggle-button/toggle-button.scss";
 import "Styles/calculation/calculation.scss";
@@ -58,14 +58,18 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
             if (!user || !firebase) return;
 
-            firebase
-                .backup(user.uid)
-                .collection("lots")
-                .doc(String(lot))
-                .set({
-                    models: modelsResult.value,
-                    notes: {},
-                } as firebase.firestore.DocumentData);
+            const backupReference = doc(
+                firebase.db,
+                "backups",
+                user.uid,
+                "lots",
+                String(lot)
+            );
+
+            setDoc(backupReference, {
+                models: modelsResult.value,
+                notes: {},
+            });
         });
     };
 
@@ -74,20 +78,22 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
         if (!user || !firebase) return;
 
-        firebase
-            .backup(user.uid)
-            .collection("lots")
-            .doc(String(lot))
-            .get()
-            .then((snapshot: any) => {
-                if (snapshot.data()) {
-                    setModels(snapshot.data()?.models);
-                    props.callback(lot, snapshot.data()?.models);
-                } else {
-                    setModels([]);
-                    props.callback(lot, []);
-                }
-            });
+        const backupReference = doc(
+            firebase.db,
+            "backups",
+            user.uid,
+            "lots",
+            String(lot)
+        );
+        getDoc(backupReference).then((snapshot) => {
+            if (snapshot.data()) {
+                setModels(snapshot.data()?.models);
+                props.callback(lot, snapshot.data()?.models);
+            } else {
+                setModels([]);
+                props.callback(lot, []);
+            }
+        });
     };
 
     const fileSelectText =

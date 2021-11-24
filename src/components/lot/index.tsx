@@ -3,10 +3,12 @@ import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import { FirebaseContext } from "Context/firebase";
 import { AuthUserContext } from "Context/session";
 import { LocalizationContext } from "Context/localization";
-import firebase from "firebase";
 
 import "Styles/lot/lot.scss";
 import "Styles/edit/edit.scss";
+import { collection, deleteDoc, getDocs } from "@firebase/firestore";
+import { User } from "@firebase/auth";
+import { doc } from "firebase/firestore";
 
 interface LotProps {
     callback: (lot: number) => void;
@@ -31,24 +33,23 @@ const Lot: React.FC<LotProps> = (props) => {
         return () => unsubscribe();
     }, [firebase, firebase?.user]);
 
-    const authStateChangeHandler = (user: firebase.User | null) => {
+    const authStateChangeHandler = (user: User | null) => {
         if (!user || !firebase) {
             setLotList([]);
             setLot(0);
             return;
         }
 
-        firebase
-            .backup(user.uid)
-            .collection("lots")
-            .get()
-            .then((snapshot) => {
-                setLotList(
-                    snapshot.docs
-                        .filter((t) => t.id !== "notes")
-                        .map((t) => Number(t.id))
-                );
-            });
+        const lotsReference = collection(
+            firebase.db,
+            "backups",
+            user.uid,
+            "lots"
+        );
+
+        getDocs(lotsReference).then((docs) =>
+            setLotList(docs.docs.map((t) => Number(t.id)))
+        );
     };
 
     const removeLot = async (lot: number) => {
@@ -64,11 +65,15 @@ const Lot: React.FC<LotProps> = (props) => {
 
         if (!user || !firebase) return;
 
-        await firebase
-            .backup(user.uid)
-            .collection("lots")
-            .doc(String(lot))
-            .delete();
+        const backupReference = doc(
+            firebase.db,
+            "backups",
+            user.uid,
+            "lots",
+            String(lot)
+        );
+
+        await deleteDoc(backupReference);
     };
     const selectLot = (lot: number) => {
         setLot(lot);

@@ -83,14 +83,14 @@ test("Get Statistics Model", () => {
     try {
         getModel([model1, model2, model3, model4], "", SampleType.Lvl2);
     }
-    catch (e) {
+    catch (e: any) {
         expect<InvalidArgumentError>(e);
     }
 
     try {
         getModel([], "Failed Test", SampleType.Lvl1);
     }
-    catch (e) {
+    catch (e: any) {
         expect<InvalidArgumentError>(e);
     }
 })
