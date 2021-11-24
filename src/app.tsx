@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import * as ROUTES from "./routes";
 import { withAuthentication } from "./context/session";
 import { withLocalization } from "./context/localization";
@@ -20,24 +20,24 @@ const Settings = lazy(() => import("Components/settings"));
 const PasswordForget = lazy(() => import("Components/password_forget"));
 
 const App: React.FC = (_) => (
-    <Router>
-        <div className="root">
-            <Suspense fallback={<Loading />}>
-                <Navigation />
-                <Route exact path={ROUTES.HOME} component={Home} />
-                <Route path={ROUTES.ABOUT} component={About} />
-                <Route path={ROUTES.SIGN_UP} component={SignUp} />
-                <Route path={ROUTES.SIGN_IN} component={SignIn} />
-                <Route path={ROUTES.ACCOUNT} component={Account} />
-                <Route path={ROUTES.SETTINGS} component={Settings} />
-                <Route path={ROUTES.ADMIN} component={Admin} />
+    <div className="root">
+        <Suspense fallback={<Loading />}>
+            <Navigation />
+            <Routes>
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={ROUTES.ABOUT} element={<About />} />
+                <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
+                <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
+                <Route path={ROUTES.ACCOUNT} element={<Account />} />
+                <Route path={ROUTES.SETTINGS} element={<Settings />} />
+                <Route path={ROUTES.ADMIN} element={<Admin />} />
                 <Route
                     path={ROUTES.PASSWORD_FORGET}
-                    component={PasswordForget}
+                    element={<PasswordForget />}
                 />
-            </Suspense>
-        </div>
-    </Router>
+            </Routes>
+        </Suspense>
+    </div>
 );
 
 export default withFirebase(withAuthentication(withLocalization(App)));

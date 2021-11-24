@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { withRouter, __RouterContext } from "react-router";
+import { useNavigate } from "react-router";
 import * as ROUTES from "../../routes";
 import Firebase, { FirebaseContext } from "Context/firebase";
 import { LocalizationContext } from "Context/localization";
+import { updateProfile } from "firebase/auth";
 
 import "Styles/auth/auth.scss";
 import "Styles/button/button.scss";
@@ -15,8 +16,8 @@ const SignUp: React.FunctionComponent = (_) => {
     const [error, setError] = useState<string>("");
 
     const firebase = useContext(FirebaseContext) as Firebase;
-    const router = useContext(__RouterContext);
     const localization = useContext(LocalizationContext).localization;
+    const navigate = useNavigate();
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -26,12 +27,10 @@ const SignUp: React.FunctionComponent = (_) => {
             .then((authUser) => {
                 return (
                     authUser.user &&
-                    firebase.user(authUser.user.uid).set({ username, email })
+                    updateProfile(authUser.user, { displayName: username })
                 );
             })
-            .then(() => {
-                router.history.push(ROUTES.HOME);
-            })
+            .then(() => navigate(ROUTES.HOME))
             .catch((error) => {
                 setError(error.message);
             });
@@ -102,4 +101,4 @@ const SignUp: React.FunctionComponent = (_) => {
     );
 };
 
-export default withRouter(SignUp);
+export default SignUp;

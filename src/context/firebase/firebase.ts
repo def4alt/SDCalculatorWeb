@@ -1,6 +1,18 @@
-import app from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import {
+    getAuth,
+    FacebookAuthProvider,
+    GoogleAuthProvider,
+    Auth,
+    AuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    sendPasswordResetEmail,
+    updatePassword,
+    updateProfile
+} from "firebase/auth";
+import { getFirestore, Firestore, doc, collection } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -12,62 +24,58 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 class Firebase {
-    auth: app.auth.Auth;
-    db: app.firestore.Firestore;
-    fbProvider: app.auth.AuthProvider;
-    glProvider: app.auth.AuthProvider;
+    auth: Auth;
+    db: Firestore;
+    fbProvider: AuthProvider;
+    glProvider: AuthProvider;
 
     constructor() {
-        if (!app.apps.length) {
-            app.initializeApp(firebaseConfig);
-            app.firestore()
-                .enablePersistence({ synchronizeTabs: true })
-                .catch((err) => console.log(err));
+        if (!getApps().length) {
+            initializeApp(firebaseConfig);
         } else {
-            app.app();
+            getApp();
         }
 
-        this.auth = app.auth();
+        this.auth = getAuth();
 
-        this.fbProvider = new app.auth.FacebookAuthProvider();
-        this.glProvider = new app.auth.GoogleAuthProvider();
+        this.fbProvider = new FacebookAuthProvider();
+        this.glProvider = new GoogleAuthProvider();
         this.auth.useDeviceLanguage();
 
-
-        this.db = app.firestore();
+        this.db = getFirestore();
     }
 
     createUserWithEmailAndPassword = (email: string, password: string) =>
-        this.auth
-            .createUserWithEmailAndPassword(email, password)
-            .then((user) => {
+        createUserWithEmailAndPassword(this.auth, email, password).then(
+            (user) => {
                 const cdnFilesCount = 104;
                 const index = Math.floor(Math.random() * cdnFilesCount + 1);
-                user.user?.updateProfile({
+                updateProfile(user.user, {
                     photoURL: `https://cdn.image4.io/def4alt/f_auto/avatars/${index}.png`,
                 });
 
                 return user;
-            });
+            }
+        );
 
     signInWithEmailAndPassword = (email: string, password: string) =>
-        this.auth.signInWithEmailAndPassword(email, password);
+        signInWithEmailAndPassword(this.auth, email, password);
 
-    signInWithGoogle = () => this.auth.signInWithPopup(this.glProvider);
-    signInWithFacebook = () => this.auth.signInWithPopup(this.fbProvider);
+    signInWithGoogle = () => signInWithPopup(this.auth, this.glProvider);
+    signInWithFacebook = () => signInWithPopup(this.auth, this.fbProvider);
 
     signOut = () => this.auth.signOut();
 
-    resetPassword = (email: string) => this.auth.sendPasswordResetEmail(email);
+    resetPassword = (email: string) => sendPasswordResetEmail(this.auth, email);
 
     updatePassword = (password: string) =>
-        this.auth.currentUser && this.auth.currentUser.updatePassword(password);
+        this.auth.currentUser && updatePassword(this.auth.currentUser, password);
 
-    user = (uid: string) => this.db.collection("users").doc(uid);
+    user = (uid: string) => doc(this.db, "users", uid);
 
-    users = () => this.db.collection("users");
+    users = () => collection(this.db, "users");
 
-    backup = (uid: string) => this.db.collection("backups").doc(uid);
+    backup = (uid: string) => doc(this.db, "backups", uid);
 }
 
 export default Firebase;

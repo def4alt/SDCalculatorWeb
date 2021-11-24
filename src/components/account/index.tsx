@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
 import { withAuthorization, AuthUserContext } from "Context/session";
-import firebase from "firebase";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/avatar/avatar.scss";
 import "Styles/button/button.scss";
 import "Styles/account/account.scss";
+import { updateProfile, User } from "firebase/auth";
 
 // TODO: Add password change
 // TODO: Add email change
 // TODO: Add username change
 const Account: React.FC = (_) => {
-    const user = useContext(AuthUserContext) as firebase.User;
+    const user = useContext(AuthUserContext) as User;
     const localization = useContext(LocalizationContext).localization;
 
     const [avatar, setAvatar] = useState<string>(user.photoURL as string);
@@ -28,7 +28,7 @@ const Account: React.FC = (_) => {
         reader.onload = () => {
             setAvatar(reader.result as string);
 
-            user.updateProfile({
+            updateProfile(user, {
                 photoURL: reader.result as string,
             });
         };
@@ -56,5 +56,5 @@ const Account: React.FC = (_) => {
 };
 
 export default withAuthorization(
-    (authUser: firebase.User | null) => !!authUser
+    (authUser: User | null) => !!authUser
 )(Account);

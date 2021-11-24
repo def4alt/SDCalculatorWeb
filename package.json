@@ -25,7 +25,7 @@
         "xlsx": "*"
     },
     "scripts": {
-        "start": "npx webpack serve --mode development --config webpack.dev.js",
+        "serve": "npx webpack serve --mode development --config webpack.dev.js",
         "build": "webpack --mode production --config webpack.prod.js",
         "test": "react-scripts test"
     },

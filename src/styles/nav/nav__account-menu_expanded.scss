@@ -1,11 +1,19 @@
 .nav__account-menu_expanded {
     top: 3.5rem;
     position: absolute;
+    display: flex;
 
     button {
         margin-right: 0.5rem;
         float: none;
         display: block;
+        width: 100%;
+        text-align: right;
+    }
+
+    a {
+        margin-right: 0.5rem;
+        float: none;
         width: 100%;
         text-align: right;
     }

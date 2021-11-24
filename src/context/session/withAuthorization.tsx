@@ -1,23 +1,24 @@
 import React, { useContext, useEffect } from "react";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Firebase, { FirebaseContext } from "../firebase";
 import * as ROUTES from "../../routes";
 import AuthUserContext from "./context";
-import firebase from "firebase";
+import { User } from "firebase/auth";
 
 const withAuthorization =
-    (condition: (authUser: firebase.User | null) => boolean) =>
+    (condition: (authUser: User | null) => boolean) =>
     <P extends object>(Component: React.ComponentType<P>) => {
-        const WithAuthorization: React.FC<P & RouteComponentProps> = (
+        const WithAuthorization: React.FC<P> = (
             props
         ) => {
             const firebase = useContext(FirebaseContext) as Firebase;
-
+            const navigate = useNavigate();
+            
             useEffect(() => {
                 const unsubscribe = firebase.auth.onAuthStateChanged(
                     (authUser) =>
                         !condition(authUser) &&
-                        props.history.push(ROUTES.SIGN_IN)
+                        navigate(ROUTES.SIGN_IN)
                 );
 
                 return () => unsubscribe();
@@ -34,7 +35,7 @@ const withAuthorization =
             );
         };
 
-        return withRouter(WithAuthorization);
+        return WithAuthorization;
     };
 
 export default withAuthorization;

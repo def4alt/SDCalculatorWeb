@@ -17,6 +17,9 @@ jobs:
       FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
     steps:
       - uses: actions/checkout@v2shell:bash
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install # will run `yarn install` command
       - run: |
           echo "FIREBASE_API_KEY=$FIREBASE_API_KEY" >> .env
           echo "FIREBASE_AUTH_DOMAIN=$FIREBASE_AUTH_DOMAIN" >> .env
@@ -27,7 +30,9 @@ jobs:
           echo "FIREBASE_PROJECT=$FIREBASE_PROJECT" >> .env
           echo "FIREBASE_MESSAGING_SENDER_ID=$FIREBASE_MESSAGING_SENDER_ID" >> .env
           echo "FIREBASE_APP_ID=$FIREBASE_APP_ID" >> .env
-          npm ci && npm run build
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build # will run `yarn build` command
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
