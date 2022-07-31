@@ -1,7 +1,7 @@
 import { Range, read, Sheet, utils, WorkSheet } from "xlsx";
 import { err, ok, Result } from "neverthrow";
 import moment from "moment";
-import Westgard from "./westgard";
+import { checkWestgardViolations } from "./westgard";
 import {
     CalculationError,
     Dictionary,
@@ -271,20 +271,13 @@ export const appendStatModel = (
 ): StatModel => {
     previousModel.Average.push(model.Average[0]);
     previousModel.Date.push(model.Date[0]);
-    previousModel.Warnings.push(getWarning(previousModel));
+    previousModel.Warnings = checkWestgardViolations(
+        model.Average,
+        model.Average[0],
+        model.SD
+    );
 
     return previousModel;
-};
-
-export const getWarning = (model: StatModel) => {
-    const westgard = new Westgard();
-    const warning = westgard.check(model.Average, model.SD);
-
-    const previousWarning = model.Warnings[model.Warnings.length - 1];
-
-    if (warning !== previousWarning) return warning;
-
-    return " ";
 };
 
 export default calculate;
