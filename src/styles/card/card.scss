@@ -1,6 +1,5 @@
 @import "card__chart.scss";
 @import "card__title.scss";
-@import "card__chart_hidden.scss";
 @import "card__close";
 @import "card__header";
 @import "card__footer";
@@ -12,17 +11,20 @@
     border-radius: 20px;
     background: base.$white;
     box-shadow: 33px 33px 67px #dbdbdb, -33px -33px 67px base.$white;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 90vw;
 
     @include base.for-print {
+        margin: 0;
         margin-top: 2.5vh !important;
         margin-bottom: 2.5vh !important;
-        box-sizing: border-box !important;
-        -webkit-box-sizing: border-box !important;
-        -moz-box-sizing: border-box !important;
-        height: calc(45vh) !important;
-        border: 1px solid rgba(base.$black, 0.2);
+        border: 1pt solid rgba(base.$black, 0.2);
         background: base.$white;
         box-shadow: none;
+        height: calc((100vh / 3) - 5vh) !important;
+        width: 100vw !important;
     }
 }
 

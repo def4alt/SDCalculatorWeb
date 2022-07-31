@@ -1,11 +1,16 @@
 .card__chart {
     width: inherit;
-    height: 19rem;
+    height: 17rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    
 
     @include base.for-print {
-        height: 300px;
+        height: calc((100vh / 3) - 5vh - 4rem);
+        width: 100vw !important;
     }
 }

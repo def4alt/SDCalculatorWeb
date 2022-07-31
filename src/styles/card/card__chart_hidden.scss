@@ -1,7 +1,0 @@
-.card__chart_hidden {
-    display: none;
-
-    @include base.for-print {
-        display: block;
-    }
-}
