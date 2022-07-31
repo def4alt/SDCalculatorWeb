@@ -33,7 +33,7 @@
             "sizes": "192x192"
         },
         {
-            "src": "assets/logo192.png",
+            "src": "assets/logo180.png",
             "type": "image/png",
             "sizes": "180x180",
             "purpose": "any maskable"

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sdcalculus"
-  }
+    "default": "sdcalculus",
+    "live": "sdcalculus"
+  },
+  "targets": {},
+  "etags": {}
 }
