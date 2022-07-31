@@ -272,8 +272,8 @@ export const appendStatModel = (
     previousModel.Average.push(model.Average[0]);
     previousModel.Date.push(model.Date[0]);
     previousModel.Warnings = checkWestgardViolations(
-        model.Average,
-        model.Average[0],
+        previousModel.Average.concat(model.Average),
+        previousModel.Average[0],
         model.SD
     );
 

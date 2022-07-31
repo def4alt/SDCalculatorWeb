@@ -26,10 +26,10 @@ export const checkWestgardViolations = (
             minusSdCounter++;
         }
 
-        if (value > previousValue) {
+        if (value >= previousValue) {
             minusTrendCounter = 0;
             plusTrendCounter++;
-        } else if (value < previousValue) {
+        } else if (value <= previousValue) {
             plusTrendCounter = 0;
             minusTrendCounter++;
         }
@@ -50,7 +50,10 @@ export const checkWestgardViolations = (
             return;
         }
 
-        if (Math.abs(value - previousValue) > 4 * sd) {
+        if (
+            (value > average + 2 * sd && previousValue < average - 2 * sd) ||
+            (value < average - 2 * sd && previousValue > average + 2 * sd)
+        ) {
             violations.push("R4S");
             previousValue = value;
             return;
