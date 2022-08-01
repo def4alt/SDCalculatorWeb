@@ -103,13 +103,16 @@ export const Chart: React.FC<{
                         stepSize: sd,
                         callback: (tickValue: string | number) => {
                             const value = Number(tickValue);
-                            if (value === average) {
+                            const tolerance = 0.01;
+                            if (Math.abs(value - average) < tolerance) {
                                 return Math.floor(value * 100) / 100 + ", M";
                             }
                             return (
                                 Math.floor(value * 100) / 100 +
                                 ", " +
-                                Math.floor(Math.abs(value - average) / sd) +
+                                Math.floor(
+                                    (Math.abs(value - average) + tolerance) / sd
+                                ) +
                                 "SD"
                             );
                         },

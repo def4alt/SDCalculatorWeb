@@ -240,7 +240,7 @@ export const getTestValue = (
             )
         );
 
-    return ok(testValue);
+    return ok(Math.floor(testValue * 1000) / 1000);
 };
 
 export const appendNewModels = (
