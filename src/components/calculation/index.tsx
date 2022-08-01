@@ -55,7 +55,6 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     const calculate = async (files: File[], mode: Mode) => {
         await read(files).then((rawData) => {
             let processedData = processData(rawData);
-            console.log(processedData);
 
             let result: ProcessedData[] = [];
 
