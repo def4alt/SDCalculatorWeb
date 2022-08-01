@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
-import readerCalculate from "./reader";
-import { StatModel } from "../../types";
+import { read } from "./reader";
+import { ProcessedData } from "../../types";
 import Lot from "Components/lot";
 
 import { FirebaseContext } from "Context/firebase";
@@ -14,9 +14,16 @@ import "Styles/calculation/calculation.scss";
 import "Styles/file-browser/file-browser.scss";
 import "Styles/avatar/avatar.scss";
 import "Styles/button/button.scss";
+import { processData } from "./processor";
+import { checkWestgardViolations } from "./westgard";
 
 interface CalculationProps {
-    callback: (lot: number, models: StatModel[]) => void;
+    callback: (lot: number, data: ProcessedData[]) => void;
+}
+
+enum Mode {
+    SD = 1,
+    Average = 0,
 }
 
 // TODO: Add other calculation types
@@ -25,9 +32,9 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     const localization = useContext(LocalizationContext).localization;
 
     const [lot, setLot] = useState<number>(0);
-    const [sdMode, setSdMode] = useState<boolean>(true);
+    const [mode, setMode] = useState<Mode>(Mode.SD);
     const [files, setFiles] = useState<File[]>([]);
-    const [models, setModels] = useState<StatModel[]>([]);
+    const [data, setData] = useState<ProcessedData[]>([]);
 
     const firebase = useContext(FirebaseContext);
     const user = useContext(AuthUserContext);
@@ -45,16 +52,27 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
         setFiles(fileArray);
     };
 
-    const calculate = async (files: File[], sdMode: boolean) => {
-        await readerCalculate(files, models, sdMode).then((modelsResult) => {
-            if (modelsResult.isErr()) {
-                console.error(
-                    `Calculation Error: ${modelsResult.error.message}`
-                );
-                return;
+    const calculate = async (files: File[], mode: Mode) => {
+        await read(files).then((rawData) => {
+            let processedData = processData(rawData);
+            console.log(processedData);
+
+            let result: ProcessedData[] = [];
+
+            switch (mode) {
+                case Mode.SD:
+                    result = processedData;
+                    break;
+                case Mode.Average:
+                    result = appendNewData(data, processedData);
+                    break;
+
+                default:
+                    break;
             }
-            props.callback(lot, modelsResult.value);
-            setModels(modelsResult.value);
+
+            props.callback(lot, result);
+            setData(result);
 
             if (!user || !firebase) return;
 
@@ -67,10 +85,41 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
             );
 
             setDoc(backupReference, {
-                models: modelsResult.value,
+                models: result,
                 notes: {},
             });
         });
+    };
+
+    const appendNewData = (
+        oldData: ProcessedData[],
+        newData: ProcessedData[]
+    ): ProcessedData[] => {
+        let result: ProcessedData[] = [];
+
+        Object.assign(result, oldData);
+
+        newData.forEach((element) => {
+            const data = result
+                .filter(
+                    (t) =>
+                        t.TestName === element.TestName &&
+                        t.SampleType == element.SampleType
+                )
+                .at(0);
+
+            if (!data) return;
+
+            data.Values.push(element.Values[0]);
+            data.Dates.push(element.Dates[0]);
+            data.Warnings = checkWestgardViolations(
+                data.Values.concat(element.Values),
+                data.Values[0],
+                data.SD
+            );
+        });
+
+        return result;
     };
 
     const lotCallback = (lot: number) => {
@@ -87,10 +136,10 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
         );
         getDoc(backupReference).then((snapshot) => {
             if (snapshot.data()) {
-                setModels(snapshot.data()?.models);
+                setData(snapshot.data()?.models);
                 props.callback(lot, snapshot.data()?.models);
             } else {
-                setModels([]);
+                setData([]);
                 props.callback(lot, []);
             }
         });
@@ -116,8 +165,20 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                                 type="checkbox"
                                 className="toggle-button__checkbox"
                                 aria-label="Mode toggle"
-                                checked={sdMode}
-                                onChange={() => setSdMode(!sdMode)}
+                                checked={mode === Mode.SD ? true : false}
+                                onChange={() => {
+                                    switch (mode) {
+                                        case Mode.SD:
+                                            setMode(Mode.Average);
+                                            break;
+                                        case Mode.Average:
+                                            setMode(Mode.SD);
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+                                }}
                             />
                             <div className="toggle-button__knobs" />
                             <div className="toggle-button__layer" />
@@ -134,7 +195,7 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                     <input
                         type="file"
                         aria-label="File browser"
-                        multiple={sdMode}
+                        multiple={mode === Mode.SD ? true : false}
                         onChange={onFilesChange}
                     />
                     <span
@@ -151,12 +212,12 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
             <div className="calculation__submit">
                 <button
-                    className={"button " + (sdMode ? "" : "button__green")}
-                    onClick={() => calculate(files, sdMode)}
+                    className={
+                        "button " + (mode === Mode.SD ? "" : "button__green")
+                    }
+                    onClick={() => calculate(files, mode)}
                 >
-                    {sdMode
-                        ? localization.buildCharts
-                        : localization.addAverage}
+                    {mode ? localization.buildCharts : localization.addAverage}
                 </button>
             </div>
         </div>

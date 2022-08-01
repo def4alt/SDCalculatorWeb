@@ -5,7 +5,7 @@ import React, {
     useMemo,
     useState,
 } from "react";
-import { StatModel } from "../../types";
+import { ProcessedData } from "../../types";
 import Loading from "Components/loading";
 import { LocalizationContext } from "Context/localization";
 
@@ -15,7 +15,7 @@ import "Styles/button/button.scss";
 const Card = React.lazy(() => import("Components/card"));
 
 interface CardsListProps {
-    models: StatModel[];
+    models: ProcessedData[];
 }
 
 const CardsList: React.FC<CardsListProps> = (props) => {
@@ -23,7 +23,7 @@ const CardsList: React.FC<CardsListProps> = (props) => {
     const localization = useContext(LocalizationContext).localization;
 
     const cards = useMemo(() => {
-        return props.models.map((model: StatModel, i: number) => (
+        return props.models.map((model: ProcessedData, i: number) => (
             <Card model={model} showSDCV={showSDCV} key={i} />
         ));
     }, [props.models, showSDCV]);

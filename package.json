@@ -7,7 +7,6 @@
         "dotenv": "*",
         "firebase": "*",
         "jest": "^28.1.3",
-        "lodash.clonedeep": "^4.5.0",
         "moment": "*",
         "neverthrow": "*",
         "react": "*",
@@ -19,7 +18,6 @@
         "react-router": "*",
         "react-router-dom": "*",
         "typescript": "*",
-        "webpack-bundle-analyzer": "*",
         "xlsx": "*"
     },
     "scripts": {

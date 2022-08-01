@@ -1,5 +1,5 @@
 import React, { Suspense, useState, useRef } from "react";
-import { StatModel } from "../../types";
+import { ProcessedData } from "../../types";
 import Notes from "Components/notes";
 import { MdPrint } from "react-icons/md";
 
@@ -14,10 +14,10 @@ const CardsList = React.lazy(
 );
 
 const Home: React.FC = (_) => {
-    const [models, setModels] = useState<StatModel[]>([]);
+    const [models, setModels] = useState<ProcessedData[]>([]);
     const [lot, setLot] = useState<number>(0);
 
-    const modelsCallback = (lot: number, models: StatModel[]) => {
+    const modelsCallback = (lot: number, models: ProcessedData[]) => {
         setModels(models);
         setLot(lot);
     };

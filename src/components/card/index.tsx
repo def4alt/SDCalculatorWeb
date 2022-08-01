@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { StatModel } from "../../types";
+import { ProcessedData } from "../../types";
 import { MdAdd, MdClear } from "react-icons/md";
 import { Chart } from "Components/chart";
 
@@ -7,7 +7,7 @@ import "Styles/card/card.scss";
 import moment from "moment";
 
 interface CardProps {
-    model: StatModel;
+    model: ProcessedData;
     showSDCV: boolean;
 }
 
@@ -33,31 +33,31 @@ const Card: React.FC<CardProps> = (props) => {
     const sd = useMemo(() => Math.floor(model.SD * 100) / 100, [model.SD]);
 
     const cv = useMemo(
-        () => Math.floor((model.SD / model.Average[0]) * 100 * 100) / 100,
-        [model.Average]
+        () => Math.floor((model.SD / model.Values[0]) * 100 * 100) / 100,
+        [model.Values]
     );
 
     const labels = useMemo(
         () =>
-            [...Array(model.Average.length)].map(
+            [...Array(model.Values.length)].map(
                 (_, i) =>
-                    moment(model.Date.at(i))
+                    moment(model.Dates.at(i))
                         .format("DD/MM/YY")
                         .toLocaleString() +
                     ";" +
                     model.Warnings.at(i)
             ),
-        [model.Average.length, model.Warnings]
+        [model.Values.length, model.Warnings]
     );
 
     const data = useMemo(() => {
         return {
-            values: model.Average,
-            average: model.Average[0],
+            values: model.Values,
+            average: model.Values[0],
             sd: model.SD,
             labels,
         };
-    }, [model.Average.length, model.SD, labels.length]);
+    }, [model.Values.length, model.SD, labels.length]);
 
     return (
         <div className={cardState} ref={cardRef}>
