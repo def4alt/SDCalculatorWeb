@@ -1,10 +1,4 @@
-import React, {
-    Suspense,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+import React, { Suspense, useContext, useMemo, useState } from "react";
 import { ProcessedData } from "../../types";
 import Loading from "Components/loading";
 import { LocalizationContext } from "Context/localization";
@@ -15,18 +9,18 @@ import "Styles/button/button.scss";
 const Card = React.lazy(() => import("Components/card"));
 
 interface CardsListProps {
-    models: ProcessedData[];
+    data: ProcessedData[];
 }
 
-const CardsList: React.FC<CardsListProps> = (props) => {
+const CardsList: React.FC<CardsListProps> = ({ data }) => {
     const [showSDCV, setShowSDCV] = useState<boolean>(true);
     const localization = useContext(LocalizationContext).localization;
 
     const cards = useMemo(() => {
-        return props.models.map((model: ProcessedData, i: number) => (
-            <Card model={model} showSDCV={showSDCV} key={i} />
+        return data.map((cardData: ProcessedData, i: number) => (
+            <Card data={cardData} showSDCV={showSDCV} key={i} />
         ));
-    }, [props.models, showSDCV]);
+    }, [data, showSDCV]);
 
     return (
         <div className="card-list">

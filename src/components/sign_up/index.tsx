@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { FirebaseContext } from "Context/firebase";
 import { LocalizationContext } from "Context/localization";
-import { updateProfile } from "firebase/auth";
 
 import "Styles/auth/auth.scss";
 import "Styles/button/button.scss";
+import { supabase } from "Context/supabase/api";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -15,25 +14,17 @@ const SignUp: React.FunctionComponent = (_) => {
     const [username, setUsername] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const firebase = useContext(FirebaseContext) as Firebase;
     const localization = useContext(LocalizationContext).localization;
     const navigate = useNavigate();
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        firebase
-            .createUserWithEmailAndPassword(email, password)
-            .then((authUser) => {
-                return (
-                    authUser.user &&
-                    updateProfile(authUser.user, { displayName: username })
-                );
-            })
+        supabase.auth
+            .signUp({ email, password })
+            .then(() => supabase.auth.update({ data: { username } }))
             .then(() => navigate(ROUTES.HOME))
-            .catch((error) => {
-                setError(error.message);
-            });
+            .catch((error: { message: string }) => setError(error.message));
     };
     const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
         setPassword(event.currentTarget.value);

@@ -1,20 +1,34 @@
-import React, { useContext, useState } from "react";
-import { withAuthorization, AuthUserContext } from "Context/session";
+import React, { useContext, useEffect, useState } from "react";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/avatar/avatar.scss";
 import "Styles/button/button.scss";
 import "Styles/account/account.scss";
-import { updateProfile, User } from "firebase/auth";
+import { useNavigate } from "react-router";
+import * as ROUTES from "../../routes";
+import { UserContext } from "src/app";
+import { supabase } from "Context/supabase/api";
 
 // TODO: Add password change
 // TODO: Add email change
 // TODO: Add username change
 const Account: React.FC = (_) => {
-    const user = useContext(AuthUserContext) as User;
-    const localization = useContext(LocalizationContext).localization;
+    const navigate = useNavigate();
+    const { localization } = useContext(LocalizationContext);
 
-    const [avatar, setAvatar] = useState<string>(user.photoURL as string);
+    const [avatar, setAvatar] = useState<string>("");
+
+    const user = useContext(UserContext);
+
+    useEffect(() => {
+        if (user === null) {
+            navigate(ROUTES.SIGN_IN);
+        }
+
+        if (user !== null && user.user_metadata.photo_url !== undefined) {
+            setAvatar(user.user_metadata.photo_url as string);
+        }
+    }, [user]);
 
     const onAvatarChange = (e: React.FormEvent<HTMLInputElement>) => {
         if (!e.currentTarget.files) return;
@@ -28,9 +42,10 @@ const Account: React.FC = (_) => {
         reader.onload = () => {
             setAvatar(reader.result as string);
 
-            updateProfile(user, {
-                photoURL: reader.result as string,
-            });
+            if (user)
+                supabase.auth.update({
+                    data: { photo_url: reader.result as string },
+                });
         };
     };
 
@@ -55,6 +70,4 @@ const Account: React.FC = (_) => {
     );
 };
 
-export default withAuthorization(
-    (authUser: User | null) => !!authUser
-)(Account);
+export default Account;

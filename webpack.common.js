@@ -12,6 +12,7 @@ module.exports = {
             Styles: path.resolve(__dirname, "src/styles/"),
             Context: path.resolve(__dirname, "src/context/"),
             Components: path.resolve(__dirname, "src/components/"),
+			src: path.resolve(__dirname, "src")
         },
     },
     module: {
@@ -57,11 +58,12 @@ module.exports = {
             patterns: [
                 { from: "public/logo192.png", to: "assets/logo192.png" },
                 { from: "public/logo512.png", to: "assets/logo512.png" },
+                { from: "public/logo180.png", to: "assets/logo180.png" },
             ],
         }),
         new GenerateSW({
             clientsClaim: true,
             skipWaiting: true,
-          }),
+        }),
     ],
 };

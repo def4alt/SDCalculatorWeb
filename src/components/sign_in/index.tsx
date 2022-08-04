@@ -1,13 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import * as ROUTES from "../../routes";
-import Firebase, { FirebaseContext } from "Context/firebase";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/auth/auth.scss";
 import "Styles/auth/auth__oauth/auth__oauth.scss";
 import "Styles/button/button.scss";
+import { UserContext } from "src/app";
+import { supabase } from "Context/supabase/api";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -15,34 +16,40 @@ const SignIn: React.FunctionComponent = (_) => {
     const [error, setError] = useState<string>("");
 
     const navigate = useNavigate();
-    const firebase = useContext(FirebaseContext) as Firebase;
     const localization = useContext(LocalizationContext).localization;
+    const user = useContext(UserContext);
+
+    useEffect(() => {
+        if (user !== null) navigate(ROUTES.HOME);
+    }, []);
 
     const signInWithGoogle = () => {
-        firebase
-            .signInWithGoogle()
-            .then(() => navigate(ROUTES.HOME));
+        supabase.auth.signIn({ provider: "google" }).then((response) => {
+            if (response.error === null) navigate(ROUTES.HOME);
+            else setError(response.error.message);
+        });
     };
+
     const signInWithFacebook = () => {
-        firebase
-            .signInWithFacebook()
-            .then(() => navigate(ROUTES.HOME));
+        supabase.auth.signIn({ provider: "facebook" }).then((response) => {
+            if (response.error === null) navigate(ROUTES.HOME);
+            else setError(response.error.message);
+        });
     };
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        firebase
-            .signInWithEmailAndPassword(email, password)
-            .then(() => {
-                navigate(ROUTES.HOME);
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
+
+        supabase.auth.signIn({ email, password }).then((response) => {
+            if (response.error === null) navigate(ROUTES.HOME);
+            else setError(response.error.message);
+        });
     };
+
     const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
         setPassword(event.currentTarget.value);
     };
+
     const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);
     };

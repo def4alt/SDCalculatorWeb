@@ -1,29 +1,26 @@
 import React, { useState, useContext } from "react";
-import Firebase, { FirebaseContext } from "Context/firebase";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/auth/auth.scss";
 import "Styles/button/button.scss";
+import { supabase } from "Context/supabase/api";
 
 const PasswordForget: React.FC = (_) => {
     const [email, setEmail] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const firebase = useContext(FirebaseContext) as Firebase;
     const localization = useContext(LocalizationContext).localization;
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        firebase
-            .resetPassword(email)
+        supabase.auth.api
+            .resetPasswordForEmail(email)
             .then(() => {
                 setEmail("");
                 setError("");
             })
-            .catch((error) => {
-                setError(error);
-            });
+            .catch((error) => setError(error));
     };
     const onEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);

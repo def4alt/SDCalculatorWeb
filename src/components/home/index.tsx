@@ -1,10 +1,10 @@
-import React, { Suspense, useState, useRef } from "react";
+import React, { useContext, useState } from "react";
 import { ProcessedData } from "../../types";
 import Notes from "Components/notes";
-import { MdPrint } from "react-icons/md";
-
+import { FiPrinter } from "react-icons/fi";
 import "Styles/button/button.scss";
 import "Styles/home/home.scss";
+import { UserContext } from "src/app";
 
 const Calculation = React.lazy(
     () => import(/* webpackPreload: true */ "Components/calculation")
@@ -14,28 +14,29 @@ const CardsList = React.lazy(
 );
 
 const Home: React.FC = (_) => {
-    const [models, setModels] = useState<ProcessedData[]>([]);
+    const [data, setData] = useState<ProcessedData[]>([]);
     const [lot, setLot] = useState<number>(0);
+    const user = useContext(UserContext);
 
-    const modelsCallback = (lot: number, models: ProcessedData[]) => {
-        setModels(models);
+    const dataCallback = (lot: number, data: ProcessedData[]) => {
+        setData(data);
         setLot(lot);
     };
 
     return (
         <div className="home">
-            <Calculation callback={modelsCallback} />
+            <Calculation callback={dataCallback} />
 
-            {models.length > 0 && (
+            {data.length > 0 && (
                 <>
                     <button
                         className="button_print"
                         onClick={() => window.print()}
                     >
-                        <MdPrint />
+                        <FiPrinter />
                     </button>
-                    <Notes lot={lot} />
-                    <CardsList models={models} />
+                    {user !== null ? <Notes lot={lot} /> : <></>}
+                    <CardsList data={data} />
                 </>
             )}
         </div>

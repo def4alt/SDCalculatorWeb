@@ -6,6 +6,13 @@
     height: 2.5rem;
     display: block;
     background-color: transparent;
+
+    svg {
+        border: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        color: rgba(base.$black, 0.4);
+    }
 }
 
 .nav__avatar:hover {

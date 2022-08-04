@@ -5,16 +5,14 @@ import React, {
     useReducer,
     useRef,
 } from "react";
-import { FirebaseContext } from "Context/firebase";
-import { AuthUserContext } from "Context/session";
-import { GoNote } from "react-icons/go";
+import { FiFileText } from "react-icons/fi";
 import { LocalizationContext } from "Context/localization";
-import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import "Styles/notes/notes.scss";
 import "Styles/button/button.scss";
 import "Styles/header/header.scss";
-import { stringify } from "@firebase/util";
+import { UserContext } from "src/app";
+import { supabase } from "Context/supabase/api";
 
 interface NotesProps {
     lot: number;
@@ -44,38 +42,29 @@ const reducer: Reducer<NotesState, Action> = (state, action) => {
     }
 };
 
-const Notes: React.FC<NotesProps> = (props) => {
+const Notes: React.FC<NotesProps> = ({ lot }) => {
     const [notes, dispatch] = useReducer<
         Reducer<NotesState, Action>,
         NotesState
     >(reducer, {}, () => {
-        return { materialLot: String(props.lot) } as NotesState;
+        return { materialLot: String(lot) } as NotesState;
     });
 
     const notesRef = useRef<HTMLFormElement | null>(null);
-
-    const firebase = useContext(FirebaseContext);
-    const user = useContext(AuthUserContext);
-    const localization = useContext(LocalizationContext).localization;
+    const { localization } = useContext(LocalizationContext);
+    const user = useContext(UserContext);
 
     useEffect(() => {
-        if (!user || !firebase) return;
+        supabase
+            .from("backups")
+            .select("notes")
+            .match({ user_id: user?.id, lot })
+            .then((notes) => {
+                if (notes.data === null) return;
 
-        const backupReference = doc(
-            firebase.db,
-            "backup",
-            user.uid,
-            "lots",
-            String(props.lot)
-        );
-        getDoc(backupReference).then((snapshot) => {
-            const notes = snapshot.data()?.notes as NotesState;
-
-            if (!notes) return;
-
-            dispatch({ payload: notes });
-        });
-    }, [firebase, props.lot, user]);
+                dispatch({ payload: notes.data[0] });
+            });
+    }, [lot, user]);
 
     const toggleMenu = (
         ref: React.RefObject<HTMLElement>,
@@ -89,26 +78,13 @@ const Notes: React.FC<NotesProps> = (props) => {
         else menu.classList.remove(className);
     };
 
-    const onSubmit = (event: React.FormEvent) => {
+    const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!user || !firebase) return;
-
-        const backupReference = doc(
-            firebase.db,
-            "backups",
-            user.uid,
-            "lots",
-            String(props.lot)
-        );
-
-        getDoc(backupReference).then((snapshot) => {
-            setDoc(backupReference, {
-                models: snapshot.data()?.models,
-                notes,
-            });
-        });
-
+        await supabase
+            .from("backups")
+            .update({ notes })
+            .match({ id: user?.id, lot });
     };
 
     return (
@@ -119,7 +95,7 @@ const Notes: React.FC<NotesProps> = (props) => {
                     toggleMenu(notesRef, "notes__form_expanded");
                 }}
             >
-                <GoNote />
+                <FiFileText />
             </button>
             <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
                 <label className="notes__label">

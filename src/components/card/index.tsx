@@ -7,19 +7,18 @@ import "Styles/card/card.scss";
 import moment from "moment";
 
 interface CardProps {
-    model: ProcessedData;
+    data: ProcessedData;
     showSDCV: boolean;
 }
 
-const Card: React.FC<CardProps> = (props) => {
+const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
     const [hideFromPrint, setHideFromPrint] = useState<boolean>(false);
 
     const cardRef = useRef<HTMLDivElement>(null);
-    const model = props.model;
 
     const hasWarning = useMemo(
-        () => model.Warnings.filter((t) => t.trim() !== "").length > 0,
-        [model.Warnings, props.model.Warnings.length]
+        () => data.Warnings.filter((t) => t.trim() !== "").length > 0,
+        [data.Warnings, data.Warnings.length]
     );
 
     const cardState = useMemo(() => {
@@ -30,40 +29,40 @@ const Card: React.FC<CardProps> = (props) => {
         return "card";
     }, [hideFromPrint, hasWarning]);
 
-    const sd = useMemo(() => Math.floor(model.SD * 100) / 100, [model.SD]);
+    const sd = useMemo(() => Math.floor(data.SD * 100) / 100, [data.SD]);
 
     const cv = useMemo(
-        () => Math.floor((model.SD / model.Values[0]) * 100 * 100) / 100,
-        [model.Values]
+        () => Math.floor((data.SD / data.Values[0]) * 100 * 100) / 100,
+        [data.Values]
     );
 
     const labels = useMemo(
         () =>
-            [...Array(model.Values.length)].map(
+            [...Array(data.Values.length)].map(
                 (_, i) =>
-                    moment(model.Dates.at(i))
+                    moment(data.Dates.at(i))
                         .format("DD/MM/YY")
                         .toLocaleString() +
                     ";" +
-                    model.Warnings.at(i)
+                    data.Warnings.at(i)
             ),
-        [model.Values.length, model.Warnings]
+        [data.Values.length, data.Warnings]
     );
 
-    const data = useMemo(() => {
+    const chartData = useMemo(() => {
         return {
-            values: model.Values,
-            average: model.Values[0],
-            sd: model.SD,
+            values: data.Values,
+            average: data.Values[0],
+            sd: data.SD,
             labels,
         };
-    }, [model.Values.length, model.SD, labels.length]);
+    }, [data.Values.length, data.SD, labels.length]);
 
     return (
         <div className={cardState} ref={cardRef}>
             <div className="card__header">
                 <p className="card__title">
-                    {model.TestName + " Lvl" + String(model.SampleType)}
+                    {data.TestName + " Lvl" + String(data.SampleType)}
                 </p>
                 <button
                     className="card__close"
@@ -73,13 +72,9 @@ const Card: React.FC<CardProps> = (props) => {
                 </button>
             </div>
             <div className="card__chart">
-                <Chart data={data} />
+                <Chart data={chartData} />
             </div>
-            <div
-                className={
-                    props.showSDCV ? "card__footer" : "card__footer_hidden"
-                }
-            >
+            <div className={showSDCV ? "card__footer" : "card__footer_hidden"}>
                 <p>
                     SD {sd} CV {cv}
                 </p>

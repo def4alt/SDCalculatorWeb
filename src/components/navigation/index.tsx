@@ -1,29 +1,35 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import * as ROUTES from "../../routes";
-import { FirebaseContext } from "Context/firebase";
-import { FaSignInAlt } from "react-icons/fa";
-import { AuthUserContext } from "Context/session";
+import { FiLogIn, FiUser } from "react-icons/fi";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/nav/nav.scss";
-import Loading from "Components/loading";
 import { Link } from "react-router-dom";
+import { supabase } from "Context/supabase/api";
+import { UserContext } from "src/app";
 
 const Navigation: React.FC = (_) => {
     const accountMenuRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const firebase = useContext(FirebaseContext);
-    const user = useContext(AuthUserContext);
-    const localization = useContext(LocalizationContext).localization;
+    const { localization } = useContext(LocalizationContext);
 
     const [avatar, setAvatar] = useState<string>("");
 
+    const user = useContext(UserContext);
+
     useEffect(() => {
-        if (!user) return;
-        setAvatar(user.photoURL as string);
-    }, [user, user?.photoURL]);
+        supabase.auth.onAuthStateChange((_, session) => {
+            const new_user = session?.user;
+
+            if (!new_user || !new_user.user_metadata.photo_url) {
+                setAvatar("");
+                return;
+            }
+
+            setAvatar(new_user.user_metadata.photo_url as string);
+        });
+    }, []);
 
     const toggleMenu = (
         ref: React.RefObject<HTMLElement>,
@@ -52,33 +58,34 @@ const Navigation: React.FC = (_) => {
                 <Link className="nav__logo" to={ROUTES.HOME}>
                     SDCalculator
                 </Link>
-                {user ? (
-                    avatar ? (
-                        <button
-                            className="nav__avatar"
-                            onClick={() =>
-                                toggleMenu(
-                                    accountMenuRef,
-                                    "nav__account-menu_expanded"
-                                )
-                            }
-                        >
+                {user !== null ? (
+                    <button
+                        className="nav__avatar"
+                        onClick={() =>
+                            toggleMenu(
+                                accountMenuRef,
+                                "nav__account-menu_expanded"
+                            )
+                        }
+                    >
+                        {" "}
+                        {avatar.length > 0 ? (
                             <img
                                 src={avatar}
                                 className="avatar avatar_rounded"
                                 alt="avatar"
                             />
-                        </button>
-                    ) : (
-                        <Loading />
-                    )
+                        ) : (
+                            <FiUser />
+                        )}
+                    </button>
                 ) : (
                     <Link
                         className="nav__sign-in"
                         aria-label="Sign in"
                         to={ROUTES.SIGN_IN}
                     >
-                        <FaSignInAlt />
+                        <FiLogIn />
                     </Link>
                 )}
             </div>
@@ -111,8 +118,7 @@ const Navigation: React.FC = (_) => {
                 <button
                     className="nav__link"
                     onClick={() => {
-                        if (!firebase) return;
-                        firebase.signOut();
+                        supabase.auth.signOut();
                         toggleMenu(
                             accountMenuRef,
                             "nav__account-menu_expanded"

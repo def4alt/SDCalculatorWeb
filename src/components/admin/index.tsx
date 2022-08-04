@@ -1,9 +1,14 @@
-import React from "react";
-import { withAuthorization } from "Context/session";
-import { User } from "firebase/auth";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router";
+import { UserContext } from "src/app";
+import * as ROUTES from "../../routes";
 
-const Admin: React.FC = (_) => <div>Not implemented</div>;
+const Admin: React.FC = (_) => {
+    const user = useContext(UserContext);
 
-export default withAuthorization(
-    (authUser: User | null) => !!authUser
-)(Admin);
+    const navigate = useNavigate();
+    if (user === null) navigate(ROUTES.HOME);
+
+    return <div>Not implemented</div>;
+};
+export default Admin;

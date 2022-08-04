@@ -1,56 +1,37 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import { FirebaseContext } from "Context/firebase";
-import { AuthUserContext } from "Context/session";
 import { LocalizationContext } from "Context/localization";
 
 import "Styles/lot/lot.scss";
 import "Styles/edit/edit.scss";
-import { collection, deleteDoc, getDocs } from "@firebase/firestore";
-import { User } from "@firebase/auth";
-import { doc } from "firebase/firestore";
+import { ProcessedData } from "src/types";
+import { supabase } from "Context/supabase/api";
+import { UserContext } from "src/app";
 
 interface LotProps {
-    callback: (lot: number) => void;
+    callback: (lot: number, data: ProcessedData[]) => void;
 }
 
-const Lot: React.FC<LotProps> = (props) => {
-    const [lot, setLot] = useState<number>(0);
+const Lot: React.FC<LotProps> = ({ callback }) => {
     const [lotList, setLotList] = useState<number[]>([]);
+    const [lot, setLot] = useState<number>(0);
     const [isAdding, setIsAdding] = useState<boolean>(false);
+    const { localization } = useContext(LocalizationContext);
 
-    const firebase = useContext(FirebaseContext);
-    const user = useContext(AuthUserContext);
-    const localization = useContext(LocalizationContext).localization;
+    const user = useContext(UserContext);
 
     useEffect(() => {
-        if (!firebase) return;
+        supabase
+            .from("backups")
+            .select("lot")
+            .match({ user_id: user?.id })
+            .then((response) => {
+                if (response.data === null) return;
 
-        const unsubscribe = firebase.auth.onAuthStateChanged(
-            authStateChangeHandler
-        );
-
-        return () => unsubscribe();
-    }, [firebase, firebase?.user]);
-
-    const authStateChangeHandler = (user: User | null) => {
-        if (!user || !firebase) {
-            setLotList([]);
-            setLot(0);
-            return;
-        }
-
-        const lotsReference = collection(
-            firebase.db,
-            "backups",
-            user.uid,
-            "lots"
-        );
-
-        getDocs(lotsReference).then((docs) =>
-            setLotList(docs.docs.map((t) => Number(t.id)))
-        );
-    };
+                const data = response.data.map((t) => t.lot);
+                setLotList(data);
+            });
+    }, [user]);
 
     const removeLot = async (lot: number) => {
         let newList =
@@ -63,22 +44,27 @@ const Lot: React.FC<LotProps> = (props) => {
         if (newList.length === 0) selectLot(0);
         else selectLot(newList[newList.length - 1]);
 
-        if (!user || !firebase) return;
-
-        const backupReference = doc(
-            firebase.db,
-            "backups",
-            user.uid,
-            "lots",
-            String(lot)
-        );
-
-        await deleteDoc(backupReference);
+        await supabase
+            .from("backups")
+            .delete()
+            .match({ lot, user_id: user?.id });
     };
-    const selectLot = (lot: number) => {
+
+    const selectLot = async (lot: number) => {
         setLot(lot);
-        props.callback(lot);
+
+        const response = await supabase
+            .from("backups")
+            .select("data")
+            .match({ user_id: user?.id, lot })
+            .limit(1)
+            .single();
+
+        const data = response.data.data;
+        if (data !== null) callback(lot, data);
+        else callback(lot, []);
     };
+
     const addLot = (lot: number) => {
         if (isNaN(lot)) return;
         setLotList(lotList.concat(lot));

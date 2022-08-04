@@ -1,43 +1,40 @@
 import React, { useState, useContext } from "react";
 
-import { read } from "./reader";
-import { ProcessedData } from "../../types";
+import { ProcessedData } from "src/types";
 import Lot from "Components/lot";
 
-import { FirebaseContext } from "Context/firebase";
-import { AuthUserContext } from "Context/session";
 import { LocalizationContext } from "Context/localization";
-import { doc, getDoc, setDoc } from "@firebase/firestore";
 
 import "Styles/toggle-button/toggle-button.scss";
 import "Styles/calculation/calculation.scss";
 import "Styles/file-browser/file-browser.scss";
 import "Styles/avatar/avatar.scss";
 import "Styles/button/button.scss";
+import { read } from "./reader";
 import { processData } from "./processor";
 import { checkWestgardViolations } from "./westgard";
+import { supabase } from "Context/supabase/api";
+import { UserContext } from "src/app";
+
+// TODO: Add other calculation types
+
+enum Mode {
+    SD,
+    Average,
+}
 
 interface CalculationProps {
     callback: (lot: number, data: ProcessedData[]) => void;
 }
 
-enum Mode {
-    SD = 1,
-    Average = 0,
-}
-
-// TODO: Add other calculation types
-
-const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
+const Calculation: React.FC<CalculationProps> = ({ callback }) => {
     const localization = useContext(LocalizationContext).localization;
 
-    const [lot, setLot] = useState<number>(0);
     const [mode, setMode] = useState<Mode>(Mode.SD);
     const [files, setFiles] = useState<File[]>([]);
     const [data, setData] = useState<ProcessedData[]>([]);
-
-    const firebase = useContext(FirebaseContext);
-    const user = useContext(AuthUserContext);
+    const [lot, setLot] = useState<number>(0);
+    const user = useContext(UserContext);
 
     const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
@@ -53,41 +50,44 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
     };
 
     const calculate = async (files: File[], mode: Mode) => {
-        await read(files).then((rawData) => {
-            let processedData = processData(rawData);
+        const rawData = await read(files);
+        let processedData = processData(rawData);
 
-            let result: ProcessedData[] = [];
+        let result: ProcessedData[] = [];
 
-            switch (mode) {
-                case Mode.SD:
-                    result = processedData;
-                    break;
-                case Mode.Average:
-                    result = appendNewData(data, processedData);
-                    break;
+        switch (mode) {
+            case Mode.SD:
+                result = processedData;
+                break;
+            case Mode.Average:
+                result = appendNewData(data, processedData);
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
+        }
 
-            props.callback(lot, result);
-            setData(result);
+        if (user !== null) {
+            const { data } = await supabase
+                .from("backups")
+                .select()
+                .match({ user_id: user.id, lot })
+                .limit(1)
+                .single();
 
-            if (!user || !firebase) return;
+            if (data !== null)
+                await supabase
+                    .from("backups")
+                    .update({ data: result })
+                    .match({ lot, user_id: user.id });
+            else
+                await supabase
+                    .from("backups")
+                    .insert([{ lot, user_id: user.id, data: result }]);
+        }
 
-            const backupReference = doc(
-                firebase.db,
-                "backups",
-                user.uid,
-                "lots",
-                String(lot)
-            );
-
-            setDoc(backupReference, {
-                models: result,
-                notes: {},
-            });
-        });
+        setData(result);
+        callback(lot, result);
     };
 
     const appendNewData = (
@@ -121,27 +121,11 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
         return result;
     };
 
-    const lotCallback = (lot: number) => {
+    const lotCallback = (lot: number, data: ProcessedData[]) => {
         setLot(lot);
+        setData(data);
 
-        if (!user || !firebase) return;
-
-        const backupReference = doc(
-            firebase.db,
-            "backups",
-            user.uid,
-            "lots",
-            String(lot)
-        );
-        getDoc(backupReference).then((snapshot) => {
-            if (snapshot.data()) {
-                setData(snapshot.data()?.models);
-                props.callback(lot, snapshot.data()?.models);
-            } else {
-                setData([]);
-                props.callback(lot, []);
-            }
-        });
+        if (data.length > 0) callback(lot, data);
     };
 
     const fileSelectText =
@@ -153,8 +137,11 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
 
     return (
         <div className="calculation">
-            <Lot callback={lotCallback} />
-
+            {user !== null ? (
+                <Lot callback={lotCallback} />
+            ) : (
+                <div className="calculation__lot">User is not signed in</div>
+            )}{" "}
             <div className="calculation__mode-select">
                 <p className="toggle-button__text">{localization.addAverage}</p>
                 <div className="toggle-button">
@@ -188,7 +175,6 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                     {localization.buildCharts}
                 </p>
             </div>
-
             <div className="calculation__file-select">
                 <label className="file-browser">
                     <input
@@ -208,7 +194,6 @@ const Calculation: React.FC<CalculationProps> = (props: CalculationProps) => {
                     </span>
                 </label>
             </div>
-
             <div className="calculation__submit">
                 <button
                     className={
