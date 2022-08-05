@@ -1,17 +1,17 @@
-import React, { useContext, useState } from "react";
+import { Fragment, h } from "preact";
+import { useContext, useState } from "preact/hooks";
 import { ProcessedData } from "../../types";
-import Notes from "Components/notes";
-import { FiPrinter } from "react-icons/fi";
-import "Styles/button/button.scss";
-import "Styles/home/home.scss";
+import Notes from "src/components/notes";
+import { FaPrint } from "react-icons/fa";
+import "src/styles/button/button.scss";
+import "src/styles/home/home.scss";
 import { UserContext } from "src/app";
+import { lazy } from "preact-iso";
+import Loading from "../loading";
+import Calculation from "../calculation";
+import { Suspense } from "preact/compat";
 
-const Calculation = React.lazy(
-    () => import(/* webpackPreload: true */ "Components/calculation")
-);
-const CardsList = React.lazy(
-    () => import(/* webpackPrefetch: true */ "Components/card_list")
-);
+const CardsList = lazy(() => import("src/components/card_list"));
 
 const Home: React.FC = (_) => {
     const [data, setData] = useState<ProcessedData[]>([]);
@@ -24,21 +24,27 @@ const Home: React.FC = (_) => {
     };
 
     return (
-        <div className="home">
+        <div class="home">
             <Calculation callback={dataCallback} />
 
-            {data.length > 0 && (
-                <>
-                    <button
-                        className="button_print"
-                        onClick={() => window.print()}
-                    >
-                        <FiPrinter />
-                    </button>
-                    {user !== null ? <Notes lot={lot} /> : <></>}
-                    <CardsList data={data} />
-                </>
-            )}
+            <Suspense fallback={<Loading />}>
+                {data.length > 0 && (
+                    <Fragment>
+                        <button
+                            class="button_print"
+                            onClick={() => window.print()}
+                        >
+                            <FaPrint />
+                        </button>
+                        {user !== null ? (
+                            <Notes lot={lot} />
+                        ) : (
+                            <Fragment></Fragment>
+                        )}
+                        <CardsList data={data} />
+                    </Fragment>
+                )}
+            </Suspense>
         </div>
     );
 };

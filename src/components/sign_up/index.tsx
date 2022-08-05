@@ -1,11 +1,13 @@
-import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router";
+import { h } from "preact";
+import { useState, useContext } from "preact/hooks";
+import { TargetedEvent } from "preact/compat";
 import * as ROUTES from "../../routes";
-import { LocalizationContext } from "Context/localization";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/auth/auth.scss";
-import "Styles/button/button.scss";
-import { supabase } from "Context/supabase/api";
+import "src/styles/auth/auth.scss";
+import "src/styles/button/button.scss";
+import { supabase } from "src/context/supabase/api";
+import { route } from "preact-router";
 
 const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -15,29 +17,28 @@ const SignUp: React.FunctionComponent = (_) => {
     const [error, setError] = useState<string>("");
 
     const localization = useContext(LocalizationContext).localization;
-    const navigate = useNavigate();
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: TargetedEvent<HTMLFormElement, Event>) => {
         event.preventDefault();
 
         supabase.auth
             .signUp({ email, password })
             .then(() => supabase.auth.update({ data: { username } }))
-            .then(() => navigate(ROUTES.HOME))
+            .then(() => route(ROUTES.HOME))
             .catch((error: { message: string }) => setError(error.message));
     };
-    const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onPasswordChange = (event: TargetedEvent<HTMLInputElement>) => {
         setPassword(event.currentTarget.value);
     };
     const onPasswordConfirmChange = (
-        event: React.FormEvent<HTMLInputElement>
+        event: TargetedEvent<HTMLInputElement>
     ) => {
         setPasswordConfirm(event.currentTarget.value);
     };
-    const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onEmailChange = (event: TargetedEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);
     };
-    const onUsernameChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onUsernameChange = (event: TargetedEvent<HTMLInputElement>) => {
         setUsername(event.currentTarget.value);
     };
 

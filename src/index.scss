@@ -1,12 +1,13 @@
 @import url('https://api.fonts.coollabs.io/css2?family=Roboto&display=swap');
+@import "src/styles/base.scss";
 
-.root {
+#app {
     font-family: "Roboto", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: base.$font-size;
+    font-size: $font-size;
 }
 
 .text_gray {
-    color: rgba(base.$black, 0.7);
+    color: rgba($black, 0.7);
 }

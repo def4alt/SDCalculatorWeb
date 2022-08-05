@@ -1,18 +1,14 @@
-import React, {
-    Reducer,
-    useContext,
-    useEffect,
-    useReducer,
-    useRef,
-} from "react";
-import { FiFileText } from "react-icons/fi";
-import { LocalizationContext } from "Context/localization";
+import { h } from "preact";
+import { useState, useContext, useEffect, useRef } from "preact/hooks";
+import { TargetedEvent } from "preact/compat";
+import { FaRegFileAlt } from "react-icons/fa";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/notes/notes.scss";
-import "Styles/button/button.scss";
-import "Styles/header/header.scss";
+import "src/styles/notes/notes.scss";
+import "src/styles/button/button.scss";
+import "src/styles/header/header.scss";
 import { UserContext } from "src/app";
-import { supabase } from "Context/supabase/api";
+import { supabase } from "src/context/supabase/api";
 
 interface NotesProps {
     lot: number;
@@ -30,24 +26,9 @@ interface NotesState {
     machineName?: string;
 }
 
-interface Action {
-    type?: string;
-    payload: NotesState;
-}
-
-const reducer: Reducer<NotesState, Action> = (state, action) => {
-    switch (action.type) {
-        default:
-            return Object.assign({}, state, action.payload);
-    }
-};
-
 const Notes: React.FC<NotesProps> = ({ lot }) => {
-    const [notes, dispatch] = useReducer<
-        Reducer<NotesState, Action>,
-        NotesState
-    >(reducer, {}, () => {
-        return { materialLot: String(lot) } as NotesState;
+    const [notes, setNotes] = useState<NotesState>({
+        materialLot: String(lot),
     });
 
     const notesRef = useRef<HTMLFormElement | null>(null);
@@ -59,10 +40,10 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
             .from("backups")
             .select("notes")
             .match({ user_id: user?.id, lot })
-            .then((notes) => {
-                if (notes.data === null) return;
+            .then((serverNotes) => {
+                if (serverNotes.data === null) return;
 
-                dispatch({ payload: notes.data[0] });
+                setNotes(serverNotes.data[0] as NotesState);
             });
     }, [lot, user]);
 
@@ -78,7 +59,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
         else menu.classList.remove(className);
     };
 
-    const onSubmit = async (event: React.FormEvent) => {
+    const onSubmit = async (event: TargetedEvent<HTMLFormElement, Event>) => {
         event.preventDefault();
 
         await supabase
@@ -95,7 +76,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                     toggleMenu(notesRef, "notes__form_expanded");
                 }}
             >
-                <FiFileText />
+                <FaRegFileAlt />
             </button>
             <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
                 <label className="notes__label">
@@ -106,9 +87,11 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         name="methodName"
                         type="text"
                         onChange={(e) =>
-                            dispatch({
-                                payload: { methodName: e.currentTarget.value },
-                            })
+                            setNotes(
+                                Object.assign(notes, {
+                                    methodName: e.currentTarget.value,
+                                })
+                            )
                         }
                     />
                 </label>
@@ -121,10 +104,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         name="operatorName"
                         type="text"
                         onChange={(e) =>
-                            dispatch({
-                                payload: {
-                                    operatorName: e.currentTarget.value,
-                                },
+                            Object.assign(notes, {
+                                operatorName: e.currentTarget.value,
                             })
                         }
                     />
@@ -138,8 +119,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         name="machineName"
                         type="text"
                         onChange={(e) =>
-                            dispatch({
-                                payload: { machineName: e.currentTarget.value },
+                            Object.assign(notes, {
+                                machineName: e.currentTarget.value,
                             })
                         }
                     />
@@ -152,10 +133,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         name="foundingDate"
                         type="date"
                         onChange={(e) =>
-                            dispatch({
-                                payload: {
-                                    foundingDate: e.currentTarget.value,
-                                },
+                            Object.assign(notes, {
+                                foundingDate: e.currentTarget.value,
                             })
                         }
                     />
@@ -173,11 +152,9 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             name="materialNameAndManufacturer"
                             type="text"
                             onChange={(e) =>
-                                dispatch({
-                                    payload: {
-                                        materialNameAndManufacturer:
-                                            e.currentTarget.value,
-                                    },
+                                Object.assign(notes, {
+                                    materialNameAndManufacturer:
+                                        e.currentTarget.value,
                                 })
                             }
                         />
@@ -191,10 +168,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             name="materialExpDate"
                             type="date"
                             onChange={(e) =>
-                                dispatch({
-                                    payload: {
-                                        materialExpDate: e.currentTarget.value,
-                                    },
+                                Object.assign(notes, {
+                                    materialExpDate: e.currentTarget.value,
                                 })
                             }
                         />
@@ -207,10 +182,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             name="materialLvl1"
                             type="text"
                             onChange={(e) =>
-                                dispatch({
-                                    payload: {
-                                        materialLvl1: e.currentTarget.value,
-                                    },
+                                Object.assign(notes, {
+                                    materialLvl1: e.currentTarget.value,
                                 })
                             }
                         />
@@ -223,10 +196,8 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             name="materialLvl2"
                             type="text"
                             onChange={(e) =>
-                                dispatch({
-                                    payload: {
-                                        materialLvl2: e.currentTarget.value,
-                                    },
+                                Object.assign(notes, {
+                                    materialLvl2: e.currentTarget.value,
                                 })
                             }
                         />

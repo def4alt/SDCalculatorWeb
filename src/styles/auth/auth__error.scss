@@ -1,3 +1,5 @@
+@use "src/styles/base.scss";
+
 .auth__error {
     color: rgba(base.$red, 0.5);
 }

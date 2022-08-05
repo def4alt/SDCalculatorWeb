@@ -1,78 +1,79 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { h } from "preact";
+import { useState, useContext, useEffect } from "preact/hooks";
+import { TargetedEvent } from "preact/compat";
 import * as ROUTES from "../../routes";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { LocalizationContext } from "Context/localization";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/auth/auth.scss";
-import "Styles/auth/auth__oauth/auth__oauth.scss";
-import "Styles/button/button.scss";
+import "src/styles/auth/auth.scss";
+import "src/styles/auth/auth__oauth/auth__oauth.scss";
+import "src/styles/button/button.scss";
 import { UserContext } from "src/app";
-import { supabase } from "Context/supabase/api";
+import { supabase } from "src/context/supabase/api";
+import { route } from "preact-router";
 
 const SignIn: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
 
-    const navigate = useNavigate();
     const localization = useContext(LocalizationContext).localization;
     const user = useContext(UserContext);
 
     useEffect(() => {
-        if (user !== null) navigate(ROUTES.HOME);
+        if (user !== null) route(ROUTES.HOME);
     }, []);
 
     const signInWithGoogle = () => {
         supabase.auth.signIn({ provider: "google" }).then((response) => {
-            if (response.error === null) navigate(ROUTES.HOME);
+            if (response.error === null) route(ROUTES.HOME);
             else setError(response.error.message);
         });
     };
 
     const signInWithFacebook = () => {
         supabase.auth.signIn({ provider: "facebook" }).then((response) => {
-            if (response.error === null) navigate(ROUTES.HOME);
+            if (response.error === null) route(ROUTES.HOME);
             else setError(response.error.message);
         });
     };
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: TargetedEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         supabase.auth.signIn({ email, password }).then((response) => {
-            if (response.error === null) navigate(ROUTES.HOME);
+            if (response.error === null) route(ROUTES.HOME);
             else setError(response.error.message);
         });
     };
 
-    const onPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onPasswordChange = (event: TargetedEvent<HTMLInputElement>) => {
         setPassword(event.currentTarget.value);
     };
 
-    const onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onEmailChange = (event: TargetedEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);
     };
 
     let isInvalid: boolean = email === "" && password === "";
     return (
-        <div className="auth">
+        <div class="auth">
             <button
                 onClick={signInWithFacebook}
-                className="auth__oauth auth__oauth_fb"
+                class="auth__oauth auth__oauth_fb"
             >
-                <FaFacebookF className="icon" />
+                <FaFacebookF />
                 {localization.loginWith} Facebook
             </button>
             <button
                 onClick={signInWithGoogle}
-                className="auth__oauth auth__oauth_gl"
+                class="auth__oauth auth__oauth_gl"
             >
-                <FaGoogle className="icon" />
+                <FaGoogle />
                 {localization.loginWith} Google
             </button>
             <form onSubmit={onSubmit}>
-                <div className="auth__input">
+                <div class="auth__input">
                     <p>{localization.email}</p>
                     <input
                         name="email"
@@ -82,7 +83,7 @@ const SignIn: React.FunctionComponent = (_) => {
                     />
                 </div>
 
-                <div className="auth__input">
+                <div class="auth__input">
                     <p>{localization.password}</p>
                     <input
                         name="password"
@@ -93,23 +94,23 @@ const SignIn: React.FunctionComponent = (_) => {
                 </div>
 
                 <button
-                    className="button_link"
-                    onClick={() => navigate(ROUTES.PASSWORD_FORGET)}
+                    class="button_link"
+                    onClick={() => route(ROUTES.PASSWORD_FORGET)}
                 >
                     {localization.forgotPassword}
                 </button>
                 <button
-                    className="button_link"
-                    onClick={() => navigate(ROUTES.SIGN_UP)}
+                    class="button_link"
+                    onClick={() => route(ROUTES.SIGN_UP)}
                 >
                     {localization.signUp}
                 </button>
 
-                <button disabled={isInvalid} className="button" type="submit">
+                <button disabled={isInvalid} class="button" type="submit">
                     {localization.signIn}
                 </button>
 
-                <p className="auth__error">{error}</p>
+                <p class="auth__error">{error}</p>
             </form>
         </div>
     );

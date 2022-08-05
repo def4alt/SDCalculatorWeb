@@ -1,6 +1,5 @@
 import LocalizationContext from "./context";
 import localization, { localizationTypeUnknown } from "./localization";
-import withLocalization from "./withLocalization";
 
-export { LocalizationContext, localization, withLocalization };
+export { LocalizationContext, localization };
 export type localizationType = localizationTypeUnknown;

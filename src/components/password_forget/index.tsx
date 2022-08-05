@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
-import { LocalizationContext } from "Context/localization";
+import { h } from "preact";
+import { useState, useContext } from "preact/hooks";
+import { TargetedEvent } from "preact/compat";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/auth/auth.scss";
-import "Styles/button/button.scss";
-import { supabase } from "Context/supabase/api";
+import "src/styles/auth/auth.scss";
+import "src/styles/button/button.scss";
+import { supabase } from "src/context/supabase/api";
 
 const PasswordForget: React.FC = (_) => {
     const [email, setEmail] = useState<string>("");
@@ -11,7 +13,7 @@ const PasswordForget: React.FC = (_) => {
 
     const localization = useContext(LocalizationContext).localization;
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: TargetedEvent<HTMLFormElement, Event>) => {
         event.preventDefault();
 
         supabase.auth.api
@@ -22,7 +24,7 @@ const PasswordForget: React.FC = (_) => {
             })
             .catch((error) => setError(error));
     };
-    const onEmailChange = (event: React.FocusEvent<HTMLInputElement>) => {
+    const onEmailChange = (event: TargetedEvent<HTMLInputElement, Event>) => {
         setEmail(event.currentTarget.value);
     };
 

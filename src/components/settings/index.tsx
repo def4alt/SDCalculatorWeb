@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { LocalizationContext } from "Context/localization";
+import { h } from "preact";
+import { useContext } from "preact/hooks";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/button/button.scss";
-import "Styles/settings/settings.scss";
+import "src/styles/button/button.scss";
+import "src/styles/settings/settings.scss";
 
 // TODO: Calculation type selection
 const Settings: React.FC = (_) => {

@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
-import { LocalizationContext } from "Context/localization";
-import "Styles/about/about.scss";
+import { h } from "preact";
+import { useContext } from "preact/hooks";
+import { LocalizationContext } from "src/context/localization";
+import "./style.scss";
 
 const About: React.FC = (_) => {
     const localization = useContext(LocalizationContext).localization;

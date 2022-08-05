@@ -1,9 +1,10 @@
-import React, { useMemo, useRef, useState } from "react";
+import { h } from "preact";
+import { useState, useRef, useMemo } from "preact/hooks";
 import { ProcessedData } from "../../types";
-import { MdAdd, MdClear } from "react-icons/md";
-import { Chart } from "Components/chart";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import { Chart } from "src/components/chart";
 
-import "Styles/card/card.scss";
+import "src/styles/card/card.scss";
 import moment from "moment";
 
 interface CardProps {
@@ -68,7 +69,7 @@ const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
                     className="card__close"
                     onClick={() => setHideFromPrint(!hideFromPrint)}
                 >
-                    {hideFromPrint ? <MdAdd /> : <MdClear />}
+                    {hideFromPrint ? <FaPlus /> : <FaTimes />}
                 </button>
             </div>
             <div className="card__chart">

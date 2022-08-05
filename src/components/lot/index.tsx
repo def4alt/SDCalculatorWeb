@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { FiCheck, FiPlus, FiX } from "react-icons/fi";
-import { LocalizationContext } from "Context/localization";
+import { h } from "preact";
+import { FaCheck, FaPlus, FaTimes } from "react-icons/fa";
+import { LocalizationContext } from "src/context/localization";
+import { useState, useEffect, useContext } from "preact/hooks";
 
-import "Styles/lot/lot.scss";
-import "Styles/edit/edit.scss";
-import { ProcessedData } from "src/types";
-import { supabase } from "Context/supabase/api";
+import "src/styles/lot/lot.scss";
+import "src/styles/edit/edit.scss";
+import { supabase } from "src/context/supabase/api";
 import { UserContext } from "src/app";
+import { TargetedEvent } from "preact/compat";
 
 interface LotProps {
-    callback: (lot: number, data: ProcessedData[]) => void;
+    callback: (lot: number) => void;
 }
 
 const Lot: React.FC<LotProps> = ({ callback }) => {
@@ -50,19 +51,9 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
             .match({ lot, user_id: user?.id });
     };
 
-    const selectLot = async (lot: number) => {
+    const selectLot = (lot: number) => {
         setLot(lot);
-
-        const response = await supabase
-            .from("backups")
-            .select("data")
-            .match({ user_id: user?.id, lot })
-            .limit(1)
-            .single();
-
-        const data = response.data.data;
-        if (data !== null) callback(lot, data);
-        else callback(lot, []);
+        callback(lot);
     };
 
     const addLot = (lot: number) => {
@@ -90,7 +81,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                             className="edit__remove"
                             onClick={() => removeLot(lot)}
                         >
-                            <FiX />
+                            <FaTimes />
                         </button>
                     </div>
                 ))}
@@ -99,7 +90,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                         <input
                             type="text"
                             onChange={(
-                                event: React.FormEvent<HTMLInputElement>
+                                event: TargetedEvent<HTMLInputElement>
                             ) => (tempLot = event.currentTarget.value)}
                         />
                         <button
@@ -109,7 +100,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                             }}
                             type="button"
                         >
-                            <FiCheck />
+                            <FaCheck />
                         </button>
                     </div>
                 ) : (
@@ -118,7 +109,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                         aria-label="Add lot"
                         onClick={() => setIsAdding(true)}
                     >
-                        <FiPlus />
+                        <FaPlus />
                     </button>
                 )}
             </div>

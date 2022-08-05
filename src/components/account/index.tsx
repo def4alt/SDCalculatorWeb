@@ -1,19 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
-import { LocalizationContext } from "Context/localization";
+import { h } from "preact";
+import { useContext, useState, useEffect } from "preact/hooks";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/avatar/avatar.scss";
-import "Styles/button/button.scss";
-import "Styles/account/account.scss";
-import { useNavigate } from "react-router";
-import * as ROUTES from "../../routes";
+import "src/styles/avatar/avatar.scss";
+import "src/styles/button/button.scss";
+import "src/styles/account/account.scss";
+import * as ROUTES from "src/routes";
 import { UserContext } from "src/app";
-import { supabase } from "Context/supabase/api";
+import { supabase } from "src/context/supabase/api";
+import { route } from "preact-router";
+import { TargetedEvent } from "preact/compat";
 
 // TODO: Add password change
 // TODO: Add email change
 // TODO: Add username change
 const Account: React.FC = (_) => {
-    const navigate = useNavigate();
     const { localization } = useContext(LocalizationContext);
 
     const [avatar, setAvatar] = useState<string>("");
@@ -22,7 +23,7 @@ const Account: React.FC = (_) => {
 
     useEffect(() => {
         if (user === null) {
-            navigate(ROUTES.SIGN_IN);
+            route(ROUTES.SIGN_IN);
         }
 
         if (user !== null && user.user_metadata.photo_url !== undefined) {
@@ -30,7 +31,7 @@ const Account: React.FC = (_) => {
         }
     }, [user]);
 
-    const onAvatarChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const onAvatarChange = (e: TargetedEvent<HTMLInputElement>) => {
         if (!e.currentTarget.files) return;
         const file = e.currentTarget.files[0];
         if (!file) return;

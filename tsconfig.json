@@ -1,26 +1,33 @@
 {
     "compilerOptions": {
+        "target": "ES5",
+        "module": "ESNext",
+        "allowJs": true,
+        "jsx": "react",
+        "jsxFactory": "h",
+        "jsxFragmentFactory": "fragment",
+        "removeComments": true,
+        "noEmit": true,
+
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "esModuleInterop": true,
         "baseUrl": "./",
         "paths": {
-            "Context/*": ["src/context/*"],
-            "Components/*": ["src/components/*"],
-            "Styles/*": ["src/styles/*"]
+            "react": ["./node_modules/preact/compat"],
+            "react-dom": ["./node_modules/preact/compat"]
         },
-        "target": "es5",
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "downlevelIteration": true,
-        "jsx": "react",
-        "noEmit": false
+
+        "skipLibCheck": true
     },
-    "include": ["src"]
+    "include": ["src/**/*"]
 }

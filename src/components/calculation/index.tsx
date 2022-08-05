@@ -1,20 +1,23 @@
-import React, { useState, useContext } from "react";
+import { h } from "preact";
+import { useContext } from "preact/hooks";
+import { useState } from "preact/compat";
 
 import { ProcessedData } from "src/types";
-import Lot from "Components/lot";
+import Lot from "src/components/lot";
 
-import { LocalizationContext } from "Context/localization";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/toggle-button/toggle-button.scss";
-import "Styles/calculation/calculation.scss";
-import "Styles/file-browser/file-browser.scss";
-import "Styles/avatar/avatar.scss";
-import "Styles/button/button.scss";
+import "src/styles/toggle-button/toggle-button.scss";
+import "src/styles/calculation/calculation.scss";
+import "src/styles/file-browser/file-browser.scss";
+import "src/styles/avatar/avatar.scss";
+import "src/styles/button/button.scss";
 import { read } from "./reader";
 import { processData } from "./processor";
 import { checkWestgardViolations } from "./westgard";
-import { supabase } from "Context/supabase/api";
+import { supabase } from "src/context/supabase/api";
 import { UserContext } from "src/app";
+import { TargetedEvent } from "preact/compat";
 
 // TODO: Add other calculation types
 
@@ -36,7 +39,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
     const [lot, setLot] = useState<number>(0);
     const user = useContext(UserContext);
 
-    const onFilesChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const onFilesChange = (event: TargetedEvent<HTMLInputElement>) => {
         let fileArray: File[] = [];
 
         const fileList: FileList = (event.currentTarget as HTMLInputElement)
@@ -121,11 +124,23 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
         return result;
     };
 
-    const lotCallback = (lot: number, data: ProcessedData[]) => {
+    const lotCallback = (lot: number) => {
         setLot(lot);
-        setData(data);
 
-        if (data.length > 0) callback(lot, data);
+        supabase
+            .from("backups")
+            .select("data")
+            .match({ user_id: user?.id, lot })
+            .limit(1)
+            .single()
+            .then((response) => {
+                if (response.data === null || response.error !== null) return;
+
+                const response_data = response.data.data;
+                setData(response_data);
+
+                if (response_data.length > 0) callback(lot, response_data);
+            });
     };
 
     const fileSelectText =
@@ -136,20 +151,20 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
             : localization.selectFiles + "...";
 
     return (
-        <div className="calculation">
+        <div class="calculation">
             {user !== null ? (
                 <Lot callback={lotCallback} />
             ) : (
-                <div className="calculation__lot">User is not signed in</div>
+                <div class="calculation__lot">User is not signed in</div>
             )}{" "}
-            <div className="calculation__mode-select">
-                <p className="toggle-button__text">{localization.addAverage}</p>
-                <div className="toggle-button">
-                    <div className="toggle-button__cover">
-                        <div className="toggle-button__button">
+            <div class="calculation__mode-select">
+                <p class="toggle-button__text">{localization.addAverage}</p>
+                <div class="toggle-button">
+                    <div class="toggle-button__cover">
+                        <div class="toggle-button__button">
                             <input
                                 type="checkbox"
-                                className="toggle-button__checkbox"
+                                class="toggle-button__checkbox"
                                 aria-label="Mode toggle"
                                 checked={mode === Mode.SD ? true : false}
                                 onChange={() => {
@@ -166,17 +181,15 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                                     }
                                 }}
                             />
-                            <div className="toggle-button__knobs" />
-                            <div className="toggle-button__layer" />
+                            <div class="toggle-button__knobs" />
+                            <div class="toggle-button__layer" />
                         </div>
                     </div>
                 </div>
-                <p className="toggle-button__text">
-                    {localization.buildCharts}
-                </p>
+                <p class="toggle-button__text">{localization.buildCharts}</p>
             </div>
-            <div className="calculation__file-select">
-                <label className="file-browser">
+            <div class="calculation__file-select">
+                <label class="file-browser">
                     <input
                         type="file"
                         aria-label="File browser"
@@ -184,7 +197,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                         onChange={onFilesChange}
                     />
                     <span
-                        className={
+                        class={
                             "file-browser__text " +
                             "file-browser__text_" +
                             localization.getLanguage()
@@ -194,9 +207,9 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                     </span>
                 </label>
             </div>
-            <div className="calculation__submit">
+            <div class="calculation__submit">
                 <button
-                    className={
+                    class={
                         "button " + (mode === Mode.SD ? "" : "button__green")
                     }
                     onClick={() => calculate(files, mode)}

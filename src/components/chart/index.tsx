@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { h } from "preact";
+import { useMemo } from "preact/hooks";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,7 +11,6 @@ import {
     Scale,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -23,11 +23,6 @@ export const Chart: React.FC<{
     };
 }> = ({ data }) => {
     const { values, labels, average, sd } = data;
-    const [reference, setReference] = useState<ChartJSOrUndefined<
-        "line",
-        number[],
-        string
-    > | null>(null);
 
     const chartData = {
         labels,
@@ -40,15 +35,6 @@ export const Chart: React.FC<{
             },
         ],
     };
-
-    useEffect(() => {
-        if (!reference) return;
-        if (!reference.data.labels) return;
-
-        reference.data.datasets[0].data = values;
-        reference.data.labels = labels;
-        reference.update();
-    });
 
     const options: ChartOptions<"line"> = useMemo(() => {
         return {
@@ -139,11 +125,5 @@ export const Chart: React.FC<{
         };
     }, [average, sd]);
 
-    return (
-        <Line
-            options={options}
-            data={chartData}
-            ref={(reference) => setReference(reference)}
-        />
-    );
+    return <Line options={options} data={chartData} />;
 };

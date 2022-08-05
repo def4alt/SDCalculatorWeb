@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { Fragment, h } from "preact";
+import { useRef, useState, useContext, useEffect } from "preact/hooks";
+import * as ROUTES from "src/routes";
+import { FaRegCaretSquareRight, FaRegUser } from "react-icons/fa";
+import { LocalizationContext } from "src/context/localization";
 
-import * as ROUTES from "../../routes";
-import { FiLogIn, FiUser } from "react-icons/fi";
-import { LocalizationContext } from "Context/localization";
-
-import "Styles/nav/nav.scss";
-import { Link } from "react-router-dom";
-import { supabase } from "Context/supabase/api";
+import "src/styles/nav/nav.scss";
+import { route } from "preact-router";
+import { supabase } from "src/context/supabase/api";
 import { UserContext } from "src/app";
 
 const Navigation: React.FC = (_) => {
@@ -44,10 +44,10 @@ const Navigation: React.FC = (_) => {
     };
 
     return (
-        <>
-            <div className="nav">
+        <Fragment>
+            <div class="nav">
                 <button
-                    className="nav__menu-button"
+                    class="nav__menu-button"
                     aria-label="Menu toggle"
                     onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
                 >
@@ -55,12 +55,12 @@ const Navigation: React.FC = (_) => {
                     <p />
                     <p />
                 </button>
-                <Link className="nav__logo" to={ROUTES.HOME}>
+                <button class="nav__logo" onClick={() => route(ROUTES.HOME)}>
                     SDCalculator
-                </Link>
+                </button>
                 {user !== null ? (
                     <button
-                        className="nav__avatar"
+                        class="nav__avatar"
                         onClick={() =>
                             toggleMenu(
                                 accountMenuRef,
@@ -72,51 +72,58 @@ const Navigation: React.FC = (_) => {
                         {avatar.length > 0 ? (
                             <img
                                 src={avatar}
-                                className="avatar avatar_rounded"
+                                class="avatar avatar_rounded"
                                 alt="avatar"
                             />
                         ) : (
-                            <FiUser />
+                            <FaRegUser />
                         )}
                     </button>
                 ) : (
-                    <Link
-                        className="nav__sign-in"
+                    <button
+                        class="nav__sign-in"
                         aria-label="Sign in"
-                        to={ROUTES.SIGN_IN}
+                        onClick={() => route(ROUTES.SIGN_IN)}
                     >
-                        <FiLogIn />
-                    </Link>
+                        <FaRegCaretSquareRight />
+                    </button>
                 )}
             </div>
-            <div className="nav__menu" ref={menuRef}>
-                <Link
-                    className="nav__link"
-                    to={ROUTES.SETTINGS}
-                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
+            <div class="nav__menu" ref={menuRef}>
+                <button
+                    class="nav__link"
+                    onClick={() => {
+                        toggleMenu(menuRef, "nav__menu_expanded");
+                        route(ROUTES.SETTINGS);
+                    }}
                 >
                     {localization.preferences}
-                </Link>
-                <Link
-                    className="nav__link"
-                    to={ROUTES.ABOUT}
-                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
+                </button>
+                <button
+                    class="nav__link"
+                    onClick={() => {
+                        toggleMenu(menuRef, "nav__menu_expanded");
+                        route(ROUTES.ABOUT);
+                    }}
                 >
                     {localization.about}
-                </Link>
+                </button>
             </div>
-            <div className="nav__account-menu" ref={accountMenuRef}>
-                <Link
-                    className="nav__link"
-                    to={ROUTES.ACCOUNT}
-                    onClick={() =>
-                        toggleMenu(accountMenuRef, "nav__account-menu_expanded")
-                    }
+            <div class="nav__account-menu" ref={accountMenuRef}>
+                <button
+                    class="nav__link"
+                    onClick={() => {
+                        route(ROUTES.ACCOUNT);
+                        toggleMenu(
+                            accountMenuRef,
+                            "nav__account-menu_expanded"
+                        );
+                    }}
                 >
                     {localization.accountSettings}
-                </Link>
+                </button>
                 <button
-                    className="nav__link"
+                    class="nav__link"
                     onClick={() => {
                         supabase.auth.signOut();
                         toggleMenu(
@@ -128,7 +135,7 @@ const Navigation: React.FC = (_) => {
                     {localization.signOut}
                 </button>
             </div>
-        </>
+        </Fragment>
     );
 };
 

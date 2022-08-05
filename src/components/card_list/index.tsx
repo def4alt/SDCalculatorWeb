@@ -1,12 +1,11 @@
-import React, { Suspense, useContext, useMemo, useState } from "react";
+import { h } from "preact";
+import { useState, useMemo, useContext } from "preact/hooks";
 import { ProcessedData } from "../../types";
-import Loading from "Components/loading";
-import { LocalizationContext } from "Context/localization";
+import { LocalizationContext } from "src/context/localization";
 
-import "Styles/card-list/card-list.scss";
-import "Styles/button/button.scss";
-
-const Card = React.lazy(() => import("Components/card"));
+import "src/styles/card-list/card-list.scss";
+import "src/styles/button/button.scss";
+import Card from "../card";
 
 interface CardsListProps {
     data: ProcessedData[];
@@ -32,7 +31,7 @@ const CardsList: React.FC<CardsListProps> = ({ data }) => {
                     {showSDCV ? localization.hide : localization.show} SD / CV
                 </button>
             </div>
-            <Suspense fallback={<Loading />}>{cards}</Suspense>
+            {cards}
         </div>
     );
 };
