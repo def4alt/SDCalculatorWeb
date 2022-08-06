@@ -4,6 +4,7 @@
     "version": "1.0.0",
     "license": "MIT",
     "scripts": {
+        "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.output.css",
         "build": "preact build",
         "serve": "sirv build --cors --single",
         "dev": "preact watch",
@@ -33,9 +34,11 @@
         "react-cookie": "*",
         "react-icons": "*",
         "react-localization": "*",
+        "tailwindcss": "^3.1.8",
         "xlsx": "*"
     },
     "devDependencies": {
+        "@fullhuman/postcss-purgecss": "^4.1.3",
         "@types/enzyme": "^3.10.12",
         "@types/jest": "^27.4.1",
         "@typescript-eslint/eslint-plugin": "^5.30.6",
@@ -47,8 +50,6 @@
         "jest": "^27.5.1",
         "jest-preset-preact": "^4.0.5",
         "preact-cli": "^3.4.0",
-        "sass": "^1.54.3",
-        "sass-loader": "10",
         "sirv-cli": "^2.0.2",
         "typescript": "^4.5.2"
     },

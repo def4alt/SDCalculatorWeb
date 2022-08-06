@@ -1,10 +1,8 @@
 import { h } from "preact";
-import { useState, useRef, useMemo } from "preact/hooks";
-import { ProcessedData } from "../../types";
+import { useState, useMemo } from "preact/hooks";
+import { ProcessedData } from "src/types";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { Chart } from "src/components/chart";
-
-import "src/styles/card/card.scss";
 import moment from "moment";
 
 interface CardProps {
@@ -15,20 +13,10 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
     const [hideFromPrint, setHideFromPrint] = useState<boolean>(false);
 
-    const cardRef = useRef<HTMLDivElement>(null);
-
     const hasWarning = useMemo(
         () => data.Warnings.filter((t) => t.trim() !== "").length > 0,
         [data.Warnings, data.Warnings.length]
     );
-
-    const cardState = useMemo(() => {
-        if (hideFromPrint) return "card card_hidden";
-
-        if (hasWarning) return "card card_red";
-
-        return "card";
-    }, [hideFromPrint, hasWarning]);
 
     const sd = useMemo(() => Math.floor(data.SD * 100) / 100, [data.SD]);
 
@@ -60,26 +48,33 @@ const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
     }, [data.Values.length, data.SD, labels.length]);
 
     return (
-        <div className={cardState} ref={cardRef}>
-            <div className="card__header">
-                <p className="card__title">
+        <div
+            class={`w-full h-80 border-2 bg-white rounded-md flex flex-col my-6 justify-center align-middle items-center print:h-[calc((100vh/3)-3rem)]${
+                hasWarning ? "border-red-500" : ""
+            } ${
+                hideFromPrint
+                    ? "border-yellow-500 border-dashed border-spacing-4 print:hidden"
+                    : ""
+            }`}
+        >
+            <div class="w-full flex justify-center align-middle items-center h-20">
+                <div class="basis-10"></div>
+                <p class="flex-grow text-center text-lg">
                     {data.TestName + " Lvl" + String(data.SampleType)}
                 </p>
                 <button
-                    className="card__close"
+                    class="basis-10 print:hidden"
                     onClick={() => setHideFromPrint(!hideFromPrint)}
                 >
                     {hideFromPrint ? <FaPlus /> : <FaTimes />}
                 </button>
             </div>
-            <div className="card__chart">
+            <div class="w-full h-full px-4 flex justify-center align-middle items-center">
                 <Chart data={chartData} />
             </div>
-            <div className={showSDCV ? "card__footer" : "card__footer_hidden"}>
-                <p>
-                    SD {sd} CV {cv}
-                </p>
-            </div>
+            <p class="mb-4 text-sm text-gray-500 h-8">
+                {showSDCV ? `SD ${sd} CV ${cv}` : ""}
+            </p>
         </div>
     );
 };

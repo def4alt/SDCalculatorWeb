@@ -1,14 +1,12 @@
 import { Fragment, h } from "preact";
 import { useContext, useState } from "preact/hooks";
-import { ProcessedData } from "../../types";
+import { ProcessedData } from "src/types";
 import Notes from "src/components/notes";
 import { FaPrint } from "react-icons/fa";
-import "src/styles/button/button.scss";
-import "src/styles/home/home.scss";
 import { UserContext } from "src/app";
 import { lazy } from "preact-iso";
-import Loading from "../loading";
-import Calculation from "../calculation";
+import Loading from "src/components/loading";
+import Calculation from "src/components/calculation";
 import { Suspense } from "preact/compat";
 
 const CardsList = lazy(() => import("src/components/card_list"));
@@ -24,14 +22,14 @@ const Home: React.FC = (_) => {
     };
 
     return (
-        <div class="home">
+        <div class="">
             <Calculation callback={dataCallback} />
 
             <Suspense fallback={<Loading />}>
                 {data.length > 0 && (
                     <Fragment>
                         <button
-                            class="button_print"
+                            class="text-4xl text-gray-600 ml-4 w-20 h-20 inline-flex justify-center items-center rounded-md hover:bg-gray-100  hover:cursor-pointer print:hidden"
                             onClick={() => window.print()}
                         >
                             <FaPrint />

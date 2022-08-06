@@ -2,34 +2,31 @@ import { h } from "preact";
 import { useContext } from "preact/hooks";
 import { LocalizationContext } from "src/context/localization";
 
-import "src/styles/button/button.scss";
-import "src/styles/settings/settings.scss";
-
 // TODO: Calculation type selection
-const Settings: React.FC = (_) => {
+const Settings = () => {
     const localization = useContext(LocalizationContext);
 
     return (
-        <div className="settings">
-            <p>{localization.localization.language}:</p>
-            <button
-                className="button_link"
-                onClick={() => localization.setLocale("en")}
-            >
-                English
-            </button>
-            <button
-                className="button_link"
-                onClick={() => localization.setLocale("ru")}
-            >
-                Русский
-            </button>
-            <button
-                className="button_link"
-                onClick={() => localization.setLocale("uk")}
-            >
-                Українська
-            </button>
+        <div class="w-full h-screen flex flex-col justify-center items-center gap-4">
+            <div class="border-2 w-1/2 flex flex-col justify-center items-center p-4">
+                <div class="w-full flex flex-col justify-center items-center gap-4">
+                    <label class="text-lg w-full text-left">
+                        {localization.localization.language}:
+                    </label>
+                    <button
+                        class="w-full h-10 rounded-md bg-gray-100 hover:bg-gray-200"
+                        onClick={() => localization.setLocale("en")}
+                    >
+                        English
+                    </button>
+                    <button
+                        class="w-full h-10 rounded-md bg-gray-100 hover:bg-gray-200"
+                        onClick={() => localization.setLocale("uk")}
+                    >
+                        Українська
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

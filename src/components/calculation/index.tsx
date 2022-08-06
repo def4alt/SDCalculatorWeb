@@ -1,17 +1,9 @@
 import { h } from "preact";
-import { useContext } from "preact/hooks";
+import { useContext, useMemo } from "preact/hooks";
 import { useState } from "preact/compat";
-
 import { ProcessedData } from "src/types";
 import Lot from "src/components/lot";
-
 import { LocalizationContext } from "src/context/localization";
-
-import "src/styles/toggle-button/toggle-button.scss";
-import "src/styles/calculation/calculation.scss";
-import "src/styles/file-browser/file-browser.scss";
-import "src/styles/avatar/avatar.scss";
-import "src/styles/button/button.scss";
 import { read } from "./reader";
 import { processData } from "./processor";
 import { checkWestgardViolations } from "./westgard";
@@ -143,78 +135,60 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
             });
     };
 
-    const fileSelectText =
-        files.length > 1
-            ? files.length + " " + localization.selected
-            : files.length === 1
-            ? files[0].name
-            : localization.selectFiles + "...";
+    const color = useMemo(() => {
+        return mode === Mode.SD ? "blue" : "green";
+    }, [mode]);
 
     return (
-        <div class="calculation">
+        <div class="w-full h-screen flex flex-col justify-center gap-10 items-center print:hidden">
             {user !== null ? (
                 <Lot callback={lotCallback} />
             ) : (
-                <div class="calculation__lot">User is not signed in</div>
-            )}{" "}
-            <div class="calculation__mode-select">
-                <p class="toggle-button__text">{localization.addAverage}</p>
-                <div class="toggle-button">
-                    <div class="toggle-button__cover">
-                        <div class="toggle-button__button">
-                            <input
-                                type="checkbox"
-                                class="toggle-button__checkbox"
-                                aria-label="Mode toggle"
-                                checked={mode === Mode.SD ? true : false}
-                                onChange={() => {
-                                    switch (mode) {
-                                        case Mode.SD:
-                                            setMode(Mode.Average);
-                                            break;
-                                        case Mode.Average:
-                                            setMode(Mode.SD);
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-                                }}
-                            />
-                            <div class="toggle-button__knobs" />
-                            <div class="toggle-button__layer" />
-                        </div>
-                    </div>
+                <div class="text-red-600 text-lg border-2 border-red-400 rounded-md p-3">
+                    User is not signed in
                 </div>
-                <p class="toggle-button__text">{localization.buildCharts}</p>
+            )}{" "}
+            <div class="w-1/2 flex align-middle items-center justify-center">
+                <span class="mr-3 text-md">{localization.addAverage}</span>
+                <label
+                    for="mode-select"
+                    class="inline-flex relative items-center cursor-pointer"
+                >
+                    <input
+                        type="checkbox"
+                        value=""
+                        id="mode-select"
+                        class="sr-only peer"
+                        checked={mode === Mode.SD ? true : false}
+                        onChange={() => {
+                            setMode((mode) =>
+                                mode === Mode.SD ? Mode.Average : Mode.SD
+                            );
+                        }}
+                    />
+                    <div class="w-16 h-9 bg-green-500 border-2 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-200 hover:border-green-200 hover:bg-green-600 hover:peer-checked:border-blue-200 hover:peer-checked:bg-blue-600 peer-focus:peer-checked:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-1 after:left-[4px] after:bg-white after:border-white after:border after:rounded-full after:h-7 after:w-7 after:transition-all  peer-checked:bg-blue-500"></div>
+                </label>
+                <span class="ml-3 text-md">{localization.buildCharts}</span>
             </div>
-            <div class="calculation__file-select">
-                <label class="file-browser">
+            <div class="w-1/2 h-14 flex justify-center align-middle items-center border-2 rounded-md px-2 py-4 border-gray-200">
+                <label class="block w-full">
+                    <span class="sr-only">Choose File</span>
                     <input
                         type="file"
-                        aria-label="File browser"
+                        class={`block w-full font-bold text-sm text-gray-500 file:hover:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-solid file:shadow-none file:text-sm file:font-semibold file:bg-${color}-500 file:text-white hover:file:bg-${color}-600 hover:file:border-${color}-200`}
                         multiple={mode === Mode.SD ? true : false}
                         onChange={onFilesChange}
                     />
-                    <span
-                        class={
-                            "file-browser__text " +
-                            "file-browser__text_" +
-                            localization.getLanguage()
-                        }
-                    >
-                        {fileSelectText}
-                    </span>
                 </label>
             </div>
-            <div class="calculation__submit">
+            <div class="w-1/2">
                 <button
-                    class={
-                        "button " + (mode === Mode.SD ? "" : "button__green")
-                    }
+                    class={`bg-${color}-500 text-white text-md font-bold rounded-md border-2 w-full h-9 hover:cursor-pointer hover:bg-${color}-600 hover:border-${color}-200`}
                     onClick={() => calculate(files, mode)}
                 >
-                    {mode ? localization.buildCharts : localization.addAverage}
+                    {mode === Mode.SD
+                        ? localization.buildCharts
+                        : localization.addAverage}
                 </button>
             </div>
         </div>

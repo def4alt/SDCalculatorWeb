@@ -2,9 +2,6 @@ import { h } from "preact";
 import { FaCheck, FaPlus, FaTimes } from "react-icons/fa";
 import { LocalizationContext } from "src/context/localization";
 import { useState, useEffect, useContext } from "preact/hooks";
-
-import "src/styles/lot/lot.scss";
-import "src/styles/edit/edit.scss";
 import { supabase } from "src/context/supabase/api";
 import { UserContext } from "src/app";
 import { TargetedEvent } from "preact/compat";
@@ -64,21 +61,24 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
 
     let tempLot = "";
     return (
-        <div className="calculation__lot">
-            <div className="calculation__lot-view">
-                {localization.lots} <span className="text_gray">#{lot}</span>
+        <div class="w-1/2">
+            <div class="mb-4">
+                {localization.lots} <span class="text-gray-500">#{lot}</span>
             </div>
-            <div className="edit">
+            <div class="h-52 border-2 rounded-md p-4 flex flex-wrap flex-col gap-4 justify-start items-start align-top overflow-x-auto">
                 {lotList.map((lot, i) => (
-                    <div className="edit__cell" key={i}>
+                    <div
+                        class="h-10 w-32 hover:border-gray-300 flex justify-between align-middle items-center  border-2 rounded-md p-2"
+                        key={i}
+                    >
                         <button
-                            className="edit__select"
+                            class="text-lg w-full text-left"
                             onClick={() => selectLot(lot)}
                         >
                             {lot}
                         </button>
                         <button
-                            className="edit__remove"
+                            class="text-gray-500 hover:text-gray-600"
                             onClick={() => removeLot(lot)}
                         >
                             <FaTimes />
@@ -86,9 +86,10 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                     </div>
                 ))}
                 {isAdding ? (
-                    <div className="edit__input">
+                    <div class="h-10 w-32 flex justify-around align-middle items-center p-2 border-2 rounded-md">
                         <input
                             type="text"
+                            class="w-full h-full rounded-md mr-4 border-2"
                             onChange={(
                                 event: TargetedEvent<HTMLInputElement>
                             ) => (tempLot = event.currentTarget.value)}
@@ -98,6 +99,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                                 setIsAdding(false);
                                 addLot(Number(tempLot));
                             }}
+                            class="text-gray-500 hover:text-gray-600"
                             type="button"
                         >
                             <FaCheck />
@@ -105,7 +107,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
                     </div>
                 ) : (
                     <button
-                        className="edit__add"
+                        class="h-10 hover:border-gray-300  w-32 flex justify-around text-gray-500 hover:text-gray-600 align-middle items-center  border-2 rounded-md"
                         aria-label="Add lot"
                         onClick={() => setIsAdding(true)}
                     >

@@ -17,7 +17,6 @@ import SignUp from "./components/sign_up";
 import SignIn from "./components/sign_in";
 import Account from "./components/account";
 import Settings from "./components/settings";
-import Admin from "./components/admin";
 import PasswordForget from "./components/password_forget";
 
 export const UserContext = createContext<User | null>(null);
@@ -62,7 +61,7 @@ const App = () => {
 
     return (
         <StrictMode>
-            <div id="app">
+            <div id="app" class="w-100 font-mono">
                 <CookiesProvider>
                     <LocalizationContext.Provider
                         value={{ localization, setLocale }}
@@ -89,7 +88,6 @@ const App = () => {
                                     path={ROUTES.SETTINGS}
                                     component={Settings}
                                 />
-                                <Route path={ROUTES.ADMIN} component={Admin} />
                                 <Route
                                     path={ROUTES.PASSWORD_FORGET}
                                     component={PasswordForget}

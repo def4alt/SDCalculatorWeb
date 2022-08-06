@@ -1,19 +1,16 @@
 import { Fragment, h } from "preact";
-import { useRef, useState, useContext, useEffect } from "preact/hooks";
+import { useState, useContext, useEffect } from "preact/hooks";
 import * as ROUTES from "src/routes";
-import { FaRegCaretSquareRight, FaRegUser } from "react-icons/fa";
+import { FaBars, FaRegCaretSquareRight, FaRegUser } from "react-icons/fa";
 import { LocalizationContext } from "src/context/localization";
-
-import "src/styles/nav/nav.scss";
 import { route } from "preact-router";
 import { supabase } from "src/context/supabase/api";
 import { UserContext } from "src/app";
 
 const Navigation: React.FC = (_) => {
-    const accountMenuRef = useRef<HTMLDivElement>(null);
-    const menuRef = useRef<HTMLDivElement>(null);
     const { localization } = useContext(LocalizationContext);
-
+    const [showSettings, setShowSettings] = useState<boolean>(false);
+    const [showAccount, setShowAccount] = useState<boolean>(false);
     const [avatar, setAvatar] = useState<string>("");
 
     const user = useContext(UserContext);
@@ -31,57 +28,37 @@ const Navigation: React.FC = (_) => {
         });
     }, []);
 
-    const toggleMenu = (
-        ref: React.RefObject<HTMLElement>,
-        className: string
-    ) => {
-        const menu = ref.current;
-
-        if (!menu) return;
-
-        if (!menu.classList.contains(className)) menu.classList.add(className);
-        else menu.classList.remove(className);
-    };
-
     return (
         <Fragment>
-            <div class="nav">
+            <div class="fixed z-20 bg-white flex items-center justify-around w-screen shadow-md h-14 rounded-b-md print:hidden">
                 <button
-                    class="nav__menu-button"
+                    class="w-1/4 h-10 text-lg rounded-md inline-flex justify-center items-center hover:bg-gray-100"
                     aria-label="Menu toggle"
-                    onClick={() => toggleMenu(menuRef, "nav__menu_expanded")}
+                    onClick={() => setShowSettings(!showSettings)}
                 >
-                    <p />
-                    <p />
-                    <p />
+                    <FaBars />
                 </button>
-                <button class="nav__logo" onClick={() => route(ROUTES.HOME)}>
+                <button
+                    class="h-10 w-1/4 text-xl rounded-md hover:bg-gray-100 hover:cursor-pointer"
+                    onClick={() => route(ROUTES.HOME)}
+                >
                     SDCalculator
                 </button>
                 {user !== null ? (
                     <button
-                        class="nav__avatar"
-                        onClick={() =>
-                            toggleMenu(
-                                accountMenuRef,
-                                "nav__account-menu_expanded"
-                            )
-                        }
+                        class="w-1/4 h-10 text-lg rounded-md inline-flex justify-center items-center hover:bg-gray-100"
+                        onClick={() => setShowAccount(!showAccount)}
                     >
                         {" "}
                         {avatar.length > 0 ? (
-                            <img
-                                src={avatar}
-                                class="avatar avatar_rounded"
-                                alt="avatar"
-                            />
+                            <img src={avatar} alt="avatar" />
                         ) : (
                             <FaRegUser />
                         )}
                     </button>
                 ) : (
                     <button
-                        class="nav__sign-in"
+                        class="w-1/4 h-10 text-lg rounded-md inline-flex justify-center items-center hover:bg-gray-100"
                         aria-label="Sign in"
                         onClick={() => route(ROUTES.SIGN_IN)}
                     >
@@ -89,47 +66,50 @@ const Navigation: React.FC = (_) => {
                     </button>
                 )}
             </div>
-            <div class="nav__menu" ref={menuRef}>
+
+            <div
+                class={`fixed mt-14 h-screen w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
+                    showSettings ? "translate-x-0" : "-translate-x-full"
+                }`}
+            >
                 <button
-                    class="nav__link"
+                    class="w-full text-center bg-gray-100 h-10 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200"
                     onClick={() => {
-                        toggleMenu(menuRef, "nav__menu_expanded");
                         route(ROUTES.SETTINGS);
+                        setShowSettings(!showSettings);
                     }}
                 >
                     {localization.preferences}
                 </button>
                 <button
-                    class="nav__link"
+                    class="w-full text-center bg-gray-100 h-10 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200"
                     onClick={() => {
-                        toggleMenu(menuRef, "nav__menu_expanded");
                         route(ROUTES.ABOUT);
+                        setShowSettings(!showSettings);
                     }}
                 >
                     {localization.about}
                 </button>
             </div>
-            <div class="nav__account-menu" ref={accountMenuRef}>
+            <div
+                class={`fixed right-0 mt-14 h-screen w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
+                    showAccount ? "translate-x-0" : "translate-x-full"
+                }`}
+            >
                 <button
-                    class="nav__link"
+                    class="w-full text-center bg-gray-100 h-10 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200"
                     onClick={() => {
                         route(ROUTES.ACCOUNT);
-                        toggleMenu(
-                            accountMenuRef,
-                            "nav__account-menu_expanded"
-                        );
+                        setShowAccount(!showAccount);
                     }}
                 >
                     {localization.accountSettings}
                 </button>
                 <button
-                    class="nav__link"
+                    class="w-full text-center bg-red-100 h-10 p-2 rounded-md hover:cursor-pointer hover:bg-red-200"
                     onClick={() => {
                         supabase.auth.signOut();
-                        toggleMenu(
-                            accountMenuRef,
-                            "nav__account-menu_expanded"
-                        );
+                        setShowAccount(!showAccount);
                     }}
                 >
                     {localization.signOut}

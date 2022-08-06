@@ -1,11 +1,8 @@
 import { h } from "preact";
 import { useState, useMemo, useContext } from "preact/hooks";
-import { ProcessedData } from "../../types";
+import { ProcessedData } from "src/types";
 import { LocalizationContext } from "src/context/localization";
-
-import "src/styles/card-list/card-list.scss";
-import "src/styles/button/button.scss";
-import Card from "../card";
+import Card from "src/components/card";
 
 interface CardsListProps {
     data: ProcessedData[];
@@ -22,10 +19,10 @@ const CardsList: React.FC<CardsListProps> = ({ data }) => {
     }, [data, showSDCV]);
 
     return (
-        <div className="card-list">
-            <div className="card-list__header">
+        <div class="w-full px-4 flex flex-col justify-center align-top items-start print:m-0 print:absolute print:top-[100vh]">
+            <div class="w-full flex justify-center align-middle items-center print:hidden">
                 <button
-                    className="button_link"
+                    class="bg-gray-100 hover:bg-gray-200 w-1/2 h-10 rounded-md"
                     onClick={() => setShowSDCV(!showSDCV)}
                 >
                     {showSDCV ? localization.hide : localization.show} SD / CV

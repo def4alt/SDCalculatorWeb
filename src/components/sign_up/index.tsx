@@ -1,11 +1,8 @@
 import { h } from "preact";
 import { useState, useContext } from "preact/hooks";
 import { TargetedEvent } from "preact/compat";
-import * as ROUTES from "../../routes";
+import * as ROUTES from "src/routes";
 import { LocalizationContext } from "src/context/localization";
-
-import "src/styles/auth/auth.scss";
-import "src/styles/button/button.scss";
 import { supabase } from "src/context/supabase/api";
 import { route } from "preact-router";
 
@@ -13,7 +10,6 @@ const SignUp: React.FunctionComponent = (_) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [passwordConfirm, setPasswordConfirm] = useState<string>("");
-    const [username, setUsername] = useState<string>("");
     const [error, setError] = useState<string>("");
 
     const localization = useContext(LocalizationContext).localization;
@@ -23,7 +19,6 @@ const SignUp: React.FunctionComponent = (_) => {
 
         supabase.auth
             .signUp({ email, password })
-            .then(() => supabase.auth.update({ data: { username } }))
             .then(() => route(ROUTES.HOME))
             .catch((error: { message: string }) => setError(error.message));
     };
@@ -38,9 +33,6 @@ const SignUp: React.FunctionComponent = (_) => {
     const onEmailChange = (event: TargetedEvent<HTMLInputElement>) => {
         setEmail(event.currentTarget.value);
     };
-    const onUsernameChange = (event: TargetedEvent<HTMLInputElement>) => {
-        setUsername(event.currentTarget.value);
-    };
 
     let isInvalid: boolean =
         email === "" ||
@@ -48,48 +40,70 @@ const SignUp: React.FunctionComponent = (_) => {
         password !== passwordConfirm ||
         password === "";
     return (
-        <form onSubmit={onSubmit} className="auth">
-            <div className="auth__input">
-                <p>{localization.username}</p>
-                <input
-                    name="username"
-                    onChange={onUsernameChange}
-                    type="text"
-                    placeholder="def4alt"
-                />
-            </div>
-            <div className="auth__input">
-                <p>{localization.email}</p>
-                <input
-                    name="email"
-                    onChange={onEmailChange}
-                    type="email"
-                    placeholder="example@example.com"
-                />
-            </div>
-            <div className="auth__input">
-                <p>{localization.password}</p>
-                <input
-                    name="password"
-                    onChange={onPasswordChange}
-                    type="password"
-                    placeholder="15%$vd09"
-                />
-            </div>
-            <div className="auth__input">
-                <p>{localization.passwordConfirm}</p>
-                <input
-                    name="passwordConfirm"
-                    onChange={onPasswordConfirmChange}
-                    type="password"
-                />
-            </div>
-            <button disabled={isInvalid} className="button" type="submit">
-                {localization.signUp}
-            </button>
+        <div class="w-full h-screen flex justify-center align-middle items-center">
+            <form
+                onSubmit={onSubmit}
+                class="w-1/2 border-2 rounded-md p-2 pt-4"
+            >
+                <div class="mb-6 w-full">
+                    <label
+                        for="email"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Your email
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="name@example.com"
+                        onChange={onEmailChange}
+                        required
+                    />
+                </div>
+                <div class="mb-6 w-full">
+                    <label
+                        for="password"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        name="password"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="15%$vd09"
+                        onChange={onPasswordChange}
+                        required
+                    />
+                </div>
+                <div class="mb-6 w-full">
+                    <label
+                        for="confirm-password"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Confirm password
+                    </label>
+                    <input
+                        type="password"
+                        name="confirm-password"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="15%$vd09"
+                        onChange={onPasswordConfirmChange}
+                        required
+                    />
+                </div>
+                <button
+                    disabled={isInvalid}
+                    class="w-full border-2 rounded-md h-10 hover:bg-gray-300 bg-gray-200 disabled:bg-white"
+                    type="submit"
+                >
+                    {localization.signUp}
+                </button>
 
-            <p className="auth__error">{error}</p>
-        </form>
+                <p className="auth__error">{error}</p>
+            </form>
+        </div>
     );
 };
 

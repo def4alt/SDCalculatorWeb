@@ -1,12 +1,8 @@
 import { h } from "preact";
-import { useState, useContext, useEffect, useRef } from "preact/hooks";
+import { useState, useContext, useEffect } from "preact/hooks";
 import { TargetedEvent } from "preact/compat";
-import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFileAlt, FaTimes } from "react-icons/fa";
 import { LocalizationContext } from "src/context/localization";
-
-import "src/styles/notes/notes.scss";
-import "src/styles/button/button.scss";
-import "src/styles/header/header.scss";
 import { UserContext } from "src/app";
 import { supabase } from "src/context/supabase/api";
 
@@ -31,7 +27,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
         materialLot: String(lot),
     });
 
-    const notesRef = useRef<HTMLFormElement | null>(null);
+    const [showNotes, setShowNotes] = useState<boolean>(false);
     const { localization } = useContext(LocalizationContext);
     const user = useContext(UserContext);
 
@@ -41,26 +37,19 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
             .select("notes")
             .match({ user_id: user?.id, lot })
             .then((serverNotes) => {
-                if (serverNotes.data === null) return;
+                if (
+                    serverNotes.data === null ||
+                    serverNotes.data[0] === undefined
+                )
+                    return;
 
                 setNotes(serverNotes.data[0] as NotesState);
             });
     }, [lot, user]);
 
-    const toggleMenu = (
-        ref: React.RefObject<HTMLElement>,
-        className: string
-    ) => {
-        const menu = ref.current;
-
-        if (!menu) return;
-
-        if (!menu.classList.contains(className)) menu.classList.add(className);
-        else menu.classList.remove(className);
-    };
-
     const onSubmit = async (event: TargetedEvent<HTMLFormElement, Event>) => {
         event.preventDefault();
+        setShowNotes(false);
 
         await supabase
             .from("backups")
@@ -69,144 +58,208 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
     };
 
     return (
-        <div className="notes">
+        <div class="w-full p-4">
             <button
-                className="notes__toggle button_icon"
+                class="text-4xl w-20 h-20 text-gray-600 inline-flex justify-center items-center rounded-md hover:bg-gray-100  hover:cursor-pointer print:hidden"
                 onClick={() => {
-                    toggleMenu(notesRef, "notes__form_expanded");
+                    setShowNotes(!showNotes);
                 }}
             >
                 <FaRegFileAlt />
             </button>
-            <form className="notes__form" ref={notesRef} onSubmit={onSubmit}>
-                <label className="notes__label">
-                    {localization.methodName}
+            <form
+                class={`border-2 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
+                    showNotes ? "translate-x-0" : "-translate-x-full"
+                } print:visible print:relative print:border-hidden`}
+                onSubmit={onSubmit}
+            >
+                <div class="w-full flex justify-end items-center print:hidden">
+                    <button
+                        class="text-xl text-gray-500 hover:text-gray-600"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setShowNotes(false);
+                        }}
+                    >
+                        <FaTimes />
+                    </button>
+                </div>
+                <div class="w-full">
+                    <label
+                        for="method_name"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Method Name
+                    </label>
                     <input
-                        className="notes__input"
-                        defaultValue={notes.methodName}
-                        name="methodName"
                         type="text"
+                        name="method_name"
+                        defaultValue={notes.methodName}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
-                            setNotes(
+                            setNotes((notes) =>
                                 Object.assign(notes, {
                                     methodName: e.currentTarget.value,
                                 })
                             )
                         }
                     />
-                </label>
-
-                <label className="notes__label">
-                    {localization.operatorName}
+                </div>
+                <div class="w-full">
+                    <label
+                        for="operator_name"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Operator Name
+                    </label>
                     <input
-                        className="notes__input"
+                        type="text"
+                        name="operator_name"
                         defaultValue={notes.operatorName}
-                        name="operatorName"
-                        type="text"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
-                            Object.assign(notes, {
-                                operatorName: e.currentTarget.value,
-                            })
+                            setNotes(
+                                Object.assign(notes, {
+                                    operatorName: e.currentTarget.value,
+                                })
+                            )
                         }
                     />
-                </label>
-
-                <label className="notes__label">
-                    {localization.machineName}
+                </div>
+                <div class="w-full">
+                    <label
+                        for="machine_name"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Machine Name
+                    </label>
                     <input
-                        className="notes__input"
+                        type="text"
+                        name="machine_name"
                         defaultValue={notes.machineName}
-                        name="machineName"
-                        type="text"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
-                            Object.assign(notes, {
-                                machineName: e.currentTarget.value,
-                            })
+                            setNotes(
+                                Object.assign(notes, {
+                                    machineName: e.currentTarget.value,
+                                })
+                            )
                         }
                     />
-                </label>
-                <label className="notes__label">
-                    {localization.foundingDate}
+                </div>
+                <div class="w-full">
+                    <label
+                        for="founding_date"
+                        class="block mb-2 text-sm w-full font-medium text-gray-900"
+                    >
+                        Founding Date
+                    </label>
                     <input
-                        className="notes__input"
-                        defaultValue={notes.foundingDate}
-                        name="foundingDate"
                         type="date"
+                        name="founding_date"
+                        defaultValue={notes.foundingDate}
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 print:appearance-none"
                         onChange={(e) =>
-                            Object.assign(notes, {
-                                foundingDate: e.currentTarget.value,
-                            })
+                            setNotes(
+                                Object.assign(notes, {
+                                    foundingDate: e.currentTarget.value,
+                                })
+                            )
                         }
                     />
-                </label>
-                <br />
-
-                <p className="notes__title">{localization.controlMaterial}</p>
-                <div className="notes__level">
-                    <label className="notes__label">
-                        {localization.materialName} /{" "}
-                        {localization.materialManufacturer}
-                        <input
-                            className="notes__input"
-                            defaultValue={notes.materialNameAndManufacturer}
-                            name="materialNameAndManufacturer"
-                            type="text"
-                            onChange={(e) =>
-                                Object.assign(notes, {
-                                    materialNameAndManufacturer:
-                                        e.currentTarget.value,
-                                })
-                            }
-                        />
-                    </label>
-                    <label className="notes__label">
-                        {localization.materialExpDate}
-
-                        <input
-                            className="notes__input"
-                            defaultValue={notes.materialExpDate}
-                            name="materialExpDate"
-                            type="date"
-                            onChange={(e) =>
-                                Object.assign(notes, {
-                                    materialExpDate: e.currentTarget.value,
-                                })
-                            }
-                        />
-                    </label>
-                    <label className="notes__label">
-                        {localization.materialLvl1}
-                        <input
-                            className="notes__input"
-                            defaultValue={notes.materialLvl1}
-                            name="materialLvl1"
-                            type="text"
-                            onChange={(e) =>
-                                Object.assign(notes, {
-                                    materialLvl1: e.currentTarget.value,
-                                })
-                            }
-                        />
-                    </label>
-                    <label className="notes__label">
-                        {localization.materialLvl2}
-                        <input
-                            className="notes__input"
-                            defaultValue={notes.materialLvl2}
-                            name="materialLvl2"
-                            type="text"
-                            onChange={(e) =>
-                                Object.assign(notes, {
-                                    materialLvl2: e.currentTarget.value,
-                                })
-                            }
-                        />
-                    </label>
                 </div>
 
-                <br />
-                <br />
-                <button className="button notes__submit">
+                <p class="">{localization.controlMaterial}</p>
+                <div class="ml-8 border-l-2 flex flex-col gap-4 border-dashed border-spacing-4 p-4">
+                    <div class="w-full">
+                        <label
+                            for="material_name_and_manufacturer"
+                            class="block mb-2 text-sm w-full font-medium text-gray-900"
+                        >
+                            Material Name / Material Manufacturer
+                        </label>
+                        <input
+                            type="text"
+                            name="material_name_and_manufacturer"
+                            defaultValue={notes.materialNameAndManufacturer}
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onChange={(e) =>
+                                setNotes(
+                                    Object.assign(notes, {
+                                        materialNameAndManufacturer:
+                                            e.currentTarget.value,
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+                    <div class="w-full">
+                        <label
+                            for="material_expiration_date"
+                            class="block mb-2 text-sm w-full font-medium text-gray-900"
+                        >
+                            Material Expiration Date
+                        </label>
+                        <input
+                            type="date"
+                            name="material_expiration_date"
+                            defaultValue={notes.materialExpDate}
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onChange={(e) =>
+                                setNotes(
+                                    Object.assign(notes, {
+                                        materialExpDate: e.currentTarget.value,
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+                    <div class="w-full">
+                        <label
+                            for="material_level_1"
+                            class="block mb-2 text-sm w-full font-medium text-gray-900"
+                        >
+                            Material Level 1
+                        </label>
+                        <input
+                            type="text"
+                            name="material_level_1"
+                            defaultValue={notes.materialLvl1}
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onChange={(e) =>
+                                setNotes(
+                                    Object.assign(notes, {
+                                        materialLvl1: e.currentTarget.value,
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+
+                    <div class="w-full">
+                        <label
+                            for="material_level_2"
+                            class="block mb-2 text-sm w-full font-medium text-gray-900"
+                        >
+                            Material Level 2
+                        </label>
+                        <input
+                            type="text"
+                            name="material_level_2"
+                            defaultValue={notes.materialLvl2}
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onChange={(e) =>
+                                setNotes(
+                                    Object.assign(notes, {
+                                        materialLvl2: e.currentTarget.value,
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+                </div>
+
+                <button class="w-full h-14 text-lg p-2 rounded-md bg-gray-100 hover:bg-gray-200 print:hidden">
                     {localization.submit}
                 </button>
             </form>
