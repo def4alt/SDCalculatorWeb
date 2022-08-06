@@ -54,7 +54,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
         await supabase
             .from("backups")
             .update({ notes })
-            .match({ id: user?.id, lot });
+            .match({ user_id: user?.id, lot });
     };
 
     return (
@@ -70,7 +70,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
             <form
                 class={`border-2 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
                     showNotes ? "translate-x-0" : "-translate-x-full"
-                } print:visible print:relative print:border-hidden`}
+                } print:translate-x-0 print:relative print:border-hidden`}
                 onSubmit={onSubmit}
             >
                 <div class="w-full flex justify-end items-center print:hidden">
