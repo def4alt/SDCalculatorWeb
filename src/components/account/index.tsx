@@ -6,14 +6,13 @@ import { supabase } from "src/context/supabase/api";
 import { route } from "preact-router";
 import { TargetedEvent } from "preact/compat";
 import { FaRegUser } from "react-icons/fa";
+import { LocalizationContext } from "src/context/localization";
 
-// TODO: Add password change
-// TODO: Add email change
-// TODO: Add username change
 const Account: React.FC = (_) => {
     const [avatar, setAvatar] = useState<string>("");
 
     const user = useContext(UserContext);
+    const { localization } = useContext(LocalizationContext);
 
     useEffect(() => {
         if (user === null) {
@@ -55,7 +54,9 @@ const Account: React.FC = (_) => {
             )}
             <div class="w-1/2 h-14 flex justify-center align-middle items-center border-2 rounded-md px-2 py-4 border-gray-200">
                 <label class="block w-full">
-                    <span class="sr-only">Choose File</span>
+                    <span class="sr-only">
+                        {localization.chooseAvatarPicture}
+                    </span>
                     <input
                         type="file"
                         class={`block w-full font-bold text-sm text-gray-500 file:hover:cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-gray-100 file:rounded-md file:border-2 file:border-solid file:shadow-none file:text-sm file:font-semibold file:bg-gray-200 hover:file:bg-gray-300 hover:file:border-gray-200`}

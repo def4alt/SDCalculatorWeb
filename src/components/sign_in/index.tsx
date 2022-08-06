@@ -81,7 +81,7 @@ const SignIn: React.FunctionComponent = (_) => {
                         for="email"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Your email
+                        {localization.email}
                     </label>
                     <input
                         type="email"

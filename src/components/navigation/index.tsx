@@ -79,7 +79,7 @@ const Navigation: React.FC = (_) => {
                         setShowSettings(!showSettings);
                     }}
                 >
-                    {localization.preferences}
+                    {localization.settings}
                 </button>
                 <button
                     class="w-full text-center bg-gray-100 h-10 p-2 rounded-md hover:cursor-pointer hover:bg-gray-200"

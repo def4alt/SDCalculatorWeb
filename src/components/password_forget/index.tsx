@@ -39,7 +39,7 @@ const PasswordForget: React.FC = (_) => {
                         for="email"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Your email
+                        {localization.email}
                     </label>
                     <input
                         type="email"
@@ -51,7 +51,7 @@ const PasswordForget: React.FC = (_) => {
                     />
                 </div>
                 <p class="py-5 text-green-500">
-                    {success ? "An email with your recovery link was sent" : ""}
+                    {success ? localization.recoveryLinkWasSent : ""}
                 </p>
 
                 <button

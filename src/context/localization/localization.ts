@@ -1,6 +1,6 @@
 import LocalizedStrings, { LocalizedStringsMethods } from "react-localization";
 
-export interface localizationTypeUnknown extends LocalizedStringsMethods {
+export interface LocalizationType extends LocalizedStringsMethods {
     accountSettings: string;
     signOut: string;
     uploadImage: string;
@@ -22,7 +22,6 @@ export interface localizationTypeUnknown extends LocalizedStringsMethods {
     materialLvl2: string;
     machineName: string;
     submit: string;
-    preferences: string;
     about: string;
     language: string;
     madeFor: string;
@@ -37,9 +36,15 @@ export interface localizationTypeUnknown extends LocalizedStringsMethods {
     passwordConfirm: string;
     hide: string;
     show: string;
+    chooseDataFiles: string;
+    chooseAvatarPicture: string;
+    userIsNotSignedIn: string;
+    loading: string;
+    settings: string;
+    recoveryLinkWasSent: string;
 }
 
-const localization: localizationTypeUnknown = new LocalizedStrings({
+const localization: LocalizationType = new LocalizedStrings({
     en: {
         accountSettings: "Account settings",
         signOut: "Sign out",
@@ -76,48 +81,16 @@ const localization: localizationTypeUnknown = new LocalizedStrings({
         username: "Username",
         passwordConfirm: "Confirm password",
         hide: "Hide",
-        show: "Show"
-    },
-    ru: {
-        accountSettings: "Аккаунт",
-        signOut: "Выйти",
-        uploadImage: "Загрузить картинку",
-        lots: "Лоты",
-        addAverage: "Добавить среднее",
-        buildCharts: "Построить графики",
-        selectFiles: "Выбрать файлы",
-        selected: "выбрано",
-        browse: "Просмотреть",
-        methodName: "Название методики",
-        operatorName: "Оператор",
-        foundingDate: "Дата изначальных измерений",
-        controlMaterial: "Контрольный материал",
-        materialName: "Название",
-        materialManufacturer: "Изготовитель",
-        materialLot: "Лот",
-        materialExpDate: "Срок годности",
-        materialLvl1: "Уровень 1",
-        materialLvl2: "Уровень 2",
-        machineName: "Инструмент измерения",
-        submit: "Принять",
-        preferences: "Настройки",
-        about: "Про прогамму",
-        language: "Язык",
-        madeFor: "Сделано для",
-        loginWith: "Войти с помощью",
-        email: "Email",
-        password: "Пароль",
-        forgotPassword: "Забыли пароль?",
-        signUp: "Зарегистрироваться",
-        signIn: "Войти",
-        reset: "Восстановить",
-        username: "Логин",
-        passwordConfirm: "Подтвердите пароль",
-        hide: "Спрятать",
-        show: "Показать"
+        show: "Show",
+        loading: "Loading...",
+        recoveryLinkWasSent: "An email with your recovery link was sent",
+        settings: "Settings",
+        userIsNotSignedIn: "User is not signed in",
+        chooseDataFiles: "Choose data files",
+        chooseAvatarPicture: "Choose avatar picture",
     },
     uk: {
-        accountSettings: "Аккаунт",
+        accountSettings: "Акаунт",
         signOut: "Вийти",
         uploadImage: "Завантажити зображення",
         lots: "Лоти",
@@ -152,7 +125,14 @@ const localization: localizationTypeUnknown = new LocalizedStrings({
         username: "Логін",
         passwordConfirm: "Підтвердити пароль",
         hide: "Сховати",
-        show: "Показати"
+        show: "Показати",
+        loading: "Завантажується...",
+        recoveryLinkWasSent:
+            "Лист для скидавання паролю був надісланий вам на пошту",
+        settings: "Налаштування",
+        userIsNotSignedIn: "Користувач не увійшов",
+        chooseDataFiles: "Оберіть файли для розрахунку",
+        chooseAvatarPicture: "Оберіть фото для аватару",
     },
 });
 

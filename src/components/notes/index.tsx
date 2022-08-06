@@ -11,20 +11,20 @@ interface NotesProps {
 }
 
 interface NotesState {
-    methodName?: string;
-    operatorName?: string;
-    foundingDate?: string;
-    materialNameAndManufacturer?: string;
-    materialLot?: string;
-    materialExpDate?: string;
-    materialLvl1?: string;
-    materialLvl2?: string;
-    machineName?: string;
+    method_name?: string;
+    operator_name?: string;
+    founding_date?: string;
+    material_name_and_manufacturer?: string;
+    material_lot?: string;
+    material_expiration_date?: string;
+    material_lvl_1?: string;
+    material_lvl_2?: string;
+    machine_name?: string;
 }
 
 const Notes: React.FC<NotesProps> = ({ lot }) => {
     const [notes, setNotes] = useState<NotesState>({
-        materialLot: String(lot),
+        material_lot: String(lot),
     });
 
     const [showNotes, setShowNotes] = useState<boolean>(false);
@@ -68,7 +68,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                 <FaRegFileAlt />
             </button>
             <form
-                class={`border-2 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
+                class={`border-2 w-1/3 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
                     showNotes ? "translate-x-0" : "-translate-x-full"
                 } print:translate-x-0 print:relative print:border-hidden`}
                 onSubmit={onSubmit}
@@ -89,17 +89,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         for="method_name"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Method Name
+                        {localization.methodName}
                     </label>
                     <input
                         type="text"
                         name="method_name"
-                        defaultValue={notes.methodName}
+                        defaultValue={notes.method_name}
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
                             setNotes((notes) =>
                                 Object.assign(notes, {
-                                    methodName: e.currentTarget.value,
+                                    method_name: e.currentTarget.value,
                                 })
                             )
                         }
@@ -110,17 +110,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         for="operator_name"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Operator Name
+                        {localization.operatorName}
                     </label>
                     <input
                         type="text"
                         name="operator_name"
-                        defaultValue={notes.operatorName}
+                        defaultValue={notes.operator_name}
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
                             setNotes(
                                 Object.assign(notes, {
-                                    operatorName: e.currentTarget.value,
+                                    operator_name: e.currentTarget.value,
                                 })
                             )
                         }
@@ -131,17 +131,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         for="machine_name"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Machine Name
+                        {localization.machineName}
                     </label>
                     <input
                         type="text"
                         name="machine_name"
-                        defaultValue={notes.machineName}
+                        defaultValue={notes.machine_name}
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         onChange={(e) =>
                             setNotes(
                                 Object.assign(notes, {
-                                    machineName: e.currentTarget.value,
+                                    machine_name: e.currentTarget.value,
                                 })
                             )
                         }
@@ -152,17 +152,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                         for="founding_date"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Founding Date
+                        {localization.foundingDate}
                     </label>
                     <input
                         type="date"
                         name="founding_date"
-                        defaultValue={notes.foundingDate}
+                        defaultValue={notes.founding_date}
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 print:appearance-none"
                         onChange={(e) =>
                             setNotes(
                                 Object.assign(notes, {
-                                    foundingDate: e.currentTarget.value,
+                                    founding_date: e.currentTarget.value,
                                 })
                             )
                         }
@@ -176,17 +176,18 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             for="material_name_and_manufacturer"
                             class="block mb-2 text-sm w-full font-medium text-gray-900"
                         >
-                            Material Name / Material Manufacturer
+                            {localization.materialName} /{" "}
+                            {localization.materialManufacturer}
                         </label>
                         <input
                             type="text"
                             name="material_name_and_manufacturer"
-                            defaultValue={notes.materialNameAndManufacturer}
+                            defaultValue={notes.material_name_and_manufacturer}
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             onChange={(e) =>
                                 setNotes(
                                     Object.assign(notes, {
-                                        materialNameAndManufacturer:
+                                        material_name_and_manufacturer:
                                             e.currentTarget.value,
                                     })
                                 )
@@ -198,17 +199,18 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             for="material_expiration_date"
                             class="block mb-2 text-sm w-full font-medium text-gray-900"
                         >
-                            Material Expiration Date
+                            {localization.materialExpDate}
                         </label>
                         <input
                             type="date"
                             name="material_expiration_date"
-                            defaultValue={notes.materialExpDate}
+                            defaultValue={notes.material_expiration_date}
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             onChange={(e) =>
                                 setNotes(
                                     Object.assign(notes, {
-                                        materialExpDate: e.currentTarget.value,
+                                        material_expiration_date:
+                                            e.currentTarget.value,
                                     })
                                 )
                             }
@@ -219,17 +221,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             for="material_level_1"
                             class="block mb-2 text-sm w-full font-medium text-gray-900"
                         >
-                            Material Level 1
+                            {localization.materialLvl1}
                         </label>
                         <input
                             type="text"
                             name="material_level_1"
-                            defaultValue={notes.materialLvl1}
+                            defaultValue={notes.material_lvl_1}
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             onChange={(e) =>
                                 setNotes(
                                     Object.assign(notes, {
-                                        materialLvl1: e.currentTarget.value,
+                                        material_lvl_1: e.currentTarget.value,
                                     })
                                 )
                             }
@@ -241,17 +243,17 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                             for="material_level_2"
                             class="block mb-2 text-sm w-full font-medium text-gray-900"
                         >
-                            Material Level 2
+                            {localization.materialLvl2}
                         </label>
                         <input
                             type="text"
                             name="material_level_2"
-                            defaultValue={notes.materialLvl2}
+                            defaultValue={notes.material_lvl_2}
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             onChange={(e) =>
                                 setNotes(
                                     Object.assign(notes, {
-                                        materialLvl2: e.currentTarget.value,
+                                        material_lvl_2: e.currentTarget.value,
                                     })
                                 )
                             }

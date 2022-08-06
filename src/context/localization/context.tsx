@@ -1,12 +1,12 @@
 import React from "react";
-import localization, { localizationTypeUnknown } from "./localization";
+import localization, { LocalizationType } from "./localization";
 
-type LocalizationType = {
+type ContextType = {
     setLocale: (code: string) => void;
-    localization: localizationTypeUnknown;
+    localization: LocalizationType;
 };
 
-const LocalizationContext = React.createContext<LocalizationType>({
+const LocalizationContext = React.createContext<ContextType>({
     setLocale: (code: string) => localization.setLanguage(code),
     localization: localization,
 });

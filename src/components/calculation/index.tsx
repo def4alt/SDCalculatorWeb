@@ -145,7 +145,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                 <Lot callback={lotCallback} />
             ) : (
                 <div class="text-red-600 text-lg border-2 border-red-400 rounded-md p-3">
-                    User is not signed in
+                    {localization.userIsNotSignedIn}
                 </div>
             )}{" "}
             <div class="w-1/2 flex align-middle items-center justify-center">
@@ -172,7 +172,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
             </div>
             <div class="w-1/2 h-14 flex justify-center align-middle items-center border-2 rounded-md px-2 py-4 border-gray-200">
                 <label class="block w-full">
-                    <span class="sr-only">Choose File</span>
+                    <span class="sr-only">{localization.chooseDataFiles}</span>
                     <input
                         type="file"
                         class={`block w-full font-bold text-sm text-gray-500 file:hover:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-solid file:shadow-none file:text-sm file:font-semibold file:bg-${color}-500 file:text-white hover:file:bg-${color}-600 hover:file:border-${color}-200`}

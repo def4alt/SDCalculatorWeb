@@ -35,10 +35,7 @@ const SignUp: React.FunctionComponent = (_) => {
     };
 
     let isInvalid: boolean =
-        email === "" ||
-        password === "" ||
-        password !== passwordConfirm ||
-        password === "";
+        email === "" || password !== passwordConfirm || password === "";
     return (
         <div class="w-full h-screen flex justify-center align-middle items-center">
             <form
@@ -50,7 +47,7 @@ const SignUp: React.FunctionComponent = (_) => {
                         for="email"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Your email
+                        {localization.email}
                     </label>
                     <input
                         type="email"
@@ -66,7 +63,7 @@ const SignUp: React.FunctionComponent = (_) => {
                         for="password"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Password
+                        {localization.password}
                     </label>
                     <input
                         type="password"
@@ -82,7 +79,7 @@ const SignUp: React.FunctionComponent = (_) => {
                         for="confirm-password"
                         class="block mb-2 text-sm w-full font-medium text-gray-900"
                     >
-                        Confirm password
+                        {localization.passwordConfirm}
                     </label>
                     <input
                         type="password"
