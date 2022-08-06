@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "license": "MIT",
     "scripts": {
-        "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.output.css",
+        "build:tailwind": "tailwindcss build -i src/style/tailwind.css -o src/style/index.css",
         "build": "preact build",
         "serve": "sirv build --cors --single",
         "dev": "preact watch",
