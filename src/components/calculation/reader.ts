@@ -1,13 +1,7 @@
 import { CellObject, read as readXLSX, Sheet, utils, WorkSheet } from "xlsx";
 import { err, ok, Result } from "neverthrow";
 import moment from "moment";
-import {
-    Dictionary,
-    FailedToParseError,
-    RawData,
-    SampleType,
-    XlsxFailedToGetCellError,
-} from "src/types/common";
+import { Dictionary, RawData, SampleType } from "src/types/common";
 
 const SUPPORTED_FILE_TYPES = /(\.xls|\.xlsx)$/i;
 const SUPPORTED_DATE_TYPE = /\d{2}_\d{2}_\d{2}/i;
@@ -99,7 +93,7 @@ const getValueFromCell = (
     sheet: Sheet,
     row: number,
     column: number
-): Result<CellValueType, XlsxFailedToGetCellError> => {
+): Result<CellValueType, Error> => {
     const cellAddress = utils.encode_cell({
         r: row,
         c: column,
@@ -108,12 +102,7 @@ const getValueFromCell = (
     const value: CellObject | undefined = sheet[cellAddress];
 
     if (value?.v === undefined)
-        return err(
-            new XlsxFailedToGetCellError(
-                `Failed to get ${cellAddress} cell`,
-                "getValueFromCell, reader.ts"
-            )
-        );
+        return err(new Error(`Failed to get ${cellAddress} cell`));
 
     return ok(value.v);
 };
@@ -121,16 +110,11 @@ const getValueFromCell = (
 const getSampleType = (
     sheet: WorkSheet,
     row: number
-): Result<SampleType, FailedToParseError> => {
+): Result<SampleType, Error> => {
     const sampleTypeCell = getValueFromCell(sheet, row, SAMPLE_TYPE_COLUMN);
 
     if (sampleTypeCell.isErr())
-        return err(
-            new FailedToParseError(
-                `Failed to parse undefined to SampleType`,
-                "getSampleType, reader.ts"
-            )
-        );
+        return err(new Error(`Failed to parse undefined to SampleType`));
 
     switch ((sampleTypeCell.value as string).toUpperCase().trim()) {
         case "QC LV I":
@@ -140,9 +124,8 @@ const getSampleType = (
 
         default:
             return err(
-                new FailedToParseError(
-                    `Failed to parse ${sampleTypeCell.value} to SampleType`,
-                    "getSampleType, reader.ts"
+                new Error(
+                    `Failed to parse ${sampleTypeCell.value} to SampleType`
                 )
             );
     }

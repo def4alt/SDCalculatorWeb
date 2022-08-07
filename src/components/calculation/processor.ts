@@ -1,50 +1,53 @@
-import {
-    InvalidArgumentError,
-    RawData,
-    SampleType,
-    ProcessedData,
-} from "src/types/common";
+import { err, ok, Result } from "neverthrow";
+import { RawData, SampleType, ProcessedData } from "src/types/common";
 
-export const processData = (data: RawData[]): ProcessedData[] => {
+export const processData = (
+    data: RawData[]
+): Result<ProcessedData[], Error> => {
     const validData = data.filter((t) => t.SampleType !== SampleType.Null);
     const sampleRow = validData.at(0);
 
-    if (!sampleRow) return [];
+    if (!sampleRow) {
+        return err(new Error("failed to get sample row for processing"));
+    }
 
     let testNames = Object.keys(sampleRow.TestResults);
 
     const processedData: ProcessedData[] = [];
 
     testNames.forEach((testName) => {
-        try {
-            const model = processTestOfType(
-                validData,
-                testName,
-                SampleType.Lvl1
-            );
-            processedData.push(model);
-        } catch (e) {}
+        const firstModel = processTestOfType(
+            validData,
+            testName,
+            SampleType.Lvl1
+        );
+        if (firstModel.isErr()) {
+            console.log(firstModel.error.message);
+            return;
+        }
+        processedData.push(firstModel.value);
 
-        try {
-            const model = processTestOfType(
-                validData,
-                testName,
-                SampleType.Lvl2
-            );
-            processedData.push(model);
-        } catch (e) {}
+        const secondModel = processTestOfType(
+            validData,
+            testName,
+            SampleType.Lvl2
+        );
+        if (secondModel.isErr()) {
+            console.log(secondModel.error.message);
+            return;
+        }
+        processedData.push(secondModel.value);
     });
 
-    return processedData;
+    return ok(processedData);
 };
 
 const processTestOfType = (
     rawData: RawData[],
     testName: string,
     sampleType: SampleType
-): ProcessedData => {
-    if (rawData.length === 0)
-        throw new InvalidArgumentError("Read Models length is 0");
+): Result<ProcessedData, Error> => {
+    if (rawData.length === 0) err(new Error("Read Models length is 0"));
 
     const dataOfType = rawData.filter((t) => t.SampleType === sampleType);
     const nonFailedResults = getNonFailedResults(dataOfType, testName).map(
@@ -52,16 +55,16 @@ const processTestOfType = (
     );
 
     if (nonFailedResults.length === 0)
-        throw new InvalidArgumentError("Non Failed Results length is 0");
+        err(new Error("Non Failed Results length is 0"));
 
-    return {
+    return ok({
         Values: [getAverageFor(nonFailedResults)],
         SD: getStandardDeviation(nonFailedResults),
         TestName: testName,
         SampleType: sampleType,
         Dates: [dataOfType[0].Dates[0]],
         Warnings: [""],
-    } as ProcessedData;
+    } as ProcessedData);
 };
 
 const getAverageFor = (numbers: Array<number>): number => {
