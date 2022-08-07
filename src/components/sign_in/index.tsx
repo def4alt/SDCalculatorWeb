@@ -111,13 +111,21 @@ const SignIn: React.FunctionComponent = (_) => {
 
                 <button
                     class="text-gray-400 hover:text-gray-500 mb-4 w-full text-left"
-                    onClick={() => route(ROUTES.PASSWORD_FORGET)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        route(ROUTES.PASSWORD_FORGET);
+                    }}
+                    type="button"
                 >
                     {localization.forgotPassword}
                 </button>
                 <button
                     class="text-gray-400 hover:text-gray-500 mb-4 w-full text-left"
-                    onClick={() => route(ROUTES.SIGN_UP)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        route(ROUTES.SIGN_UP);
+                    }}
+                    type="button"
                 >
                     {localization.signUp}
                 </button>

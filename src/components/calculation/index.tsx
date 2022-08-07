@@ -77,9 +77,11 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                     if (r.isErr()) console.error(r.error);
                 });
             else
-                insertField({ user_id: user.id, lot, data }).then((r) => {
-                    if (r.isErr()) console.error(r.error);
-                });
+                insertField({ user_id: user.id, lot, data: result }).then(
+                    (r) => {
+                        if (r.isErr()) console.error(r.error);
+                    }
+                );
         }
 
         setData(result);
