@@ -48,16 +48,21 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
 
     const calculate = async (files: File[], mode: Mode) => {
         const rawData = await read(files);
-        let processedData = processData(rawData);
+        let processedDataResult = processData(rawData);
+
+        if (processedDataResult.isErr()) {
+            console.error(processedDataResult.error.message);
+            return;
+        }
 
         let result: ProcessedData[] = [];
 
         switch (mode) {
             case Mode.SD:
-                result = processedData;
+                result = processedDataResult.value;
                 break;
             case Mode.Average:
-                result = appendNewData(data, processedData);
+                result = appendNewData(data, processedDataResult.value);
                 break;
 
             default:
