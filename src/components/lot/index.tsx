@@ -2,7 +2,7 @@ import { h } from "preact";
 import { FaCheck, FaPlus, FaTimes } from "react-icons/fa";
 import { LocalizationContext } from "src/context/localization";
 import { useState, useEffect, useContext } from "preact/hooks";
-import { supabase } from "src/context/supabase/api";
+import { deleteRow, getAllLots } from "src/context/supabase/api";
 import { UserContext } from "src/app";
 import { TargetedEvent } from "preact/compat";
 
@@ -19,16 +19,9 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
     const user = useContext(UserContext);
 
     useEffect(() => {
-        supabase
-            .from("backups")
-            .select("lot")
-            .match({ user_id: user?.id })
-            .then((response) => {
-                if (response.data === null) return;
+        if (user === null) return;
 
-                const data = response.data.map((t) => t.lot);
-                setLotList(data);
-            });
+        getAllLots(user.id).then((result) => setLotList(result.unwrapOr([])));
     }, [user]);
 
     const removeLot = async (lot: number) => {
@@ -42,10 +35,11 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
         if (newList.length === 0) selectLot(0);
         else selectLot(newList[newList.length - 1]);
 
-        await supabase
-            .from("backups")
-            .delete()
-            .match({ lot, user_id: user?.id });
+        if (user === null) return;
+
+        const result = await deleteRow(user.id, lot);
+
+        if (result.isErr()) console.error(result.error.message);
     };
 
     const selectLot = (lot: number) => {
@@ -65,7 +59,7 @@ const Lot: React.FC<LotProps> = ({ callback }) => {
             <div class="mb-4">
                 {localization.lots} <span class="text-gray-500">#{lot}</span>
             </div>
-            <div class="h-52 border-2 rounded-md p-4 flex flex-wrap flex-col gap-4 justify-start items-start align-top overflow-x-auto">
+            <div class="h-52 border-2 rounded-md p-4 flex flex-col flex-wrap content-start items-start gap-4 align-top overflow-x-auto">
                 {lotList.map((lot, i) => (
                     <div
                         class="h-10 w-32 hover:border-gray-300 flex justify-between align-middle items-center  border-2 rounded-md p-2"

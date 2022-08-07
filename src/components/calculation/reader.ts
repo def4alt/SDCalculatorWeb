@@ -7,7 +7,7 @@ import {
     RawData,
     SampleType,
     XlsxFailedToGetCellError,
-} from "../../types";
+} from "src/types/common";
 
 const SUPPORTED_FILE_TYPES = /(\.xls|\.xlsx)$/i;
 const SUPPORTED_DATE_TYPE = /\d{2}_\d{2}_\d{2}/i;

@@ -78,5 +78,7 @@ export const checkWestgardViolations = (
         previousValue = value;
     });
 
+    violations.pop();
+
     return violations;
 };

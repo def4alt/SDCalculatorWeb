@@ -1,17 +1,19 @@
 import { h } from "preact";
 import { useContext, useMemo } from "preact/hooks";
 import { useState } from "preact/compat";
-import { ProcessedData } from "src/types";
+import { ProcessedData } from "src/types/common";
 import Lot from "src/components/lot";
 import { LocalizationContext } from "src/context/localization";
 import { read } from "./reader";
 import { processData } from "./processor";
 import { checkWestgardViolations } from "./westgard";
-import { supabase } from "src/context/supabase/api";
+import {
+    getFirstMatchedField,
+    insertField,
+    updateField,
+} from "src/context/supabase/api";
 import { UserContext } from "src/app";
 import { TargetedEvent } from "preact/compat";
-
-// TODO: Add other calculation types
 
 enum Mode {
     SD,
@@ -63,22 +65,16 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
         }
 
         if (user !== null) {
-            const { data } = await supabase
-                .from("backups")
-                .select()
-                .match({ user_id: user.id, lot })
-                .limit(1)
-                .single();
+            const dataResult = await getFirstMatchedField(user.id, lot, "all");
 
-            if (data !== null)
-                await supabase
-                    .from("backups")
-                    .update({ data: result })
-                    .match({ lot, user_id: user.id });
+            if (dataResult.isOk())
+                updateField(user.id, lot, "data", result).then((r) => {
+                    if (r.isErr()) console.error(r.error);
+                });
             else
-                await supabase
-                    .from("backups")
-                    .insert([{ lot, user_id: user.id, data: result }]);
+                insertField({ user_id: user.id, lot, data }).then((r) => {
+                    if (r.isErr()) console.error(r.error);
+                });
         }
 
         setData(result);
@@ -119,20 +115,20 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
     const lotCallback = (lot: number) => {
         setLot(lot);
 
-        supabase
-            .from("backups")
-            .select("data")
-            .match({ user_id: user?.id, lot })
-            .limit(1)
-            .single()
-            .then((response) => {
-                if (response.data === null || response.error !== null) return;
+        if (user === null) return;
 
-                const response_data = response.data.data;
-                setData(response_data);
+        getFirstMatchedField<ProcessedData[]>(user.id, lot, "data").then(
+            (r) => {
+                if (r.isErr()) {
+                    console.error(r.error.message);
+                    return;
+                }
 
-                if (response_data.length > 0) callback(lot, response_data);
-            });
+                setData(r.value);
+
+                if (r.value.length > 0) callback(lot, r.value);
+            }
+        );
     };
 
     const color = useMemo(() => {
@@ -149,7 +145,9 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                 </div>
             )}{" "}
             <div class="w-1/2 flex align-middle items-center justify-center">
-                <span class="mr-3 text-md">{localization.addAverage}</span>
+                <span class="mr-3 text-md text-center">
+                    {localization.addAverage}
+                </span>
                 <label
                     for="mode-select"
                     class="inline-flex relative items-center cursor-pointer"
@@ -158,7 +156,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                         type="checkbox"
                         value=""
                         id="mode-select"
-                        class="sr-only peer"
+                        class="sr-only peer "
                         checked={mode === Mode.SD ? true : false}
                         onChange={() => {
                             setMode((mode) =>
@@ -166,16 +164,18 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
                             );
                         }}
                     />
-                    <div class="w-16 h-9 bg-green-500 border-2 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-200 hover:border-green-200 hover:bg-green-600 hover:peer-checked:border-blue-200 hover:peer-checked:bg-blue-600 peer-focus:peer-checked:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-1 after:left-[4px] after:bg-white after:border-white after:border after:rounded-full after:h-7 after:w-7 after:transition-all  peer-checked:bg-blue-500"></div>
+                    <div class="w-16 h-9  bg-green-500 border-2 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-200 hover:border-green-200 hover:bg-green-600 hover:peer-checked:border-blue-200 hover:peer-checked:bg-blue-600 peer-focus:peer-checked:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-1 after:left-[4px] after:bg-white after:border-white after:border after:rounded-full after:h-7 after:w-7 after:transition-all  peer-checked:bg-blue-500"></div>
                 </label>
-                <span class="ml-3 text-md">{localization.buildCharts}</span>
+                <span class="ml-3 text-md text-center">
+                    {localization.buildCharts}
+                </span>
             </div>
             <div class="w-1/2 h-14 flex justify-center align-middle items-center border-2 rounded-md px-2 py-4 border-gray-200">
                 <label class="block w-full">
                     <span class="sr-only">{localization.chooseDataFiles}</span>
                     <input
                         type="file"
-                        class={`block w-full font-bold text-sm text-gray-500 file:hover:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-2 file:border-solid file:shadow-none file:text-sm file:font-semibold file:bg-${color}-500 file:text-white hover:file:bg-${color}-600 hover:file:border-${color}-200`}
+                        class="block w-full text-center file:w-full sm:text-left sm:file:w-36 font-bold text-sm text-gray-500 file:hover:cursor-pointer file:mr-4 file:py-2 file:px-4 file:border-gray-100 file:rounded-md file:border-2 file:border-solid file:shadow-none file:text-sm file:font-semibold file:bg-gray-200 hover:file:bg-gray-300 hover:file:border-gray-200"
                         multiple={mode === Mode.SD ? true : false}
                         onChange={onFilesChange}
                     />

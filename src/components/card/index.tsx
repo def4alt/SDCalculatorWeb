@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useMemo } from "preact/hooks";
-import { ProcessedData } from "src/types";
+import { ProcessedData } from "src/types/common";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { Chart } from "src/components/chart";
 import moment from "moment";
@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
 
     return (
         <div
-            class={`w-full h-80 border-2 bg-white rounded-md flex flex-col my-6 justify-center align-middle items-center print:h-[calc((100vh/3)-3rem)]${
+            class={`w-full md:w-9/12 wrap:w-5/12 h-80 border-2 bg-white rounded-md flex flex-col print:my-6 justify-center align-middle items-center print:h-[calc((100vh/3)-3rem)] even:break-before-all ${
                 hasWarning ? "border-red-500" : ""
             } ${
                 hideFromPrint
@@ -63,13 +63,13 @@ const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
                     {data.TestName + " Lvl" + String(data.SampleType)}
                 </p>
                 <button
-                    class="basis-10 print:hidden"
+                    class="basis-10 print:invisible"
                     onClick={() => setHideFromPrint(!hideFromPrint)}
                 >
                     {hideFromPrint ? <FaPlus /> : <FaTimes />}
                 </button>
             </div>
-            <div class="w-full h-full px-4 flex justify-center align-middle items-center">
+            <div class="w-full h-full px-4 flex justify-center align-middle items-center print:min-h-full print:max-h-full print:max-w-full print:min-w-full print:h-auto print:w-auto">
                 <Chart data={chartData} />
             </div>
             <p class="mb-4 text-sm text-gray-500 h-8">

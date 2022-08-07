@@ -24,6 +24,18 @@ export type ProcessedData = {
     Warnings: Array<string>;
 };
 
+export type NotesType = {
+    method_name?: string;
+    operator_name?: string;
+    founding_date?: string;
+    material_name_and_manufacturer?: string;
+    material_lot?: string;
+    material_expiration_date?: string;
+    material_lvl_1?: string;
+    material_lvl_2?: string;
+    machine_name?: string;
+};
+
 export class CalculationError implements Error {
     message: string;
     name: string;

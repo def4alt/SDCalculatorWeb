@@ -3,7 +3,7 @@ import {
     RawData,
     SampleType,
     ProcessedData,
-} from "../../types";
+} from "src/types/common";
 
 export const processData = (data: RawData[]): ProcessedData[] => {
     const validData = data.filter((t) => t.SampleType !== SampleType.Null);

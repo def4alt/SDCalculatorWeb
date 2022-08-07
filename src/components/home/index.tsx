@@ -1,6 +1,6 @@
 import { Fragment, h } from "preact";
 import { useContext, useState } from "preact/hooks";
-import { ProcessedData } from "src/types";
+import { ProcessedData } from "src/types/common";
 import Notes from "src/components/notes";
 import { FaPrint } from "react-icons/fa";
 import { UserContext } from "src/app";

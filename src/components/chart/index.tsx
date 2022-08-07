@@ -51,6 +51,7 @@ export const Chart: React.FC<{
                     ticks: {
                         minRotation: 0,
                         maxRotation: 90,
+                        autoSkip: false,
                         callback(
                             this: Scale<CoreScaleOptions>,
                             tickValue: string | number
@@ -76,6 +77,7 @@ export const Chart: React.FC<{
                             const label = this.getLabelForValue(value); // eslint-disable-line react/no-this-in-sfc
                             return label.split(";")[1];
                         },
+                        autoSkip: false,
                         color: "#c62828",
                         font: {
                             size: 15,
@@ -87,6 +89,7 @@ export const Chart: React.FC<{
                     max: average + 4 * sd,
                     ticks: {
                         stepSize: sd,
+                        autoSkip: false,
                         callback: (tickValue: string | number) => {
                             const value = Number(tickValue);
                             const tolerance = 0.01;

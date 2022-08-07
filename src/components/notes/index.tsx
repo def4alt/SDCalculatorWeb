@@ -4,26 +4,15 @@ import { TargetedEvent } from "preact/compat";
 import { FaRegFileAlt, FaTimes } from "react-icons/fa";
 import { LocalizationContext } from "src/context/localization";
 import { UserContext } from "src/app";
-import { supabase } from "src/context/supabase/api";
+import { getFirstMatchedField, updateField } from "src/context/supabase/api";
+import { NotesType } from "src/types/common";
 
 interface NotesProps {
     lot: number;
 }
 
-interface NotesState {
-    method_name?: string;
-    operator_name?: string;
-    founding_date?: string;
-    material_name_and_manufacturer?: string;
-    material_lot?: string;
-    material_expiration_date?: string;
-    material_lvl_1?: string;
-    material_lvl_2?: string;
-    machine_name?: string;
-}
-
 const Notes: React.FC<NotesProps> = ({ lot }) => {
-    const [notes, setNotes] = useState<NotesState>({
+    const [notes, setNotes] = useState<NotesType>({
         material_lot: String(lot),
     });
 
@@ -32,33 +21,31 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
     const user = useContext(UserContext);
 
     useEffect(() => {
-        supabase
-            .from("backups")
-            .select("notes")
-            .match({ user_id: user?.id, lot })
-            .then((serverNotes) => {
-                if (
-                    serverNotes.data === null ||
-                    serverNotes.data[0] === undefined
-                )
+        if (user === null) return;
+        getFirstMatchedField<NotesType>(user.id, lot, "notes").then(
+            (result) => {
+                if (result.isErr()) {
+                    console.error(result.error.message);
                     return;
+                }
 
-                setNotes(serverNotes.data[0] as NotesState);
-            });
+                setNotes(result.value);
+            }
+        );
     }, [lot, user]);
 
     const onSubmit = async (event: TargetedEvent<HTMLFormElement, Event>) => {
         event.preventDefault();
         setShowNotes(false);
 
-        await supabase
-            .from("backups")
-            .update({ notes })
-            .match({ user_id: user?.id, lot });
+        if (user === null) return;
+        updateField<NotesType>(user.id, lot, "notes", notes).then((result) => {
+            if (result.isErr()) console.error(result.error.message);
+        });
     };
 
     return (
-        <div class="w-full p-4">
+        <div class="w-full p-4 print:h-screen">
             <button
                 class="text-4xl w-20 h-20 text-gray-600 inline-flex justify-center items-center rounded-md hover:bg-gray-100  hover:cursor-pointer print:hidden"
                 onClick={() => {
@@ -68,7 +55,7 @@ const Notes: React.FC<NotesProps> = ({ lot }) => {
                 <FaRegFileAlt />
             </button>
             <form
-                class={`border-2 w-1/3 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
+                class={`border-2 w-full lg:w-1/3 fixed h-screen focus scroll-auto top-0 left-0 z-30 bg-white rounded-r-md flex flex-col gap-4 p-4 overflow-auto ease-in-out duration-300 ${
                     showNotes ? "translate-x-0" : "-translate-x-full"
                 } print:translate-x-0 print:relative print:border-hidden`}
                 onSubmit={onSubmit}

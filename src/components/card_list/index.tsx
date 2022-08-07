@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useMemo, useContext } from "preact/hooks";
-import { ProcessedData } from "src/types";
+import { ProcessedData } from "src/types/common";
 import { LocalizationContext } from "src/context/localization";
 import Card from "src/components/card";
 
@@ -19,7 +19,7 @@ const CardsList: React.FC<CardsListProps> = ({ data }) => {
     }, [data, showSDCV]);
 
     return (
-        <div class="w-full px-4 flex flex-col justify-center align-top items-start print:m-0 print:absolute print:top-[100vh]">
+        <div class="w-full px-4 flex flex-col wrap:flex-row wrap:flex-wrap gap-6 print:gap-0 justify-center align-top items-center print:m-0">
             <div class="w-full flex justify-center align-middle items-center print:hidden">
                 <button
                     class="bg-gray-100 hover:bg-gray-200 w-1/2 h-10 rounded-md"

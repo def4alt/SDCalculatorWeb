@@ -32,14 +32,14 @@ const Navigation: React.FC = (_) => {
         <Fragment>
             <div class="fixed z-20 bg-white flex items-center justify-around w-screen shadow-md h-14 rounded-b-md print:hidden">
                 <button
-                    class="w-1/4 h-10 text-lg rounded-md inline-flex justify-center items-center hover:bg-gray-100"
+                    class="w-1/4 md:1/3 h-10 text-lg rounded-md inline-flex justify-center items-center hover:bg-gray-100"
                     aria-label="Menu toggle"
                     onClick={() => setShowSettings(!showSettings)}
                 >
                     <FaBars />
                 </button>
                 <button
-                    class="h-10 w-1/4 text-xl rounded-md hover:bg-gray-100 hover:cursor-pointer"
+                    class="h-10 w-1/3 sm:w-1/4 text-base xs:text-xl rounded-md hover:bg-gray-100 hover:cursor-pointer"
                     onClick={() => route(ROUTES.HOME)}
                 >
                     SDCalculator
@@ -68,7 +68,7 @@ const Navigation: React.FC = (_) => {
             </div>
 
             <div
-                class={`fixed mt-14 h-screen w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
+                class={`fixed mt-14 z-10 h-screen w-screen md:w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
                     showSettings ? "translate-x-0" : "-translate-x-full"
                 }`}
             >
@@ -92,7 +92,7 @@ const Navigation: React.FC = (_) => {
                 </button>
             </div>
             <div
-                class={`fixed right-0 mt-14 h-screen w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
+                class={`fixed right-0 mt-14 z-10 h-screen w-screen md:w-1/3 flex flex-col ease-in-out duration-300 justify-start items-start gap-2 bg-white rounded-rb-md p-4 shadow-md ${
                     showAccount ? "translate-x-0" : "translate-x-full"
                 }`}
             >
