@@ -9,6 +9,7 @@ import { processData } from "./processor";
 import { checkWestgardViolations } from "./westgard";
 import {
     getFirstMatchedField,
+    getRow,
     insertField,
     updateField,
 } from "src/context/supabase/api";
@@ -70,7 +71,7 @@ const Calculation: React.FC<CalculationProps> = ({ callback }) => {
         }
 
         if (user !== null) {
-            const dataResult = await getFirstMatchedField(user.id, lot, "all");
+            const dataResult = await getRow(user.id, lot);
 
             if (dataResult.isOk())
                 updateField(user.id, lot, "data", result).then((r) => {

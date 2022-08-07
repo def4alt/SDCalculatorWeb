@@ -52,24 +52,19 @@ export const deleteRow = (user_id: string, lot: number) =>
 export const getFirstMatchedField = <T>(
     user_id: string,
     lot: number,
-    field: "data" | "lot" | "notes" | "user_id" | "all"
+    field: "data" | "lot" | "notes" | "user_id"
 ) =>
     ResultAsync.fromPromise<T, PostgrestError | Error>(
         new Promise(async (resolve, reject) => {
             const response = await supabase
                 .from<definitions["backups"]>("backups")
-                .select(field === "all" ? "" : field)
+                .select(field)
                 .match({ user_id, lot })
                 .limit(1)
                 .single();
 
             if (response.error !== null) {
                 reject(response.error);
-                return;
-            }
-
-            if (field === "all") {
-                resolve(response.data as unknown as T);
                 return;
             }
 
@@ -120,4 +115,33 @@ export const insertField = (data: {
             resolve();
         }),
         (e: unknown) => e as PostgrestError
+    );
+
+export const getRow = (user_id: string, lot: number) =>
+    ResultAsync.fromPromise<definitions["backups"], PostgrestError | Error>(
+        new Promise(async (resolve, reject) => {
+            const response = await supabase
+                .from<definitions["backups"]>("backups")
+                .select()
+                .match({ user_id, lot })
+                .limit(1)
+                .single();
+
+            if (response.error !== null) {
+                reject(response.error);
+                return;
+            }
+
+            const value = response.data;
+
+            if (value === undefined || value === null)
+                reject(
+                    new Error(
+                        `row with user_id:${user_id} lot:${lot} is not found`
+                    )
+                );
+
+            resolve(value);
+        }),
+        (e: unknown) => e as PostgrestError | Error
     );
