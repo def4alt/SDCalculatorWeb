@@ -69,7 +69,7 @@ const Card: React.FC<CardProps> = ({ data, showSDCV }) => {
                     {hideFromPrint ? <FaPlus /> : <FaTimes />}
                 </button>
             </div>
-            <div class="w-full h-full px-4 flex justify-center align-middle items-center print:min-h-full print:max-h-full print:max-w-full print:min-w-full print:h-auto print:w-auto">
+            <div class="w-full h-full px-4 flex justify-center align-middle items-center">
                 <Chart data={chartData} />
             </div>
             <p class="mb-4 text-sm text-gray-500 h-8">
