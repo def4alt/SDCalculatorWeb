@@ -9,7 +9,8 @@
         "serve": "sirv build --cors --single",
         "dev": "preact watch",
         "lint": "eslint src",
-        "test": "jest"
+        "test": "jest",
+        "update-types": "npx openapi-typescript \"${PREACT_APP_SUPABASE_URL}/rest/v1/?apikey=${PREACT_APP_SUPABASE_API_KEY}\" --version=2 --output src/types/supabase.ts"
     },
     "eslintConfig": {
         "parser": "@typescript-eslint/parser",
