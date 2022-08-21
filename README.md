@@ -1,2 +1,2 @@
-# SDCalculator [link](https://sdcalculus.web.app/)
+# SDCalculator [link](https://sdcalculator.vercel.app/)
 
